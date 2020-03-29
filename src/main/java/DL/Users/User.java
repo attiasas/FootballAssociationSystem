@@ -6,5 +6,5 @@ package DL.Users;
  **/
 public abstract class User
 {
-
+    private String userName;
 }
