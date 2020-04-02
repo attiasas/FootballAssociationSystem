@@ -10,7 +10,7 @@ import java.util.Date;
  **/
 public class Injury extends OnePlayerEvent {
 
-    public Injury(int gameTime, Date timeStamp, String description, Player injuredPlayer) {
-        super(gameTime, timeStamp, description, injuredPlayer);
+    public Injury(int gameTime, String description, Player injuredPlayer) {
+        super(gameTime, description, injuredPlayer);
     }
 }

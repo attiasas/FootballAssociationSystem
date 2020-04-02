@@ -10,7 +10,7 @@ import java.util.Date;
  **/
 public class RedCard extends OnePlayerEvent {
 
-    public RedCard(int gameTime, Date timeStamp, String description, Player redPlayer) {
-        super(gameTime, timeStamp, description, redPlayer);
+    public RedCard(int gameTime, String description, Player redPlayer) {
+        super(gameTime, description, redPlayer);
     }
 }

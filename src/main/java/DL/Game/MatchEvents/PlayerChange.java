@@ -10,7 +10,7 @@ import java.util.Date;
  **/
 public class PlayerChange extends TwoPlayersEvent {
 
-    public PlayerChange(int gameTime, Date timeStamp, String description, Player inPlayer, Player outPlayer) {
-        super(gameTime, timeStamp, description, inPlayer, outPlayer);
+    public PlayerChange(int gameTime, String description, Player inPlayer, Player outPlayer) {
+        super(gameTime, description, inPlayer, outPlayer);
     }
 }

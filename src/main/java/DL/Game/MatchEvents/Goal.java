@@ -10,7 +10,7 @@ import java.util.Date;
  **/
 public class Goal extends OnePlayerEvent {
 
-    public Goal(int gameTime, Date timeStamp, String description, Player scorePlayer) {
-        super(gameTime, timeStamp, description, scorePlayer);
+    public Goal(int gameTime, String description, Player scorePlayer) {
+        super(gameTime, description, scorePlayer);
     }
 }

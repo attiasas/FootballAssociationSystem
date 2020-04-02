@@ -8,8 +8,8 @@ abstract class OnePlayerEvent extends Event {
 
     private Player player;
 
-    public OnePlayerEvent(int gameTime, Date timeStamp, String description, Player player) {
-        super(gameTime, timeStamp, description);
+    public OnePlayerEvent(int gameTime, String description, Player player) {
+        super(gameTime, description);
         if (player != null)
             this.player = player;
     }

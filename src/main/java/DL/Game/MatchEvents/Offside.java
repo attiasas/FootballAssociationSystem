@@ -10,7 +10,7 @@ import java.util.Date;
  **/
 public class Offside extends OnePlayerEvent {
 
-    public Offside(int gameTime, Date timeStamp, String description, Player offsidePlayer) {
-        super(gameTime, timeStamp, description, offsidePlayer);
+    public Offside(int gameTime, String description, Player offsidePlayer) {
+        super(gameTime, description, offsidePlayer);
     }
 }
