@@ -1,10 +1,9 @@
-package DL.Team.Page;
+package DL.Users;
 
 /**
  * Description:     X
  * ID:              X
  **/
-public interface Pageable
+public abstract class User
 {
-
 }
