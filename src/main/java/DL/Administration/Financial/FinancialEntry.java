@@ -1,7 +1,5 @@
 package DL.Administration.Financial;
 
-import DL.Administration.SystemManager;
-
 import javax.persistence.*;
 import java.util.Objects;
 
