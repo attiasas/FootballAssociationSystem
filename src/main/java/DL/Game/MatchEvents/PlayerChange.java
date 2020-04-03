@@ -1,16 +1,18 @@
 package DL.Game.MatchEvents;
 
-import DL.Team.Members.Player;
-
-import java.util.Date;
+import javax.persistence.Entity;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     this class represents a PlayerChange event
  **/
+@Entity
 public class PlayerChange extends TwoPlayersEvent {
 
-    public PlayerChange(int gameTime, String description, Player inPlayer, Player outPlayer) {
-        super(gameTime, description, inPlayer, outPlayer);
+    public PlayerChange(EventUser createdByUser, EventLog eventLog, int gameTime, String firstPlayer, String secondPlayer) {
+        super(createdByUser, eventLog, gameTime, firstPlayer, secondPlayer);
+    }
+
+    public PlayerChange() {
+        super(null,null,0,null,null);
     }
 }

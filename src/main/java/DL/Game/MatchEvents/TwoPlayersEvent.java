@@ -1,19 +1,34 @@
 package DL.Game.MatchEvents;
 
-import DL.Team.Members.Player;
+import javax.persistence.*;
 
-import java.util.Date;
+/**
+ * Description:     this abstract class represents events of two players
+ *
+ */
 
+
+@MappedSuperclass
+@NamedQueries(value = {
+        @NamedQuery(name = "TwoPlayersEvents", query = "Select e From TwoPlayersEvent e")
+})
+
+@IdClass(Event.EntryPK.class)
 public abstract class TwoPlayersEvent extends Event {
 
-    private Player firstPlayer;
-    private Player secondPlayer;
+    @Column
+    private String firstPlayer;
+    @Column
+    private String secondPlayer;
 
-    public TwoPlayersEvent(int gameTime, String description, Player firstPlayer, Player secondPlayer) {
-        super(gameTime, description);
-        if (firstPlayer != null && secondPlayer != null){
-            this.firstPlayer = firstPlayer;
-            this.secondPlayer = secondPlayer;
-        }
+    public TwoPlayersEvent(EventUser createdByUser, EventLog eventLog, int gameTime, String firstPlayer, String secondPlayer) {
+        super(createdByUser, eventLog, gameTime);
+        this.firstPlayer = firstPlayer;
+        this.secondPlayer = secondPlayer;
+    }
+
+    public TwoPlayersEvent() {
+        super(null,null,0);
+        firstPlayer = secondPlayer = null;
     }
 }

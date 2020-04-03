@@ -1,16 +1,24 @@
 package DL.Game.MatchEvents;
 
-import DL.Team.Members.Player;
 
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     this class represents a YellowCard event
  **/
+@Entity
+@NamedQueries(value = {
+        @NamedQuery(name = "AllYellowCardEvents", query = "Select e From YellowCard e")
+})
 public class YellowCard extends OnePlayerEvent {
 
-    public YellowCard(int gameTime, String description, Player yellowPlayer) {
-        super(gameTime, description,yellowPlayer);
+    public YellowCard(EventUser createdByUser, EventLog eventLog, int gameTime, String player) {
+        super(createdByUser, eventLog, gameTime, player);
+    }
+
+    public YellowCard() {
+        super(null, null, 0,null);
     }
 }

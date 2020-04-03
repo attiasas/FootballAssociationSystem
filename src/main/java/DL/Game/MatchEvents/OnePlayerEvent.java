@@ -1,16 +1,26 @@
 package DL.Game.MatchEvents;
 
-import DL.Team.Members.Player;
+import javax.persistence.*;
 
-import java.util.Date;
-
+/**
+ * Description:     this class represents events of one player
+ */
+@MappedSuperclass
+@NamedQueries(value = {
+        @NamedQuery(name = "OnePlayersEvents", query = "Select e From OnePlayerEvent e")
+})
 abstract class OnePlayerEvent extends Event {
 
-    private Player player;
+    @Column
+    private String player;
 
-    public OnePlayerEvent(int gameTime, String description, Player player) {
-        super(gameTime, description);
-        if (player != null)
-            this.player = player;
+    public OnePlayerEvent(EventUser createdByUser, EventLog eventLog, int gameTime, String player) {
+        super(createdByUser, eventLog, gameTime);
+        this.player = player;
+    }
+
+    public OnePlayerEvent() {
+        super(null,null,0);
+        player = null;
     }
 }

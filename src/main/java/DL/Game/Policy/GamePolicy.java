@@ -3,13 +3,15 @@ package DL.Game.Policy;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Match;
 
+import javax.persistence.Entity;
 import java.util.List;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     This class represents a Game Policy
  **/
-public abstract class GamePolicy {
+@Entity
+
+public class GamePolicy {
 
     private int numberOfRounds;
     private boolean homeAwayMethod;
@@ -22,7 +24,7 @@ public abstract class GamePolicy {
     }
 
     public List<Match> matchAssignment(LeagueSeason league) throws IllegalArgumentException {
-        if (league == null || (homeAwayMethod == true &&  numberOfRounds <=1))
+        if (league == null || (homeAwayMethod &&  numberOfRounds <=1))
             throw new IllegalArgumentException("One of the arguments is incorrect");
         return null;
     }

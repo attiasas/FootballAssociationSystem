@@ -1,16 +1,25 @@
 package DL.Game.MatchEvents;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     this class represents the event log of a game
  **/
+
+@Entity
+@NamedQueries(value = {
+        @NamedQuery(name = "EventLogs", query = "Select e From EventLog e")
+})
 public class EventLog {
 
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<Event> eventList;
 
+    /**
+     * Default Constructor
+     */
     public EventLog() {
         this.eventList = new ArrayList<>();
     }

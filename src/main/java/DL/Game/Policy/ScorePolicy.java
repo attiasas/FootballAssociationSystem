@@ -1,13 +1,8 @@
 package DL.Game.Policy;
 
-import DL.Game.LeagueSeason.League;
-import DL.Game.Match;
-
-import java.util.List;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     This class represents a Score Policy
  **/
 public class ScorePolicy
 {
@@ -26,7 +21,7 @@ public class ScorePolicy
         this.lastGamesScoreFactor = lastGamesScoreFactor;
     }
 
-    public boolean calculateLeagueTable(List<Match> matchList, League league){
+    public boolean calculateLeagueTable(){
         return false;
     }
 
