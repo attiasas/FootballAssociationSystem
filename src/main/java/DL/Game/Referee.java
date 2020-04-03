@@ -1,5 +1,6 @@
 package DL.Game;
 
+import DL.Game.MatchEvents.Event;
 import DL.Game.MatchEvents.EventUser;
 import DL.Users.User;
 
