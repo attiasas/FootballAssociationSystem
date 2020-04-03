@@ -1,10 +1,10 @@
 package DL.Game.MatchEvents;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     this interface represents a user that can add events to the eventLog of a game
  **/
-public interface EventUser
-{
+public interface EventUser {
+
+    boolean createMatchEvent();
 
 }
