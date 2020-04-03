@@ -1,41 +1,34 @@
 package BL.Server.utils;
 
 import BL.Server.ServerSystem;
-import DL.Team.Members.Player;
-import DL.Team.Team;
-import DL.Users.User;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * @author Serfati
- * Description:    This class contains the methods for connecting to the database, getting data,
- *                 updating the database, preparing statements, executing prepared statements,
- *                 starting transactions, committing transactions, and rolling back transactions
- *
+ * Description: This class contains the methods for connecting to the database, getting data,
+ * updating the database, preparing statements, executing prepared statements,
+ * starting transactions, committing transactions, and rolling back transactions
+ * @version Id: 1.0
  **/
-
 public class DB implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    public final static Logger logger = Logger.getLogger(DB.class);
-
-    private static DB instance;
 
     @PersistenceUnit
     protected static EntityManagerFactory emf;
-
+    private static final long serialVersionUID = 1L;
+    public final static Logger logger = Logger.getLogger(DB.class);
+    private static DB instance;
 
     /**
      * @param _emf- Entity Manager Factory object
      * @return the instance of this facade.
      */
-    public static DB getFacade(EntityManagerFactory _emf) {
-
+    public static DB getDataBaseInstance(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
             instance = new DB();
@@ -44,144 +37,153 @@ public class DB implements Serializable {
         return instance;
     }
 
+    /*
+     --------------------------------------------------------------------
 
-    /*---------------- GENERALLY -----------------------*/
+                        persistence GENERAL methods
+
+      --------------------------------------------------------------------
+    */
+
+    /**
+     * Persists the object provided as a parameter to the database.
+     *
+     * @param entity the entity to persists.
+     */
     public static void persist(Object entity) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(entity);
-        em.getTransaction().commit();
-        em.close();
+        try {
+            em.persist(entity);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        }
     }
 
+    /**
+     * Persists the list of objects in the parameter to the database.
+     *
+     * @param entities the list tof entities to persist.
+     */
+    public static void persistAll(List<?> entities) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            entities.forEach(em::persist);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        }
+    }
+
+    /**
+     * Remove the object passes as parameter from the database.
+     *
+     * @param entity the entity to remove.
+     */
     public static void remove(Object entity) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Object mergedEntity = em.merge(entity);
-        em.remove(mergedEntity);
-        em.getTransaction().commit();
-        em.close();
+        try {
+            Object mergedEntity = em.merge(entity);
+            em.remove(mergedEntity);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
+
+    /**
+     * Updates the object passes as parameter from the database.
+     *
+     * @param entity the entity to update.
+     */
     public static Object merge(Object entity) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        entity = em.merge(entity);
-        em.getTransaction().commit();
-        em.close();
+        try {
+            entity = em.merge(entity);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
         return entity;
     }
 
-    public Object update(Object aggregate) {
+    // Query methods -------------------------------------------------------------------------------
+
+    /**
+     * Builds a fixed query from variables
+     *
+     * @param ql   - sql query with parameters fields
+     * @param args - the parameters
+     * @return fixed query
+     */
+    private static Query newQuery(String ql, Object... args) {
+        Query query = emf.createEntityManager().createQuery(ql);
+        IntStream.range(0, args.length).forEach(i -> query.setParameter(i, args[i]));
+        return query;
+    }
+
+    /**
+     * Remove the list of objects from the database.
+     *
+     * @param entities the list of objects to remove from the database.
+     */
+    public static void removeAll(List<?> entities) {
         EntityManager em = emf.createEntityManager();
-        Object update = em.find(aggregate.getClass(),aggregate);
         em.getTransaction().begin();
-        update = aggregate;
-        em.getTransaction().commit();
-        em.close();
-        return update;
+        try {
+            for(Object entity : entities) em.remove(entity);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
-
-    public boolean updateAll(Collection<Object> aggregates) {
-        aggregates.forEach(this::update);
-        return true;
-    }
-
-    public boolean deleteAll(Collection<Object> aggregates) {
-        aggregates.forEach(DB::remove);
-        return true;
-    }
-
-    public int getNumberOfItems(Object type) {
+    /* Simple manual tests ------------------------------------------------------------------------------- */
+    // tested - CREATE TRUNCATE INSERT SELECT DROP CONNECTION; left - UPDATE namedQuery Parameters
+    public static void main(String[] args) {
+        emf = ServerSystem.createEntityManagerFactory(ServerSystem.DbSelector.DEV, ServerSystem.Strategy.DROP_AND_CREATE);
+        EntityTransaction txn;
         EntityManager em = emf.createEntityManager();
-        TypedQuery q = em.createQuery("select o from"+ type.getClass()+ "o", type.getClass());
-        em.close();
-        return q.getResultList().size();
-    }
+        txn = em.getTransaction();
+        txn.begin();
+        em.createNativeQuery("CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)").executeUpdate();
+        em.createNativeQuery("TRUNCATE TABLE Standings").executeUpdate(); // clears the table content
+        em.createNativeQuery("INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')").executeUpdate();
+        Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
+        // Show Result
+        List<Object[]> ids = q.getResultList();
+        for(Object[] a : ids) System.out.println("Standings ~ "+a[0]+":"+a[1]);
+        em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
+        txn.commit();
 
-    public static EntityManager createEM() {
-        return emf.createEntityManager();
-    }
-
-    public void close() {
-        EntityManager em = emf.createEntityManager();
         em.close();
         emf.close();
     }
 
-    /*---------------- USERS -----------------------*/
-//    public boolean loginUser(String du_username, String du_password) {
-//        EntityManager em = emf.createEntityManager();
-//        User found = em.find(User.class, du_username);
-//        if (found != null && du_password.equals(found.getPassword())) {
-//            logger.log(Level.INFO, "User authentication - pass");
-//            return true;
-//        }
-//        em.close();
-//        return false;
-//    }
-
-//    public boolean existUser(User u) {
-//        EntityManager em = emf.createEntityManager();
-//        User found = em.find(User.class, u.getUsername());
-//        em.close();
-//        return found != null;
-//    }
-
-//    public List<User> selectAllUsers() {
-//        return emf.createEntityManager().createNamedQuery("User.findAll").getResultList();
-//    }
-
-    public User selectUserByName(String s) {
-        return emf.createEntityManager().find(User.class, s);
-    }
-
-    /*---------------- TEAMS -----------------------*/
-    public boolean existTeam(Team t) {
+    /**
+     * @param type
+     * @return
+     */
+    public int getNumberOfItems(Object type) {
         EntityManager em = emf.createEntityManager();
-        User found =null;
-        //User found = em.find(Team.class, t.getName());
+        TypedQuery q = em.createQuery("select o from"+type.getClass()+"o", type.getClass());
         em.close();
-        return found != null;
-    }
-
-//    public static Team findTeam(int aliasName) {
-//        EntityManager em = emf.createEntityManager();
-//        List<Team> Teams = (List<Team>) em
-//                .createNamedQuery("Team.findByAlias")
-//                .setParameter("alias", aliasName)
-//                .getResultList();
-//        em.close();
-//        return Teams.size() == 0 ? null : Teams.get(0);
-//    }
-
-    public boolean insertTeam(Team t){
-        if(!existTeam(t)){
-            EntityManager em = emf.createEntityManager();
-            em.persist(t);
-            em.close();
-            return true;
-        }
-        return false;
-    }
-
-    public Team findTeamById(long id) {
-        EntityManager em = emf.createEntityManager();
-        return em.find(Team.class, id);
-    }
-
-    /*---------------- PLAYER -----------------------*/
-    public User findPlayerByName(Player aggregate) {
-        EntityManager entityManager = emf.createEntityManager();
-        Player found = null;
-        //TODO
-        entityManager.close();
-        return found;
-    }
-
-    //Simple manual test
-    public static void main(String[] args) {
-        getFacade(ServerSystem.createEntityManagerFactory(ServerSystem.DbSelector.DEV, ServerSystem.Strategy.DROP_AND_CREATE));
+        return q.getResultList().size();
     }
 }

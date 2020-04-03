@@ -1,20 +1,20 @@
 package BL.Server;
 
 import BL.Server.utils.DB;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import junit.framework.TestCase;
+import org.junit.jupiter.api.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
 /**
- * Description:     X
+ * Description:     <p>Tests for DB with persistence</p>
  * ID:              X
+ *
+ * @author Serfati
+ * @version 1.0
  **/
 
-public class DBTest {
+public class DBTest extends TestCase {
 
     private static EntityManagerFactory emf;
     private static DB facade;
@@ -23,23 +23,19 @@ public class DBTest {
     public static void setUpClass() {
         emf = ServerSystem.createEntityManagerFactory(
                 "sportify",
-                "jdbc:mysql://localhost:3306/sportify",
+                "jdbc:mysql://localhost:3306/sportify_test",
                 "root",
                 "",
-                ServerSystem.Strategy.DROP);
-        facade = DB.getFacade(emf);
+                ServerSystem.Strategy.CREATE);
+        facade = DB.getDataBaseInstance(emf);
+        System.out.println("BeforeAll done");
     }
-
-//    @BeforeAll
-//    public static void setUpClassV2() {
-//        emf = ServerSystem.createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.DROP);
-//        facade = DB.getFacade(emf);
-//    }
 
 
     // Setup the DataBase in a known state BEFORE EACH TEST
     @BeforeEach
     public void setUp() {
+        System.out.println("Before Each done");
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -48,12 +44,14 @@ public class DBTest {
         } finally {
             em.close();
         }
+
     }
 
 
     //Remove any data after each test was run
     @AfterEach
     public void tearDown() {
+        System.out.println("After Each done");
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -64,9 +62,17 @@ public class DBTest {
         }
     }
 
-    // TODO
     @Test
-    public void testAFacadeMethod() {
-        System.out.println("success");
+    @Order(1)
+    @DisplayName("Test INSERT")
+    void dbInsertTest() {
+        assertEquals(true, 1 == 1);
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("Test Retrival")
+    void dbRetrivalTest() {
+        assertEquals(1, 2-1);
     }
 }

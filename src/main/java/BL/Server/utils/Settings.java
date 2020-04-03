@@ -18,7 +18,8 @@ public final class Settings {
     /**
      * Returns the property value for the given key or null if it does not exist
      * Key/value must be defined in "config.properties"
-     * @param key
+     *
+     * @param key key-name
      * @return Property value for the given key
      */
     public static String getPropertyValue(String key){
@@ -39,11 +40,11 @@ public final class Settings {
     /**
      * Utility method that builds the TEST-connection string using the property values: db.server , db.port and dbtest.database
      * @return
-     *  a connection string formatted like this: "jdbc:mysql://localhost:3306/sportify"
+     *  a connection string formatted like this: "jdbc:mysql://localhost:3306/sportify_test"
      */
     public static String getTEST_DBConnection(){
         initializeProperties();
-        return String.format("jdbc:mysql://%s:%s/%s",props.getProperty("db.server"),props.getProperty("db.port"),props.getProperty("dbtest.database"));
+        return String.format("jdbc:mysql://%s:%s/%s", props.getProperty("db.server"), props.getProperty("dbtest.port"), props.getProperty("dbtest.database"));
     }
 
     /**
