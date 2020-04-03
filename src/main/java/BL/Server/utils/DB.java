@@ -7,16 +7,16 @@ import org.apache.log4j.Logger;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.*;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * @author Serfati
  * Description:    This class contains the methods for connecting to the database, getting data,
  * updating the database, preparing statements, executing prepared statements,
  * starting transactions, committing transactions, and rolling back transactions
+ * @version Id: 1
  **/
-
 public class DB implements Serializable {
 
     @PersistenceUnit
@@ -26,18 +26,12 @@ public class DB implements Serializable {
     private static DB instance;
     private static Connection conn;
 
-    /**
-     * Private constructor.
-     */
-    private DB() {
-        // empty
-    }
 
     /**
      * @param _emf- Entity Manager Factory object
      * @return the instance of this facade.
      */
-    public static DB getFacade(EntityManagerFactory _emf) {
+    public static DB getDataBaseInstance(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
             instance = new DB();
@@ -46,49 +40,163 @@ public class DB implements Serializable {
         return instance;
     }
 
-    /*---------------- persistence GENERAL methods -----------------------*/
+    /*
+     --------------------------------------------------------------------
+
+                        persistence GENERAL methods
+
+      --------------------------------------------------------------------
+    */
+
+    /**
+     * Persists the object provided as a parameter to the database.
+     *
+     * @param entity the entity to persists.
+     */
     public static void persist(Object entity) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(entity);
-        em.getTransaction().commit();
-        em.close();
-    }
-
-    public static void remove(Object entity) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        Object mergedEntity = em.merge(entity);
-        em.remove(mergedEntity);
-        em.getTransaction().commit();
-        em.close();
-    }
-
-    public static Object merge(Object entity) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        entity = em.merge(entity);
-        em.getTransaction().commit();
-        em.close();
-        return entity;
-    }
-
-    public static Object update(Object aggregate) {
-        EntityManager em = emf.createEntityManager();
-        Object update = em.find(aggregate.getClass(), aggregate);
-        em.getTransaction().begin();
-        update = aggregate;
-        em.getTransaction().commit();
-        em.close();
-        return update;
+        try {
+            em.persist(entity);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        }
     }
 
     /**
-     * MySQL: jdbc:mysql://<HOST>:<PORT>/<DATABASE_NAME>
+     * Persists the list of objects in the parameter to the database.
      *
-     * @param dbType
-     * @return
+     * @param entities the list tof entities to persist.
      */
+    public static void persistAll(List<?> entities) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            entities.forEach(em::persist);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        }
+    }
+
+    /**
+     * Remove the object passes as parameter from the database.
+     *
+     * @param entity the entity to remove.
+     */
+    public static void remove(Object entity) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            Object mergedEntity = em.merge(entity);
+            em.remove(mergedEntity);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+
+    /**
+     * Updates the object passes as parameter from the database.
+     *
+     * @param entity the entity to update.
+     */
+    public static Object merge(Object entity) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            entity = em.merge(entity);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+        return entity;
+    }
+
+    // Query methods -------------------------------------------------------------------------------
+    private static Query newQuery(String ql, Object... args) {
+        Query query = emf.createEntityManager().createQuery(ql);
+        IntStream.range(0, args.length).forEach(i -> query.setParameter(i, args[i]));
+        return query;
+    }
+
+    /**
+     * Remove the list of objects from the database.
+     *
+     * @param entities the list of objects to remove from the database.
+     */
+    public static void removeAll(List<?> entities) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            for(Object entity : entities) em.remove(entity);
+            em.getTransaction().commit();
+        } catch(Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        }
+    }
+
+    //Simple manual tests
+    public static void main(String[] args) {
+        ServerSystem.createEntityManagerFactory(ServerSystem.DbSelector.DEV, ServerSystem.Strategy.DROP_AND_CREATE);
+        EntityTransaction txn = null;
+        EntityManager em = emf.createEntityManager();
+        txn = em.getTransaction();
+        txn.begin();
+        em.createNativeQuery("CREATE TABLE IF NOT EXISTS Standings (`id` INTEGER PRIMARY KEY)").executeUpdate();
+        em.createNativeQuery("INSERT INTO  Standings VALUE (17)").executeUpdate();
+
+        //em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate();
+
+        txn.commit();
+
+
+//        DB db = new DB();
+//        createConnection(ServerSystem.DbSelector.DEV);
+//        clearTable("Users");
+//        createConnection(ServerSystem.DbSelector.TEST);
+//        String sql  = "INSERT INTO Users VALUES ('avihaipp@gmail.com','admin','Avihai','Serfati','root')";
+//        System.out.println(executeInsert(sql));
+
+
+//        createConnection(ServerSystem.DbSelector.DEV);
+//        executeUpdate("USE sportify");
+//        createConnection(ServerSystem.DbSelector.DEV);
+//        String sql  = "CREATE TABLE IF NOT EXISTS TESTER (`id` INTEGER PRIMARY KEY,`Div` VARCHAR(5) NOT NULL)";
+//        executeUpdate(sql);
+
+//        createConnection(ServerSystem.DbSelector.DEV);
+//        String sql2  = "drop table TESTER;";
+//        executeUpdate(sql2);
+
+    }
+
+    public int getNumberOfItems(Object type) {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery q = em.createQuery("select o from"+type.getClass()+"o", type.getClass());
+        em.close();
+        return q.getResultList().size();
+    }
+
+    /*
+     --------------------------------------------------------------------
+
+                       native database GENERAL methods
+
+     --------------------------------------------------------------------
+     */
+
     public static Connection createConnection(ServerSystem.DbSelector dbType) {
         String driver = Settings.getPropertyValue("db.driver");
         String connection_str;
@@ -112,21 +220,9 @@ public class DB implements Serializable {
                 e.printStackTrace();
             }
         }
-
         return conn;
     }
 
-    public boolean deleteAll(Collection<Object> aggregates) {
-        aggregates.forEach(DB::remove);
-        return true;
-    }
-
-    public int getNumberOfItems(Object type) {
-        EntityManager em = emf.createEntityManager();
-        TypedQuery q = em.createQuery("select o from"+type.getClass()+"o", type.getClass());
-        em.close();
-        return q.getResultList().size();
-    }
 
     /**
      * Execute the given sql update command.
@@ -164,18 +260,6 @@ public class DB implements Serializable {
         }
     }
 
-    public static EntityManager createEM() {
-        return emf.createEntityManager();
-    }
-
-    public void close() {
-        EntityManager em = emf.createEntityManager();
-        em.close();
-        emf.close();
-    }
-
-    /*---------------- native database GENERALLY methods-----------------------*/
-
     /**
      * Clears given table.
      *
@@ -184,9 +268,6 @@ public class DB implements Serializable {
      */
     public static void clearTable(String tableName) throws Exception {
         executeUpdate("TRUNCATE TABLE "+tableName);
-    }
-
-    public static void resetAllTables(boolean flag) throws Exception {
     }
 
     /**
@@ -211,128 +292,7 @@ public class DB implements Serializable {
         }
     }
 
-    //Simple manual test
-    public static void main(String[] args) throws Exception {
-        DB db = getFacade(ServerSystem.createEntityManagerFactory(ServerSystem.DbSelector.DEV, ServerSystem.Strategy.DROP_AND_CREATE));
-        EntityTransaction txn = null;
-        EntityManager entityManager = createEM();
-        txn = entityManager.getTransaction();
-        txn.begin();
-        entityManager.createNativeQuery("CREATE TABLE IF NOT EXISTS Standings (`id` INTEGER PRIMARY KEY)").executeUpdate();
-
-        entityManager.createNativeQuery("INSERT INTO  Standings VALUE (15)").executeUpdate();
-        txn.commit();
-
-        txn.commit();
-        entityManager.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate();
-        txn.begin();
-
-
-//        DB db = new DB();
-//        createConnection(ServerSystem.DbSelector.DEV);
-//        clearTable("Users");
-//        createConnection(ServerSystem.DbSelector.TEST);
-//        String sql  = "INSERT INTO Users VALUES ('avihaipp@gmail.com','admin','Avihai','Serfati','root')";
-//        System.out.println(executeInsert(sql));
-
-
-//        createConnection(ServerSystem.DbSelector.DEV);
-//        executeUpdate("USE sportify");
-//        createConnection(ServerSystem.DbSelector.DEV);
-//        String sql  = "CREATE TABLE IF NOT EXISTS TESTER (`id` INTEGER PRIMARY KEY,`Div` VARCHAR(5) NOT NULL)";
-//        executeUpdate(sql);
-
-//        createConnection(ServerSystem.DbSelector.DEV);
-//        String sql2  = "drop table TESTER;";
-//        executeUpdate(sql2);
-    }
-
-    public boolean updateAll(Collection<Object> aggregates) {
-        aggregates.forEach(DB::update);
-        return true;
-    }
-
     public List executeNamedQuery(String namedQuery) {
         return emf.createEntityManager().createNamedQuery(namedQuery).getResultList();
     }
-
-    public List getQueryResult(String sqlQuery) {
-        return emf.createEntityManager().createQuery(sqlQuery).getResultList();
-    }
 }
-
-
-/* -------------------------------------------------------------------- //
-
-                               DRAFT
-
-  -------------------------------------------------------------------- */
-
-
-//    public boolean loginUser(String du_username, String du_password) {
-//        EntityManager em = emf.createEntityManager();
-//        User found = em.find(User.class, du_username);
-//        if (found != null && du_password.equals(found.getPassword())) {
-//            logger.log(Level.INFO, "User authentication - pass");
-//            return true;
-//        }
-//        em.close();
-//        return false;
-//    }
-//
-////    public boolean existUser(User u) {
-////        EntityManager em = emf.createEntityManager();
-////        User found = em.find(User.class, u.getUsername());
-////        em.close();
-////        return found != null;
-////    }
-//
-////    public List<User> selectAllUsers() {
-////        return emf.createEntityManager().createNamedQuery("User.findAll").getResultList();
-////    }
-//
-//    public User selectUserByName(String s) {
-//        return emf.createEntityManager().find(User.class, s);
-//    }
-//
-//    /*---------------- TEAMS -----------------------*/
-//    public boolean existTeam(Team t) {
-//        EntityManager em = emf.createEntityManager();
-//        Team found =null;
-//        //Team found = em.find(Team.class, t.getName());
-//        em.close();
-//        return found != null;
-//    }
-//
-////    public static Team findTeam(int aliasName) {
-////        EntityManager em = emf.createEntityManager();
-
-//List<Team> Teams = (List<Team>) em.createNamedQuery("Team.findByAlias").setParameter("alias", aliasName).getResultList();
-////        em.close();
-////        return Teams.size() == 0 ? null : Teams.get(0);
-////    }
-//
-//    public boolean insertTeam(Team t){
-//        if(!existTeam(t)){
-//            EntityManager em = emf.createEntityManager();
-//            em.persist(t);
-//            em.close();
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    public Team findTeamById(long id) {
-//        EntityManager em = emf.createEntityManager();
-//        return em.find(Team.class, id);
-//    }
-//
-//    /*---------------- PLAYER -----------------------*/
-//    public User findPlayerByName(Player aggregate) {
-//        EntityManager entityManager = emf.createEntityManager();
-//        Player found = null;
-//
-//        entityManager.close();
-//        return found;
-//    }
-

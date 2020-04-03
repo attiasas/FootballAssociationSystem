@@ -30,7 +30,7 @@ public class DBTest extends TestCase {
                 "root",
                 "",
                 ServerSystem.Strategy.CREATE);
-        facade = DB.getFacade(emf);
+        facade = DB.getDataBaseInstance(emf);
         conn = DB.createConnection(ServerSystem.DbSelector.TEST);
         System.out.println("BeforeAll done");
     }
