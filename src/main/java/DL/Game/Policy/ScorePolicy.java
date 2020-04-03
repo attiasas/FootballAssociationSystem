@@ -1,7 +1,7 @@
 package DL.Game.Policy;
 
 /**
- * Description:     X
+ * Description:     Represents a score counting policy
  * ID:              X
  **/
 public class ScorePolicy
