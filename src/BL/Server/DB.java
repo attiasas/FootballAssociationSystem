@@ -1,10 +1,10 @@
-package DL.Team.Page;
+package BL.Server;
 
 /**
  * Description:     X
  * ID:              X
  **/
-public interface Pageable
+public class DB
 {
 
 }
