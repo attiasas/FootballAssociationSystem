@@ -1,0 +1,64 @@
+package DL.Users;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Description:     Represents permissions of a user
+ * ID:              X
+ **/
+
+
+@Entity
+@NamedQueries( value = {
+        @NamedQuery(name = "UserPermission", query = "SELECT up From UserPermission up WHERE up.id = :id")
+})
+public class UserPermission
+{
+    public enum Permission
+    {
+        ADD,REMOVE,EDIT
+    }
+
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column
+    private List<Permission> teamPermissions;
+
+
+    public UserPermission()
+    {
+        this(new ArrayList<Permission>());
+    }
+
+    public UserPermission(List<Permission> permissionList)
+    {
+        this.teamPermissions = new ArrayList<Permission>(permissionList);
+    }
+
+
+
+    public boolean hasPermission(Permission permission)
+    {
+        if(teamPermissions.contains(permission))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addPermission(Permission permission)
+    {
+        return this.teamPermissions.add(permission);
+    }
+
+    public boolean removePermission(Permission permission)
+    {
+        return this.teamPermissions.remove(permission);
+    }
+
+
+
+}
