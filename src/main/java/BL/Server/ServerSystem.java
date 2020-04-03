@@ -1,5 +1,6 @@
 package BL.Server;
 
+import BL.Server.utils.DB;
 import BL.Server.utils.Settings;
 
 import javax.persistence.EntityManager;
@@ -7,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import java.util.Properties;
+
 
 /**
  * <p>
@@ -20,14 +22,17 @@ import java.util.Properties;
  * </p>
  *
  * @author Serfati
- * @version $Id: 1
+ * @version Id: 1.0
  */
 public class ServerSystem {
     private static final String PERSISTENCE_UNIT_NAME = "sportify";  /* The name of the persistence unit*/
     @PersistenceUnit
     private static EntityManagerFactory emf;  /* The central, shared entity manager factory instance. */
+    private DB dataBase;
 
-    private ServerSystem() {
+    private ServerSystem(DbSelector dbType, Strategy strategy) {
+        dataBase =
+                DB.getDataBaseInstance(createEntityManagerFactory(dbType, strategy));
     }
 
     /**
@@ -89,9 +94,13 @@ public class ServerSystem {
     }
 
 
-    //Simple manual test
+    /* Simple manual tests ------------------------------------------------------------------------------- */
     public static void main(String[] args) {
         createEntityManagerFactory(DbSelector.DEV, Strategy.DROP_AND_CREATE); /* should print db log */
+    }
+
+    public DB getDataBase() {
+        return dataBase;
     }
 
 

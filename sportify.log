@@ -78,3 +78,374 @@
 2020-04-03 10:54:31 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
 2020-04-03 10:54:32 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
 2020-04-03 10:54:32 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:10:46 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:10:47 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:10:47 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:10:47 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:10:47 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:10:47 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:10:47 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:10:47 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:10:47 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:10:48 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:11:38 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:11:38 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:11:38 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:11:38 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:11:38 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:11:38 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:11:38 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:11:38 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:11:39 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:11:39 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:21:34 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:21:34 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:21:34 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:21:34 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:21:35 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:21:35 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:21:35 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:21:35 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:21:35 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:21:35 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:23:13 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:23:14 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:23:14 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:23:14 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:23:14 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:23:14 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:23:14 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:23:14 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:23:14 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:23:14 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:23:15 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2020-04-03 11:23:15 ERROR SqlExceptionHelper:142 - Duplicate entry '17' for key 'PRIMARY'
+2020-04-03 11:23:26 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:23:27 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:23:27 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:23:27 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:23:27 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:23:27 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:23:27 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:23:27 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:23:27 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:23:28 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:23:28 WARN  SqlExceptionHelper:137 - SQL Error: 0, SQLState: 01S03
+2020-04-03 11:23:28 ERROR SqlExceptionHelper:142 - Can not issue executeUpdate() for SELECTs
+2020-04-03 11:25:50 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:25:50 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:25:50 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:25:50 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:25:50 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:25:50 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:25:50 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:25:50 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:25:51 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:25:51 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:25:51 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2020-04-03 11:25:51 ERROR SqlExceptionHelper:142 - Unknown column 's' in 'field list'
+2020-04-03 11:26:07 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:26:07 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:26:07 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:26:07 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:26:07 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:26:07 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:26:07 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:26:07 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:26:08 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:26:08 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:26:08 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2020-04-03 11:26:08 ERROR SqlExceptionHelper:142 - Unknown column 's' in 'field list'
+2020-04-03 11:27:43 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:27:43 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:27:43 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:27:43 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:27:43 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:27:43 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:27:43 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:27:43 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:27:44 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:27:44 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:32:10 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:32:10 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:32:11 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:32:11 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:32:11 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:32:11 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:32:11 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:32:11 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:32:11 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:32:12 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:32:12 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-04-03 11:32:12 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IF EXISTS Standings' at line 1
+2020-04-03 11:32:52 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:32:52 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:32:52 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:32:52 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:32:52 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:32:52 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:32:52 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:32:52 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:32:53 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:32:53 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:36:17 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:36:17 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:36:17 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:36:18 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:36:18 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:36:18 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:36:18 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:36:18 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:36:18 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:36:18 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:39:18 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:39:18 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:39:18 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:39:18 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:39:18 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:39:18 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:39:18 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:39:18 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:39:19 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:39:19 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:45:06 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:45:06 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:45:07 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:45:07 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:45:07 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:45:07 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:45:07 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:45:07 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:45:07 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:45:08 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:45:08 WARN  SqlExceptionHelper:137 - SQL Error: 1136, SQLState: 21S01
+2020-04-03 11:45:08 ERROR SqlExceptionHelper:142 - Column count doesn't match value count at row 1
+2020-04-03 11:46:37 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:46:37 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:46:37 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:46:37 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:46:37 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:46:37 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:46:37 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:46:37 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:46:38 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:46:38 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:46:38 WARN  SqlExceptionHelper:137 - SQL Error: 1136, SQLState: 21S01
+2020-04-03 11:46:38 ERROR SqlExceptionHelper:142 - Column count doesn't match value count at row 1
+2020-04-03 11:47:31 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:47:31 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:47:31 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:47:31 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:47:31 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:47:31 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:47:31 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:47:31 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:47:32 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:47:32 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:47:32 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2020-04-03 11:47:32 ERROR SqlExceptionHelper:142 - Unknown column 'name' in 'field list'
+2020-04-03 11:48:10 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:48:10 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:48:10 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:48:10 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:48:10 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:48:10 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:48:10 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:48:10 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:48:11 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:48:11 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:48:27 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:48:27 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:48:27 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:48:27 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:48:27 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:48:27 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:48:27 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:48:27 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:48:27 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:48:28 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:48:28 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2020-04-03 11:48:28 ERROR SqlExceptionHelper:142 - Unknown column 'name' in 'field list'
+2020-04-03 11:49:18 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:49:18 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:49:19 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:49:19 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:49:19 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:49:19 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:49:19 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:49:19 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:49:19 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:49:19 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:49:19 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2020-04-03 11:49:19 ERROR SqlExceptionHelper:142 - Unknown column 'name' in 'field list'
+2020-04-03 11:50:24 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:50:24 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:50:25 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:50:25 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:50:25 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:50:25 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:50:25 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:50:25 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:50:25 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:50:25 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:50:52 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:50:52 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:50:52 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:50:53 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:50:53 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:50:53 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:50:53 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:50:53 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:50:53 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:50:53 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:51:26 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:51:26 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:51:26 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:51:26 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:51:26 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:51:26 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:51:26 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:51:26 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:51:27 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:51:27 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:54:26 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:54:26 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:54:26 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:54:26 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:54:26 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:54:26 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:54:26 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:54:26 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:54:27 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:54:27 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:54:27 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2020-04-03 11:54:27 ERROR SqlExceptionHelper:142 - Duplicate entry '1' for key 'PRIMARY'
+2020-04-03 11:55:01 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:55:01 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:55:02 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:55:02 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:55:02 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:55:02 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:55:02 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:55:02 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:55:02 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:55:02 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:55:03 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2020-04-03 11:55:03 ERROR SqlExceptionHelper:142 - Unknown column 'a' in 'field list'
+2020-04-03 11:56:21 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:56:21 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:56:22 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:56:22 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:56:22 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:56:22 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:56:22 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:56:22 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:56:22 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:56:22 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:56:23 WARN  SqlExceptionHelper:137 - SQL Error: 1054, SQLState: 42S22
+2020-04-03 11:56:23 ERROR SqlExceptionHelper:142 - Unknown column 'a' in 'field list'
+2020-04-03 11:56:37 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:56:37 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:56:37 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:56:37 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:56:37 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:56:37 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:56:37 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:56:37 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:56:37 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:56:38 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:56:54 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:56:54 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:56:54 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:56:54 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:56:54 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:56:54 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:56:54 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:56:54 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:56:55 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:56:55 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:57:56 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:57:56 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:57:56 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:57:56 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:57:56 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:57:56 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:57:56 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:57:56 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:57:57 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:57:57 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 11:58:16 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 11:58:17 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 11:58:17 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 11:58:17 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 11:58:17 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 11:58:17 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 11:58:17 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 11:58:17 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 11:58:17 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 11:58:18 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 12:01:48 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 12:01:49 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 12:01:49 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 12:01:49 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 12:01:49 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 12:01:49 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 12:01:49 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 12:01:49 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 12:01:49 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 12:01:49 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 12:03:04 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 12:03:04 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 12:03:04 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 12:03:05 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 12:03:05 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 12:03:05 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 12:03:05 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 12:03:05 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 12:03:05 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 12:03:05 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 12:03:38 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 12:03:38 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 12:03:38 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 12:03:39 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 12:03:39 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 12:03:39 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 12:03:39 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 12:03:39 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 12:03:39 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 12:03:39 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 12:08:32 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 12:08:32 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 12:08:33 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 12:08:33 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 12:08:33 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 12:08:33 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 12:08:33 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 12:08:33 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 12:08:33 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 12:08:34 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 12:08:34 WARN  SqlExceptionHelper:137 - SQL Error: 1136, SQLState: 21S01
+2020-04-03 12:08:34 ERROR SqlExceptionHelper:142 - Column count doesn't match value count at row 4
+2020-04-03 12:08:57 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 12:08:58 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 12:08:58 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 12:08:58 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 12:08:58 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 12:08:58 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 12:08:58 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 12:08:58 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 12:08:58 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 12:08:58 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 12:08:59 WARN  SqlExceptionHelper:137 - SQL Error: 1048, SQLState: 23000
+2020-04-03 12:08:59 ERROR SqlExceptionHelper:142 - Column 'name' cannot be null
+2020-04-03 12:09:20 INFO  LogHelper:31 - HHH000204: Processing PersistenceUnitInfo [name: sportify]
+2020-04-03 12:09:20 INFO  Version:46 - HHH000412: Hibernate Core {5.4.1.Final}
+2020-04-03 12:09:20 INFO  Version:49 - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-04-03 12:09:20 WARN  pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-04-03 12:09:20 INFO  pooling:115 - HHH10001005: using driver [com.mysql.jdbc.Driver] at URL [jdbc:mysql://localhost:3306/sportify]
+2020-04-03 12:09:20 INFO  pooling:124 - HHH10001001: Connection properties: {user=root}
+2020-04-03 12:09:20 INFO  pooling:129 - HHH10001003: Autocommit mode: false
+2020-04-03 12:09:20 INFO  DriverManagerConnectionProviderImpl:239 - HHH000115: Hibernate connection pool size: 20 (min=1)
+2020-04-03 12:09:21 INFO  Dialect:158 - HHH000400: Using dialect: org.hibernate.dialect.MySQL57Dialect
+2020-04-03 12:09:21 INFO  JtaPlatformInitiator:52 - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-04-03 12:09:21 INFO  pooling:408 - HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3306/sportify]

@@ -6,8 +6,6 @@ import org.junit.jupiter.api.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.sql.Connection;
-
 /**
  * Description:     <p>Tests for DB with persistence</p>
  * ID:              X
@@ -20,7 +18,6 @@ public class DBTest extends TestCase {
 
     private static EntityManagerFactory emf;
     private static DB facade;
-    private static Connection conn;
 
     @BeforeAll
     public static void setUpClass() {
@@ -31,7 +28,6 @@ public class DBTest extends TestCase {
                 "",
                 ServerSystem.Strategy.CREATE);
         facade = DB.getDataBaseInstance(emf);
-        conn = DB.createConnection(ServerSystem.DbSelector.TEST);
         System.out.println("BeforeAll done");
     }
 
