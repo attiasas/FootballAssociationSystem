@@ -1,7 +1,6 @@
 package DL.Team.Page;
 
 import DL.Team.Team;
-import com.sun.javafx.beans.IDProperty;
 
 import javax.persistence.*;
 

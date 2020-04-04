@@ -1,4 +1,5 @@
 package DL.Team.Members;
+import DL.Administration.Financial.FinancialEntry;
 import DL.Administration.Financial.FinancialUser;
 import DL.Team.Team;
 
@@ -45,4 +46,9 @@ public class TeamOwner implements FinancialUser
     }
 
     public TeamOwner() {}
+
+    @Override
+    public List<FinancialEntry> getFinancialEntries() {
+        return null;
+    }
 }
