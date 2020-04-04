@@ -1,5 +1,6 @@
-package BL.Server;
+package java.BL.Server.utils;
 
+import BL.Server.ServerSystem;
 import BL.Server.utils.DB;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.*;

@@ -1,9 +1,10 @@
-package BL.Server.utils;
+package java.BL.Server.utils;
 
-import org.junit.jupiter.api.Test;
-
+import BL.Server.utils.Settings;
+import org.junit.Test;
 import static BL.Server.utils.Settings.getPropertyValue;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
 
 class SettingsTest {
 

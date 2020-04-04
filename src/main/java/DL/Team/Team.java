@@ -6,7 +6,6 @@ import DL.Game.Match;
 import DL.Team.Assets.Stadium;
 import DL.Team.Members.*;
 import DL.Team.Page.Page;
-import DL.Team.Page.Pageable;
 import DL.Team.Page.TeamPage;
 
 import javax.persistence.*;
@@ -84,7 +83,7 @@ public class Team
     public List<LeagueSeason> leagueSeasons;
 
     //Constructor
-    public Team(String name, boolean active, boolean close, Page page) {
+    public Team(String name, boolean active, boolean close, TeamPage page) {
         this.name = name;
         this.active = active;
         this.close = close;

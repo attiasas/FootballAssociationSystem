@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created By:      Assaf, on 06/03/2020.
  * Description:     This class represents an interface for server strategy when communicating with a client
  **/
 public interface IServerStrategy
