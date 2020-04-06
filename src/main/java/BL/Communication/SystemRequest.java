@@ -1,18 +1,18 @@
 package BL.Communication;
 
+import java.io.Serializable;
+
 /**
  * Description:     Represents a request from the client to the server
- *
- * Types:           * Delete - delete object form the DB
- *                  * Insert - insert object into the DB
- *                  * Update - update objects from the DB base on a query
- *                  * Query - query the DB for info base on a query
+ * <p>
+ * Types:           * Delete - delete object form the DB * Insert - insert object into the DB *
+ * Update - update objects from the DB base on a query * Query - query the DB for info base on a
+ * query
  **/
-public class SystemRequest
-{
-    public enum Type
-    {
-        Delete,Insert,Update,Query
+public class SystemRequest implements Serializable {
+
+    public enum Type {
+        Delete, Insert, Update, Query
     }
 
     public final Type type;
