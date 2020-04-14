@@ -23,7 +23,7 @@ public class ClientServerCommunication
      * @param parameters - map of parameters of the named query
      * @return list of objects that matches the query, null if something went wrong with the connection
      */
-    public static List query(String queryName, Map<String, Object> parameters)
+    public List query(String queryName, Map<String, Object> parameters)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {
@@ -50,14 +50,14 @@ public class ClientServerCommunication
      * @param parameters - map of parameters of the named query
      * @return true if the update completed in success, false other wise
      */
-    public static boolean update(String queryName, Map<String, Object> parameters)
+    public boolean update(String queryName, Map<String, Object> parameters)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {
             ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
 
-            out.writeObject(new SystemRequest(SystemRequest.Type.Update,queryName,parameters));
+            out.writeObject(SystemRequest.update(queryName,parameters));
             out.flush();
 
             boolean answer = (boolean) in.readObject();
@@ -76,14 +76,14 @@ public class ClientServerCommunication
      * @param toInsert - object to insert into the data base
      * @return true if the insertion completed in success, false other wise
      */
-    public static boolean insert(Object toInsert)
+    public boolean insert(Object toInsert)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {
             ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
 
-            out.writeObject(new SystemRequest(SystemRequest.Type.Insert,"INSERT",toInsert));
+            out.writeObject(SystemRequest.insert(toInsert));
             out.flush();
 
             boolean answer = (boolean) in.readObject();
@@ -102,14 +102,43 @@ public class ClientServerCommunication
      * @param toDelete - object to delete from the data base
      * @return true if the delete completed in success, false other wise
      */
-    public static boolean delete(Object toDelete)
+    public boolean delete(Object toDelete)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {
             ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
 
-            out.writeObject(new SystemRequest(SystemRequest.Type.Delete,"DELETE",toDelete));
+            out.writeObject(SystemRequest.delete(toDelete));
+            out.flush();
+
+            boolean answer = (boolean) in.readObject();
+            return answer;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * this method will make sure that all of the given request will be preformed with the same connection and atomic
+     * @param requests - insert,delete and update requests
+     * @return true if all the requests are successes false other wise
+     */
+    public boolean transaction(List<SystemRequest> requests)
+    {
+        // validate no query/transaction requests
+        for(SystemRequest request : requests) if(request.type.equals(SystemRequest.Type.Query) || request.type.equals(SystemRequest.Type.Transaction)) return false;
+
+        try(Socket serverSocket = new Socket(serverIP,serverPort))
+        {
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
+            out.writeObject(new SystemRequest(SystemRequest.Type.Transaction,"TRANSACTION",requests));
             out.flush();
 
             boolean answer = (boolean) in.readObject();

@@ -8,7 +8,9 @@ import javax.persistence.*;
  **/
 @Entity
 @NamedQueries( value = {
-        @NamedQuery(name = "UserComplaint", query = "SELECT uc From UserComplaint uc WHERE uc.id = :id")
+        @NamedQuery(name = "UserComplaint", query = "SELECT uc FROM UserComplaint uc WHERE uc.id = :id"),
+        @NamedQuery(name = "UserComplaintsByUser", query = "SELECT uc FROM UserComplaint uc WHERE uc.owner = :user"),
+        @NamedQuery(name = "UserSetComment", query = "UPDATE UserComplaint uc SET comment = :comment WHERE id = :id")
 })
 public class UserComplaint {
 
@@ -56,6 +58,11 @@ public class UserComplaint {
     public void setResponse(String response)
     {
         this.response = response;
+    }
+
+    public int getId()
+    {
+        return this.id;
     }
 
     public String toString ()

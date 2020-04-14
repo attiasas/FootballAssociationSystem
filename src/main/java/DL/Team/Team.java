@@ -102,4 +102,9 @@ public class Team
     public Team() {
 
     }
+
+    public List<TeamOwner> getTeamOwners()
+    {
+        return teamOwners;
+    }
 }

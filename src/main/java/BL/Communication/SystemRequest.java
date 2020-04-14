@@ -1,5 +1,7 @@
 package BL.Communication;
 
+import java.util.Map;
+
 /**
  * Description:     Represents a request from the client to the server
  *
@@ -12,7 +14,7 @@ public class SystemRequest
 {
     public enum Type
     {
-        Delete,Insert,Update,Query
+        Delete,Insert,Update,Query,Transaction
     }
 
     public final Type type;
@@ -30,5 +32,20 @@ public class SystemRequest
         this.type = type;
         this.queryName = queryName;
         this.data = data;
+    }
+
+    public static SystemRequest insert(Object data)
+    {
+        return new SystemRequest(Type.Insert,"INSERT",data);
+    }
+
+    public static SystemRequest delete(Object data)
+    {
+        return new SystemRequest(Type.Delete,"DELETE",data);
+    }
+
+    public static SystemRequest update(String queryName, Map<String,Object> parameters)
+    {
+        return new SystemRequest(Type.Update,queryName,parameters);
     }
 }

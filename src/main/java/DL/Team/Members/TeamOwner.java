@@ -51,4 +51,9 @@ public class TeamOwner implements FinancialUser
     public List<FinancialEntry> getFinancialEntries() {
         return null;
     }
+
+    public Team getTeam()
+    {
+        return team;
+    }
 }

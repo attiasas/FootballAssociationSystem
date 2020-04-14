@@ -28,7 +28,7 @@ public class Stadium
     private int capacity;
 
     @Column
-    @OneToOne (cascade = CascadeType.MERGE)
+    @ManyToOne (cascade = CascadeType.MERGE)
     private Team team;
 
     @Override

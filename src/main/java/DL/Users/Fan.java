@@ -3,8 +3,7 @@ package DL.Users;
 import DL.Team.Page.Page;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description:     Represents a Fan in the System. A Fan is the first User object that a registered User gets.
@@ -18,18 +17,55 @@ public class Fan extends User
 {
 
     @ManyToMany
-    private List<Page> follow;
+    private Set<Page> follow;
 
 
     public Fan (String userName, String email, String hashedPassword)
     {
         super(userName, email, hashedPassword);
-        follow = new ArrayList<Page>();
+        follow = new HashSet<>();
     }
 
     public Fan()
     {
         this("", "", "");
+    }
+
+    public boolean followPage(Page page)
+    {
+        if(follow.add(page))
+        {
+            if(page.addFollower(this))
+            {
+                return true;
+            }
+            follow.remove(page);
+        }
+
+        return false;
+    }
+
+    public boolean unfollowPage(Page page)
+    {
+        if(follow.remove(page))
+        {
+            if(page.removeFollower(this))
+            {
+                return true;
+            }
+            follow.add(page);
+        }
+        return false;
+    }
+
+    public boolean unfollowAllPages()
+    {
+        Iterator<Page> it = follow.iterator();
+        while(it.hasNext())
+        {
+            unfollowPage(it.next());
+        }
+        return true;
     }
 
 }
