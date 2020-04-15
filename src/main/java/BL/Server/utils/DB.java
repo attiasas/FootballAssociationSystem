@@ -11,8 +11,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * @author Serfati
@@ -21,12 +21,12 @@ import org.apache.log4j.Logger;
  * starting transactions, committing transactions, and rolling back transactions
  * @version Id: 1.0
  **/
+@Log4j
 public class DB implements Serializable {
 
     @PersistenceUnit
     protected static EntityManagerFactory emf;
     private static final long serialVersionUID = 1L;
-    public final static Logger logger = Logger.getLogger(DB.class);
     private static DB instance;
 
     /**
@@ -35,9 +35,11 @@ public class DB implements Serializable {
      */
     public static DB getDataBaseInstance(EntityManagerFactory _emf) {
         if (instance == null) {
+            log.removeAllAppenders();
             emf = _emf;
             instance = new DB();
-            logger.log(Level.INFO, "DBFacade launched");
+            log.log(Level.INFO,
+                "Database launched and alive on jdbc:mysql://localhost:3306/sportify");
         }
         return instance;
     }
@@ -55,16 +57,21 @@ public class DB implements Serializable {
      *
      * @param entity the entity to persists.
      */
-    public static void persist(Object entity) {
+    public static boolean persist(Object entity) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         try {
             em.persist(entity);
             em.getTransaction().commit();
-        } catch(Exception e) {
+        } catch (Exception e) {
             em.getTransaction().rollback();
-            throw e;
+            log.log(Level.WARN, "persist failed");
+            return false;
+        } finally {
+            em.close();
+            log.log(Level.INFO, "object persisted");
         }
+        return true;
     }
 
     /**
@@ -72,16 +79,17 @@ public class DB implements Serializable {
      *
      * @param entities the list tof entities to persist.
      */
-    public static void persistAll(List<?> entities) {
+    public static boolean persistAll(List<?> entities) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         try {
             entities.forEach(em::persist);
             em.getTransaction().commit();
-        } catch(Exception e) {
+        } catch (Exception e) {
             em.getTransaction().rollback();
-            throw e;
+            return false;
         }
+        return true;
     }
 
     /**
@@ -89,7 +97,7 @@ public class DB implements Serializable {
      *
      * @param entity the entity to remove.
      */
-    public static void remove(Object entity) {
+    public static boolean remove(Object entity) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         try {
@@ -98,10 +106,13 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            throw e;
+            log.log(Level.WARN, "remove failed");
+            return false;
         } finally {
             em.close();
+            log.log(Level.INFO, "object removed");
         }
+        return true;
     }
 
     /**
@@ -109,7 +120,7 @@ public class DB implements Serializable {
      *
      * @param entities the list of objects to remove from the database.
      */
-    public static void removeAll(List<?> entities) {
+    public static boolean removeAll(List<?> entities) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         try {
@@ -119,10 +130,11 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            throw e;
+            return false;
         } finally {
             em.close();
         }
+        return true;
     }
 
 
@@ -131,22 +143,24 @@ public class DB implements Serializable {
      *
      * @param entity the entity to update.
      */
-    public static Object merge(Object entity) {
+    public static boolean merge(Object entity) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         try {
             entity = em.merge(entity);
             em.getTransaction().commit();
-        } catch(Exception e) {
+        } catch (Exception e) {
             em.getTransaction().rollback();
-            return null;
+            log.log(Level.WARN, "merge failed");
+            return false;
         } finally {
             em.close();
+            log.log(Level.INFO, "object merged");
         }
-        return entity;
+        return true;
     }
 
-    public static Object update(String queryName, Object data) {
+    public static boolean update(String queryName, Object data) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Map<String, Object> map = (Map<String, Object>) data;
@@ -162,13 +176,14 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            return null;
+            log.log(Level.WARN, "update failed");
+            return false;
         } finally {
             em.close();
+            log.log(Level.INFO, "object updated");
         }
-        return data;
+        return true;
     }
-
 
     public static List query(String queryName, Object data) {
         EntityManager em = emf.createEntityManager();
@@ -183,9 +198,11 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            throw e;
+            log.log(Level.WARN, "query failed");
+            return null;
         } finally {
             em.close();
+            log.log(Level.INFO, "query results returned");
         }
         return resultList;
     }
@@ -207,7 +224,7 @@ public class DB implements Serializable {
 
 
     /* Simple manual tests ------------------------------------------------------------------------------- */
-    // tested - CREATE TRUNCATE INSERT SELECT DROP CONNECTION; left - UPDATE namedQuery Parameters
+    // tested - CREATE TRUNCATE INSERT SELECT DROP CONNECTION  UPDATE namedQuery Parameters
     public static void main(String[] args) {
         emf = ServerSystem
             .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
@@ -215,21 +232,29 @@ public class DB implements Serializable {
         EntityManager em = emf.createEntityManager();
         txn = em.getTransaction();
         txn.begin();
-//        em.createNativeQuery("CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)").executeUpdate();
-//        em.createNativeQuery("TRUNCATE TABLE Standings").executeUpdate(); // clears the table content
-//        em.createNativeQuery("INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')").executeUpdate(); // insert values
-//        em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1").executeUpdate();
-//        Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
-//        List<Object[]> ids = q.getResultList();
-//        for(Object[] a : ids) System.out.println("Standings ~ "+a[0]+":"+a[1]);// Show Result
-//        em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
+        em.createNativeQuery(
+            "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
+            .executeUpdate();
+        em.createNativeQuery("TRUNCATE TABLE Standings")
+            .executeUpdate(); // clears the table content
+        em.createNativeQuery(
+            "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
+            .executeUpdate(); // insert values
+        em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
+            .executeUpdate();
+        Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
+        List<Object[]> ids = q.getResultList();
+        for (Object[] a : ids) {
+            System.out.println("Standings ~ " + a[0] + ":" + a[1]);// Show Result
+        }
+        em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
 
         Stadium anfld = new Stadium("Anfield", 80);
         Stadium ot = new Stadium("old traford", 80);
         DB.persist(anfld);
         DB.persist(ot);
-        Query q = em.createNativeQuery("SELECT s.name, s.capacity FROM Stadium s");
-        List<Object[]> ids = q.getResultList();
+//        Query q = em.createNativeQuery("SELECT s.name, s.capacity FROM Stadium s");
+//        List<Object[]> ids = q.getResultList();
         for (Object[] s : ids) {
             System.out.println("Stadium ~ " + s[0] + ":" + s[1]);// Show Result
         }

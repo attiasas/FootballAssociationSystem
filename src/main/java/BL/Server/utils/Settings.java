@@ -5,8 +5,8 @@ import java.util.Properties;
 
 public final class Settings {
 
-    public static final String PROPERTY_FILE = "config.properties";
     private static Properties props = null;
+    public static final String PROPERTY_FILE = "config.properties";
 
     /**
      *  initialize properties file
@@ -61,7 +61,7 @@ public final class Settings {
                 allProps.setProperty((String) key, allProps.getProperty((String) key).trim());
             }
         } catch (IOException ex) {
-            throw new RuntimeException("Could not load properies in file: " + PROPERTY_FILE);
+            throw new RuntimeException("Could not load properties in file: " + PROPERTY_FILE);
         }
         return allProps;
     }

@@ -1,6 +1,7 @@
 package BL.Communication;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Description:     Represents a request from the client to the server
@@ -11,8 +12,8 @@ import java.io.Serializable;
  **/
 public class SystemRequest implements Serializable {
 
-    public enum Type {
-        Delete, Insert, Update, Query
+    public static SystemRequest insert(Object data) {
+        return new SystemRequest(Type.Insert, "INSERT", data);
     }
 
     public final Type type;
@@ -21,14 +22,26 @@ public class SystemRequest implements Serializable {
 
     /**
      * Constructor for UPDATE/QUERY
-     * @param type - type of request
+     *
+     * @param type      - type of request
      * @param queryName - name of the query for update/query
-     * @param data - for Update/Query a Map<String,Object> for Insert/Delete an object.
+     * @param data      - for Update/Query a Map<String,Object> for Insert/Delete an object.
      */
-    public SystemRequest(Type type, String queryName, Object data)
-    {
+    public SystemRequest(Type type, String queryName, Object data) {
         this.type = type;
         this.queryName = queryName;
         this.data = data;
+    }
+
+    public static SystemRequest delete(Object data) {
+        return new SystemRequest(Type.Delete, "DELETE", data);
+    }
+
+    public static SystemRequest update(String queryName, Map<String, Object> parameters) {
+        return new SystemRequest(Type.Update, queryName, parameters);
+    }
+
+    public enum Type {
+        Delete, Insert, Update, Query, Transaction
     }
 }

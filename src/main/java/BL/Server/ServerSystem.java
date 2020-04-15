@@ -1,26 +1,26 @@
 package BL.Server;
 
-import BL.Client.ClientSystem;
-import BL.Communication.ClientServerCommunication;
 import BL.Communication.IServerStrategy;
 import BL.Communication.Server;
 import BL.Communication.SystemRequest;
+import BL.Communication.SystemRequest.Type;
 import BL.Server.utils.DB;
 import BL.Server.utils.Settings;
-import DL.Team.Assets.Stadium;
 import java.io.EOFException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.util.List;
 import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Level;
 
 
 /**
@@ -30,28 +30,33 @@ import javax.persistence.PersistenceUnit;
  * <p>
  * Through the static methods provided by this class a reference to the default {@code
  * EntityManagerFactory} can be obtained. All code on the server that needs to access the database
- * can obtain a factory through this class. MySQL: jdbc:mysql://<HOST>:<PORT>/<DATABASE_NAME>
+ * can obtain a factory through this class.
+ * <p>
+ * MySQL: jdbc:mysql://<HOST>:<PORT>/<DATABASE_NAME>
  * </p>
  *
  * @author Serfati
  * @version Id: 1.0
  */
+@Log4j
+@Setter
+@Getter
 public class ServerSystem implements IServerStrategy {
 
-  private static final String PERSISTENCE_UNIT_NAME = "sportify";  /* The name of the persistence unit*/
+  static final String PERSISTENCE_UNIT_NAME = "sportify";  /* The name of the persistence unit*/
   @PersistenceUnit
-  private static EntityManagerFactory emf;  /* The central, shared entity manager factory instance. */
-  public Server server;
-  private DB dataBase;
+  static EntityManagerFactory emf;  /* The central, shared entity manager factory instance. */
+  Server server;
+  DB dataBase;
 
-  private ServerSystem(DbSelector dbType, Strategy strategy) {
-    dataBase =
-        DB.getDataBaseInstance(createEntityManagerFactory(dbType, strategy));
+  ServerSystem(DbSelector dbType, Strategy strategy) {
+    dataBase = DB.getDataBaseInstance(createEntityManagerFactory(dbType, strategy));
     int serverPort = Integer.parseInt(Settings.getPropertyValue("server.port"));
     int poolSize = Integer.parseInt(Settings.getPropertyValue("server.poolSize"));
     int listeningInterval = Integer.parseInt(Settings.getPropertyValue("server.listeningInterval"));
     server = new Server(serverPort, poolSize, listeningInterval, this);
     server.start();
+    log.log(Level.INFO, "server is up and listen on port: " + serverPort);
   }
 
   /**
@@ -93,7 +98,7 @@ public class ServerSystem implements IServerStrategy {
       Strategy strategy) {
     Properties props = new Properties();
     System.out.println("USER -------------> " + user);
-    System.out.println("PW ---------------> " + pw);
+    System.out.println("PW ------> " + pw + "  (should be empty)");
     System.out.println("CONNECTION URL----> " + connection_str);
     System.out.println("PU-Strategy ------> " + strategy.toString());
     props.setProperty("javax.persistence.jdbc.user", user);
@@ -116,31 +121,6 @@ public class ServerSystem implements IServerStrategy {
     return emf.createEntityManager();
   }
 
-  /* Simple manual tests ------------------------------------------------------------------------------- */
-  public static void main(String[] args) {
-    //createEntityManagerFactory(DbSelector.DEV, Strategy.DROP_AND_CREATE); /* should print db log */
-    ServerSystem server = new ServerSystem(DbSelector.TEST, Strategy.NONE);
-    //Initializing servers
-    try {
-      int serverport = Integer.parseInt(Settings.getPropertyValue("server.port"));
-      ClientSystem client = new ClientSystem(InetAddress.getLocalHost(), serverport,
-          (inFromServer, outToServer) -> {
-            try {
-              Stadium teddy = new Stadium("Teddy", 16);
-//                    Stadium anfield = new Stadium("anfield", 60);
-//                    ClientServerCommunication.insert(anfield); //send maze dimensions to server
-              ClientServerCommunication.insert(teddy); //send maze dimensions to server
-
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          });
-      client.communicateWithServer();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
   public Server getServer() {
     return server;
   }
@@ -150,40 +130,54 @@ public class ServerSystem implements IServerStrategy {
     try {
       ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
       ObjectOutputStream toClientObject = new ObjectOutputStream(outToClient);
-      EntityManager em = emf.createEntityManager();
-      EntityTransaction txn;
-      Object ret;
-      SystemRequest sys = (SystemRequest) fromClient.readObject();
-      switch (sys.type) {
-        case Delete:
-          DB.remove(sys.data);
-          break;
-        case Insert:
-          DB.persist(sys.data);
-          toClientObject.writeObject(true);
-          toClientObject.flush();
-          break;
-        case Update:
-          ret = DB.update(sys.queryName, sys.data);
-          toClientObject.writeObject(ret);
-          toClientObject.flush();
-          break;
-        case Query:
-          List toClient = DB.query(sys.queryName, sys.data);
-          toClientObject.writeObject(toClient);
-          toClientObject.flush();
-          break;
+      Object request = fromClient.readObject();
+      SystemRequest systemRequest = (SystemRequest) request;
+      if (systemRequest.type.equals(Type.Transaction) && systemRequest.data instanceof List) {
+        List<SystemRequest> systemRequestList = (List<SystemRequest>) systemRequest.data;
+        systemRequestList
+            .forEach(requestIterator -> handleRequest(toClientObject, requestIterator));
+      } else {
+        handleRequest(toClientObject, systemRequest);
       }
-
-    } catch (EOFException ignored) {
-    } catch (Exception e) {
-      System.out.println("Exception in ServerStrategy: " + e.getMessage());
-      e.printStackTrace();
+    } catch (Exception ignored) {
     }
   }
 
-  public DB getDataBase() {
-    return dataBase;
+  public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest) {
+    try {
+      switch (systemRequest.type) {
+        case Delete:
+          if (systemRequest.data instanceof List) {
+            toClientObject.writeObject(DB.removeAll((List) systemRequest.data));
+          } else {
+            toClientObject.writeObject(DB.remove(systemRequest.data));
+          }
+          toClientObject.flush();
+          break;
+        case Insert:
+          if (systemRequest.data instanceof List) {
+            toClientObject.writeObject(DB.persistAll((List) systemRequest.data));
+          } else {
+            toClientObject.writeObject(DB.persist(systemRequest.data));
+          }
+          toClientObject.flush();
+          break;
+        case Update:
+          toClientObject.writeObject(DB.update(systemRequest.queryName, systemRequest.data));
+          toClientObject.flush();
+          break;
+        case Query:
+          List toClient = DB.query(systemRequest.queryName, systemRequest.data);
+          toClientObject.writeObject(toClient);
+          toClientObject.flush();
+          break;
+        default:
+          break;
+      }
+    } catch (EOFException ignored) {
+    } catch (Exception e) {
+      log.log(Level.ERROR, e.getMessage());
+    }
   }
 
   public enum DbSelector {
