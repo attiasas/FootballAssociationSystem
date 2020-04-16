@@ -1,6 +1,7 @@
 package DL.Team.Members;
 import javax.persistence.*;
 
+import DL.Team.Team;
 import DL.Users.Fan;
 import DL.Users.User;
 import DL.Users.UserPermission;
@@ -20,6 +21,12 @@ import java.util.List;
         @NamedQuery(name = "TeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
         @NamedQuery(name = "ActiveTeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan AND tu.active = true"),
         @NamedQuery(name = "SetActiveTeamUser", query = "UPDATE TeamUser tu SET tu.active = : active where tu =: teamUser")
+        @NamedQuery(name = "teamUser", query = "SELECT tu from TeamUser tu"),
+        @NamedQuery(name = "teamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
+        @NamedQuery(name = "teamUserByTeam", query = "SELECT tu from TeamUser tu WHERE tu.team = :team"),
+        @NamedQuery(name = "allActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
+        @NamedQuery(name = "teamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
+        @NamedQuery(name = "deactivateTeamUser", query = "UPDATE TeamUser tu SET tu.active = false WHERE tu.fan = :fan"),
 })
 public class TeamUser
 {
@@ -33,12 +40,21 @@ public class TeamUser
     Fan fan;
 
     @Column
+    @OneToOne(cascade = CascadeType.ALL)
+    protected Team team;
+
+    @Column
     boolean active;
 
-    public TeamUser(String name, boolean active, Fan fan) {
+    public TeamUser(String name, boolean active, Fan fan, Team team) 
+    {
+        if (!onlyLettersString(name) || fan == null || team == null)
+            throw new IllegalArgumentException();
+
         this.name = name;
         this.active = active;
         this.fan = fan;
+        this.team = team;
     }
 
     public TeamUser() {}
@@ -53,7 +69,18 @@ public class TeamUser
         return active;
     }
 
-    public String getName() {
+    public String getName() 
+    {
         return name;
     }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    protected boolean onlyLettersString(String str)
+    {
+        return str != null && str.matches("([a-zA-Z]+(\\s[a-zA-Z]*)*)+");
+    }
+
 }

@@ -78,4 +78,19 @@ public class TeamOwnerTest
         assertEquals(0,owner.getManageNominees().size());
     }
 
+    @Test
+    public void testValidConstructor() {
+
+        Team team = new Team("Real Madrid", true, false);
+        TeamOwner teamOwner = new TeamOwner(team);
+        Assert.assertNotNull(teamOwner);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidTeamConstructor() {
+
+        new TeamOwner(null);
+    }
+
+
 }

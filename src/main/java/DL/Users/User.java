@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -103,6 +104,10 @@ public abstract class User
         this.userComplaintsOwner.add(userComplaint);
         return true;
     }
+    public String getEmail() {
+        return email;
+    }
+
 
     @Override
     public String toString ()
@@ -124,7 +129,7 @@ public abstract class User
             return false;
         }
         User otherUser = (User)other;
-        if(otherUser.username.equals(this.username) && otherUser.hashedPassword.equals(this.hashedPassword))
+        if(otherUser.username.equals(this.username))
         {
             return true;
         }

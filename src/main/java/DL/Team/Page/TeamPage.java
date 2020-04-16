@@ -5,7 +5,7 @@ import DL.Team.Team;
 import javax.persistence.*;
 
 /**
- * Description: Defines a Page object - a personal page of coach/player/team fan can follow    X
+ * Description: Defines a Page object - a personal page of team, a fan can follow    X
  * ID:              X
  **/
 
@@ -26,6 +26,10 @@ public class TeamPage extends Page{
     private Team team;
 
     public TeamPage(String content, Team team) {
+
+        if (team == null || content == null)
+            throw new IllegalArgumentException();
+
         this.team = team;
         super.content = content;
     }
