@@ -5,6 +5,7 @@ import DL.Team.Page.Page;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Description:     Represents a Fan in the System. A Fan is the first User object that a registered User gets.
@@ -31,5 +32,6 @@ public class Fan extends User
     {
         this("", "", "");
     }
+
 
 }

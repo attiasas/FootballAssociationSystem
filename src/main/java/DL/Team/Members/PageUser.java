@@ -1,5 +1,7 @@
 package DL.Team.Members;
 import DL.Team.Page.UserPage;
+import DL.Team.Team;
+import DL.Users.Fan;
 import DL.Users.UserPermission;
 
 import javax.persistence.*;
@@ -17,13 +19,8 @@ public abstract class PageUser extends TeamUser
     @OneToOne(cascade = CascadeType.MERGE)
     public UserPage page;
 
-    public PageUser(String userName, String email, String hashedPassword, List<UserPermission.Permission> permissionList, UserPage page) {
-        super(userName, email, hashedPassword, permissionList);
-        this.page = page;
-    }
-
-    public PageUser(String userName, String email, String hashedPassword, UserPage page) {
-        super(userName, email, hashedPassword);
+    public PageUser(String name, boolean active, Fan fan, UserPage page, Team team) {
+        super(name, active, fan, team);
         this.page = page;
     }
 

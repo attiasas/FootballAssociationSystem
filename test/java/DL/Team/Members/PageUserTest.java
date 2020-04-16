@@ -1,11 +1,11 @@
 package DL.Team.Members;
 
-import static org.junit.Assert.*;
-
 /**
- * Description:     X
+ * Description: Test suite for PageUser Class    X
  * ID:              X
  **/
 public class PageUserTest {
+
+    // Abstract class //
 
 }

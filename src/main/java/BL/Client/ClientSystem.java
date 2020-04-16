@@ -1,4 +1,18 @@
 package BL.Client;
+import BL.Client.Handlers.AssociationManagementUnit;
+import BL.Client.Handlers.TeamAssetUnit;
+import BL.Communication.ClientServerCommunication;
+import DL.Administration.AssociationMember;
+import DL.Administration.SystemManager;
+import DL.Team.Assets.Stadium;
+import DL.Team.Members.*;
+import DL.Team.Team;
+import DL.Users.Fan;
+import DL.Users.User;
+import DL.Users.UserPermission;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Description:     X
@@ -6,5 +20,402 @@ package BL.Client;
  **/
 public class ClientSystem
 {
+    User loggedInUser;
+    TeamAssetUnit teamAssetUnit;
+    AssociationManagementUnit associationManagementUnit;
+    ClientServerCommunication clientServerCommunication;
+
+    /**
+     * Constructor
+     * @param user - logged in user
+     */
+    public ClientSystem(User user) {
+        loggedInUser = user;
+        clientServerCommunication = new ClientServerCommunication();
+        teamAssetUnit = new TeamAssetUnit(clientServerCommunication);
+        associationManagementUnit = new AssociationManagementUnit(clientServerCommunication);
+    }
+
+    /**
+     * @param team
+     * @return stadiums list of a given team
+     */
+    public List<Stadium> loadTeamStadium(Team team) {
+
+        return teamAssetUnit.loadTeamStadium(team);
+    }
+
+    /**
+     * @param team
+     * @return players list of a given team
+     */
+    public List<Player> loadTeamPlayers(Team team) {
+
+       return teamAssetUnit.loadTeamPlayers(team);
+
+    }
+
+    /**
+     * @param team
+     * @return coaches list of a given team
+     */
+    public List<Coach> loadTeamCoach(Team team) {
+
+        return teamAssetUnit.loadTeamCoach(team);
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Adds a stadium to team's stadiums list
+     * @param name - stadium name
+     * @param team
+     * @return true if adding operation succeeded
+     */
+    public boolean addStadium(String name, int capacity, Team team) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserAdd(loggedInUser))
+            return teamAssetUnit.addStadium(name, capacity, team);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Set details of a stadium connected to a given team
+     * @param name - new stadium's name
+     * @param capacity - new stadium's capacity
+     * @param stadium - stadium to set
+     * @param teams
+     * @return true if the operation succeeded (i.e. changes was set in db)
+     */
+    public boolean updateStadium(String name, int capacity, Stadium stadium, List<Team> teams) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserEdit(loggedInUser))
+            return teamAssetUnit.updateStadium(name, capacity, teams, stadium);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Removes a stadium from team's stadiums list
+     * @param name - stadium name
+     * @return true if removal operation succeeded
+     */
+    public boolean removeStadium(String name) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserRemove(loggedInUser))
+            return teamAssetUnit.removeStadium(name);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Updates team's stadiums list
+     * @param team
+     * @param stadiums - new stadiums list
+     * @return true if the operation succeeded, or false otherwise (db failure/invalid arguments/empty stadium list)
+     */
+    public boolean updateTeamStadiums(Team team, List<Stadium> stadiums) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserRemove(loggedInUser))
+            return teamAssetUnit.updateTeamStadiums(team, stadiums);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Set activation status of a team (active or not)
+     * @param team
+     * @return true if the operation succeeded (i.e. changes was set in db)
+     */
+    public boolean activateTeam(Team team) {
+
+        if (isTeamOwner(loggedInUser))
+            return teamAssetUnit.activateTeam(team);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Removes team from the system, i.e. deactivate it
+     * @param team
+     * @return true if the operation succeeded, or false otherwise (invalid input, team doesn't exist, db failure)
+     */
+    public boolean deactivateTeam(Team team) {
+
+        if (isTeamOwner(loggedInUser))
+            return teamAssetUnit.deactivateTeam(team);
+
+        return false;
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Changes team status to "close"
+     * @param team
+     * @return true if the operation succeeded (i.e. changes was set in db)
+     */
+    public boolean closeTeam(Team team) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserRemove(loggedInUser) || isAuthorizedSystemManagerRemove(loggedInUser))
+            return teamAssetUnit.closeTeam(team);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Adds new player to the system
+     * @param team
+     * @param fan - a fan user connected to the player
+     * @param name
+     * @param role
+     * @param birthDate
+     * @return true if the operation succeeded, and false otherwise (invalid input, db failure, fan exists)
+     */
+    public boolean addPlayer(Team team, Fan fan , String name, String role, Date birthDate) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserAdd(loggedInUser))
+            return teamAssetUnit.addPlayer(team, fan, name, role, birthDate);
+
+        return false;
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Edit a player details. If a detail stayed the same, it value passes also.
+     * @param fan
+     * @param team
+     * @param name
+     * @param role
+     * @param birthDate
+     * @return true if the operation succeeded and false otherwise (invalid input, db failure, fan doesn't exist)
+     */
+    public boolean editPlayer(Team team, Fan fan, String name, String role, Date birthDate) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserEdit(loggedInUser))
+            return teamAssetUnit.editPlayer(team, fan, name, role, birthDate);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: removes a player - i.e. turns it to be "inactive"
+     * @param team
+     * @param fan
+     * @return true if the operation succeeded, or false otherwise (invalid input, db failure, fan doesn't exist)
+     */
+    public boolean removePlayer(Team team, Fan fan) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserRemove(loggedInUser))
+            return teamAssetUnit.removePlayer(team, fan);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Adds new coach to the system
+     * @param team
+     * @param fan - a fan user connected to the coach
+     * @param name
+     * @param qualification
+     * @param role
+     * @return true if the operation succeeded, and false otherwise (invalid input, db failure, fan exists)
+     */
+    public boolean addCoach(Team team, Fan fan ,String name, String qualification, String role) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserAdd(loggedInUser))
+            return teamAssetUnit.addCoach(team, fan, name, qualification, role);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Edit a coach details. If a detail stayed the same, it value passes also.
+     * @param team
+     * @param fan
+     * @param name
+     * @param qualification
+     * @param role
+     * @return true if the operation succeeded and false otherwise (invalid input, db failure, fan doesn't exist)
+     */
+    public boolean editCoach(Team team, Fan fan, String name, String qualification, String role) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserEdit(loggedInUser))
+            return teamAssetUnit.editCoach(team, fan, name, qualification, role);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: removes a coach - i.e. turns it to be "inactive"
+     * @param team
+     * @param fan
+     * @return true if the operation succeeded, or false otherwise (invalid input, db failure, fan doesn't exist)
+     */
+    public boolean removeCoach(Team team, Fan fan) {
+
+        if (isTeamOwner(loggedInUser) || isAuthorizedTeamUserRemove(loggedInUser))
+            return teamAssetUnit.removeCoach(team, fan);
+
+        return false;
+
+    }
+
+    /**
+     * Execute the following operation, only for authorized users: Adds new team to the system
+     * @param name
+     * @return true if the operation succeeded, or false otherwise (invalid input, db failure)
+     */
+    public boolean addTeam(String name) {
+
+        if (isAuthorizedFootballAssociationRepresentativeAdd(loggedInUser))
+            return associationManagementUnit.addTeam(name);
+
+        return false;
+    }
+
+    // Private methods //
+
+    /**
+     * @param loggedInUser
+     * @return true if given user is connected to TeamOwner or false otherwise (isn't teamOwner/invalid input/db failure)
+     */
+    private boolean isTeamOwner(User loggedInUser) {
+
+        TeamUser teamUser = getTeamUser(loggedInUser);
+
+        if (teamUser == null)
+            return false;
+
+        HashMap<String, Object> args = new HashMap<>();
+        args.put("teamUser", teamUser);
+        List<TeamOwner> teamOwners = clientServerCommunication.query("TeamOwnerByTeamUser", args);
+
+        if (teamOwners == null || teamOwners.isEmpty()) // given user isn't a teamOwner
+            return false;
+
+        return true;
+    }
+
+    /**
+     * @param loggedInUser
+     * @return true if given user is connected to teamUser and owes editing permissions
+     */
+    private boolean isAuthorizedTeamUserEdit(User loggedInUser){
+
+        TeamUser teamUser = getTeamUser(loggedInUser);
+
+        if (teamUser == null) return false;
+
+        return teamUser instanceof TeamManager &&  loggedInUser.hasPermission(UserPermission.Permission.EDIT);
+
+    }
+
+    /**
+     * @param loggedInUser
+     * @return true if given user is connected to teamUser and owes adding permissions
+     */
+    private boolean isAuthorizedTeamUserAdd(User loggedInUser){
+
+        TeamUser teamUser = getTeamUser(loggedInUser);
+
+        if (teamUser == null) return false;
+
+        return teamUser instanceof TeamManager &&  loggedInUser.hasPermission(UserPermission.Permission.ADD);
+
+    }
+
+    /**
+     * @param loggedInUser
+     * @return true if given user is connected to teamUser and owes removal permissions
+     */
+    private boolean isAuthorizedTeamUserRemove(User loggedInUser){
+
+        TeamUser teamUser = getTeamUser(loggedInUser);
+
+        if (teamUser == null) return false;
+
+        return teamUser instanceof TeamManager &&  loggedInUser.hasPermission(UserPermission.Permission.REMOVE);
+
+    }
+
+    /**
+     * @param loggedInUser
+     * @return true if given user is type of Association member user and owes adding permissions
+     */
+    private boolean isAuthorizedFootballAssociationRepresentativeAdd(User loggedInUser) {
+
+        AssociationMember associationMember = getAssociationMember(loggedInUser);
+
+        if (associationMember == null) return false;
+
+        return associationMember.hasPermission(UserPermission.Permission.ADD);
+    }
+
+    /**
+     * @param loggedInUser
+     * @return true if given user is type of System manager user and owes removal permissions
+     */
+    private boolean isAuthorizedSystemManagerRemove(User loggedInUser) {
+
+        SystemManager systemManager = getSystemManager(loggedInUser);
+
+        if (systemManager == null) return false;
+
+        return systemManager.hasPermission(UserPermission.Permission.REMOVE);
+
+    }
+
+    /**
+     * @param loggedInUser
+     * @return User as TeamUser instance if given user is connected to a TeamUser or null otherwise
+     */
+    private TeamUser getTeamUser(User loggedInUser) {
+
+        if ( !(loggedInUser instanceof Fan) )
+            return null;
+
+        HashMap<String, Object> args = new HashMap<>();
+        args.put("fan", loggedInUser);
+        List<TeamUser> teamUsers = clientServerCommunication.query("teamUserByFan", args);
+
+        if (teamUsers == null || teamUsers.isEmpty()) // there's no teamUser connected to this fan
+            return null;
+
+        TeamUser teamUser = teamUsers.get(0); // only one teamUser possible per fan
+
+        return teamUser;
+    }
+
+    /**
+     * @param loggedInUser
+     * @return User as AssociationMember instance if given user is type of Association member user or null otherwise
+     */
+    private AssociationMember getAssociationMember(User loggedInUser) {
+
+        if ( !(loggedInUser instanceof AssociationMember) )
+            return null;
+
+        return (AssociationMember)loggedInUser;
+
+    }
+
+    /**
+     * @param loggedInUser
+     * @return User as SystemManager instance if given user is type of SystemManager or null otherwise
+     */
+    private SystemManager getSystemManager(User loggedInUser) {
+
+        if ( !(loggedInUser instanceof SystemManager) )
+            return null;
+
+        return (SystemManager) loggedInUser;
+    }
 
 }

@@ -14,8 +14,8 @@ import java.util.Map;
  **/
 public class ClientServerCommunication
 {
-    private static InetAddress serverIP;
-    private static int serverPort;
+    private InetAddress serverIP;
+    private int serverPort;
 
     /**
      * Query the DB in the server and get the results
@@ -23,7 +23,7 @@ public class ClientServerCommunication
      * @param parameters - map of parameters of the named query
      * @return list of objects that matches the query, null if something went wrong with the connection
      */
-    public static List query(String queryName, Map<String, Object> parameters)
+    public List query(String queryName, Map<String, Object> parameters)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {
@@ -50,7 +50,7 @@ public class ClientServerCommunication
      * @param parameters - map of parameters of the named query
      * @return true if the update completed in success, false other wise
      */
-    public static boolean update(String queryName, Map<String, Object> parameters)
+    public boolean update(String queryName, Map<String, Object> parameters)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {
@@ -76,7 +76,7 @@ public class ClientServerCommunication
      * @param toInsert - object to insert into the data base
      * @return true if the insertion completed in success, false other wise
      */
-    public static boolean insert(Object toInsert)
+    public boolean insert(Object toInsert)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {
@@ -102,7 +102,7 @@ public class ClientServerCommunication
      * @param toDelete - object to delete from the data base
      * @return true if the delete completed in success, false other wise
      */
-    public static boolean delete(Object toDelete)
+    public boolean delete(Object toDelete)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {

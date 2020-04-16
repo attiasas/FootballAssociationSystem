@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -75,10 +76,27 @@ public abstract class User
         return userPermission.hasPermission(permission);
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
 
     @Override
     public String toString ()
     {
         return this.username;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return username.equals(user.username);
+    }
+
 }

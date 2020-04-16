@@ -3,9 +3,10 @@ package BL.Client;
 import static org.junit.Assert.*;
 
 /**
- * Description:     X
+ * Description:   Test suite for ClientSystem class  X
  * ID:              X
  **/
 public class ClientSystemTest {
+
 
 }
