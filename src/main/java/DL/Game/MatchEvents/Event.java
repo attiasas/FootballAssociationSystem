@@ -1,5 +1,7 @@
 package DL.Game.MatchEvents;
 
+import DL.Game.Referee;
+
 import javax.persistence.*;
 
 /**
@@ -18,13 +20,13 @@ public abstract class Event {
      * For Composite Primary Key
      */
     public class EntryPK {
-        public EventUser createdByUser;
+        public Referee createdByUser;
         public EventLog eventLog;
     }
 
     @Id
     @OneToOne(cascade = CascadeType.MERGE)
-    private EventUser createdByUser;
+    private Referee createdByUser;
     @Id
     @OneToOne(cascade = CascadeType.MERGE)
     private EventLog eventLog;
@@ -39,7 +41,7 @@ public abstract class Event {
      * @param eventLog      - the event log of the required match
      * @param gameTime      - when the event occurred during the game
      */
-    public Event(EventUser createdByUser, EventLog eventLog, int gameTime) {
+    public Event(Referee createdByUser, EventLog eventLog, int gameTime) {
         this.gameTime = gameTime;
         this.eventLog = eventLog;
         this.createdByUser = createdByUser;

@@ -1,8 +1,6 @@
 package DL.Game;
 
 import DL.Game.LeagueSeason.LeagueSeason;
-import DL.Game.MatchEvents.EventUser;
-import DL.Users.Fan;
 import DL.Users.User;
 
 import javax.persistence.*;
@@ -15,12 +13,11 @@ import java.util.List;
  **/
 
 @Entity
-@NamedQueries( value = {
-        @NamedQuery(name = "AllReferees", query = "SELECT r From Referees r"),
-        @NamedQuery(name = "RefereeByFan", query = "SELECT r from Referee r WHERE r.fan = :fan")
+@NamedQueries(value = {
+        @NamedQuery(name = "AllReferees", query = "SELECT r From Referee r"),
+        @NamedQuery(name = "UpdateRefereeLeagueSeasonList", query = "UPDATE Referee r SET r.leagueSeasons = :newLeagueSeasonList WHERE  r.username = : username")
 })
-public class Referee
-{
+public class Referee extends User {
 
     @Id
     @Column
@@ -61,19 +58,17 @@ public class Referee
         this("", "", null, true);
     }
 
-    public void addLinesManMatch(Match match)
-    {
+    public void addLinesManMatch(Match match) {
         this.linesManMatches.add(match);
     }
 
-    public void addMainMatch(Match match)
-    {
+    public void addMainMatch(Match match) {
         this.mainMatches.add(match);
     }
 
-    public void addLeagueSeason(LeagueSeason leagueSeason)
-    {
-        this.leagueSeasons.add(leagueSeason);
+    public void addLeagueSeason(LeagueSeason leagueSeason) {
+        if (leagueSeason != null)
+            this.leagueSeasons.add(leagueSeason);
     }
 
     public boolean createMatchEvent() {
@@ -89,5 +84,9 @@ public class Referee
     {
         return fan;
     }
+    public List<LeagueSeason> getLeagueSeasons() {
+        return leagueSeasons;
+    }
+
 }
 

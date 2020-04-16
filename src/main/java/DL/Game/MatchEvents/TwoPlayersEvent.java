@@ -1,5 +1,7 @@
 package DL.Game.MatchEvents;
 
+import DL.Game.Referee;
+
 import javax.persistence.*;
 
 /**
@@ -10,7 +12,7 @@ import javax.persistence.*;
 
 @MappedSuperclass
 @NamedQueries(value = {
-        @NamedQuery(name = "TwoPlayersEvents", query = "Select e From TwoPlayersEvent e")
+        @NamedQuery(name = "TwoPlayersEvents", query = "Select tp From TwoPlayersEvent tp")
 })
 
 @IdClass(Event.EntryPK.class)
@@ -21,7 +23,7 @@ public abstract class TwoPlayersEvent extends Event {
     @Column
     private String secondPlayer;
 
-    public TwoPlayersEvent(EventUser createdByUser, EventLog eventLog, int gameTime, String firstPlayer, String secondPlayer) {
+    public TwoPlayersEvent(Referee createdByUser, EventLog eventLog, int gameTime, String firstPlayer, String secondPlayer) {
         super(createdByUser, eventLog, gameTime);
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
