@@ -21,8 +21,7 @@ public class ServerSystemTest {
   static ClientServerCommunication csc;
   static ClientSystem client;
   static int serverPort;
-  ServerSystem serverSystem;
-  Mock m2;
+  ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.NONE);
   Mock m3;
   Mock m4;
 
@@ -35,7 +34,7 @@ public class ServerSystemTest {
   @BeforeEach
   public void setUp() {
     System.out.println("build setup");
-    m2 = new Mock("two");
+
     m3 = new Mock("three");
     m4 = new Mock("four");
   }
@@ -49,17 +48,32 @@ public class ServerSystemTest {
   @Test
   public void testServerSystem() {
     Mock m1 = new Mock("One");
+    Mock m2 = new Mock("two");
     serverPort = Integer.parseInt(Settings.getPropertyValue("server.port"));
-    serverSystem = new ServerSystem(DbSelector.TEST, Strategy.DROP_AND_CREATE);
     csc = new ClientServerCommunication();
     client = new ClientSystem(InetAddress.getLocalHost(), serverPort,
         ((inFromServer, outToServer) ->
         {
           csc.insert(m1);
-          csc.insert(new Mock("two"));
-          csc.insert(new Mock("one"));
+          csc.insert(m2);
+//          csc.delete(m2);
         }
         ));
     client.communicateWithServer();
+  }
+
+  @SneakyThrows
+  public void testServerSystem2() {
+    Mock m1 = new Mock("One");
+    Mock m2 = new Mock("two");
+    serverPort = Integer.parseInt(Settings.getPropertyValue("server.port"));
+    csc = new ClientServerCommunication();
+    ClientSystem client2 = new ClientSystem(InetAddress.getLocalHost(), serverPort,
+        ((inFromServer, outToServer) ->
+        {
+          csc.insert(m2);
+        }
+        ));
+    client2.communicateWithServer();
   }
 }

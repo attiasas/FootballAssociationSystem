@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+import org.apache.log4j.Level;
 
 /**
  * Description:     X ID:              X
  **/
 @Setter
+@Log4j
 public class ClientSystem {
 
   private InetAddress serverIP;
@@ -25,11 +28,12 @@ public class ClientSystem {
   public void communicateWithServer() {
     try {
       Socket theServer = new Socket(serverIP, serverPort);
-      System.out.println("Client::Connected to server!");
+      log.log(Level.INFO,
+          "Client connected to server on " + serverIP.getHostAddress() + ":" + serverPort);
       clientStrategy.clientStrategy(theServer.getInputStream(), theServer.getOutputStream());
       theServer.close();
     } catch (IOException e) {
-      System.out.println("Exception in Client::communicateWithServer");
+      log.log(Level.ERROR, e.getMessage());
     }
   }
 }

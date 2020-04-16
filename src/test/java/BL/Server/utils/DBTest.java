@@ -116,24 +116,24 @@ public class DBTest {
   @DisplayName("Test REMOVE")
   void RemoveTest() {
     Mock mock = em.find(Mock.class, 1);
-    em.remove(mock);
+    DB.remove(mock);
     List<Mock> mocks = em.createQuery("select m from Mock m").getResultList();
     assertEquals(4, mocks.size(), "Expects 0 rows in the database");
   }
 
   @Test
   @DisplayName("Test MERGE")
-  void MergeTest() {
+  void mergeTest() {
     Mock mock = em.find(Mock.class, 1);
     mock.setName("oneUpdated");
-    em.merge(mock);
+    DB.merge(mock);
     List<Mock> mc = em.createQuery("select m from Mock m where m.id = 1").getResultList();
     assertEquals(mc.get(0).getName(), "oneUpdated");
   }
 
   @Test
   @DisplayName("Test QUERY")
-  void QueryTest() {
+  void queryTest() {
     List<Mock> mc = em.createQuery("select m from Mock m where m.id = 2").getResultList();
     assertEquals(mc.get(0).getName(), "two");
   }

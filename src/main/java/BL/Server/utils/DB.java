@@ -15,18 +15,16 @@ import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
 
 /**
- * @author Serfati
- * Description: This class contains the methods for connecting to the database, getting data,
- * updating the database, preparing statements, executing prepared statements,
+ * @author Serfati Description: This class contains the methods for connecting to the database,
+ * getting data, updating the database, preparing statements, executing prepared statements,
  * starting transactions, committing transactions, and rolling back transactions
  * @version Id: 1.0
  **/
-@Log4j
+@Log4j /* install lombok plugin in intellij */
 public class DB implements Serializable {
 
     @PersistenceUnit
     protected static EntityManagerFactory emf;
-    private static final long serialVersionUID = 1L;
     private static DB instance;
 
     /**
@@ -101,8 +99,7 @@ public class DB implements Serializable {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         try {
-            Object mergedEntity = em.merge(entity);
-            em.remove(mergedEntity);
+            em.remove(entity);
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();

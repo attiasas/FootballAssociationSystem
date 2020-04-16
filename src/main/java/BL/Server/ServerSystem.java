@@ -32,7 +32,7 @@ import org.apache.log4j.Level;
  * EntityManagerFactory} can be obtained. All code on the server that needs to access the database
  * can obtain a factory through this class.
  * <p>
- * MySQL: jdbc:mysql://<HOST>:<PORT>/<DATABASE_NAME>
+ * MySQL: {@code jdbc:mysql://<HOST>:<PORT>/<DATABASE_NAME>}
  * </p>
  *
  * @author Serfati
@@ -67,21 +67,21 @@ public class ServerSystem implements IServerStrategy {
    */
   public static EntityManagerFactory createEntityManagerFactory(DbSelector dbType,
       Strategy strategy) {
-    String connection_str;
+    String connectionStr;
     String user;
     String pw;
     if (dbType == DbSelector.DEV) {
-      connection_str = Settings.getDEV_DBConnection();
+      connectionStr = Settings.getDEV_DBConnection();
       user = Settings.getPropertyValue("db.user");
       pw = Settings.getPropertyValue("db.password");
     } else {
-      connection_str = Settings.getTEST_DBConnection();
+      connectionStr = Settings.getTEST_DBConnection();
       user = Settings.getPropertyValue("dbtest.user") != null ? Settings
           .getPropertyValue("dbtest.user") : Settings.getPropertyValue("db.user");
       pw = Settings.getPropertyValue("dbtest.password") != null ? Settings
           .getPropertyValue("dbtest.password") : Settings.getPropertyValue("db.password");
     }
-    return createEntityManagerFactory(PERSISTENCE_UNIT_NAME, connection_str, user, pw, strategy);
+    return createEntityManagerFactory(PERSISTENCE_UNIT_NAME, connectionStr, user, pw, strategy);
   }
 
   /**
@@ -92,18 +92,18 @@ public class ServerSystem implements IServerStrategy {
    */
   public static EntityManagerFactory createEntityManagerFactory(
       String puName,
-      String connection_str,
+      String connectionStr,
       String user,
       String pw,
       Strategy strategy) {
     Properties props = new Properties();
-    System.out.println("USER -------------> " + user);
-    System.out.println("PW ------> " + pw + "  (should be empty)");
-    System.out.println("CONNECTION URL----> " + connection_str);
-    System.out.println("PU-Strategy ------> " + strategy.toString());
+    log.log(Level.INFO, "USER -------------> " + user);
+    log.log(Level.INFO, "PW ------> " + pw + "  (should be empty)");
+    log.log(Level.INFO, "CONNECTION URL----> " + connectionStr);
+    log.log(Level.INFO, "PU-Strategy ------> " + strategy.toString());
     props.setProperty("javax.persistence.jdbc.user", user);
     props.setProperty("javax.persistence.jdbc.password", pw);
-    props.setProperty("javax.persistence.jdbc.url", connection_str);
+    props.setProperty("javax.persistence.jdbc.url", connectionStr);
     if (strategy != Strategy.NONE) {
       props.setProperty("javax.persistence.schema-generation.database.action",
           strategy.toString());
@@ -119,10 +119,6 @@ public class ServerSystem implements IServerStrategy {
    */
   public static EntityManager createEM() {
     return emf.createEntityManager();
-  }
-
-  public Server getServer() {
-    return server;
   }
 
   @Override
