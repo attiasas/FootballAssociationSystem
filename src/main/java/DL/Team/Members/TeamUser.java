@@ -14,10 +14,10 @@ import java.util.List;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "teamUser", query = "SELECT tu from TeamUser tu"),
-        @NamedQuery(name = "teamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
-        @NamedQuery(name = "allActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
-        @NamedQuery(name = "teamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
+        @NamedQuery(name = "TeamUser", query = "SELECT tu from TeamUser tu"),
+        @NamedQuery(name = "TeamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
+        @NamedQuery(name = "AllActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
+        @NamedQuery(name = "TeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
 })
 
 
@@ -38,6 +38,11 @@ public class TeamUser
         this.name = name;
         this.active = active;
         this.fan = fan;
+    }
+
+    public Fan getFan()
+    {
+        return this.fan;
     }
 
     public TeamUser() {}

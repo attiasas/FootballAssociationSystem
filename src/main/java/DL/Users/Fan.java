@@ -33,6 +33,11 @@ public class Fan extends User
 
     public boolean followPage(Page page)
     {
+        if(page == null)
+        {
+            return false;
+        }
+
         if(follow.add(page))
         {
             if(page.addFollower(this))
@@ -47,6 +52,11 @@ public class Fan extends User
 
     public boolean unfollowPage(Page page)
     {
+        if(page == null)
+        {
+            return false;
+        }
+
         if(follow.remove(page))
         {
             if(page.removeFollower(this))
@@ -63,9 +73,18 @@ public class Fan extends User
         Iterator<Page> it = follow.iterator();
         while(it.hasNext())
         {
-            unfollowPage(it.next());
+            Page page = it.next();
+            page.removeFollower(this);
         }
+
+        this.follow = new HashSet<>();
+
         return true;
+    }
+
+    public Set<Page> getFollowing()
+    {
+        return this.follow;
     }
 
 }

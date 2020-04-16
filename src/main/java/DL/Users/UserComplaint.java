@@ -55,6 +55,21 @@ public class UserComplaint {
         this(null, "");
     }
 
+    public User getOwner()
+    {
+        return this.owner;
+    }
+
+    public String getMessage()
+    {
+        return this.msg;
+    }
+
+    public String getResponse()
+    {
+        return this.response;
+    }
+
     public void setResponse(String response)
     {
         this.response = response;

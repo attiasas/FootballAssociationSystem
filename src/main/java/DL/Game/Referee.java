@@ -80,6 +80,11 @@ public class Referee
         return false;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     public Fan getFan()
     {
         return fan;

@@ -41,6 +41,9 @@ public class ComplaintUnit
         parametersUserComplaints.put("user", user);
         List<Object> serverUserComplaints = communication.query("UserComplaintsByUser", parametersUserComplaints);
 
+        //we will get a list of lists with the userComplaints of each username that has this username
+        serverUserComplaints = (List)serverUserComplaints.get(0);
+
         //make a list of UserComplaints from the objects list we received from the server
         List<UserComplaint> userComplaints = new ArrayList<>();
 
@@ -67,6 +70,12 @@ public class ComplaintUnit
 
         UserComplaint userComplaint = new UserComplaint(user, msg);
 
+        //connect the new UserComplaint to the user
+        if(!user.addUserComplaint(userComplaint))
+        {
+            return false;
+        }
+
         communication.insert(userComplaint);
 
         return true;
@@ -92,8 +101,12 @@ public class ComplaintUnit
         //update on the DB
         Map<String, Object> updateUserComplaintParameters = new HashMap<>();
         updateUserComplaintParameters.put("comment", comment);
-        updateUserComplaintParameters.put("id", userComplaint.getId());
 
+        //this will be with the persistence DB that will generate the id attribute
+        //updateUserComplaintParameters.put("id", userComplaint.getId());
+
+        //for now we will use the msg as kind of identifier
+        updateUserComplaintParameters.put("msg", userComplaint.getMessage());
         return communication.update("UserSetComment", updateUserComplaintParameters);
     }
 

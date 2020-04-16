@@ -13,7 +13,7 @@
         <!--<class>DL.Administration.Financial.TeamFinancialEntry</class>-->
         <!--<class>DL.Administration.Financial.AssociationFinancialEntry</class>-->
         <!--<class>DL.Administration.Financial.FinancialEntry</class>-->
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <!--true for db unit test false for deploy-->
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

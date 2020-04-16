@@ -15,7 +15,8 @@ import java.util.Set;
 
 @MappedSuperclass
 @NamedQueries( value = {
-        @NamedQuery(name = "AllFans", query = "SELECT f From Fan f")
+        @NamedQuery(name = "AllPages", query = "SELECT p From Page p"),
+        @NamedQuery(name = "PageByFan", query = "SELECT p from Page p WHERE :fan in (followers)")
 })
 
 public abstract class Page
@@ -41,5 +42,15 @@ public abstract class Page
     {
         return followers.remove(fan);
     }
+
+    public boolean isFollower(Fan fan)
+    {
+        if(followers.contains(fan))
+        {
+            return true;
+        }
+        return false;
+    }
+
 
 }

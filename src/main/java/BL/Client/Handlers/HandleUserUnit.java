@@ -1,5 +1,6 @@
 package BL.Client.Handlers;
 
+import BL.Client.ClientSystem;
 import BL.Communication.ClientServerCommunication;
 import DL.Game.Referee;
 import DL.Team.Members.TeamUser;
@@ -32,21 +33,12 @@ public class HandleUserUnit
         this.communication = communication;
     }
 
-    public static void main(String[] args)
-    {
-        ClientServerCommunication communication = new ClientServerCommunication();
-        HandleUserUnit userUnit = new HandleUserUnit(communication);
-        userUnit.signUp("a", "a", "ab");
-    }
-
-
-
     /**
      * Creates a Fan User
      * @param userName the username of the user that is being created
      * @param email the email of the user that is being created - should be in an email template
      * @param password the password of the user being created - can't be an empty String
-     * @return A user that was gigned up in the system. Returns null if user with the same username exists or one of the arguments was null or empty String
+     * @return A user that was signed up in the system. Returns null if user with the same username exists or one of the arguments was null or empty String
      */
     public User signUp(String userName, String email, String password)
     {
@@ -69,8 +61,10 @@ public class HandleUserUnit
         //create the fan user
 
         String hashedPassword = DigestUtils.sha1Hex(password);
-
         Fan fan = new Fan(userName, email, hashedPassword);
+
+        //insert the fan user to the DB
+        communication.insert(fan);
 
         return fan;
     }
@@ -119,8 +113,10 @@ public class HandleUserUnit
         }
 
         //the user is just a Fan - We can remove it
+        //first we remove it from all pages he likes
+        fanUser.unfollowAllPages();
+        //remove the user from the database
         communication.delete(fanUser);
-
 
         return true;
     }
@@ -132,25 +128,28 @@ public class HandleUserUnit
      * @param password
      * @return
      */
-    public User logIn (String userName, String password)
+    public boolean logIn (String userName, String password)
     {
         if(userName == null || userName.equals("") || password == null || password.equals(""))
         {
-            return null;
+            return false;
         }
 
         Map<String, Object> logInParameters = new HashMap<>();
-        logInParameters.put("userName", userName);
+        logInParameters.put("username", userName);
         logInParameters.put("hashedPassword", DigestUtils.sha1Hex(password));
 
-        List<Object> user = communication.query("UserByUserNameAndPassword", logInParameters);
+        List<Object> users = communication.query("UserByUserNameAndPassword", logInParameters);
 
-        if(user.size()<=0)
+        if(users.size()<=0)
         {
-            return null;
+            return false;
         }
 
-        return (User)user.get(0);
+        User user = (User)users.get(0); //can be only one user returned
+        ClientSystem.logIn(user);
+
+        return  true;
     }
 
 
