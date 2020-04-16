@@ -158,4 +158,33 @@ public class ClientServerCommunication
 
         return false;
     }
+
+    /**
+     * this method will make sure that all of the given request will be preformed with the same connection and atomic
+     * @param requests - insert,delete and update requests
+     * @return true if all the requests are successes false other wise
+     */
+    public boolean transaction(List<SystemRequest> requests)
+    {
+        // validate no query/transaction requests
+        for(SystemRequest request : requests) if(request.type.equals(SystemRequest.Type.Query) || request.type.equals(SystemRequest.Type.Transaction)) return false;
+
+        try(Socket serverSocket = new Socket(serverIP,serverPort))
+        {
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
+            out.writeObject(new SystemRequest(SystemRequest.Type.Transaction,"TRANSACTION",requests));
+            out.flush();
+
+            boolean answer = (boolean) in.readObject();
+            return answer;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

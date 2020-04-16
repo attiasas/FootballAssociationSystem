@@ -84,6 +84,12 @@ public class Team
     @ManyToMany(cascade = CascadeType.MERGE)
     public List<LeagueSeason> leagueSeasons;
 
+
+    public Team (String name, boolean active, boolean close)
+    {
+        this(name, active, close, null);
+    }
+
     //Constructor
     public Team(String name, boolean active, boolean close, TeamPage page) {
         this.name = name;
@@ -101,7 +107,42 @@ public class Team
         leagueSeasons = new ArrayList<>();
     }
 
+
+    public boolean setPage (TeamPage page)
+    {
+        if(page == null)
+        {
+            return false;
+        }
+        this.page = page;
+        return true;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+
     public Team() {
 
+    }
+
+    public List<TeamOwner> getTeamOwners()
+    {
+        return teamOwners;
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if(!(other instanceof Team))
+        {
+            return false;
+        }
+
+        Team otherTeam = (Team)other;
+
+        return this.name.equals(otherTeam.name);
     }
 }

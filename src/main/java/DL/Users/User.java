@@ -69,10 +69,6 @@ public abstract class User
         this("", "", "");
     }
 
-    public void addComplaint(UserComplaint userComplaint)
-    {
-        this.userComplaintsOwner.add(userComplaint);
-    }
 
     public boolean hasPermission(UserPermission.Permission permission)
     {
@@ -81,6 +77,31 @@ public abstract class User
 
     public String getUsername() {
         return username;
+    }
+
+    public String getUsername()
+    {
+        return this.username;
+    }
+
+    public String getHashedPassword()
+    {
+        return this.hashedPassword;
+    }
+
+    public List<UserComplaint> getUserComplaintsOwner()
+    {
+        return this.userComplaintsOwner;
+    }
+
+    public boolean addUserComplaint(UserComplaint userComplaint)
+    {
+        if(userComplaint == null)
+        {
+            return false;
+        }
+        this.userComplaintsOwner.add(userComplaint);
+        return true;
     }
 
     @Override
@@ -95,4 +116,21 @@ public abstract class User
     }
 
     public UserPermission getUserPermission() { return userPermission; }
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other == null || !(other instanceof User))
+        {
+            return false;
+        }
+        User otherUser = (User)other;
+        if(otherUser.username.equals(this.username) && otherUser.hashedPassword.equals(this.hashedPassword))
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+
 }

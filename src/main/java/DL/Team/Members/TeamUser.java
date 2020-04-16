@@ -14,12 +14,12 @@ import java.util.List;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "teamUser", query = "SELECT tu from TeamUser tu"),
-        @NamedQuery(name = "teamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
-        @NamedQuery(name = "allActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
-        @NamedQuery(name = "teamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
-        @NamedQuery(name = "activeTeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan AND tu.active = true"),
-        @NamedQuery(name = "setActiveTeamUser", query = "UPDATE TeamUser tu SET tu.active = : active where tu =: teamUser")
+        @NamedQuery(name = "TeamUser", query = "SELECT tu from TeamUser tu"),
+        @NamedQuery(name = "TeamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
+        @NamedQuery(name = "AllActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
+        @NamedQuery(name = "TeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
+        @NamedQuery(name = "ActiveTeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan AND tu.active = true"),
+        @NamedQuery(name = "SetActiveTeamUser", query = "UPDATE TeamUser tu SET tu.active = : active where tu =: teamUser")
 })
 public class TeamUser
 {
@@ -43,7 +43,7 @@ public class TeamUser
 
     public TeamUser() {}
 
-    public User getUser() { return fan; }
+    public Fan getFan() { return fan; }
 
     public void setActive(boolean active) {
         this.active = active;

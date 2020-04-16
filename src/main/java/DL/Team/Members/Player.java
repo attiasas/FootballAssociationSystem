@@ -3,9 +3,11 @@ import DL.Team.Page.Page;
 import DL.Team.Page.UserPage;
 import DL.Team.Team;
 import DL.Users.Fan;
+import DL.Users.UserPermission;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Description:  Defines a player object - as a PageUser object and by a role and a team   X
