@@ -60,5 +60,9 @@ public class UserPermission
     }
 
 
-
+    @Override
+    public String toString() {
+        return "teamPermissions=" + teamPermissions +
+                '}';
+    }
 }

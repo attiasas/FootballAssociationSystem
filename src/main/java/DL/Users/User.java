@@ -12,7 +12,8 @@ import java.util.List;
 @MappedSuperclass
 @NamedQueries( value = {
         @NamedQuery(name = "UserByUsername", query = "SELECT u From User u WHERE u.username = :username"),
-        @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword")
+        @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword"),
+        @NamedQuery(name = "UpdateUserPermission", query = "update User u set u.userPermission = :permission where u = :user")
 })
 public abstract class User
 {
@@ -31,9 +32,6 @@ public abstract class User
     @OneToMany
     private List<UserComplaint> userComplaintsOwner;
 
-
-
-
     /**
      *constructor with PermissionList
      * @param userName
@@ -50,6 +48,12 @@ public abstract class User
         this.userPermission = new UserPermission(permissionList);
         this.notificationsOwner = new HashMap<Notification,Boolean>();
         this.userComplaintsOwner = new ArrayList<UserComplaint>();
+    }
+
+    public User(User other)
+    {
+        this(other.username,other.email,other.hashedPassword);
+
     }
 
     /**
@@ -75,10 +79,20 @@ public abstract class User
         return userPermission.hasPermission(permission);
     }
 
+    public String getUsername() {
+        return username;
+    }
 
     @Override
     public String toString ()
     {
         return this.username;
     }
+
+    public void setUserPermission(UserPermission userPermission)
+    {
+        this.userPermission = userPermission;
+    }
+
+    public UserPermission getUserPermission() { return userPermission; }
 }

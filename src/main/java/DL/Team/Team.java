@@ -28,6 +28,8 @@ import java.util.List;
         @NamedQuery(name = "closedTeam", query = "SELECT t FROM Team t  WHERE t.close = true"),
         @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
         @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
+        @NamedQuery(name =  "updateTeamOwnersOfTeam", query = "update Team t set t.teamOwners = :teamOwners where t = :team"),
+        @NamedQuery(name =  "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team")
 })
 
 public class Team
