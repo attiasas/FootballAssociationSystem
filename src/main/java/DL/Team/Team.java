@@ -1,6 +1,7 @@
 package DL.Team;
 
 import DL.Administration.Financial.TeamFinancialEntry;
+import DL.Game.LeagueSeason.League;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Match;
 import DL.Team.Assets.Stadium;
@@ -28,10 +29,10 @@ import java.util.List;
         @NamedQuery(name = "closedTeam", query = "SELECT t FROM Team t  WHERE t.close = true"),
         @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
         @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
+        @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name ")
 })
 
-public class Team
-{
+public class Team {
     @Id
     @Column
     private String name;
@@ -100,6 +101,48 @@ public class Team
     }
 
     public Team() {
+        this("Default",false,false,null);
+    }
 
+    public void addLeagueSeason(LeagueSeason leagueSeason) {
+        if (leagueSeason != null)
+            leagueSeasons.add(leagueSeason);
+    }
+
+    public List<LeagueSeason> getLeagueSeasons() {
+        return leagueSeasons;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Match> getAwayMatches() {
+        return awayMatches;
+    }
+
+    public List<Match> getHomeMatches() {
+        return homeMatches;
+    }
+
+    public List<Stadium> getStadiums() {
+        return stadiums;
+    }
+
+    public void addStadium(Stadium stadium) {
+        if (stadium != null)
+            stadiums.add(stadium);
+    }
+
+    public void setHomeMatches(Match homeMatch) {
+        if (homeMatches != null) {
+            homeMatches.add(homeMatch);
+        }
+    }
+
+    public void setAwayMatches(Match awayMatch) {
+        if (awayMatch != null) {
+            awayMatches.add(awayMatch);
+        }
     }
 }
