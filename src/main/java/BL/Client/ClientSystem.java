@@ -9,11 +9,21 @@ import DL.Users.UserComplaint;
 import java.util.List;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     X ID:              X
  **/
-public class ClientSystem
-{
+@Setter
+@Log4j
+public class ClientSystem {
+
+  private InetAddress serverIP;
+  private int serverPort;
+  private IClientStrategy clientStrategy;
+
+  public ClientSystem(InetAddress IP, int port, IClientStrategy clientStrategy) {
+    this.serverIP = IP;
+    this.serverPort = port;
+    this.clientStrategy = clientStrategy;
+  }
 
 
     private static User loggedUser = null;
@@ -34,10 +44,6 @@ public class ClientSystem
         loggedUser = user;
         return true;
     }
-
-
-
-
 
 
 //    /**

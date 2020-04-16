@@ -1,9 +1,13 @@
 package BL.Communication;
 
+import static java.net.InetAddress.getLocalHost;
+
+import BL.Server.utils.Settings;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,16 +22,26 @@ import java.util.Map;
  *                  * Transaction - Make multiple Insert/Update/Delete requests in the same communication and
  *                                  make all of them in the same transaction (all success or nothing)
  **/
-public class ClientServerCommunication
-{
+public class ClientServerCommunication {
+
     private static InetAddress serverIP;
-    private static int serverPort;
+    private static final int serverPort = Integer
+        .parseInt(Settings.getPropertyValue("server.port"));
+
+    static {
+        try {
+            serverIP = getLocalHost();
+        } catch (UnknownHostException ignored) {
+        }
+    }
 
     /**
      * Query the DB in the server and get the results
-     * @param queryName - NamedQuery in persistence to query the data base
+     *
+     * @param queryName  - NamedQuery in persistence to query the data base
      * @param parameters - map of parameters of the named query
-     * @return list of objects that matches the query, null if something went wrong with the connection
+     * @return list of objects that matches the query, null if something went wrong with the
+     * connection
      */
     public List query(String queryName, Map<String, Object> parameters)
     {
@@ -36,14 +50,12 @@ public class ClientServerCommunication
             ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
 
-            out.writeObject(new SystemRequest(SystemRequest.Type.Query,queryName,parameters));
+            out.writeObject(new SystemRequest(SystemRequest.Type.Query, queryName, parameters));
             out.flush();
 
             List answer = (List) in.readObject();
             return answer;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -52,7 +64,8 @@ public class ClientServerCommunication
 
     /**
      * Update the data base in the server base on a named query
-     * @param queryName - NamedQuery in persistence to query the data base
+     *
+     * @param queryName  - NamedQuery in persistence to query the data base
      * @param parameters - map of parameters of the named query
      * @return true if the update completed in success, false other wise
      */
@@ -68,9 +81,7 @@ public class ClientServerCommunication
 
             boolean answer = (boolean) in.readObject();
             return answer;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -94,9 +105,7 @@ public class ClientServerCommunication
 
             boolean answer = (boolean) in.readObject();
             return answer;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -120,39 +129,7 @@ public class ClientServerCommunication
 
             boolean answer = (boolean) in.readObject();
             return answer;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    /**
-     * this method will make sure that all of the given request will be preformed with the same connection and atomic
-     * @param requests - insert,delete and update requests
-     * @return true if all the requests are successes false other wise
-     */
-    public boolean transaction(List<SystemRequest> requests)
-    {
-        // validate no query/transaction requests
-        if(requests == null || requests.isEmpty()) return false;
-        for(SystemRequest request : requests) if(request.type.equals(SystemRequest.Type.Query) || request.type.equals(SystemRequest.Type.Transaction)) return false;
-
-        try(Socket serverSocket = new Socket(serverIP,serverPort))
-        {
-            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
-
-            out.writeObject(new SystemRequest(SystemRequest.Type.Transaction,"TRANSACTION",requests));
-            out.flush();
-
-            boolean answer = (boolean) in.readObject();
-            return answer;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
