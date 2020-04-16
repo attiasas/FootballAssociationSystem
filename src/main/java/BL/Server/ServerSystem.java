@@ -49,7 +49,11 @@ public class ServerSystem implements IServerStrategy {
   Server server;
   DB dataBase;
 
-  ServerSystem(DbSelector dbType, Strategy strategy) {
+  public ServerSystem() {
+    /* todo - amir fill your code here */
+  }
+
+  void initializeSystem(DbSelector dbType, Strategy strategy) {
     dataBase = DB.getDataBaseInstance(createEntityManagerFactory(dbType, strategy));
     int serverPort = Integer.parseInt(Settings.getPropertyValue("server.port"));
     int poolSize = Integer.parseInt(Settings.getPropertyValue("server.poolSize"));
@@ -57,6 +61,13 @@ public class ServerSystem implements IServerStrategy {
     server = new Server(serverPort, poolSize, listeningInterval, this);
     server.start();
     log.log(Level.INFO, "server is up and listen on port: " + serverPort);
+  }
+
+  /**
+   * Demo the connection to external systems like Finance, Tax etc.
+   */
+  @SuppressWarnings("unused")
+  void initializeExternalSystems() {
   }
 
   /**
@@ -139,6 +150,12 @@ public class ServerSystem implements IServerStrategy {
     }
   }
 
+  /**
+   * Strategy to execute when communicating with a client
+   *
+   * @param systemRequest  - request to handle
+   * @param toClientObject - ObjectOutputStream of a socket to the client
+   */
   public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest) {
     try {
       switch (systemRequest.type) {

@@ -1,7 +1,6 @@
 package BL.Server.utils;
 
 import BL.Server.ServerSystem;
-import DL.Team.Assets.Stadium;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -246,10 +245,6 @@ public class DB implements Serializable {
         }
         em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
 
-        Stadium anfld = new Stadium("Anfield", 80);
-        Stadium ot = new Stadium("old traford", 80);
-        DB.persist(anfld);
-        DB.persist(ot);
 //        Query q = em.createNativeQuery("SELECT s.name, s.capacity FROM Stadium s");
 //        List<Object[]> ids = q.getResultList();
         for (Object[] s : ids) {
