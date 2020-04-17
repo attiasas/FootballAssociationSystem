@@ -109,10 +109,6 @@ public class CommunicationLeagueSeasonAndPoliciesStub extends ClientServerCommun
                 for (LeagueSeason ls : leagueSeasons) {
                     if (ls.getSeason().equals(season) && ls.getLeague().equals(league)) {
                         if (teamList.size() > 0) {
-                            for (Team t : teamList) {
-                                if (!ls.addTeam(t))
-                                    return false;
-                            }
                             return true;
                         }
                     }

@@ -22,6 +22,7 @@ import static org.junit.Assert.*;
 
 /**
  * Description:     This testClass tests the leagueSeasonUnit class.
+ * ID:              25
  **/
 public class LeagueSeasonUnitTest {
 
@@ -192,6 +193,32 @@ public class LeagueSeasonUnitTest {
         assertTrue(leagueSeasonUnit.setRefereeInLeagueSeason(ls,r));
         assertEquals(r,ls.getReferees().get(0));
         assertEquals(ls,r.getLeagueSeasons().get(0));
+    }
+
+    /**
+     * Tests the setter of team in a given leagueSeason with null parameters
+     */
+    @Test
+    public void addTeamToLeagueSeasonNullTest(){
+        assertFalse(leagueSeasonUnit.addTeamToLeagueSeason(null,null));
+        Season season = leagueSeasonUnit.getSeasons().get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        assertFalse(leagueSeasonUnit.addTeamToLeagueSeason(ls,null));
+        Team t = new Team("Test1",true,false);
+        assertFalse(leagueSeasonUnit.addTeamToLeagueSeason(null,t));
+    }
+
+    /**
+     * Tests the setter of team in a given leagueSeason
+     */
+    @Test
+    public void addTeamToLeagueSeasonTest(){
+        Team t = new Team("Test1",true,false);
+        Season season = leagueSeasonUnit.getSeasons().get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        assertTrue(leagueSeasonUnit.addTeamToLeagueSeason(ls,t));
+        assertEquals(t,ls.getTeamsParticipate().get(3));
+        assertEquals(ls,t.getLeagueSeasons().get(0));
     }
 }
 

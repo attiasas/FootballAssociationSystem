@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  * Description:     This testClass tests the leagueSeason class.
- * ID:              X
+ * ID:              23
  **/
 public class LeagueSeasonTest {
 
@@ -25,6 +25,14 @@ public class LeagueSeasonTest {
     @Test
     public void defaultCtorTest() {
         LeagueSeason leagueSeason = new LeagueSeason();
+    }
+
+    /**
+     * Tests ctor with null param
+     */
+    @Test
+    public void ctorWithNullParamTest() {
+        LeagueSeason leagueSeason = new LeagueSeason(null,null,null,null,null);
     }
 
     /**

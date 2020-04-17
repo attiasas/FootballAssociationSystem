@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
 
 /**
  * Description:     This testClass tests the scorePolicy class.
+ * ID:              20
  **/
 public class ScorePolicyTest {
     /**
@@ -56,7 +57,6 @@ public class ScorePolicyTest {
         ScorePolicy secondScorePolicy = new ScorePolicy(3, 2, 0);
         assertEquals(false, firstScorePolicy.equals(secondScorePolicy));
     }
-
 
     /**
      * Test Hash code of equals scorePolicies
@@ -140,6 +140,7 @@ public class ScorePolicyTest {
         ScorePolicy sp = new ScorePolicy(3, 1, 0);
         assertNull(sp.calculateLeagueTable(null));
     }
+
 
     /**
      * Tests the calculation of the league table without teams - should return false
