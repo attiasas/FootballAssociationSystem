@@ -1,29 +1,29 @@
 package BL.Server.utils;
 
-import BL.Server.ServerSystem;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
 
 /**
- * @author Serfati Description: This class contains the methods for connecting to the database,
- * getting data, updating the database, preparing statements, executing prepared statements,
- * starting transactions, committing transactions, and rolling back transactions
+ * Description: This class contains the methods for connecting to the database, getting data,
+ * updating the database, preparing statements, executing prepared statements, starting
+ * transactions, committing transactions, and rolling back transactions
+ *
+ * @author Serfati
  * @version Id: 1.0
  **/
 @Log4j /* install lombok plugin in intellij */
 public class DB implements Serializable {
 
     @PersistenceUnit
-    protected static EntityManagerFactory emf;
+    private static EntityManagerFactory emf;
     private static DB instance;
 
     /**
@@ -162,11 +162,6 @@ public class DB implements Serializable {
         Map<String, Object> map = (Map<String, Object>) data;
         Query fixed = em.createNamedQuery(queryName);
         try {
-//            for (Map.Entry<String, Object> entry : map.entrySet()) {
-//                String k = entry.getKey();
-//                Object v = entry.getValue();
-//                fixed = em.createNamedQuery(queryName).setParameter(k,v);
-//            }
             map.forEach(fixed::setParameter);
             fixed.executeUpdate();
             em.getTransaction().commit();
@@ -217,47 +212,45 @@ public class DB implements Serializable {
         IntStream.range(0, args.length).forEach(i -> query.setParameter(i, args[i]));
         return query;
     }
-
-
-    /* Simple manual tests ------------------------------------------------------------------------------- */
-    // tested - CREATE TRUNCATE INSERT SELECT DROP CONNECTION  UPDATE namedQuery Parameters
-    public static void main(String[] args) {
-        emf = ServerSystem
-            .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
-        EntityTransaction txn;
-        EntityManager em = emf.createEntityManager();
-        txn = em.getTransaction();
-        txn.begin();
-        em.createNativeQuery(
-            "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
-            .executeUpdate();
-        em.createNativeQuery("TRUNCATE TABLE Standings")
-            .executeUpdate(); // clears the table content
-        em.createNativeQuery(
-            "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
-            .executeUpdate(); // insert values
-        em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
-            .executeUpdate();
-        Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
-        List<Object[]> ids = q.getResultList();
-        for (Object[] a : ids) {
-            System.out.println("Standings ~ " + a[0] + ":" + a[1]);// Show Result
-        }
-        em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
-
-//        Query q = em.createNativeQuery("SELECT s.name, s.capacity FROM Stadium s");
-//        List<Object[]> ids = q.getResultList();
-        for (Object[] s : ids) {
-            System.out.println("Stadium ~ " + s[0] + ":" + s[1]);// Show Result
-        }
-
-//        HashMap<String,Object> map = new HashMap<>() ;
-//        map.put("name", "anfield");
-//        query("stadiumByName", map);
-
-        txn.commit();
-
-        em.close();
-        emf.close();
-    }
+//  /* Simple manual tests ------------------------------------------------------------------------------- */
+//  // tested - CREATE TRUNCATE INSERT SELECT DROP CONNECTION  UPDATE namedQuery Parameters
+//  public static void main(String[] args) {
+//    emf = ServerSystem
+//        .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
+//    EntityTransaction txn;
+//    EntityManager em = emf.createEntityManager();
+//    txn = em.getTransaction();
+//    txn.begin();
+//    em.createNativeQuery(
+//        "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
+//        .executeUpdate();
+//    em.createNativeQuery("TRUNCATE TABLE Standings")
+//        .executeUpdate(); // clears the table content
+//    em.createNativeQuery(
+//        "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
+//        .executeUpdate(); // insert values
+//    em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
+//        .executeUpdate();
+//    Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
+//    List<Object[]> ids = q.getResultList();
+//    for (Object[] a : ids) {
+//      System.out.println("Standings ~ " + a[0] + ":" + a[1]);// Show Result
+//    }
+//    em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
+//
+////        Query q = em.createNativeQuery("SELECT s.name, s.capacity FROM Stadium s");
+////        List<Object[]> ids = q.getResultList();
+//    for (Object[] s : ids) {
+//      System.out.println("Stadium ~ " + s[0] + ":" + s[1]);// Show Result
+//    }
+//
+////        HashMap<String,Object> map = new HashMap<>() ;
+////        map.put("name", "anfield");
+////        query("stadiumByName", map);
+//
+//    txn.commit();
+//
+//    em.close();
+//    emf.close();
+//  }
 }

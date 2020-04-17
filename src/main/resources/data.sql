@@ -1,4 +1,5 @@
-CREATE DATABASE sportify;
+CREATE
+DATABASE  sportify;
 USE sportify;
 
 CREATE TABLE IF NOT EXISTS Users
