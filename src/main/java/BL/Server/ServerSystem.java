@@ -6,6 +6,8 @@ import BL.Communication.SystemRequest;
 import BL.Communication.SystemRequest.Type;
 import BL.Server.utils.DB;
 import BL.Server.utils.Settings;
+import DL.Administration.SystemManager;
+import DL.Users.User;
 import java.io.EOFException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -20,6 +22,7 @@ import javax.persistence.PersistenceUnit;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Level;
 
 
@@ -46,28 +49,77 @@ public class ServerSystem implements IServerStrategy {
   static final String PERSISTENCE_UNIT_NAME = "sportify";  /* The name of the persistence unit*/
   @PersistenceUnit
   static EntityManagerFactory emf;  /* The central, shared entity manager factory instance. */
-  Server server;
-  DB dataBase;
+  static Server server;
+  private DB dataBase;
 
-  public ServerSystem() {
-    /* todo - amir fill your code here */
+  /**
+   * c`tor
+   *
+   * @param dbType   database type , choose between dev (deploy) and test (junit)
+   * @param strategy database persistence strategy
+   */
+  public ServerSystem(DbSelector dbType, Strategy strategy) {
+    final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
+    dataBase = DB.getDataBaseInstance(entityManagerFactory);
+    final boolean systemManagers =
+        createEM().createNamedQuery("SystemManagers").getFirstResult() == 0;
+    if (systemManagers) {
+      signUp("admin", "admin@admin.com", "admin");
+    }
   }
 
-  void initializeSystem(DbSelector dbType, Strategy strategy) {
-    dataBase = DB.getDataBaseInstance(createEntityManagerFactory(dbType, strategy));
-    int serverPort = Integer.parseInt(Settings.getPropertyValue("server.port"));
-    int poolSize = Integer.parseInt(Settings.getPropertyValue("server.poolSize"));
-    int listeningInterval = Integer.parseInt(Settings.getPropertyValue("server.listeningInterval"));
-    server = new Server(serverPort, poolSize, listeningInterval, this);
-    server.start();
-    log.log(Level.INFO, "server is up and listen on port: " + serverPort);
+  /**
+   * inserts a new user to db sends email to user generate token for user
+   *
+   * @param userName username of the user
+   * @param email    email of the user
+   * @param password password of the user
+   * @return the system manager user
+   */
+  public User signUp(String userName, String email, String password) {
+
+    if (password == null || email == null || userName == null || userName.equals("") || email
+        .equals("") || password.equals("")) {
+      log.log(Level.WARN, "invalid username or password");
+      return null;
+    }
+    final boolean userExist = createEM().find(User.class, userName) != null;
+    if (userExist) {
+      log.log(Level.WARN, "username is already exist");
+      return null;
+    }
+    //create the systemManager User
+    String hashedPassword = DigestUtils.sha1Hex(password);
+    SystemManager systemManager = new SystemManager(userName, email, hashedPassword);
+
+    //insert the systemManager user to the DB
+    DB.persist(systemManager);
+    log.log(Level.INFO, "system manager created: " + userName);
+    return systemManager;
   }
 
   /**
    * Demo the connection to external systems like Finance, Tax etc.
    */
   @SuppressWarnings("unused")
-  void initializeExternalSystems() {
+  private void initializeExternalSystems() {
+    log.log(Level.INFO, "external systems integration completed");
+  }
+
+  /**
+   * Initializes the given server and builds the endpoint Read default login servers from {@code
+   * config.properties} Default url {@code https://localhost:5400}
+   *
+   * @throws java.io.IOException I/O exception
+   */
+  @SuppressWarnings("unused")
+  private void initializeServer() throws java.io.IOException {
+    int serverPort = Integer.parseInt(Settings.getPropertyValue("server.port"));
+    int poolSize = Integer.parseInt(Settings.getPropertyValue("server.poolSize"));
+    int listeningInterval = Integer.parseInt(Settings.getPropertyValue("server.listeningInterval"));
+    server = new Server(serverPort, poolSize, listeningInterval, this);
+    server.start();
+    log.log(Level.INFO, "server is up and listen on port: " + serverPort);
   }
 
   /**
