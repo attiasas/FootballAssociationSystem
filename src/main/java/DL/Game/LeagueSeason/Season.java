@@ -18,6 +18,10 @@ public class Season {
     @Id
     private int year;
 
+    /**
+     * Ctor
+     * @param year of the season
+     */
     public Season(int year) {
         if (year < 1950)
             this.year = 1950;
@@ -25,10 +29,17 @@ public class Season {
             this.year = year;
     }
 
+    /**
+     * Default ctor
+     */
     public Season() {
         this(1950);
     }
 
+    /**
+     * getter
+     * @return season year
+     */
     public int getYear() {
         return year;
     }

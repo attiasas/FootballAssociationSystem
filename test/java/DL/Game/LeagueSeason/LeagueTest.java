@@ -5,7 +5,7 @@ import org.junit.Test;
 
 
 /**
- * Description:     X
+ * Description:     This testClass tests the League class.
  * ID:              X
  **/
 public class LeagueTest {

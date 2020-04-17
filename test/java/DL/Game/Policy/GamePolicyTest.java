@@ -27,9 +27,9 @@ public class GamePolicyTest {
     public void initTests() {
         gamePolicy = new GamePolicy(1, 3);
         gamePolicy2 = new GamePolicy(2, 2);
-        Date startLeagueDate = new Date(2020, 1, 1, 3, 30);
+        Date startLeagueDate = new Date(120, 1, 1, 3, 30);
         leagueSeason = new LeagueSeason(null, null, gamePolicy, null, startLeagueDate);
-        leagueSeason2 = new LeagueSeason(null, null, gamePolicy, null, startLeagueDate);
+        leagueSeason2 = new LeagueSeason(null, null, gamePolicy2, null, startLeagueDate);
     }
 
     /**
@@ -129,7 +129,7 @@ public class GamePolicyTest {
      */
     @Test
     public void scheduleMatchesTestWithOnlyOneTeamOneRound() {
-        Team t1 = new Team("Test1", false, false, null);
+        Team t1 = new Team("Test1", false, false);
         leagueSeason.addTeam(t1);
         List<Match> matches = gamePolicy.scheduleMatches(leagueSeason);
         assertEquals(0, matches.size());
@@ -140,8 +140,8 @@ public class GamePolicyTest {
      */
     @Test
     public void scheduleMatchesTestWithOnlyTwoTeamsOneRound() {
-        Team t1 = new Team("Test1", false, false, null);
-        Team t2 = new Team("Test2", false, false, null);
+        Team t1 = new Team("Test1", false, false);
+        Team t2 = new Team("Test2", false, false);
         leagueSeason.addTeam(t1);
         leagueSeason.addTeam(t2);
         List<Match> matches = gamePolicy.scheduleMatches(leagueSeason);
@@ -155,9 +155,9 @@ public class GamePolicyTest {
      */
     @Test
     public void scheduleMatchesTestWithOnlyThreeTeamsOneRound() {
-        Team t1 = new Team("Test1", false, false, null);
-        Team t2 = new Team("Test2", false, false, null);
-        Team t3 = new Team("Test3", false, false, null);
+        Team t1 = new Team("Test1", false, false);
+        Team t2 = new Team("Test2", false, false);
+        Team t3 = new Team("Test3", false, false);
         leagueSeason.addTeam(t1);
         leagueSeason.addTeam(t2);
         leagueSeason.addTeam(t3);
@@ -183,10 +183,10 @@ public class GamePolicyTest {
      */
     @Test
     public void scheduleMatchesTestDatesTwoRounds() {
-        Team t1 = new Team("Test1", false, false, null);
-        Team t2 = new Team("Test2", false, false, null);
-        Team t3 = new Team("Test3", false, false, null);
-        Team t4 = new Team("Test4", false, false, null);
+        Team t1 = new Team("Test1", false, false);
+        Team t2 = new Team("Test2", false, false);
+        Team t3 = new Team("Test3", false, false);
+        Team t4 = new Team("Test4", false, false);
         leagueSeason2.addTeam(t1);
         leagueSeason2.addTeam(t2);
         leagueSeason2.addTeam(t3);
@@ -226,9 +226,9 @@ public class GamePolicyTest {
      */
     @Test
     public void scheduleMatchesTestHomeAwayTwoRounds() {
-        Team t1 = new Team("Test1", false, false, null);
-        Team t2 = new Team("Test2", false, false, null);
-        Team t3 = new Team("Test2", false, false, null);
+        Team t1 = new Team("Test1", false, false);
+        Team t2 = new Team("Test2", false, false);
+        Team t3 = new Team("Test3", false, false);
         leagueSeason2.addTeam(t1);
         leagueSeason2.addTeam(t2);
         leagueSeason2.addTeam(t3);
@@ -254,8 +254,8 @@ public class GamePolicyTest {
      */
     @Test
     public void scheduleMatchesTestStadiums() {
-        Team t1 = new Team("Test1", false, false, null);
-        Team t2 = new Team("Test2", false, false, null);
+        Team t1 = new Team("Test1", false, false);
+        Team t2 = new Team("Test2", false, false);
         Stadium st1 = new Stadium("st1", 1200, t1);
         Stadium st2 = new Stadium("st2", 1200, t2);
         t1.addStadium(st1);
@@ -272,8 +272,8 @@ public class GamePolicyTest {
      */
     @Test
     public void scheduleMatchesTestAddMatchToTeams() {
-        Team t1 = new Team("Test1", false, false, null);
-        Team t2 = new Team("Test2", false, false, null);
+        Team t1 = new Team("Test1", false, false);
+        Team t2 = new Team("Test2", false, false);
         leagueSeason2.addTeam(t1);
         leagueSeason2.addTeam(t2);
         List<Match> matches = gamePolicy2.scheduleMatches(leagueSeason2);

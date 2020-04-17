@@ -1,6 +1,7 @@
 package DL.Game;
 
 import DL.Game.LeagueSeason.LeagueSeason;
+import DL.Users.Fan;
 import DL.Users.User;
 
 import javax.persistence.*;
@@ -84,8 +85,30 @@ public class Referee extends User {
     {
         return fan;
     }
+
     public List<LeagueSeason> getLeagueSeasons() {
         return leagueSeasons;
+    }
+
+    public List<Match> getMainMatches() {
+        return mainMatches;
+    }
+
+    public List<Match> getLinesManMatches() {
+        return linesManMatches;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null || !(other instanceof Referee))
+        {
+            return false;
+        }
+        Referee otherReferee = (Referee) other;
+        if (super.equals(other) && otherReferee.getName().equals(this.getName())){
+            return true;
+        }
+        return false;
     }
 
 }

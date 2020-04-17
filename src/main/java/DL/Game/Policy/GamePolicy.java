@@ -122,7 +122,7 @@ public class GamePolicy {
 
             // if number of teams is odd - Whoever is matched against the nullTeam gets a free round.
             if (teamList.size() % 2 != 0) {
-                teamList.add(new Team("NullTeam", false, false, null));
+                teamList.add(new Team("NullTeam", false, false));
             }
 
             //creates list without the first team because its place doesn't change while the algorithm

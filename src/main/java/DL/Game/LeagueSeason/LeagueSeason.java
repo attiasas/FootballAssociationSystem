@@ -70,7 +70,7 @@ public class LeagueSeason {
         this.referees = new ArrayList<>();
         this.teamsParticipate = new ArrayList<>();
         if (startDate != null) {
-            startDate = new Date(startDate.getTime());
+            this.startDate = new Date(startDate.getTime());
         }
     }
 
@@ -143,6 +143,7 @@ public class LeagueSeason {
      */
     public void setGames(List<Match> matches) {
         if (matches != null) {
+            this.matches.clear();
             this.matches.addAll(matches);
         }
     }
@@ -150,7 +151,7 @@ public class LeagueSeason {
     /**
      * Sets referees for all of the matches
      */
-    public void setRefereesInMatches() {
+    public boolean setRefereesInMatches() {
         int indexOfReferee = 0;
         if (matches != null && matches.size() > 0 && referees.size() > 2) {
             for (Match match : matches) {
@@ -177,7 +178,9 @@ public class LeagueSeason {
 
                 }
             }
+            return true;
         }
+        return false;
     }
 
     /**
@@ -235,6 +238,20 @@ public class LeagueSeason {
         return matches;
     }
 
+    /**
+     * @return the gamePolicy of the leagueSeason
+     */
+    public GamePolicy getGamePolicy() {
+        return gamePolicy;
+    }
+
+    /**
+     *
+     * @return the scorePolicy of the leagueSeason
+     */
+    public ScorePolicy getScorePolicy() {
+        return scorePolicy;
+    }
 
     /**************************************************************************
      *************************Private Methods**********************************

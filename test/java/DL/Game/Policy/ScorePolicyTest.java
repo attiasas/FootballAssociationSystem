@@ -1,6 +1,5 @@
 package DL.Game.Policy;
 
-import DL.Game.LeagueSeason.League;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Match;
 import DL.Team.Team;
@@ -87,10 +86,10 @@ public class ScorePolicyTest {
         ScorePolicy sp = new ScorePolicy(3, 1, 0);
         LeagueSeason leagueSeason = new LeagueSeason(null, null, null, sp, null);
         List<Match> matches = new ArrayList<>();
-        Team t = new Team("t", true, true, null);
-        Team t1 = new Team("t1", true, true, null);
-        Team t2 = new Team("t2", true, true, null);
-        Team t3 = new Team("t3", true, true, null);
+        Team t = new Team("t", true, true);
+        Team t1 = new Team("t1", true, true);
+        Team t2 = new Team("t2", true, true);
+        Team t3 = new Team("t3", true, true);
         Match a = new Match(null, t, t1, null, null);
         a.setScore(2, 0);
         Match a1 = new Match(null, t2, t3, null, null);
@@ -133,12 +132,18 @@ public class ScorePolicyTest {
 
     }
 
+    /**
+     * Tests the calculation of the league table with null table - should return null
+     */
     @Test
     public void calculateLeagueTableNullParamTest() {
         ScorePolicy sp = new ScorePolicy(3, 1, 0);
         assertNull(sp.calculateLeagueTable(null));
     }
 
+    /**
+     * Tests the calculation of the league table without teams - should return false
+     */
     @Test
     public void calculateLeagueTableWithoutTeamsTest() {
         ScorePolicy sp = new ScorePolicy(3, 1, 0);

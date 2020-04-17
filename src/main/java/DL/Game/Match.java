@@ -44,7 +44,14 @@ public class Match {
     @ManyToOne
     private Stadium stadium;
 
-
+    /**
+     * Ctor
+     * @param startTime
+     * @param homeTeam
+     * @param awayTeam
+     * @param leagueSeason
+     * @param stadium
+     */
     public Match(Date startTime, Team homeTeam, Team awayTeam, LeagueSeason leagueSeason, Stadium stadium) {
         //deep copy
         if (startTime != null) {
@@ -61,10 +68,17 @@ public class Match {
 
     }
 
+    /**
+     * Default Ctor
+     */
     public Match() {
         this(null, null, null, null, null);
     }
 
+    /**
+     * Sets mainReferee of the match. checks that not equals to the linesMan.
+     * @param referee not null
+     */
     public void setMainReferee(Referee referee) {
         if (referee != null) {
             if (firstLineManReferee == null || secondLineManReferee == null || !referee.equals(firstLineManReferee) && !referee.equals(secondLineManReferee)) {
@@ -73,6 +87,11 @@ public class Match {
         }
     }
 
+    /**
+     * Sets linesMan of the match. checks that not equals to the mainReferee and that not equals to each other.
+     * @param firstReferee not null
+     * @param secondReferee not null
+     */
     public boolean setLinesManReferees(Referee firstReferee, Referee secondReferee) {
         if (firstReferee != null && secondReferee != null && !firstReferee.equals(secondReferee)) {
             if (!firstReferee.equals(mainReferee) && !secondReferee.equals(mainReferee)) {
@@ -84,6 +103,11 @@ public class Match {
         return false;
     }
 
+    /**
+     * Sets the match score
+     * @param homeScore
+     * @param awayScore
+     */
     public void setScore(int homeScore, int awayScore) {
         if (homeScore >= 0 && awayScore >= 0) {
             this.homeScore = homeScore;
@@ -91,16 +115,28 @@ public class Match {
         }
     }
 
+    /**
+     * sets the start time of the match
+     * @param startTime
+     */
     public void setStartTime(Date startTime) {
         if (startTime != null)
             this.startTime = new Date(startTime.getTime());
     }
 
+    /**
+     * sets the end time of the match
+     * @param endTime
+     */
     public void setEndTime(Date endTime) {
         if (endTime != null)
             this.endTime = new Date(endTime.getTime());
     }
 
+    /**
+     * sets the stadium time of the match
+     * @param stadium
+     */
     public void setStadium(Stadium stadium) {
         if (stadium != null)
             this.stadium = stadium;

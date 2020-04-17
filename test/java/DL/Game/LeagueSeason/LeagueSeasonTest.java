@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Description:     X
+ * Description:     This testClass tests the leagueSeason class.
  * ID:              X
  **/
 public class LeagueSeasonTest {
@@ -204,18 +204,76 @@ public class LeagueSeasonTest {
     }
 
     /**
-     * Tests scheduleLeagueMatches should be okay
+     * Tests scheduleLeagueMatches - should be okay
      */
     @Test
     public void scheduleLeagueMatchesTest(){
         LeagueSeason ls = new LeagueSeason(null,null,new GamePolicy(),null,null);
-        Team t1 = new Team();
-        Team t2 = new Team();
-        Team t3 = new Team();
+        Team t1 = new Team("Test1",false,false);
+        Team t2 = new Team("Test2",false,false);
+        Team t3 = new Team("Test3",false,false);
         ls.addTeam(t1);
         ls.addTeam(t2);
         ls.addTeam(t3);
         assertTrue(ls.scheduleLeagueMatches());
+    }
+
+    /**
+     * Tests setRefereeInMatches while there is no matches - should return false
+     */
+    @Test
+    public void setRefereeInMatchesWithoutMatchesTest(){
+        LeagueSeason ls = new LeagueSeason(null,null,new GamePolicy(),null,null);
+        assertFalse(ls.setRefereesInMatches());
+    }
+
+    /**
+     * Tests setRefereeInMatches while there is only 2 referees - should return false (minimum 3 referees)
+     */
+    @Test
+    public void setRefereeInMatchesWithTwoRefereesTest(){
+        LeagueSeason ls = new LeagueSeason(null,null,new GamePolicy(),null,null);
+        Team t1 = new Team("Test1",false,false);
+        Team t2 = new Team("Test2",false,false);
+        Referee r1 = new Referee(null,"Test1",null,false);
+        Referee r2 = new Referee(null,"Test2",null,false);
+        ls.addTeam(t1);
+        ls.addTeam(t2);
+        ls.addReferee(r1);
+        ls.addReferee(r2);
+        ls.scheduleLeagueMatches();
+        assertFalse(ls.setRefereesInMatches());
+    }
+
+    /**
+     * Tests setRefereeInMatches while there is 3 referees  2 games - should return true
+     */
+    @Test
+    public void setRefereeInMatchesTest(){
+        LeagueSeason ls = new LeagueSeason(null,null,new GamePolicy(),null,null);
+        Team t1 = new Team("Test1",false,false);
+        Team t2 = new Team("Test2",false,false);
+        Team t3 = new Team("Test3",false,false);
+        Referee r1 = new Referee(null,"Test1",null,false);
+        Referee r2 = new Referee(null,"Test2",null,false);
+        Referee r3 = new Referee(null,"Test3",null,false);
+        ls.addTeam(t1);
+        ls.addTeam(t2);
+        ls.addTeam(t3);
+        ls.addReferee(r1);
+        ls.addReferee(r2);
+        ls.addReferee(r3);
+        ls.scheduleLeagueMatches();
+        assertTrue(ls.setRefereesInMatches());
+        assertEquals(ls.getMatches().get(0),r1.getMainMatches().get(0));
+        assertEquals(ls.getMatches().get(0),r2.getLinesManMatches().get(0));
+        assertEquals(ls.getMatches().get(0),r3.getLinesManMatches().get(0));
+        assertEquals(ls.getMatches().get(1),r1.getMainMatches().get(1));
+        assertEquals(ls.getMatches().get(1),r2.getLinesManMatches().get(1));
+        assertEquals(ls.getMatches().get(1),r3.getLinesManMatches().get(1));
+        assertEquals(ls.getMatches().get(2),r1.getMainMatches().get(2));
+        assertEquals(ls.getMatches().get(2),r2.getLinesManMatches().get(2));
+        assertEquals(ls.getMatches().get(2),r3.getLinesManMatches().get(2));
     }
 
 
