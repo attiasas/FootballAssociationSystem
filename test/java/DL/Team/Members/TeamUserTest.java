@@ -8,7 +8,7 @@ import org.junit.Test;
 
 /**
  * Description:  Test suite for TeamUser class   X
- * ID:              X
+ * ID:   12           X
  **/
 public class TeamUserTest {
 
@@ -19,6 +19,7 @@ public class TeamUserTest {
         team = new Team("barcelona", true, false);
     }
 
+    // ID: 12.1
     @Test
     public void testValidConstructor() {
 
@@ -27,6 +28,7 @@ public class TeamUserTest {
         Assert.assertNotNull(teamUser);
     }
 
+    // ID: 12.2
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidNameConstructor() {
 
@@ -34,6 +36,7 @@ public class TeamUserTest {
         new TeamUser(" ", true, fan, team);
     }
 
+    // ID: 12.3
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidFanConstructor() {
 

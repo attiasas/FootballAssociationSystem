@@ -34,9 +34,6 @@ import java.util.Scanner;
 public class TeamNomineeUseCases
 {
 
-    public static User loggedUser;
-    public static NomineePermissionUnit unit;
-
     /**
      * Initialize Data To Test With.
      */

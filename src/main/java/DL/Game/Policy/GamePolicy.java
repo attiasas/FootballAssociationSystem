@@ -14,7 +14,7 @@ import java.util.*;
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "GetGamePolicies", query = "SELECT gp From GamePolicy gp"),
-        @NamedQuery(name = "getGamePolicy", query = "SELECT gp FROM GamePolicy gp WHERE gp.numberOfRounds =: numberOfRounds AND gp.gamesPerDay =: gamesPerDay ")
+        @NamedQuery(name = "getGamePolicy", query = "SELECT gp FROM GamePolicy gp WHERE gp.numberOfRounds =: numberOfRounds AND gp.gamesPerDay =: gamesPerDay "),
 })
 @IdClass(GamePolicy.EntryPK.class)
 public class GamePolicy {

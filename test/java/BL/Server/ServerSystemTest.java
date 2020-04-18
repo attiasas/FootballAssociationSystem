@@ -18,7 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
  **/
 public class ServerSystemTest {
 
-  static ClientServerCommunication csc;
+  /*static ClientServerCommunication csc;
   static ClientSystem client;
   static int serverPort;
   ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.NONE);
@@ -75,5 +75,5 @@ public class ServerSystemTest {
         }
         ));
     client2.communicateWithServer();
-  }
+  }*/
 }

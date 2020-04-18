@@ -16,16 +16,6 @@ import static org.junit.Assert.*;
  * Description:     This testClass tests the scorePolicy class.
  **/
 public class ScorePolicyTest {
-    /**
-     * Tests scorePolicy constructor with right param
-     */
-    @Test
-    public void scorePolicyCtorTest() {
-        ScorePolicy scorePolicy = new ScorePolicy(2, 1, 0);
-        Assert.assertEquals(2, scorePolicy.getWinPoints());
-        Assert.assertEquals(1, scorePolicy.getDrawPoints());
-        Assert.assertEquals(0, scorePolicy.getLosePoints());
-    }
 
     /**
      * Tests default constructor of scorePolicy

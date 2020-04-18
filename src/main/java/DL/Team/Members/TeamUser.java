@@ -28,6 +28,7 @@ import java.util.List;
         @NamedQuery(name = "teamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
         @NamedQuery(name = "deactivateTeamUser", query = "UPDATE TeamUser tu SET tu.active = false WHERE tu.fan = :fan")
 })
+
 public class TeamUser
 {
     @Id

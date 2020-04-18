@@ -17,6 +17,8 @@ import java.util.Objects;
 @NamedQueries(value = {
         @NamedQuery(name = "UpdateMatchEventLog", query = "update Match m set m.myEventLog = :eventLog where m = : match"),
         @NamedQuery(name =  "UpdateMatchEndTime", query = "update Match m set m.endTime =: endTime where m =: match")
+        @NamedQuery(name = "nextMatchesListByTeam", query = "SELECT m FROM Match m WHERE m.endTime = null AND (m.homeTeam = :team OR m.awayTeam = :team)"),
+        @NamedQuery(name = "nextMatchesListByReferee", query = "SELECT m FROM Match m WHERE m.endTime = null AND (m.mainReferee = :referee OR m.firstLineManReferee = :referee OR m.secondLineManReferee = :referee)"),
 })
 public class Match {
 

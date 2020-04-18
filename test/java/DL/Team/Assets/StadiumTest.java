@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Description:   Test suite for Stadium class X
- * ID:              X
+ * ID:   8           X
  **/
 public class StadiumTest {
 
@@ -22,6 +22,7 @@ public class StadiumTest {
         teamList.add(team);
     }
 
+    // ID: 8.1
     @Test
     public void testValidConstructor() {
 
@@ -29,6 +30,7 @@ public class StadiumTest {
         Assert.assertNotNull(stadium);
     }
 
+    // ID: 8.2
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidCapacityConstructor() {
 
@@ -36,6 +38,7 @@ public class StadiumTest {
 
     }
 
+    // ID: 8.3
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidTeamConstructor() {
 

@@ -26,8 +26,6 @@ import java.util.Map;
  **/
 public class NomineePermissionUnit
 {
-    private TeamOwner cachedOwner;
-    private ClientServerCommunication communication;
 
     /**
      * Constructor

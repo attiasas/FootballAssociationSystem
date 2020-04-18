@@ -17,9 +17,7 @@ import java.util.List;
 @NamedQueries(value = {
         @NamedQuery(name = "TeamOwner", query = "SELECT to FROM TeamOwner to"),
         @NamedQuery(name = "TeamOwnerByTeam", query = "SELECT to FROM TeamOwner to WHERE to.team = :team"),
-        @NamedQuery(name = "TeamOwnerByTeamUser", query = "SELECT to FROM TeamOwner to WHERE to.teamUser = :teamUser"),
         @NamedQuery(name = "TeamOwnerByUser", query = "SELECT to FROM TeamOwner to WHERE to.active = true and to.teamUser.myUser = :user"),
-        @NamedQuery(name = "TeamOwnerByNominee", query = "SELECT to FROM TeamOwner to WHERE to.nominees = :nominee"),
         @NamedQuery(name = "TeamOwnerAddOwnerNominee", query = "UPDATE TeamOwner to SET to.ownerNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
         @NamedQuery(name = "TeamOwnerAddManageNominee", query = "UPDATE TeamOwner to SET to.manageNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
         @NamedQuery(name = "setActiveTeamOwner", query = "UPDATE TeamOwner to SET to.active = : active where to =: teamOwner"),
@@ -29,8 +27,7 @@ import java.util.List;
         @NamedQuery(name = "TeamOwnerByNominee", query = "SELECT to FROM TeamOwner to WHERE to.nominees = :nominee AND to.team.close = false"),
         @NamedQuery(name = "TeamOwnerAddOwnerNominee", query = "UPDATE TeamOwner to SET to.ownerNominee = :ownerNominee WHERE  to.teamUser = :teamUser AND to.team.close = false"),
         @NamedQuery(name = "TeamOwnerAddManageNominee", query = "UPDATE TeamOwner to SET to.manageNominee = :manageNominee WHERE  to.teamUser = :teamUser AND to.team.close = false"),
-        @NamedQuery(name = "setTeamToTeamOwner", query = "UPDATE TeamOwner to SET to.team = :team WHERE to.teamUser = :teamUser"),
-        @NamedQuery(name = "deactivateTeamOwner", query = "UPDATE TeamOwner to SET to.active = :active WHERE to.teamUser = :teamUser AND to.team.close = false")
+        @NamedQuery(name = "setTeamToTeamOwner", query = "UPDATE TeamOwner to SET to.team = :team WHERE to.teamUser = :teamUser")
 })
 public class TeamOwner implements FinancialUser
 {

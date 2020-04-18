@@ -1,11 +1,13 @@
 package BL.Communication;
 
+import DL.Game.Match;
 import DL.Team.Assets.Stadium;
 import DL.Team.Members.Coach;
 import DL.Team.Members.Player;
 import DL.Team.Members.TeamUser;
 import DL.Team.Team;
 
+import javax.persistence.ManyToOne;
 import java.util.*;
 
 public class CommunicationTeamAssetStub extends ClientServerCommunication {
@@ -52,11 +54,10 @@ public class CommunicationTeamAssetStub extends ClientServerCommunication {
         queryToList.add("teamByName"); //query = SELECT t FROM Team t WHERE t.name = :name
         queryToList.add("teamsByStadium"); //query = SELECT t FROM Team t  WHERE :stadium IN (t.stadiums))
         queryToList.add("updateStadiumsToTeam"); //query = UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false
-        queryToList.add("deactivateStadium"); // query = UPDATE Stadium s SET s.active = false WHERE s.name = :name
-        queryToList.add("activateTeam"); // query = UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false
-        queryToList.add("deactivateTeam"); // query = UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false
+        //queryToList.add("setStadiumActivity"); // query = UPDATE Stadium s SET s.active = :active WHERE s.name = :name
+        //queryToList.add("SetTeamActivity"); // query = UPDATE Team t SET t.active = :active WHERE t.name = :name AND t.close = false
         queryToList.add("closeTeam"); //query = UPDATE Team t SET t.close = true, t.active = false WHERE t.name = :name AND t.close = false
-        queryToList.add("deactivateTeamUser"); //query = UPDATE TeamUser tu SET tu.active = :active WHERE tu.fan = :fan
+        //queryToList.add("SetActiveTeamUser"); //query = UPDATE TeamUser tu SET tu.active = : active where tu =: teamUser
         queryToList.add("teamUserByTeam"); //query = SELECT tu from TeamUser tu WHERE tu.team = :team
     }
 
@@ -232,43 +233,34 @@ public class CommunicationTeamAssetStub extends ClientServerCommunication {
 
         }
 
-        else if (queryName.equals("deactivateStadium")) {
-            // query = UPDATE Stadium s SET s.active = false WHERE s.name = :name
+        else if (queryName.equals("setStadiumActivity")) {
+            // query = UPDATE Stadium s SET s.active = :active WHERE s.name = :name
             List<Stadium> result = query("stadiumByName", parameters);
 
             if (result.isEmpty()) return false;
 
             Stadium stadium = result.get(0);
 
-            return stadium.deactivateStadium();
+            stadium.setActive((boolean)parameters.get("active"));
+
+            return (stadium.isActive());
 
         }
 
-        else if (queryName.equals("activateTeam")) {
-            // query = UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false
+        else if (queryName.equals("SetTeamActivity")) {
+            // query = UPDATE Team t SET t.active = :active WHERE t.name = :name AND t.close = false
             List<Team> result = query("teamByName", parameters);
 
             if (result.isEmpty()) return false;
 
             Team team = result.get(0);
 
-            team.setActive(true);
+            if ((boolean)parameters.get("active") == false && nextMatches(team))
+                return false;
+
+            team.setActive((boolean)parameters.get("active"));
 
             return team.isActive();
-
-        }
-
-        else if (queryName.equals("deactivateTeam")) {
-            // query = UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false
-            List<Team> result = query("teamByName", parameters);
-
-            if (result.isEmpty()) return false;
-
-            Team team = result.get(0);
-
-            team.setActive(false);
-
-            return !team.isActive();
 
         }
 
@@ -280,22 +272,23 @@ public class CommunicationTeamAssetStub extends ClientServerCommunication {
 
             Team team = result.get(0);
 
+            if (nextMatches(team)) return false;
+
             team.setClose(true);
 
             return team.isClose();
         }
 
-        else if (queryName.equals("deactivateTeamUser")) {
-            // query = UPDATE TeamUser tu SET tu.active = :active WHERE tu.fan = :fan
-            List<TeamUser> result = query("teamUserByFan", parameters);
+        else if (queryName.equals("SetActiveTeamUser")) {
+            // query = UPDATE TeamUser tu SET tu.active = :active where tu = :teamUser
 
-            if (result.isEmpty()) return false;
+            TeamUser teamUser = (TeamUser) parameters.get("teamUser");
 
-            TeamUser teamUser = result.get(0);
+            if (teamUser == null) return false;
 
-            teamUser.setActive(false);
+            teamUser.setActive((boolean)parameters.get("active"));
 
-            return !teamUser.isActive();
+            return teamUser.isActive();
 
         }
 
@@ -331,5 +324,19 @@ public class CommunicationTeamAssetStub extends ClientServerCommunication {
     public boolean delete(Object toDelete)
     {
         return true;
+    }
+
+    private boolean nextMatches(Team team) {
+
+        List<Match> matches = team.getAwayMatches();
+        for (Match m : matches) {
+            if (m.getEndTime() == null) return true;
+        }
+        matches = team.getHomeMatches();
+        for (Match m : matches) {
+            if (m.getEndTime() == null) return true;
+        }
+
+        return false;
     }
 }

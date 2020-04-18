@@ -17,10 +17,12 @@ import java.util.List;
 @NamedQueries(value = {
         @NamedQuery(name = "AllReferees", query = "SELECT r From Referee r"),
         @NamedQuery(name = "UpdateRefereeLeagueSeasonList", query = "UPDATE Referee r SET r.leagueSeasons = :newLeagueSeasonList WHERE  r.username = : username"),
+        @NamedQuery(name = "setRefereeActivity", query = "UPDATE Referee r SET r.active = :active WHERE r.fan = :fan"),
         @NamedQuery(name = "activeRefereeByUser", query = "select r from Referee where r.fan = :uesr and r.active = true")
 })
 public class Referee
 {
+
     @Id
     @Column
     String name;
@@ -84,16 +86,25 @@ public class Referee
     {
         return fan;
     }
+
     public List<LeagueSeason> getLeagueSeasons() {
         return leagueSeasons;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public List<Match> getMainMatches() {
         return mainMatches;
     }
 
-    public boolean isActive() {
-        return active;
+    public List<Match> getLinesManMatches() {
+        return linesManMatches;
     }
 }
 

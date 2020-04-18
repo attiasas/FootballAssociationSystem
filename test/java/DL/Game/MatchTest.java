@@ -16,22 +16,6 @@ import static org.junit.Assert.*;
 public class MatchTest {
 
     /**
-     * Tests the default ctor.
-     */
-    @Test
-    public void defaultCtorTest() {
-        Match match = new Match();
-        assertEquals(0, match.getHomeScore());
-        assertEquals(0, match.getAwayScore());
-        assertNull(match.getHomeTeam());
-        assertNull(match.getAwayTeam());
-        assertNull(match.getStadium());
-        assertNull(match.getStartTime());
-        assertNull(match.getEndTime());
-        assertNull(match.getMyEventLog());
-    }
-
-    /**
      * Tests ctor with parameters - should be okay
      */
     @Test

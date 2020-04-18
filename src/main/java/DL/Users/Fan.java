@@ -3,9 +3,7 @@ package DL.Users;
 import DL.Team.Page.Page;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Description:     Represents a Fan in the System. A Fan is the first User object that a registered User gets.

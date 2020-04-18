@@ -18,7 +18,7 @@ import java.util.Map;
  * responsible of U.C 9.1-9.6 - all the use cases related to League, Season, and Policies.
  **/
 public class LeagueSeasonUnit {
-
+/*
     private ClientServerCommunication clientServerCommunication;
 
     public LeagueSeasonUnit(ClientServerCommunication clientServerCommunication) {

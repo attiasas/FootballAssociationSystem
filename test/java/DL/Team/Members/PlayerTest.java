@@ -9,10 +9,11 @@ import java.util.Date;
 
 /**
  * Description:  Test suite for Player class   X
- * ID:              X
+ * ID:    10          X
  **/
 public class PlayerTest {
 
+    // ID: 10.1
     @Test
     public void testValidConstructor() {
 
@@ -23,6 +24,7 @@ public class PlayerTest {
         Assert.assertNotNull(player);
     }
 
+    // ID: 10.2
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidRoleConstructor() {
 
@@ -33,6 +35,7 @@ public class PlayerTest {
 
     }
 
+    // ID: 10.3
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidDateConstructor() {
 

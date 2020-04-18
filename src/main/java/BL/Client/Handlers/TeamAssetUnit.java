@@ -1,6 +1,7 @@
 package BL.Client.Handlers;
 
 import BL.Communication.ClientServerCommunication;
+import DL.Game.Match;
 import DL.Team.Assets.Stadium;
 import DL.Team.Members.*;
 import DL.Team.Page.Page;
@@ -20,12 +21,12 @@ import java.util.List;
  * Description:  TeamAssetUnit responsible for  team management operations by a logged-in user X
  * ID:              X
  **/
-public class TeamAssetUnit
-{
+public class TeamAssetUnit {
     private ClientServerCommunication clientServerCommunication;
 
     /**
      * Constructor
+     *
      * @param clientServerCommunication
      */
     public TeamAssetUnit(ClientServerCommunication clientServerCommunication) {
@@ -92,14 +93,15 @@ public class TeamAssetUnit
 
     /**
      * Adds a stadium to the system and connect it to a
-     * @param name - stadium name
+     *
+     * @param name     - stadium name
      * @param capacity
      * @param team
      * @return true if adding operation succeeded
      */
     public boolean addStadium(String name, int capacity, Team team) {
 
-        if (!isValidStadiumName(name) || capacity <= 0 || team == null)
+        if (!isValidStadiumName(name) || capacity <= 0 || team == null || isClosedTeam(team))
             return false;
 
         //get stadium by name
@@ -118,9 +120,10 @@ public class TeamAssetUnit
 
     /**
      * Set details of a stadium connected to a given team
-     * @param newName - new stadium's name
-     * @param capacity - new stadium's capacity
-     * @param stadium - stadium to set
+     *
+     * @param newName   - new stadium's name
+     * @param capacity  - new stadium's capacity
+     * @param stadium   - stadium to set
      * @param teamsList
      * @return true if the operation succeeded (i.e. changes was set in db)
      */
@@ -141,6 +144,7 @@ public class TeamAssetUnit
 
     /**
      * Removes a stadium from the system (deactivate it).
+     *
      * @param name - stadium name
      * @return true if removal operation succeeded and false otherwise (db failure/ remained teams related to
      * this stadium)
@@ -160,8 +164,9 @@ public class TeamAssetUnit
         List<Team> teams = clientServerCommunication.query("teamsByStadium", args);
         args.clear();
         args.put("name", name);
+        args.put("active", false);
         if (teams != null && teams.size() == 0) // there are no teams related to this stadium
-            return clientServerCommunication.update("deactivateStadium", args);
+            return clientServerCommunication.update("setStadiumActivity", args);
 
         return false;
 
@@ -169,13 +174,14 @@ public class TeamAssetUnit
 
     /**
      * Updates team's stadiums list
+     *
      * @param team
      * @param stadiums - new stadiums list
      * @return true if the operation succeeded, or false otherwise (db failure/invalid arguments/empty stadium list)
      */
     public boolean updateTeamStadiums(Team team, List<Stadium> stadiums) {
 
-        if (team == null || stadiums == null || stadiums.size() == 0) return false;
+        if (team == null || stadiums == null || stadiums.size() == 0 || isClosedTeam(team)) return false;
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("newStadiumsList", stadiums);
@@ -187,34 +193,42 @@ public class TeamAssetUnit
     }
 
     /**
-     * Set activation status of a team (active or not)
+     * Sets team activity (active or not)
      * @param team
-     * @return true if the operation succeeded (i.e. changes was set in db)
+     * @param active - if true -> activate , if false -> deactivate
+     * @return true if the operation succeeded, or false otherwise (invalid input, db failure, doesn't doesn't exist)
      */
-    public boolean activateTeam(Team team) {
+    public boolean setTeamActivity(Team team, boolean active) {
 
-        return setTeamActivity(team, true);
-    }
+        if (team == null || isClosedTeam(team)) return false;
 
-    /**
-     * Removes team from the system, i.e. deactivate it
-     * @param team
-     * @return true if the operation succeeded, or false otherwise (invalid input, team doesn't exist, db failure)
-     */
-    public boolean deactivateTeam(Team team) {
+        if (active == false && remainedMatches(team)) return false;
 
-        return setTeamActivity(team, false);
+        HashMap<String, Object> args = new HashMap<>();
+        args.put("name", team.getName());
 
+        List<Team> queryResult = clientServerCommunication.query("teamByName", args);
+
+        if (queryResult.isEmpty()) return false; // team doesn't exist
+
+        args.clear();
+        args.put("name", team.getName());
+        args.put("active", active);
+
+        boolean status = clientServerCommunication.update("SetTeamActivity", args);
+
+        return status;
     }
 
     /**
      * Changes team status to "close"
+     *
      * @param team
      * @return true if the operation succeeded (i.e. changes was set in db)
      */
     public boolean closeTeam(Team team) {
 
-        if (team == null)
+        if (team == null || isClosedTeam(team) || remainedMatches(team))
             return false;
 
         HashMap<String, Object> args = new HashMap<>();
@@ -228,14 +242,15 @@ public class TeamAssetUnit
 
     /**
      * Adds new player to the system
+     *
      * @param team
-     * @param fan - a fan user connected to the player
+     * @param fan       - a fan user connected to the player
      * @param name
      * @param role
      * @param birthDate
      * @return true if the operation succeeded, and false otherwise (invalid input, db failure, fan exists)
      */
-    public boolean addPlayer(Team team, Fan fan ,String name, String role, Date birthDate) {
+    public boolean addPlayer(Team team, Fan fan, String name, String role, Date birthDate) {
 
         if (team == null || isClosedTeam(team) || fan == null || birthDate == null || !isValidName(name) || !isValidName(role))
             return false;
@@ -253,6 +268,7 @@ public class TeamAssetUnit
 
     /**
      * Edit a player details. If a detail stayed the same, it value passes also.
+     *
      * @param fan
      * @param team
      * @param name
@@ -266,7 +282,7 @@ public class TeamAssetUnit
             return false;
 
         TeamUser teamUser = getTeamUserByFan(fan);
-        if (teamUser == null) return false;
+        if (teamUser == null || !(teamUser instanceof Player)) return false;
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("name", name);
@@ -284,26 +300,27 @@ public class TeamAssetUnit
 
     /**
      * removes a player - i.e. deactivates it
-     * @param team
+     *
      * @param fan
      * @return true if the operation succeeded, or false otherwise (invalid input, db failure, fan doesn't exist)
      */
-    public boolean removePlayer(Team team, Fan fan) {
+    public boolean removePlayer(Fan fan) {
 
-        return deactivateTeamUser(team, fan);
+        return deactivateTeamUser(fan, "Player");
 
     }
 
     /**
      * Adds new coach to the system
+     *
      * @param team
-     * @param fan - a fan user connected to the coach
+     * @param fan           - a fan user connected to the coach
      * @param name
      * @param qualification
      * @param role
      * @return true if the operation succeeded, and false otherwise (invalid input, db failure, fan exists)
      */
-    public boolean addCoach(Team team, Fan fan ,String name, String qualification, String role) {
+    public boolean addCoach(Team team, Fan fan, String name, String qualification, String role) {
 
         if (team == null || isClosedTeam(team) || fan == null || !isValidName(name) || !isValidName(qualification) || !isValidName(role))
             return false;
@@ -322,6 +339,7 @@ public class TeamAssetUnit
 
     /**
      * Edit a coach details. If a detail stayed the same, it value passes also.
+     *
      * @param team
      * @param fan
      * @param name
@@ -335,7 +353,7 @@ public class TeamAssetUnit
             return false;
 
         TeamUser teamUser = getTeamUserByFan(fan);
-        if (teamUser == null) return false;
+        if (teamUser == null || !(teamUser instanceof Coach)) return false;
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("name", name);
@@ -353,18 +371,21 @@ public class TeamAssetUnit
 
     /**
      * removes a coach - i.e. turns it to be "inactive"
-     * @param team
+     *
      * @param fan
      * @return true if the operation succeeded, or false otherwise (invalid input, db failure, fan doesn't exist)
      */
-    public boolean removeCoach(Team team, Fan fan) {
+    public boolean removeCoach(Fan fan) {
 
-        return deactivateTeamUser(team, fan);
+        return deactivateTeamUser(fan, "Coach");
+
     }
 
     // ** Private methods ** //
+
     /**
      * Check name validation (valid name contains only letters)
+     *
      * @param name
      * @return true if the name is valid
      */
@@ -375,6 +396,7 @@ public class TeamAssetUnit
 
     /**
      * Check name validation (valid name contains letters and numbers only)
+     *
      * @param name
      * @return true if the name is valid
      */
@@ -402,23 +424,30 @@ public class TeamAssetUnit
 
     /**
      * removes a player - i.e. turns it to be "inactive"
-     * @param team
+     *
      * @param fan
      * @return true if the operation succeeded, or false otherwise (invalid input, db failure, fan doesn't exist)
      */
-    private boolean deactivateTeamUser(Team team, Fan fan) {
+    private boolean deactivateTeamUser(Fan fan, String type) {
 
-        if (team == null || fan == null) return false;
+        if (fan == null) return false;
 
         TeamUser teamUser;
         if ((teamUser = getTeamUserByFan(fan)) == null) return false;
 
-        if (!teamUser.getTeam().equals(team)) return false;
+        if (type.equals("Player")) {
+            if (!(teamUser instanceof Player)) return false;
+        }
+
+        else if (type.equals("Coach")) {
+            if (!(teamUser instanceof Coach)) return false;
+        }
 
         HashMap<String, Object> args = new HashMap<>();
-        args.put("fan", fan);
+        args.put("teamUser", teamUser);
+        args.put("active", false);
 
-        boolean status = clientServerCommunication.update("deactivateTeamUser", args);
+        boolean status = clientServerCommunication.update("SetActiveTeamUser", args);
 
         return status;
 
@@ -438,32 +467,18 @@ public class TeamAssetUnit
     }
 
     /**
-     * Sets team activity (active or not)
      * @param team
-     * @param activate - if true -> activate , if false -> deactivate
-     * @return true if the operation succeeded, or false otherwise (invalid input, db failure, doesn't doesn't exist)
+     * @return true if there are still matches left for a team to play, or false otherwise
      */
-    private boolean setTeamActivity(Team team, boolean activate) {
-
-        if (team == null) return false;
+    private boolean remainedMatches(Team team) {
 
         HashMap<String, Object> args = new HashMap<>();
-        args.put("name", team.getName());
+        args.put("team", team);
+        List<Match> nextMatches = clientServerCommunication.query("nextMatchesListByTeam", args);
 
-        List<Team> queryResult = clientServerCommunication.query("teamByName", args);
+        if (nextMatches == null || nextMatches.isEmpty()) return false;
 
-        if (queryResult.isEmpty()) return false; // team doesn't exist
+        return true;
 
-        args.clear();
-        args.put("name", team.getName());
-
-        String request = "";
-        if (activate) request = "activateTeam";
-        else request = "deactivateTeam";
-        boolean status = clientServerCommunication.update(request, args);
-
-        return status;
     }
-
-
 }
