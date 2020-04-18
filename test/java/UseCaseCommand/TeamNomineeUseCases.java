@@ -33,6 +33,8 @@ import java.util.Scanner;
  */
 public class TeamNomineeUseCases
 {
+    private static User loggedUser;
+    private static NomineePermissionUnit unit;
 
     /**
      * Initialize Data To Test With.

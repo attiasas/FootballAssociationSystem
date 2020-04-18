@@ -14,7 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 /**
  * Description:
  **/
-public class ServerSystemTest {
+public class ServerSystemTest
+{
 
   /*static ClientServerCommunication csc;
   static ClientSystem client;
@@ -61,5 +62,5 @@ public class ServerSystemTest {
     csc = new ClientServerCommunication();
     ClientSystem client2 = new ClientSystem(InetAddress.getLocalHost(), serverPort,
         ((inFromServer, outToServer) -> csc.insert(m2)));
-  }
+  }*/
 }

@@ -27,6 +27,7 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
     private List<Team> teams;
     private List<TeamUser> teamUsers;
     private List<Referee> referees;
+    private List<TeamOwner> owners;
 
     private HashMap<String,List> queryToList;
 
@@ -37,6 +38,7 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
         teams = new ArrayList<>();
         teamUsers = new ArrayList<>();
         referees = new ArrayList<>();
+        owners = new ArrayList<>();
     }
 
 
@@ -51,6 +53,18 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
                 if(user.getUsername().equals(parameters.get("username")))
                 {
                     result.add(user);
+                }
+            }
+            return result;
+        }
+        else if(queryName.equals("TeamOwnerByUser"))
+        {
+            List<TeamOwner> result = new ArrayList<>();
+            for(TeamOwner owner : owners)
+            {
+                if(owner.isActive() && owner.getTeamUser().getFan().equals(parameters.get("user")))
+                {
+                    result.add(owner);
                 }
             }
             return result;
@@ -131,7 +145,7 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
             }
             return result;
         }
-        else if(queryName.equals("ActiveTeamUserByFan"))
+        else if(queryName.equals("ActiveTeamUserByFan") || queryName.equals("activeTeamUserByFan"))
         {
             List<TeamUser> result = new ArrayList<>();
             for(TeamUser teamUser : teamUsers)
@@ -156,14 +170,14 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
             return result;
         }
 
+
         return null;
     }
 
     @Override
     public boolean update(String queryName, Map<String, Object> parameters)
     {
-
-        if(queryName.equals("SetActiveTeamUser"))
+        if(queryName.equals("SetActiveTeamUser") || queryName.equals("setActiveTeamUser"))
         {
             TeamUser requestTeamUser = (TeamUser)parameters.get("teamUser");
             for(TeamUser teamUser : teamUsers)
@@ -220,6 +234,11 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
         else if(toInsert instanceof Referee)
         {
             referees.add((Referee)toInsert);
+            return true;
+        }
+        else if(toInsert instanceof TeamOwner)
+        {
+            owners.add((TeamOwner)toInsert);
             return true;
         }
 

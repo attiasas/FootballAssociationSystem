@@ -123,14 +123,6 @@ public class ServerSystem implements IServerStrategy {
   }
 
   /**
-   * Demo the connection to external systems like Finance, Tax etc.
-   */
-  @SuppressWarnings("unused")
-  void initializeExternalSystems() {
-    log.log(Level.INFO, "external systems integration completed");
-  }
-
-  /**
    * Create the reference to the central {@code EntityManagerFactory} using the values set in
    * 'config.properties'
    *
@@ -294,83 +286,4 @@ public class ServerSystem implements IServerStrategy {
       }
     }
   }
-//
-//  public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest) {
-//    try {
-//      switch (systemRequest.type) {
-//        case Delete:
-//          if (systemRequest.data instanceof List) {
-//            toClientObject.writeObject(DB.removeAll((List) systemRequest.data));
-//          } else {
-//            toClientObject.writeObject(DB.remove(systemRequest.data));
-//          }
-//          toClientObject.flush();
-//          break;
-//        case Insert:
-//          if (systemRequest.data instanceof List) {
-//            toClientObject.writeObject(DB.persistAll((List) systemRequest.data));
-//          } else {
-//            toClientObject.writeObject(DB.persist(systemRequest.data));
-//          }
-//          toClientObject.flush();
-//          break;
-//        case Update:
-//          toClientObject.writeObject(DB.update(systemRequest.queryName, systemRequest.data));
-//          toClientObject.flush();
-//          break;
-//        case Query:
-//          List toClient = DB.query(systemRequest.queryName, systemRequest.data);
-//          toClientObject.writeObject(toClient);
-//          toClientObject.flush();
-//          break;
-//        default:
-//          break;
-//      }
-//    } catch (EOFException ignored) {
-//    } catch (Exception e) {
-//      //log.log(Level.ERROR, e.getMessage());
-//    }
-//  }
-//
-//  public enum DbSelector {
-//    DEV {
-//      @Override
-//      public String toString() {
-//        return "db.database";
-//      }
-//    },
-//    TEST {
-//      @Override
-//      public String toString() {
-//        return "dbtest.database";
-//      }
-//    }
-//  }
-//
-//  public enum Strategy {
-//    NONE {
-//      @Override
-//      public String toString() {
-//        return "none";
-//      }
-//    },
-//    CREATE {
-//      @Override
-//      public String toString() {
-//        return "create";
-//      }
-//    },
-//    DROP {
-//      @Override
-//      public String toString() {
-//        return "drop";
-//      }
-//    },
-//    DROP_AND_CREATE {
-//      @Override
-//      public String toString() {
-//        return "drop-and-create";
-//      }
-//    }
-//  }
 }

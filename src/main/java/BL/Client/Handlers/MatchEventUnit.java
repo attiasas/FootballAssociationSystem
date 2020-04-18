@@ -8,9 +8,6 @@ import DL.Game.Referee;
 import DL.Team.Members.Player;
 import DL.Users.User;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -22,11 +19,9 @@ public class MatchEventUnit
     private ClientServerCommunication communication;
     private Referee cachedReferee;
 
-    private final long MAX_ELAPSED_TIME_TO_INSERT_EVENT = 5 * 1000 * 60 * 60; // 5 Hours
-
     /**
      * Constructor
-     * @param communication
+     * @param communication - Object That Connects to the DataBase
      */
     public MatchEventUnit(ClientServerCommunication communication)
     {

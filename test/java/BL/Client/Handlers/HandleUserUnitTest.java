@@ -40,7 +40,7 @@ public class HandleUserUnitTest
     {
         communication = new CommunicationUserUnitStub();
         TeamAssetUnit teamAssetUnit = new TeamAssetUnit(communication);
-        NomineePermissionUnit nomineePermissionUnit = new NomineePermissionUnit();
+        NomineePermissionUnit nomineePermissionUnit = new NomineePermissionUnit(communication);
         AssociationManagementUnit associationManagementUnit = new AssociationManagementUnit(communication);
         userUnit = new HandleUserUnit(communication, nomineePermissionUnit, teamAssetUnit, associationManagementUnit);
 
@@ -85,7 +85,13 @@ public class HandleUserUnitTest
         Fan teamManagerFan = new Fan("teamManager","test@mail.com",DigestUtils.sha1Hex("abcde"));
         communication.insert(teamManagerFan);
 
-        TeamManager teamManager = new TeamManager("teamManager", true, teamManagerFan, t1, new TeamOwner());
+        Fan ownerFan = new Fan("teamOwner","test@mail.com","ebcde");
+        TeamUser ownerTeamUser = new TeamUser("bla",true,ownerFan,t1);
+        TeamOwner owner = new TeamOwner(t1,ownerTeamUser);
+        communication.insert(owner);
+        TeamManager teamManager = new TeamManager("teamManager", true, teamManagerFan, t1, owner);
+        owner.getManageNominees().add(teamManager);
+
         communication.insert(teamManager);
 
     }
@@ -231,8 +237,6 @@ public class HandleUserUnitTest
         assertFalse(fanUser.getActive());
         assertFalse(teamManager.isActive());
     }
-
-
 
 //    @Test
 //    public void testAddNewRefereeBadParameters()

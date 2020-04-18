@@ -19,7 +19,7 @@ import java.util.List;
  * responsible of U.C 9.1-9.6 - all the use cases that related to League, Season, and Policies.
  **/
 public class LeagueSeasonUnit {
-/*
+
     private ClientServerCommunication clientServerCommunication;
 
     /**

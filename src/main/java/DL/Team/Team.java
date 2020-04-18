@@ -161,11 +161,6 @@ public class Team {
         }
     }
 
-    public List<TeamOwner> getTeamOwners()
-    {
-        return teamOwners;
-    }
-
     @Override
     public boolean equals(Object other)
     {
@@ -232,5 +227,7 @@ public class Team {
         this.close = close;
     }
 
-
+    public List<Stadium> getStadiums() {
+        return stadiums;
+    }
 }
