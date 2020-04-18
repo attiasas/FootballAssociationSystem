@@ -25,20 +25,8 @@ import java.util.List;
 /**
  * Description:     X ID:              X
  **/
-@Setter
-@Log4j
-public class ClientSystem {
-
-  private InetAddress serverIP;
-  private int serverPort;
-  private IClientStrategy clientStrategy;
-
-  public ClientSystem(InetAddress IP, int port, IClientStrategy clientStrategy) {
-    this.serverIP = IP;
-    this.serverPort = port;
-    this.clientStrategy = clientStrategy;
-  }
-
+public class ClientSystem
+{
 
     private static User loggedUser = null;
 

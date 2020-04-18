@@ -1,6 +1,7 @@
 package DL.Game.MatchEvents;
 
 import DL.Game.Referee;
+import DL.Team.Members.Player;
 
 import javax.persistence.*;
 
@@ -19,11 +20,11 @@ import javax.persistence.*;
 public abstract class TwoPlayersEvent extends Event {
 
     @Column
-    private String firstPlayer;
+    private Player firstPlayer;
     @Column
-    private String secondPlayer;
+    private Player secondPlayer;
 
-    public TwoPlayersEvent(Referee createdByUser, EventLog eventLog, int gameTime, String firstPlayer, String secondPlayer) {
+    public TwoPlayersEvent(Referee createdByUser, EventLog eventLog, int gameTime, Player firstPlayer, Player secondPlayer) {
         super(createdByUser, eventLog, gameTime);
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;

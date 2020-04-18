@@ -1,6 +1,7 @@
 package DL.Game.MatchEvents;
 
 import DL.Game.Referee;
+import DL.Team.Members.Player;
 
 import javax.persistence.Entity;
 
@@ -10,8 +11,8 @@ import javax.persistence.Entity;
 @Entity
 public class PlayerChange extends TwoPlayersEvent {
 
-    public PlayerChange(Referee createdByUser, EventLog eventLog, int gameTime, String firstPlayer, String secondPlayer) {
-        super(createdByUser, eventLog, gameTime, firstPlayer, secondPlayer);
+    public PlayerChange(Referee createdByUser, EventLog eventLog, int gameTime, Player outPlayer, Player inPlayer) {
+        super(createdByUser, eventLog, gameTime, outPlayer, inPlayer);
     }
 
     public PlayerChange() {

@@ -82,24 +82,24 @@ public class MatchTest {
         assertNull(match.getSecondLineManReferee());
     }
 
-    @Test
-    public void setLinesManRefereesTest() {
-        Match match = new Match();
-        Referee r = new Referee(null, "Test1", null, null);
-        Referee r2 = new Referee(null, "Test2", null, null);
-        match.setLinesManReferees(r, r2);
-        assertEquals(r, match.getFirstLineManReferee());
-        assertEquals(r2, match.getSecondLineManReferee());
-    }
+//    @Test
+//    public void setLinesManRefereesTest() {
+//        Match match = new Match();
+//        Referee r = new Referee(null, "Test1", null, null);
+//        Referee r2 = new Referee(null, "Test2", null, null);
+//        match.setLinesManReferees(r, r2);
+//        assertEquals(r, match.getFirstLineManReferee());
+//        assertEquals(r2, match.getSecondLineManReferee());
+//    }
 
-    @Test
-    public void setSameLinesManRefereesTest() {
-        Match match = new Match();
-        Referee r = new Referee(null, "Test1", null, null);
-        match.setLinesManReferees(r, r);
-        assertNull(match.getFirstLineManReferee());
-        assertNull(match.getSecondLineManReferee());
-    }
+//    @Test
+//    public void setSameLinesManRefereesTest() {
+//        Match match = new Match();
+//        Referee r = new Referee(null, "Test1", null, null);
+//        match.setLinesManReferees(r, r);
+//        assertNull(match.getFirstLineManReferee());
+//        assertNull(match.getSecondLineManReferee());
+//    }
 
     @Test
     public void setMainRefereeEqualsToLinesManTest() {

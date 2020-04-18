@@ -31,8 +31,8 @@ public class AssociationManagementUnit {
      * @param name
      * @return true if the operation succeeded, or false otherwise (invalid input, db failure)
      */
-    public boolean addTeam(String name) {
-
+    public boolean addTeam(String name)
+    {
         if (name == null || !isValidTeamName(name)) return false;
 
         Team team = new Team(name, true, false);
@@ -41,15 +41,14 @@ public class AssociationManagementUnit {
         return status;
     }
 
-
     // ** Private methods ** //
     /**
      * Check name validation (valid name contains letters and numbers only)
      * @param name
      * @return true if the name is valid
      */
-    private boolean isValidTeamName(String name) {
-
+    private boolean isValidTeamName(String name)
+    {
         return name != null && name.matches("([a-zA-Z0-9]+(\\s[a-zA-Z0-9]*)*)+");
     }
 }

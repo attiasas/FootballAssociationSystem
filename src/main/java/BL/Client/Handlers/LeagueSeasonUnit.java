@@ -49,29 +49,29 @@ public class LeagueSeasonUnit {
             return false;
     }
 
-    public boolean changeScorePolicy(LeagueSeason leagueSeason, ScorePolicy scorePolicy) {
-        if (leagueSeason != null && scorePolicy != null && leagueSeason.setScorePolicy(scorePolicy)) {
-            return clientServerCommunication.update("UpdateScorePolicy", Map.of("newScorePolicy", scorePolicy, "league",
-                    leagueSeason.getLeague(), "season", leagueSeason.getSeason()));
-        } else
-            return false;
-    }
+//    public boolean changeScorePolicy(LeagueSeason leagueSeason, ScorePolicy scorePolicy) {
+//        if (leagueSeason != null && scorePolicy != null && leagueSeason.setScorePolicy(scorePolicy)) {
+//            return clientServerCommunication.update("UpdateScorePolicy", Map.of("newScorePolicy", scorePolicy, "league",
+//                    leagueSeason.getLeague(), "season", leagueSeason.getSeason()));
+//        } else
+//            return false;
+//    }
 
-    public boolean setRefereeInLeagueSeason(LeagueSeason leagueSeason, Referee referee) {
-        if (leagueSeason != null && referee != null && leagueSeason.addReferee(referee)) {
-            return clientServerCommunication.update("UpdateLeagueSeasonRefereesList", Map.of("newReferees", leagueSeason.getReferees(),
-                    "league", leagueSeason.getLeague(), "season", leagueSeason.getSeason()));
-        }
-        return false;
-    }
+//    public boolean setRefereeInLeagueSeason(LeagueSeason leagueSeason, Referee referee) {
+//        if (leagueSeason != null && referee != null && leagueSeason.addReferee(referee)) {
+//            return clientServerCommunication.update("UpdateLeagueSeasonRefereesList", Map.of("newReferees", leagueSeason.getReferees(),
+//                    "league", leagueSeason.getLeague(), "season", leagueSeason.getSeason()));
+//        }
+//        return false;
+//    }
 
-    public boolean addTeamToLeagueSeason(LeagueSeason leagueSeason, Team team) {
-        if (leagueSeason != null && team != null && leagueSeason.addTeam(team)) {
-            return clientServerCommunication.update("UpdateLeagueSeasonTeamList", Map.of("newTeamList", leagueSeason.getTeamsParticipate(), "league",
-                    leagueSeason.getLeague(), "season", leagueSeason.getSeason()));
-        } else
-            return false;
-    }
+//    public boolean addTeamToLeagueSeason(LeagueSeason leagueSeason, Team team) {
+//        if (leagueSeason != null && team != null && leagueSeason.addTeam(team)) {
+//            return clientServerCommunication.update("UpdateLeagueSeasonTeamList", Map.of("newTeamList", leagueSeason.getTeamsParticipate(), "league",
+//                    leagueSeason.getLeague(), "season", leagueSeason.getSeason()));
+//        } else
+//            return false;
+//    }
 
     public List<League> getLeagues() {
         List<League> leagues = clientServerCommunication.query("GetAllLeagues", null);
@@ -83,9 +83,9 @@ public class LeagueSeasonUnit {
         return seasons;
     }
 
-    public List<LeagueSeason> getLeagueSeason(Season season) {
-        List<LeagueSeason> leagueSeasons = clientServerCommunication.query("GetAllLeagueSeasons", Map.of("season",season));
-        return leagueSeasons;
-    }
+//    public List<LeagueSeason> getLeagueSeason(Season season) {
+//        List<LeagueSeason> leagueSeasons = clientServerCommunication.query("GetAllLeagueSeasons", Map.of("season",season));
+//        return leagueSeasons;
+//    }
 
 }

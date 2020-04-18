@@ -62,7 +62,7 @@ public class NomineePermissionUnit
     private boolean getOwnerFromServer(User user)
     {
         if(user == null) return false;
-        if(cachedOwner != null && cachedOwner.getTeamUser().getUser().equals(user)) return true; // cached user, nothing to get
+        if(cachedOwner != null && cachedOwner.getTeamUser().getFan().equals(user)) return true; // cached user, nothing to get
 
         // new user, fetch info from server
         List<TeamOwner> queryResult = communication.query("TeamOwnerByUser",mapOf("user",user));
@@ -165,7 +165,7 @@ public class NomineePermissionUnit
         if(teamUserQueryResult == null) return false; // communication problem
         else if(teamUserQueryResult.isEmpty())
         {
-            teamUser = new TeamUser(name,true,potentialNominee);
+            teamUser = new TeamUser(name,true,potentialNominee,cachedOwner.getTeam());
             serverRequests.add(SystemRequest.insert(teamUser));
         }
         else
@@ -181,7 +181,7 @@ public class NomineePermissionUnit
         List<TeamOwner> nominees = cachedOwner.getOwnerNominees();
         serverRequests.add(SystemRequest.insert(owner));
         serverRequests.add(SystemRequest.update("TeamOwnerAddOwnerNominee",mapOf("newNomineesList",nominees,"teamOwner",cachedOwner)));
-        serverRequests.add(SystemRequest.update("updateTeamOwnersOfTeam",mapOf("teamOwners",team.teamOwners,"team",team)));
+        serverRequests.add(SystemRequest.update("updateTeamOwnersOfTeam",mapOf("teamOwners",team.getTeamOwners(),"team",team)));
 
         return communication.transaction(serverRequests);
     }
@@ -217,7 +217,7 @@ public class NomineePermissionUnit
         List<TeamManager> nominees = cachedOwner.getManageNominees();
         serverRequests.add(SystemRequest.insert(teamManager));
         serverRequests.add(SystemRequest.update("TeamOwnerAddManageNominee",mapOf("newNomineesList",nominees,"teamOwner",cachedOwner)));
-        serverRequests.add(SystemRequest.update("updateTeamManagersOfTeam",mapOf("teamManagers",team.teamOwners,"team",team)));
+        serverRequests.add(SystemRequest.update("updateTeamManagersOfTeam",mapOf("teamManagers",team.getTeamOwners(),"team",team)));
 
         return communication.transaction(serverRequests);
     }
@@ -318,6 +318,61 @@ public class NomineePermissionUnit
     }
 
     /**
+     * Remove (Deactivate) a TeamOwner and all his nominees of a given user if exists
+     * TeamOwner must be active, TeamOwner can be the original owner (not nominated)
+     * @param user - user that his owner will be deactivated
+     * @return true if he is an owner and the deactivation is success, false otherwise
+     */
+    public List<SystemRequest> removeTeamOwner(User user)
+    {
+        if(!getOwnerFromServer(user)) return null; // not an owner
+
+        // get the owner that nominated the user (or null if original teamOwner)
+        List<TeamOwner> teamOwners = cachedOwner.getTeam().getTeamOwners();
+        TeamOwner myOwner = null;
+        for(int i = 0; i < teamOwners.size() && myOwner == null; i++)
+        {
+            if(teamOwners.get(i).isMyOwnerNominee(cachedOwner)) myOwner = teamOwners.get(i);
+        }
+
+        List<SystemRequest> serverRequests = new ArrayList<>();
+
+        if(myOwner == null)
+        {
+            // original owner
+
+            // close team for good
+
+            // TODO: Add Notification
+
+        }
+
+        // deactivate owner
+        deactivateNominees(cachedOwner,serverRequests);
+        cachedOwner = null;
+
+        return serverRequests;
+    }
+
+    /**
+     * Remove (Deactivate) a team manager base on a given user if exists
+     * @param user - user that may have an active team manager to remove
+     * @return true if the user had an active team manager and it was deactivate, false otherwise
+     */
+    public boolean removeTeamManager(User user)
+    {
+        if(user == null) return false;
+
+        List<TeamUser> teamUserQueryResult = communication.query("activeTeamUserByFan",mapOf("fan",user));
+        if(teamUserQueryResult == null || teamUserQueryResult.isEmpty()) return false;
+        if(!(teamUserQueryResult.get(0) instanceof TeamManager)) return false;
+
+        TeamManager toRemove = (TeamManager) teamUserQueryResult.get(0);
+
+        return removeManagerNominee(toRemove.getTeamOwner().getTeamUser().getFan(),toRemove);
+    }
+
+    /**
      * This method will update the permission to manage the team of a given manager
      * The manager must be a nominee of the given user
      * @param user - the owner that the manager belongs to
@@ -341,16 +396,16 @@ public class NomineePermissionUnit
         if(edit) permissions.add(UserPermission.Permission.EDIT);
 
         UserPermission userPermission = new UserPermission(permissions);
-        UserPermission oldPermission = manager.getUser().getUserPermission();
+        UserPermission oldPermission = manager.getFan().getUserPermission();
         // update local
-        manager.getUser().setUserPermission(userPermission);
+        manager.getFan().setUserPermission(userPermission);
 
         // TODO: ADD Notification
 
         // update server
         requests.add(SystemRequest.delete(oldPermission));
         requests.add(SystemRequest.insert(userPermission));
-        requests.add(SystemRequest.update("UpdateUserPermission",mapOf("permission",userPermission,"user",manager.getUser())));
+        requests.add(SystemRequest.update("UpdateUserPermission",mapOf("permission",userPermission,"user",manager.getFan())));
 
         return communication.transaction(requests);
     }

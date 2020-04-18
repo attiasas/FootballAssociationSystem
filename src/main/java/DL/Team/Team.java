@@ -30,15 +30,15 @@ import java.util.Objects;
         @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
         @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
         @NamedQuery(name =  "updateTeamOwnersOfTeam", query = "update Team t set t.teamOwners = :teamOwners where t = :team"),
-        @NamedQuery(name =  "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team")
-        @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name ")
+        @NamedQuery(name =  "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team"),
+        @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name "),
         @NamedQuery(name = "activateTeam", query = "UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false "),
         @NamedQuery(name = "deactivateTeam", query = "UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false"),
         @NamedQuery(name = "closedTeamsList", query = "SELECT t FROM Team t  WHERE t.close = true"),
         @NamedQuery(name = "openTeamsList", query = "SELECT t FROM Team t  WHERE t.close = false"),
         @NamedQuery(name = "teamsByStadium", query = "SELECT t FROM Team t  WHERE :stadium IN (t.stadiums)"),
         @NamedQuery(name = "closeTeam", query = "UPDATE Team t SET t.close = true, t.active = false WHERE t.name = :name AND t.close = false "),
-        @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false "),
+        @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false ")
 })
 
 public class Team {
@@ -92,12 +92,6 @@ public class Team {
     @ManyToMany(cascade = CascadeType.MERGE)
     private List<LeagueSeason> leagueSeasons;
 
-
-    public Team (String name, boolean active, boolean close)
-    {
-        this(name, active, close, null);
-    }
-
     //Constructor
     public Team(String name, boolean active, boolean close) {
 
@@ -119,6 +113,7 @@ public class Team {
         leagueSeasons = new ArrayList<>();
     }
 
+    public Team() { this("",true,false); }
 
     public boolean setPage (TeamPage page)
     {
@@ -130,23 +125,9 @@ public class Team {
         return true;
     }
 
-    public String getName()
-    {
-        return this.name;
-    }
-
-
-    public Team() {
-        this("Default",false,false,null);
-    }
-
     public void addLeagueSeason(LeagueSeason leagueSeason) {
         if (leagueSeason != null)
             leagueSeasons.add(leagueSeason);
-    }
-
-    public List<LeagueSeason> getLeagueSeasons() {
-        return leagueSeasons;
     }
 
     public String getName() {
@@ -159,10 +140,6 @@ public class Team {
 
     public List<Match> getHomeMatches() {
         return homeMatches;
-    }
-
-    public List<Stadium> getStadiums() {
-        return stadiums;
     }
 
     public void addStadium(Stadium stadium) {
@@ -180,28 +157,6 @@ public class Team {
         if (awayMatch != null) {
             awayMatches.add(awayMatch);
         }
-    }
-
-    public List<TeamOwner> getTeamOwners()
-    {
-        return teamOwners;
-    }
-
-    @Override
-    public boolean equals(Object other)
-    {
-        if(!(other instanceof Team))
-        {
-            return false;
-        }
-
-        Team otherTeam = (Team)other;
-
-        return this.name.equals(otherTeam.name);
-    }
-
-    public String getName() {
-       return name;
     }
 
     private boolean isValidTeamName(String name) {
@@ -247,14 +202,6 @@ public class Team {
 
     public List<TeamOwner> getTeamOwners() {
         return teamOwners;
-    }
-
-    public List<Match> getHomeMatches() {
-        return homeMatches;
-    }
-
-    public List<Match> getAwayMatches() {
-        return awayMatches;
     }
 
     public List<TeamFinancialEntry> getTeamFinancialEntries() {

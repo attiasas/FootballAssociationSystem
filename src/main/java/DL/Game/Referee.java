@@ -1,6 +1,7 @@
 package DL.Game;
 
 import DL.Game.LeagueSeason.LeagueSeason;
+import DL.Users.Fan;
 import DL.Users.User;
 
 import javax.persistence.*;
@@ -15,10 +16,11 @@ import java.util.List;
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "AllReferees", query = "SELECT r From Referee r"),
-        @NamedQuery(name = "UpdateRefereeLeagueSeasonList", query = "UPDATE Referee r SET r.leagueSeasons = :newLeagueSeasonList WHERE  r.username = : username")
+        @NamedQuery(name = "UpdateRefereeLeagueSeasonList", query = "UPDATE Referee r SET r.leagueSeasons = :newLeagueSeasonList WHERE  r.username = : username"),
+        @NamedQuery(name = "activeRefereeByUser", query = "select r from Referee where r.fan = :uesr and r.active = true")
 })
-public class Referee extends User {
-
+public class Referee
+{
     @Id
     @Column
     String name;
@@ -38,8 +40,6 @@ public class Referee extends User {
     private List<Match> linesManMatches;
     @ManyToMany
     private List<LeagueSeason> leagueSeasons;
-
-
 
     public Referee (String qualification, String name, Fan fan, boolean active)
     {
@@ -88,5 +88,12 @@ public class Referee extends User {
         return leagueSeasons;
     }
 
+    public List<Match> getMainMatches() {
+        return mainMatches;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
 }
 

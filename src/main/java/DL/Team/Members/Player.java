@@ -1,4 +1,5 @@
 package DL.Team.Members;
+import DL.Game.MatchEvents.Event;
 import DL.Team.Page.Page;
 import DL.Team.Page.UserPage;
 import DL.Team.Team;
@@ -6,6 +7,7 @@ import DL.Users.Fan;
 import DL.Users.UserPermission;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import java.util.List;
         @NamedQuery(name = "playerByName", query = "SELECT p FROM Player p WHERE p.name = :name "),
         @NamedQuery(name = "playerByFan", query = "SELECT p FROM Player p WHERE p.fan = :fan "),
         @NamedQuery(name = "updatePlayerDetails", query = "UPDATE Player p SET p.name = :name, p.role = :role, p.team = :team, p.active = :active, p.birthDate = :birthDate WHERE p.fan = :fan"),
+        @NamedQuery(name = "updatePlayerEvents", query = "update Player p set p.playerEvents = :playerEvents where p =: player")
 })
 
 public class Player extends PageUser
@@ -32,19 +35,29 @@ public class Player extends PageUser
     @Column
     private String role;
 
-    //Constructor
-    public Player(String name, boolean active, Fan fan, Date birthDate, String role, Team team) {
+    @Column
+    @OneToMany
+    private List<Event> playerEvents;
 
+    //Constructor
+    public Player(String name, boolean active, Fan fan, Date birthDate, String role, Team team)
+    {
         super(name, active, fan, new UserPage(), team);
         if (birthDate == null || !onlyLettersString(role))
             throw new IllegalArgumentException();
 
         this.birthDate = birthDate;
         this.role = role;
+        playerEvents = new ArrayList<>();
     }
 
-
     public Player() {}
+
+    public List<Event> addEvent(Event event)
+    {
+        playerEvents.add(event);
+        return playerEvents;
+    }
 
     public boolean setDetails(String name, String role, Team team, boolean active, Date birthDate) {
 
@@ -61,5 +74,9 @@ public class Player extends PageUser
 
     public String getRole() {
         return role;
+    }
+
+    public List<Event> getPlayerEvents() {
+        return playerEvents;
     }
 }

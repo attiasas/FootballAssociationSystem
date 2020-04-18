@@ -14,6 +14,10 @@ import java.util.Objects;
  **/
 
 @Entity
+@NamedQueries(value = {
+        @NamedQuery(name = "UpdateMatchEventLog", query = "update Match m set m.myEventLog = :eventLog where m = : match"),
+        @NamedQuery(name =  "UpdateMatchEndTime", query = "update Match m set m.endTime =: endTime where m =: match")
+})
 public class Match {
 
     @Id
@@ -109,6 +113,12 @@ public class Match {
     /**********************************************
      ******************Getters*********************
      *********************************************/
+
+    public boolean isMatchEventPeriodOver()
+    {
+        // TODO: ADD 5 Hours from the point that end time (needs to change from DATE)
+        return endTime != null;
+    }
 
     public Date getStartTime() {
         return startTime;

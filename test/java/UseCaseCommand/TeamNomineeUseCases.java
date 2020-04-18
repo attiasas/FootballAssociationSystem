@@ -5,7 +5,6 @@ import BL.Communication.CommunicationNomineePermissionStub;
 import DL.Team.Members.TeamManager;
 import DL.Team.Members.TeamOwner;
 import DL.Team.Members.TeamUser;
-import DL.Team.Page.TeamPage;
 import DL.Team.Team;
 import DL.Users.Fan;
 import DL.Users.User;
@@ -64,10 +63,10 @@ public class TeamNomineeUseCases
         users.add(u6);
 
         // init logged user to be an owner
-        Team team = new Team("BestTeam",true,false,new TeamPage());
-        TeamUser teamUser = new TeamUser("Dana",true,u1);
-        TeamOwner owner = new TeamOwner(team,teamUser,true);
-        team.teamOwners.add(owner);
+        Team team = new Team("BestTeam",true,false);
+        TeamUser teamUser = new TeamUser("Dana",true,u1,team);
+        TeamOwner owner = new TeamOwner(team,teamUser);
+        team.getTeamOwners().add(owner);
         teamUsers.add(teamUser);
         owners.add(owner);
 
@@ -94,7 +93,7 @@ public class TeamNomineeUseCases
             {
                 for(int i = 0; i < ownerNominees.size(); i++)
                 {
-                    System.out.println(i + ". Owner Name:" + ownerNominees.get(i).getName() + ", UserName: " + ownerNominees.get(i).getUser().getUsername());
+                    System.out.println(i + ". Owner Name:" + ownerNominees.get(i).getName() + ", UserName: " + ownerNominees.get(i).getFan().getUsername());
                 }
             }
             System.out.println("-----------------------------");
@@ -105,7 +104,7 @@ public class TeamNomineeUseCases
             {
                 for(int i = 0; i < managerNominees.size(); i++)
                 {
-                    System.out.println(i + ". Manager Name:" + managerNominees.get(i).getName() + ", UserName: " + managerNominees.get(i).getUser().getUsername() + " | Permissions: " + managerNominees.get(i).getUser().getUserPermission());
+                    System.out.println(i + ". Manager Name:" + managerNominees.get(i).getName() + ", UserName: " + managerNominees.get(i).getFan().getUsername() + " | Permissions: " + managerNominees.get(i).getFan().getUserPermission());
                 }
             }
             System.out.println("-----------------------------");

@@ -22,7 +22,7 @@ import java.util.List;
         @NamedQuery(name = "TeamOwnerByNominee", query = "SELECT to FROM TeamOwner to WHERE to.nominees = :nominee"),
         @NamedQuery(name = "TeamOwnerAddOwnerNominee", query = "UPDATE TeamOwner to SET to.ownerNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
         @NamedQuery(name = "TeamOwnerAddManageNominee", query = "UPDATE TeamOwner to SET to.manageNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
-        @NamedQuery(name = "setActiveTeamOwner", query = "UPDATE TeamOwner to SET to.active = : active where to =: teamOwner")
+        @NamedQuery(name = "setActiveTeamOwner", query = "UPDATE TeamOwner to SET to.active = : active where to =: teamOwner"),
         @NamedQuery(name = "TeamOwner", query = "SELECT to FROM TeamOwner to WHERE to.team.close = false"),
         @NamedQuery(name = "TeamOwnerByTeam", query = "SELECT to FROM TeamOwner to WHERE to.team = :team AND to.active = true AND to.team.close = false"),
         @NamedQuery(name = "TeamOwnerByTeamUser", query = "SELECT to FROM TeamOwner to WHERE to.teamUser = :teamUser AND to.team.close = false"),
@@ -30,7 +30,7 @@ import java.util.List;
         @NamedQuery(name = "TeamOwnerAddOwnerNominee", query = "UPDATE TeamOwner to SET to.ownerNominee = :ownerNominee WHERE  to.teamUser = :teamUser AND to.team.close = false"),
         @NamedQuery(name = "TeamOwnerAddManageNominee", query = "UPDATE TeamOwner to SET to.manageNominee = :manageNominee WHERE  to.teamUser = :teamUser AND to.team.close = false"),
         @NamedQuery(name = "setTeamToTeamOwner", query = "UPDATE TeamOwner to SET to.team = :team WHERE to.teamUser = :teamUser"),
-        @NamedQuery(name = "deactivateTeamOwner", query = "UPDATE TeamOwner to SET to.active = :active WHERE to.teamUser = :teamUser AND to.team.close = false"),
+        @NamedQuery(name = "deactivateTeamOwner", query = "UPDATE TeamOwner to SET to.active = :active WHERE to.teamUser = :teamUser AND to.team.close = false")
 })
 public class TeamOwner implements FinancialUser
 {
@@ -65,7 +65,6 @@ public class TeamOwner implements FinancialUser
         this.ownerNominees = new ArrayList<>();
         this.manageNominees = new ArrayList<>();
     }
-    private List<TeamUser> ownerNominee;
 
     public TeamOwner() {}
 
@@ -98,9 +97,9 @@ public class TeamOwner implements FinancialUser
     {
         if(nominee == null) return null;
 
-        TeamOwner owner = new TeamOwner(team,nominee,true);
+        TeamOwner owner = new TeamOwner(team,nominee);
         ownerNominees.add(owner);
-        team.teamOwners.add(owner);
+        team.getTeamOwners().add(owner);
         return owner;
     }
 
@@ -110,8 +109,22 @@ public class TeamOwner implements FinancialUser
 
         TeamManager teamManager = new TeamManager(name,true,nominee,team,this);
         manageNominees.add(teamManager);
-        team.teamManagers.add(teamManager);
+        team.getTeamManagers().add(teamManager);
         return teamManager;
+    }
+
+    public boolean isMyOwnerNominee(TeamOwner nominee)
+    {
+        if(nominee == null) return false;
+
+        boolean found = false;
+
+        for(int i = 0; i < ownerNominees.size() && !found; i++)
+        {
+            found = ownerNominees.get(i).equals(nominee);
+        }
+
+        return found;
     }
 
     public void setActive(boolean active) {

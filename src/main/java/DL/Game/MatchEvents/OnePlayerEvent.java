@@ -1,6 +1,7 @@
 package DL.Game.MatchEvents;
 
 import DL.Game.Referee;
+import DL.Team.Members.Player;
 
 import javax.persistence.*;
 
@@ -14,9 +15,9 @@ import javax.persistence.*;
 abstract class OnePlayerEvent extends Event {
 
     @Column
-    private String player;
+    private Player player;
 
-    public OnePlayerEvent(Referee createdByUser, EventLog eventLog, int gameTime, String player) {
+    public OnePlayerEvent(Referee createdByUser, EventLog eventLog, int gameTime, Player player) {
         super(createdByUser, eventLog, gameTime);
         this.player = player;
     }

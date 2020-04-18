@@ -61,7 +61,7 @@ public class CommunicationNomineePermissionStub extends ClientServerCommunicatio
 
             for(TeamOwner owner : owners)
             {
-                if(owner.isActive() && owner.getTeamUser().getUser().equals(parameters.get("user"))) result.add(owner);
+                if(owner.isActive() && owner.getTeamUser().getFan().equals(parameters.get("user"))) result.add(owner);
             }
 
             return result;
@@ -85,7 +85,7 @@ public class CommunicationNomineePermissionStub extends ClientServerCommunicatio
 
             for(TeamUser teamUser : teamUsers)
             {
-                if(teamUser.isActive() && teamUser.getUser().equals(parameters.get("fan"))) result.add(teamUser);
+                if(teamUser.isActive() && teamUser.getFan().equals(parameters.get("fan"))) result.add(teamUser);
             }
 
             return result;

@@ -1,6 +1,7 @@
 package DL.Game.MatchEvents;
 
 import DL.Game.Referee;
+import DL.Team.Members.Player;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -15,7 +16,7 @@ import javax.persistence.NamedQuery;
 })
 public class Goal extends OnePlayerEvent {
 
-    public Goal(Referee createdByUser, EventLog eventLog, int gameTime, String player) {
+    public Goal(Referee createdByUser, EventLog eventLog, int gameTime, Player player) {
         super(createdByUser, eventLog, gameTime, player);
     }
 

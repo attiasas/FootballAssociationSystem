@@ -20,13 +20,13 @@ import java.util.List;
         @NamedQuery(name = "AllActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
         @NamedQuery(name = "TeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
         @NamedQuery(name = "ActiveTeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan AND tu.active = true"),
-        @NamedQuery(name = "SetActiveTeamUser", query = "UPDATE TeamUser tu SET tu.active = : active where tu =: teamUser")
+        @NamedQuery(name = "SetActiveTeamUser", query = "UPDATE TeamUser tu SET tu.active = : active where tu =: teamUser"),
         @NamedQuery(name = "teamUser", query = "SELECT tu from TeamUser tu"),
         @NamedQuery(name = "teamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
         @NamedQuery(name = "teamUserByTeam", query = "SELECT tu from TeamUser tu WHERE tu.team = :team"),
         @NamedQuery(name = "allActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
         @NamedQuery(name = "teamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
-        @NamedQuery(name = "deactivateTeamUser", query = "UPDATE TeamUser tu SET tu.active = false WHERE tu.fan = :fan"),
+        @NamedQuery(name = "deactivateTeamUser", query = "UPDATE TeamUser tu SET tu.active = false WHERE tu.fan = :fan")
 })
 public class TeamUser
 {

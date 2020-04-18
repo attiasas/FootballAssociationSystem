@@ -4,7 +4,6 @@ import BL.Communication.CommunicationNomineePermissionStub;
 import DL.Team.Members.TeamManager;
 import DL.Team.Members.TeamOwner;
 import DL.Team.Members.TeamUser;
-import DL.Team.Page.TeamPage;
 import DL.Team.Team;
 import DL.Users.Fan;
 import DL.Users.User;
@@ -50,16 +49,16 @@ public class NomineePermissionUnitTest
         users.add(u4);
         users.add(u5);
 
-        Team t1 = new Team("BestTeam",true,false,new TeamPage());
+        Team t1 = new Team("BestTeam",true,false);
         teams.add(t1);
 
-        TeamUser tu1 = new TeamUser("Assaf",true,u1);
-        TeamUser tu2 = new TeamUser("Amit",true,u3);
+        TeamUser tu1 = new TeamUser("Assaf",true,u1,t1);
+        TeamUser tu2 = new TeamUser("Amit",true,u3,t1);
         teamUsers.add(tu1);
         teamUsers.add(tu2);
 
-        TeamOwner o1 = new TeamOwner(t1,tu1,true);
-        t1.teamOwners.add(o1); // initial Owner, not in unit responsibility
+        TeamOwner o1 = new TeamOwner(t1,tu1);
+        t1.getTeamOwners().add(o1); // initial Owner, not in unit responsibility
         TeamOwner o2 = o1.addTeamOwnerNominee(tu2);
         owners.add(o1);
         owners.add(o2);
@@ -116,7 +115,7 @@ public class NomineePermissionUnitTest
     {
         assertTrue(unit.addOwnerNominee(users.get(0),"Avihai","Avihai"));
         assertEquals(2,unit.getOwnerNominees(users.get(0)).size());
-        assertEquals(3,teams.get(0).teamOwners.size());
+        assertEquals(3,teams.get(0).getTeamOwners().size());
     }
 
     @Test
@@ -137,7 +136,7 @@ public class NomineePermissionUnitTest
 
         // check no change
         assertEquals(1,unit.getOwnerNominees(users.get(0)).size());
-        assertEquals(2,teams.get(0).teamOwners.size());
+        assertEquals(2,teams.get(0).getTeamOwners().size());
     }
 
     @Test
@@ -146,7 +145,7 @@ public class NomineePermissionUnitTest
         assertTrue(unit.addManagerNominee(users.get(0),"Avihai","Avihai"));
         assertEquals(1,unit.getOwnerNominees(users.get(0)).size());
         assertEquals(2,unit.getManageNominees(users.get(0)).size());
-        assertEquals(3,teams.get(0).teamManagers.size());
+        assertEquals(3,teams.get(0).getTeamManagers().size());
     }
 
     @Test
@@ -166,7 +165,7 @@ public class NomineePermissionUnitTest
         assertFalse(unit.addManagerNominee(users.get(0),"Avihai",""));
         // check no change
         assertEquals(1,unit.getManageNominees(users.get(0)).size());
-        assertEquals(2,teams.get(0).teamManagers.size());
+        assertEquals(2,teams.get(0).getTeamManagers().size());
     }
 
     @Test
@@ -184,7 +183,7 @@ public class NomineePermissionUnitTest
     private int getNumActiveOwnersOfTeam()
     {
         int res = 0;
-        for(TeamOwner owner : teams.get(0).teamOwners)
+        for(TeamOwner owner : teams.get(0).getTeamOwners())
         {
             if(owner.isActive()) res++;
         }
@@ -194,7 +193,7 @@ public class NomineePermissionUnitTest
     private int getNumActiveManagersOfTeam()
     {
         int res = 0;
-        for(TeamManager manager : teams.get(0).teamManagers)
+        for(TeamManager manager : teams.get(0).getTeamManagers())
         {
             if(manager.isActive()) res++;
         }
@@ -211,7 +210,7 @@ public class NomineePermissionUnitTest
         assertFalse(unit.removeOwnerNominee(users.get(0),teamUsers.get(3)));
         // check no change
         assertEquals(1,unit.getOwnerNominees(users.get(0)).size());
-        assertEquals(2,teams.get(0).teamOwners.size());
+        assertEquals(2,teams.get(0).getTeamOwners().size());
     }
 
     @Test
@@ -236,7 +235,7 @@ public class NomineePermissionUnitTest
         assertFalse(unit.removeManagerNominee(users.get(0),(TeamManager)teamUsers.get(3)));
         // check no change
         assertEquals(1,unit.getManageNominees(users.get(0)).size());
-        assertEquals(2,teams.get(0).teamManagers.size());
+        assertEquals(2,teams.get(0).getTeamManagers().size());
     }
 
     @Test
