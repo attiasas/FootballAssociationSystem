@@ -15,34 +15,37 @@ import java.util.List;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "teamUser", query = "SELECT tu from TeamUser tu"),
-        @NamedQuery(name = "teamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
+        @NamedQuery(name = "TeamUser", query = "SELECT tu from TeamUser tu"),
+        @NamedQuery(name = "TeamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
+        @NamedQuery(name = "AllActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
+        @NamedQuery(name = "TeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
+        @NamedQuery(name = "ActiveTeamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan AND tu.active = true"),
+        @NamedQuery(name = "SetActiveTeamUser", query = "UPDATE TeamUser tu SET tu.active = : active where tu =: teamUser"),
         @NamedQuery(name = "teamUserByTeam", query = "SELECT tu from TeamUser tu WHERE tu.team = :team"),
         @NamedQuery(name = "allActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
         @NamedQuery(name = "teamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan"),
-        @NamedQuery(name = "deactivateTeamUser", query = "UPDATE TeamUser tu SET tu.active = false WHERE tu.fan = :fan"),
 })
-
 
 public class TeamUser
 {
     @Id
     @Column
+    String name;
+
+    @Id
+    @Column
     @OneToOne
-    protected Fan fan;
-
-    @Column
-    protected String name;
-
-    @Column
-    protected boolean active;
+    Fan fan;
 
     @Column
     @OneToOne(cascade = CascadeType.ALL)
     protected Team team;
 
-    public TeamUser(String name, boolean active, Fan fan, Team team) {
+    @Column
+    boolean active;
 
+    public TeamUser(String name, boolean active, Fan fan, Team team) 
+    {
         if (!onlyLettersString(name) || fan == null || team == null)
             throw new IllegalArgumentException();
 
@@ -54,24 +57,28 @@ public class TeamUser
 
     public TeamUser() {}
 
-    protected boolean onlyLettersString(String str) {
+    public Fan getFan() { return fan; }
 
-        return str != null && str.matches("([a-zA-Z]+(\\s[a-zA-Z]*)*)+");
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public boolean isActive() {
         return active;
     }
 
-    public Fan getFan() {
-        return fan;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
+    public String getName() 
+    {
+        return name;
     }
 
     public Team getTeam() {
         return team;
     }
+
+    protected boolean onlyLettersString(String str)
+    {
+        return str != null && str.matches("([a-zA-Z]+(\\s[a-zA-Z]*)*)+");
+    }
+
 }

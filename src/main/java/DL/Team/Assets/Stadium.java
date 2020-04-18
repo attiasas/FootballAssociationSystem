@@ -18,7 +18,7 @@ import java.util.List;
         @NamedQuery(name = "stadiumsByCapacity", query = "SELECT s FROM Stadium s WHERE s.capacity = :capcity"),
         @NamedQuery(name = "stadiumsByTeam", query = "SELECT s FROM Stadium s WHERE :team IN (s.teams) AND s.team.close = false"),
         @NamedQuery(name = "setStadiumDetails", query = "UPDATE Stadium s SET s.name = :newName, s.capacity = :newCapacity, s.teams = :teamsList WHERE s.name = :name"),
-        @NamedQuery(name = "deactivateStadium", query = "UPDATE Stadium s SET s.active = false WHERE s.name = :name"),
+        @NamedQuery(name = "setStadiumActivity", query = "UPDATE Stadium s SET s.active = :active WHERE s.name = :name"),
 
 })
 
@@ -82,9 +82,8 @@ public class Stadium
         return capacity;
     }
 
-    public boolean deactivateStadium() {
-        this.active = false;
-        return true;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public boolean isActive() {

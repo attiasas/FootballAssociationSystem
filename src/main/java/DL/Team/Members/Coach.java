@@ -6,7 +6,6 @@ import DL.Team.Team;
 import DL.Users.Fan;
 
 import javax.persistence.*;
-
 /**
  * Description:  Defines coach object by qualification, role and team it coaches   X
  * ID:              X

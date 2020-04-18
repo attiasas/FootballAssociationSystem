@@ -7,10 +7,11 @@ import org.junit.Test;
 
 /**
  * Description:  Test suite for Coach Class   X
- * ID:              X
+ * ID:   9           X
  **/
 public class CoachTest {
 
+    // ID: 9.1
     @Test
     public void testValidConstructor() {
 
@@ -20,6 +21,7 @@ public class CoachTest {
         Assert.assertNotNull(coach);
     }
 
+    // ID: 9.2
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidRoleConstructor() {
 
@@ -29,6 +31,7 @@ public class CoachTest {
 
     }
 
+    // ID: 9.3
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidTeamConstructor() {
 

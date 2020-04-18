@@ -1,6 +1,13 @@
 package BL.Client.Handlers;
 
 import BL.Communication.CommunicationTeamAssetStub;
+import DL.Game.LeagueSeason.League;
+import DL.Game.LeagueSeason.LeagueSeason;
+import DL.Game.LeagueSeason.Season;
+import DL.Game.Match;
+import DL.Game.Policy.GamePolicy;
+import DL.Game.Policy.ScorePolicy;
+import DL.Game.Referee;
 import DL.Team.Assets.Stadium;
 import DL.Team.Members.Coach;
 import DL.Team.Members.Player;
@@ -18,7 +25,7 @@ import static org.junit.Assert.*;
 
 /**
  * Description:  Test suite for TeamAssetUnit class  X
- * ID:              X
+ * ID:   16           X
  **/
 public class TeamAssetUnitTest {
 
@@ -149,6 +156,7 @@ public class TeamAssetUnitTest {
 
     }
 
+    // ID: 16.1
     @Test
     public void testLoadTeamStadium() {
 
@@ -157,6 +165,7 @@ public class TeamAssetUnitTest {
         assertEquals(2, stadiums.size());
     }
 
+    // ID: 16.2
     @Test
     public void testLoadTeamStadiumNullArgument() {
 
@@ -164,6 +173,7 @@ public class TeamAssetUnitTest {
         assertNull(stadiums);
     }
 
+    // ID: 16.3
     @Test
     public void testLoadTeamPlayers() {
 
@@ -173,6 +183,7 @@ public class TeamAssetUnitTest {
 
     }
 
+    // ID: 16.4
     @Test
     public void testLoadTeamPlayersNullArgument() {
 
@@ -181,6 +192,7 @@ public class TeamAssetUnitTest {
 
     }
 
+    // ID: 16.5
     @Test
     public void testLoadTeamCoach() {
         List <Coach> coaches = teamAssetUnit.loadTeamCoach(teams.get(1));
@@ -188,12 +200,14 @@ public class TeamAssetUnitTest {
         assertEquals(1, coaches.size());
     }
 
+    // ID: 16.6
     @Test
     public void testLoadTeamCoachNullArgument() {
         List <Coach> coaches = teamAssetUnit.loadTeamCoach(null);
         assertNull(coaches);
     }
 
+    // ID: 16.7
     @Test
     public void testAddStadium() {
 
@@ -203,6 +217,7 @@ public class TeamAssetUnitTest {
 
     }
 
+    // ID: 16.8
     @Test
     public void testAddStadiumInvalidNameArgument() {
 
@@ -213,6 +228,7 @@ public class TeamAssetUnitTest {
 
     }
 
+    // ID: 16.9
     @Test
     public void testAddStadiumInvalidTeamArgument() {
 
@@ -222,6 +238,7 @@ public class TeamAssetUnitTest {
 
     }
 
+    // ID: 16.10
     @Test
     public void updateStadium() {
 
@@ -232,6 +249,7 @@ public class TeamAssetUnitTest {
         assertEquals(teams.size(), stadiums.get(1).getTeams().size());
     }
 
+    // ID: 16.11
     @Test
     public void updateStadiumInvalidCapacity() {
         boolean result = teamAssetUnit.updateStadium("Camp Nou", 0, teams, stadiums.get(1));
@@ -239,6 +257,7 @@ public class TeamAssetUnitTest {
         assertEquals(100000, stadiums.get(1).getCapacity());
     }
 
+    // ID: 16.12
     @Test
     public void testRemoveStadium() {
 
@@ -247,12 +266,13 @@ public class TeamAssetUnitTest {
         Team liverpool = teams.get(2);
         liverpool.getStadiums().remove(1); // remove camp nou from liverpool
 
-        boolean result = teamAssetUnit.removeStadium("Camp Nou");
-        assertTrue(result);
+        boolean result = teamAssetUnit.removeStadium("Camp Nou"); // if false - stadium isn't active
+        assertFalse(result);
         assertFalse(stadiums.get(1).isActive());
 
     }
 
+    // ID: 16.13
     @Test
     public void testImpossibleRemoveStadium() {
 
@@ -261,6 +281,7 @@ public class TeamAssetUnitTest {
         assertFalse(result);
     }
 
+    // ID: 16.14
     @Test
     public void testUpdateTeamStadiums() {
 
@@ -271,6 +292,7 @@ public class TeamAssetUnitTest {
 
     }
 
+    // ID: 16.15
     @Test
     public void testUpdateTeamStadiumsInvalidNumberOfStadiums() {
 
@@ -281,26 +303,29 @@ public class TeamAssetUnitTest {
 
     }
 
+    // ID: 16.16
     @Test
     public void testActivateTeam() {
 
         Team team = teams.get(0);
         team.setActive(false);
         assertFalse(team.isActive());
-        boolean result = teamAssetUnit.activateTeam(team);
+        boolean result = teamAssetUnit.setTeamActivity(team, true);
         assertTrue(result);
         assertTrue(team.isActive());
     }
 
+    // ID: 16.17
     @Test
     public void testDeactivateTeam() {
 
         Team team = teams.get(0);
-        boolean result = teamAssetUnit.deactivateTeam(team);
-        assertTrue(result);
+        boolean result = teamAssetUnit.setTeamActivity(team, false);
+        assertFalse(result); // if false - team is no longer active
         assertFalse(team.isActive());
     }
 
+    // ID: 16.18
     @Test
     public void testCloseTeam() {
 
@@ -309,6 +334,16 @@ public class TeamAssetUnitTest {
         assertTrue(teams.get(0).isClose());
     }
 
+    // ID: 16.19
+    @Test
+    public void testCloseTeamAlreadyClosedTeam() {
+
+        teams.get(0).setClose(true);
+        boolean result = teamAssetUnit.closeTeam(teams.get(0));
+        assertFalse(result);
+    }
+
+    // ID: 16.20
     @Test
     public void testCloseTeamInvalidArgument() {
 
@@ -316,6 +351,7 @@ public class TeamAssetUnitTest {
         assertFalse(result);
     }
 
+    // ID: 16.21
     @Test
     public void testAddPlayer() {
 
@@ -326,6 +362,7 @@ public class TeamAssetUnitTest {
         assertEquals(3, teams.get(0).getPlayers().size());
     }
 
+    // ID: 16.22
     @Test
     public void testAddPlayerInvalidFanArgument() {
 
@@ -335,6 +372,7 @@ public class TeamAssetUnitTest {
         assertEquals(2, teams.get(0).getPlayers().size());
     }
 
+    // ID: 16.23
     @Test
     public void testAddPlayerInvalidRoleArgument() {
 
@@ -345,6 +383,7 @@ public class TeamAssetUnitTest {
         assertEquals(2, teams.get(0).getPlayers().size());
     }
 
+    // ID: 16.24
     @Test
     public void testEditPlayer() {
 
@@ -354,6 +393,7 @@ public class TeamAssetUnitTest {
         assertEquals("CM", players.get(0).getRole());
     }
 
+    // ID: 16.25
     @Test
     public void testEditPlayerInvalidFanArgument() {
 
@@ -362,6 +402,7 @@ public class TeamAssetUnitTest {
         assertFalse(result);
     }
 
+    // ID: 16.26
     @Test
     public void testEditPlayerInvalidTeamArgument() {
 
@@ -371,22 +412,25 @@ public class TeamAssetUnitTest {
         assertFalse(result);
     }
 
+    // ID: 16.27
     @Test
     public void testRemovePlayer() {
 
-        boolean result = teamAssetUnit.removePlayer(teams.get(0), fans.get(0));
-        assertTrue(result);
+        boolean result = teamAssetUnit.removePlayer(fans.get(0));
+        assertFalse(result); // if false - player is no longer active
         assertFalse(teamUsers.get(0).isActive());
     }
 
+    // ID: 16.28
     @Test
-    public void testRemovePlayerWrongTeam() {
+    public void testRemovePlayerAlreadyInactive() {
 
-        boolean result = teamAssetUnit.removePlayer(teams.get(1), fans.get(0));
+        players.get(0).setActive(false);
+        boolean result = teamAssetUnit.removePlayer(fans.get(0));
         assertFalse(result);
-        assertTrue(teamUsers.get(0).isActive());
     }
 
+    // ID: 16.29
     @Test
     public void testAddCoach() {
 
@@ -396,6 +440,7 @@ public class TeamAssetUnitTest {
         assertEquals(3, teams.get(0).getCoaches().size());
     }
 
+    // ID: 16.30
     @Test
     public void testAddCoachInvalidFanArgument() {
 
@@ -404,6 +449,7 @@ public class TeamAssetUnitTest {
         assertEquals(2, teams.get(0).getCoaches().size());
     }
 
+    // ID: 16.31
     @Test
     public void testAddCoachInvalidRoleArgument() {
 
@@ -413,6 +459,7 @@ public class TeamAssetUnitTest {
         assertEquals(2, teams.get(0).getCoaches().size());
     }
 
+    // ID: 16.32
     @Test
     public void testAddCoachWrongArgumentFanIsPlayer() {
         boolean result = teamAssetUnit.addCoach(teams.get(0), fans.get(0), "Isco Alarcon", "UEFA", "Pr!imary Coach");
@@ -420,6 +467,7 @@ public class TeamAssetUnitTest {
         assertEquals(2, teams.get(0).getCoaches().size());
     }
 
+    // ID: 16.33
     @Test
     public void testEditCoach() {
 
@@ -428,6 +476,7 @@ public class TeamAssetUnitTest {
         assertEquals("Secondary Coach", coaches.get(1).getRole());
     }
 
+    // ID: 16.34
     @Test
     public void testEditCoachInvalidFanArgument() {
 
@@ -435,6 +484,7 @@ public class TeamAssetUnitTest {
         assertFalse(result);
     }
 
+    // ID: 16.35
     @Test
     public void testEditCoachInvalidTeamArgument() {
 
@@ -443,35 +493,41 @@ public class TeamAssetUnitTest {
         assertFalse(result);
     }
 
+    // ID: 16.36
     @Test
     public void testRemoveCoach() {
 
-        boolean result = teamAssetUnit.removeCoach(teams.get(1), fans.get(5));
-        assertTrue(result);
+        boolean result = teamAssetUnit.removeCoach(fans.get(5));
+        assertFalse(result); // if false - coach is no longer active
         assertFalse(teamUsers.get(5).isActive());
     }
 
+    // ID: 16.37
     @Test
-    public void testRemoveCoachWrongTeam() {
+    public void testRemoveCoachAlreadyInactive() {
 
-        boolean result = teamAssetUnit.removePlayer(teams.get(0), fans.get(5));
+        coaches.get(1).setActive(false);
+        boolean result = teamAssetUnit.removePlayer(fans.get(5));
         assertFalse(result);
-        assertTrue(teamUsers.get(0).isActive());
     }
 
+    //ID: 16.38
+    @Test
+    public void testRemoveTeamWhileMatchesLeft() {
+        Date date = new Date(1999, 12, 10);
+        Date date1 = new Date(1999, 12, 13);
+        League league = new League("La liga");
+        Season season = new Season(1990);
+        GamePolicy gamePolicy = new GamePolicy(12, 30);
+        ScorePolicy scorePolicy = new ScorePolicy(60, 3, 3);
+        LeagueSeason leagueSeason = new LeagueSeason(league, season, gamePolicy, scorePolicy, date);
+        Match match = new Match(date1, teams.get(0), teams.get(1), leagueSeason, stadiums.get(0));
+        teams.get(0).getHomeMatches().add(match);
+        teams.get(1).getAwayMatches().add(match);
+        boolean res = teamAssetUnit.setTeamActivity(teams.get(0), false);
 
+        assertFalse(res);
 
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 }

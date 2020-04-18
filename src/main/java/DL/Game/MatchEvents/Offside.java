@@ -1,5 +1,7 @@
 package DL.Game.MatchEvents;
 
+import DL.Game.Referee;
+
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -14,7 +16,7 @@ import javax.persistence.NamedQuery;
 })
 public class Offside extends OnePlayerEvent {
 
-    public Offside(EventUser createdByUser, EventLog eventLog, int gameTime, String player) {
+    public Offside(Referee createdByUser, EventLog eventLog, int gameTime, String player) {
         super(createdByUser, eventLog, gameTime, player);
     }
 

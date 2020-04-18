@@ -11,7 +11,6 @@ import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Description:  Defines a Team object - consists of players, manager, coaches, etc.   X
@@ -24,8 +23,13 @@ import java.util.Objects;
         @NamedQuery(name = "teamByName", query = "SELECT t FROM Team t WHERE t.name = :name "),
         @NamedQuery(name = "activeTeam", query = "SELECT t FROM Team t WHERE t.active = true AND t.close = false"),
         @NamedQuery(name = "inActiveTeam", query = "SELECT t FROM Team t WHERE t.active = false "),
-        @NamedQuery(name = "activateTeam", query = "UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false "),
-        @NamedQuery(name = "deactivateTeam", query = "UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false"),
+        @NamedQuery(name = "closedTeam", query = "SELECT t FROM Team t  WHERE t.close = true"),
+        @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
+        @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
+        @NamedQuery(name = "updateTeamOwnersOfTeam", query = "update Team t set t.teamOwners = :teamOwners where t = :team"),
+        @NamedQuery(name = "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team"),
+        @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name "),
+        @NamedQuery(name = "SetTeamActivity", query = "UPDATE Team t SET t.active = :active WHERE t.name = :name AND t.close = false "),
         @NamedQuery(name = "closedTeamsList", query = "SELECT t FROM Team t  WHERE t.close = true"),
         @NamedQuery(name = "openTeamsList", query = "SELECT t FROM Team t  WHERE t.close = false"),
         @NamedQuery(name = "teamsByStadium", query = "SELECT t FROM Team t  WHERE :stadium IN (t.stadiums)"),
@@ -33,8 +37,7 @@ import java.util.Objects;
         @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false "),
 })
 
-public class Team
-{
+public class Team {
     @Id
     @Column
     private String name;
@@ -107,7 +110,38 @@ public class Team
     }
 
     public Team() {
+        this("Default",false,false);
+    }
 
+    public boolean setPage (TeamPage page) {
+        if(page == null)
+        {
+            return false;
+        }
+        this.page = page;
+        return true;
+    }
+
+    public void addLeagueSeason(LeagueSeason leagueSeason) {
+        if (leagueSeason != null)
+            leagueSeasons.add(leagueSeason);
+    }
+
+    public void addStadium(Stadium stadium) {
+        if (stadium != null)
+            stadiums.add(stadium);
+    }
+
+    public void setHomeMatches(Match homeMatch) {
+        if (homeMatches != null) {
+            homeMatches.add(homeMatch);
+        }
+    }
+
+    public void setAwayMatches(Match awayMatch) {
+        if (awayMatch != null) {
+            awayMatches.add(awayMatch);
+        }
     }
 
     public String getName() {

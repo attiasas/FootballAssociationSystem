@@ -11,8 +11,6 @@ import java.util.List;
  * Description:  Defines a TeamManager object - as a TeamUser object   X
  * ID:              X
  **/
-
-
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "teamManager", query = "SELECT tm from TeamManager tm"),
@@ -20,8 +18,6 @@ import java.util.List;
         @NamedQuery(name = "teamManagerByTeam", query = "SELECT tm from TeamManager tm WHERE tm.team = :team AND tm.active = true AND tm.team.close = false"),
         @NamedQuery(name = "teamManagerTeamOwner", query = "SELECT tm from TeamManager tm WHERE tm.teamOwner = :teamOwner AND tm.active = true"),
 })
-
-
 public class TeamManager extends TeamUser
 {
 
@@ -42,4 +38,8 @@ public class TeamManager extends TeamUser
     }
 
     public TeamManager() {}
+
+    public TeamOwner getTeamOwner() {
+        return teamOwner;
+    }
 }

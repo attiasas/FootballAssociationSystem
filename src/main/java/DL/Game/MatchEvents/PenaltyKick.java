@@ -1,6 +1,8 @@
 package DL.Game.MatchEvents;
 
 
+import DL.Game.Referee;
+
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -14,7 +16,7 @@ import javax.persistence.NamedQuery;
 })
 public class PenaltyKick extends Event
 {
-    public PenaltyKick(EventUser createdByUser, EventLog eventLog, int gameTime) {
+    public PenaltyKick(Referee createdByUser, EventLog eventLog, int gameTime) {
         super(createdByUser, eventLog, gameTime);
     }
 

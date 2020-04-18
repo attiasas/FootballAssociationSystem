@@ -11,8 +11,9 @@ import javax.persistence.*;
 
 
 @NamedQueries(value = {
-        @NamedQuery(name = "TeamPage", query = "SELECT tp from TeamPage tp WHERE tp.team.close = false"),
-        @NamedQuery(name = "TeamPageSetContent", query = "UPDATE TeamPage tp SET tp.content = :content WHERE tp.team = :team AND tp.team.close = false"),
+        @NamedQuery(name = "TeamPage", query = "SELECT tp from TeamPage tp"),
+        @NamedQuery(name = "TeamPageSetContent", query = "UPDATE TeamPage tp SET tp.content = :content WHERE tp.team = :team "),
+        @NamedQuery(name = "TeamPageByTeam", query = "SELECT tp from TeamPage tp WHERE team = :team")
 })
 
 
@@ -33,7 +34,26 @@ public class TeamPage extends Page{
         super.content = content;
     }
 
+    public Team getTeam()
+    {
+        return team;
+    }
+
+
+
     public TeamPage() {
 
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if(!(other instanceof TeamPage))
+        {
+            return false;
+        }
+
+        TeamPage otherTeamPage = (TeamPage)other;
+        return this.team.equals(otherTeamPage.team);
     }
 }

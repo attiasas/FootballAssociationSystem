@@ -2,6 +2,7 @@ package DL.Team.Members;
 import DL.Administration.Financial.FinancialEntry;
 import DL.Administration.Financial.FinancialUser;
 import DL.Team.Team;
+import DL.Users.Fan;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +15,12 @@ import java.util.List;
 
 @Entity
 @NamedQueries(value = {
+        @NamedQuery(name = "TeamOwner", query = "SELECT to FROM TeamOwner to"),
+        @NamedQuery(name = "TeamOwnerByTeam", query = "SELECT to FROM TeamOwner to WHERE to.team = :team"),
+        @NamedQuery(name = "TeamOwnerByUser", query = "SELECT to FROM TeamOwner to WHERE to.active = true and to.teamUser.myUser = :user"),
+        @NamedQuery(name = "TeamOwnerAddOwnerNominee", query = "UPDATE TeamOwner to SET to.ownerNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
+        @NamedQuery(name = "TeamOwnerAddManageNominee", query = "UPDATE TeamOwner to SET to.manageNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
+        @NamedQuery(name = "setActiveTeamOwner", query = "UPDATE TeamOwner to SET to.active = : active where to =: teamOwner"),
         @NamedQuery(name = "TeamOwner", query = "SELECT to FROM TeamOwner to WHERE to.team.close = false"),
         @NamedQuery(name = "TeamOwnerByTeam", query = "SELECT to FROM TeamOwner to WHERE to.team = :team AND to.active = true AND to.team.close = false"),
         @NamedQuery(name = "TeamOwnerByTeamUser", query = "SELECT to FROM TeamOwner to WHERE to.teamUser = :teamUser AND to.team.close = false"),
@@ -21,10 +28,7 @@ import java.util.List;
         @NamedQuery(name = "TeamOwnerAddOwnerNominee", query = "UPDATE TeamOwner to SET to.ownerNominee = :ownerNominee WHERE  to.teamUser = :teamUser AND to.team.close = false"),
         @NamedQuery(name = "TeamOwnerAddManageNominee", query = "UPDATE TeamOwner to SET to.manageNominee = :manageNominee WHERE  to.teamUser = :teamUser AND to.team.close = false"),
         @NamedQuery(name = "setTeamToTeamOwner", query = "UPDATE TeamOwner to SET to.team = :team WHERE to.teamUser = :teamUser"),
-        @NamedQuery(name = "deactivateTeamOwner", query = "UPDATE TeamOwner to SET to.active = :active WHERE to.teamUser = :teamUser AND to.team.close = false"),
 })
-
-
 public class TeamOwner implements FinancialUser
 {
     @Id
@@ -32,31 +36,31 @@ public class TeamOwner implements FinancialUser
     @OneToOne (cascade = CascadeType.MERGE)
     private TeamUser teamUser;
 
-
     @Column
     @OneToOne(cascade = CascadeType.MERGE)
     private Team team;
 
     @Column
     @OneToMany (cascade = CascadeType.MERGE)
-    private List<TeamUser> ownerNominee;
+    private List<TeamOwner> ownerNominees;
 
     @Column
     @OneToMany (cascade = CascadeType.MERGE)
-    private List<TeamManager> manageNominee;
+    private List<TeamManager> manageNominees;
 
     @Column
-    private boolean active;
+    boolean active;
 
-    public TeamOwner(Team team) {
-
-        if (team == null)
+    public TeamOwner(Team team, TeamUser user) 
+    {
+        if (team == null || user == null)
             throw new IllegalArgumentException();
 
+        this.teamUser = user;
         this.team = team;
-        this.ownerNominee = new ArrayList<>();
-        this.manageNominee = new ArrayList<>();
         this.active = true;
+        this.ownerNominees = new ArrayList<>();
+        this.manageNominees = new ArrayList<>();
     }
 
     public TeamOwner() {}
@@ -64,5 +68,49 @@ public class TeamOwner implements FinancialUser
     @Override
     public List<FinancialEntry> getFinancialEntries() {
         return null;
+    }
+
+    public List<TeamOwner> getOwnerNominees() {
+        return ownerNominees;
+    }
+
+    public List<TeamManager> getManageNominees() {
+        return manageNominees;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public TeamUser getTeamUser() {
+        return teamUser;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public TeamOwner addTeamOwnerNominee(TeamUser nominee)
+    {
+        if(nominee == null) return null;
+
+        TeamOwner owner = new TeamOwner(team,nominee);
+        ownerNominees.add(owner);
+        team.getTeamOwners().add(owner);
+        return owner;
+    }
+
+    public TeamManager addTeamManagerNominee(Fan nominee, String name)
+    {
+        if(nominee == null || name == null || name.isEmpty()) return null;
+
+        TeamManager teamManager = new TeamManager(name,true,nominee,team,this);
+        manageNominees.add(teamManager);
+        team.getTeamManagers().add(teamManager);
+        return teamManager;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

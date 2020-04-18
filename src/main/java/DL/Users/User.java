@@ -13,7 +13,8 @@ import java.util.Objects;
 @MappedSuperclass
 @NamedQueries( value = {
         @NamedQuery(name = "UserByUsername", query = "SELECT u From User u WHERE u.username = :username"),
-        @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword")
+        @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword"),
+        @NamedQuery(name = "UpdateUserPermission", query = "update User u set u.userPermission = :permission where u = :user")
 })
 public abstract class User
 {
@@ -31,9 +32,6 @@ public abstract class User
     private HashMap<Notification, Boolean> notificationsOwner; //maps from notification to a boolean of read or not read
     @OneToMany
     private List<UserComplaint> userComplaintsOwner;
-
-
-
 
     /**
      *constructor with PermissionList
@@ -53,6 +51,12 @@ public abstract class User
         this.userComplaintsOwner = new ArrayList<UserComplaint>();
     }
 
+    public User(User other)
+    {
+        this(other.username,other.email,other.hashedPassword);
+
+    }
+
     /**
      * constructor without PermissionList
      */
@@ -66,22 +70,37 @@ public abstract class User
         this("", "", "");
     }
 
-    public void addComplaint(UserComplaint userComplaint)
-    {
-        this.userComplaintsOwner.add(userComplaint);
-    }
 
     public boolean hasPermission(UserPermission.Permission permission)
     {
         return userPermission.hasPermission(permission);
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public String getHashedPassword() {
-        return hashedPassword;
+    public String getHashedPassword()
+    {
+        return this.hashedPassword;
+    }
+
+    public List<UserComplaint> getUserComplaintsOwner()
+    {
+        return this.userComplaintsOwner;
+    }
+
+    public boolean addUserComplaint(UserComplaint userComplaint)
+    {
+        if(userComplaint == null)
+        {
+            return false;
+        }
+        this.userComplaintsOwner.add(userComplaint);
+        return true;
+    }
+    public String getEmail() {
+        return email;
     }
 
 
@@ -91,12 +110,27 @@ public abstract class User
         return this.username;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return username.equals(user.username);
+    public void setUserPermission(UserPermission userPermission)
+    {
+        this.userPermission = userPermission;
     }
+
+    public UserPermission getUserPermission() { return userPermission; }
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other == null || !(other instanceof User))
+        {
+            return false;
+        }
+        User otherUser = (User)other;
+        if(otherUser.username.equals(this.username))
+        {
+            return true;
+        }
+        return false;
+    }
+
+
 
 }

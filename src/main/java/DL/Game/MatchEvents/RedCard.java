@@ -1,6 +1,8 @@
 package DL.Game.MatchEvents;
 
 
+import DL.Game.Referee;
+
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -14,7 +16,7 @@ import javax.persistence.NamedQuery;
 })
 public class RedCard extends OnePlayerEvent {
 
-    public RedCard(EventUser createdByUser, EventLog eventLog, int gameTime, String player) {
+    public RedCard(Referee createdByUser, EventLog eventLog, int gameTime, String player) {
         super(createdByUser, eventLog, gameTime, player);
     }
 

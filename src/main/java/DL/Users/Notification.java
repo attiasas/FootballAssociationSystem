@@ -1,6 +1,5 @@
 package DL.Users;
 
-
 import javax.persistence.*;
 
 /**
