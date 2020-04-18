@@ -22,7 +22,7 @@ import java.util.List;
         @NamedQuery(name = "TeamOwnerByNominee", query = "SELECT to FROM TeamOwner to WHERE to.nominees = :nominee"),
         @NamedQuery(name = "TeamOwnerAddOwnerNominee", query = "UPDATE TeamOwner to SET to.ownerNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
         @NamedQuery(name = "TeamOwnerAddManageNominee", query = "UPDATE TeamOwner to SET to.manageNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
-        @NamedQuery(name = "setActiveTeamOwner", query = "UPDATE TeamOwner to SET to.active = : active where to =: teamOwner")
+        @NamedQuery(name = "setActiveTeamOwner", query = "UPDATE TeamOwner to SET to.active = : active where to =: teamOwner"),
         @NamedQuery(name = "TeamOwner", query = "SELECT to FROM TeamOwner to WHERE to.team.close = false"),
         @NamedQuery(name = "TeamOwnerByTeam", query = "SELECT to FROM TeamOwner to WHERE to.team = :team AND to.active = true AND to.team.close = false"),
         @NamedQuery(name = "TeamOwnerByTeamUser", query = "SELECT to FROM TeamOwner to WHERE to.teamUser = :teamUser AND to.team.close = false"),
@@ -94,25 +94,25 @@ public class TeamOwner implements FinancialUser
         return active;
     }
 
-    public TeamOwner addTeamOwnerNominee(TeamUser nominee)
-    {
-        if(nominee == null) return null;
+//    public TeamOwner addTeamOwnerNominee(TeamUser nominee)
+//    {
+//        if(nominee == null) return null;
+//
+//        TeamOwner owner = new TeamOwner(team,nominee,true);
+//        ownerNominees.add(owner);
+//        team.teamOwners.add(owner);
+//        return owner;
+//    }
 
-        TeamOwner owner = new TeamOwner(team,nominee,true);
-        ownerNominees.add(owner);
-        team.teamOwners.add(owner);
-        return owner;
-    }
-
-    public TeamManager addTeamManagerNominee(Fan nominee, String name)
-    {
-        if(nominee == null || name == null || name.isEmpty()) return null;
-
-        TeamManager teamManager = new TeamManager(name,true,nominee,team,this);
-        manageNominees.add(teamManager);
-        team.teamManagers.add(teamManager);
-        return teamManager;
-    }
+//    public TeamManager addTeamManagerNominee(Fan nominee, String name)
+//    {
+//        if(nominee == null || name == null || name.isEmpty()) return null;
+//
+//        TeamManager teamManager = new TeamManager(name,true,nominee,team,this);
+//        manageNominees.add(teamManager);
+//        team.teamManagers.add(teamManager);
+//        return teamManager;
+//    }
 
     public void setActive(boolean active) {
         this.active = active;

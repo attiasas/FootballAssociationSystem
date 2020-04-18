@@ -30,8 +30,8 @@ import java.util.Objects;
         @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
         @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
         @NamedQuery(name =  "updateTeamOwnersOfTeam", query = "update Team t set t.teamOwners = :teamOwners where t = :team"),
-        @NamedQuery(name =  "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team")
-        @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name ")
+        @NamedQuery(name =  "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team"),
+        @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name "),
         @NamedQuery(name = "activateTeam", query = "UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false "),
         @NamedQuery(name = "deactivateTeam", query = "UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false"),
         @NamedQuery(name = "closedTeamsList", query = "SELECT t FROM Team t  WHERE t.close = true"),
@@ -93,11 +93,6 @@ public class Team {
     private List<LeagueSeason> leagueSeasons;
 
 
-    public Team (String name, boolean active, boolean close)
-    {
-        this(name, active, close, null);
-    }
-
     //Constructor
     public Team(String name, boolean active, boolean close) {
 
@@ -137,7 +132,7 @@ public class Team {
 
 
     public Team() {
-        this("Default",false,false,null);
+        this("Default",false,false);
     }
 
     public void addLeagueSeason(LeagueSeason leagueSeason) {
@@ -147,10 +142,6 @@ public class Team {
 
     public List<LeagueSeason> getLeagueSeasons() {
         return leagueSeasons;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public List<Match> getAwayMatches() {
@@ -200,17 +191,9 @@ public class Team {
         return this.name.equals(otherTeam.name);
     }
 
-    public String getName() {
-       return name;
-    }
-
     private boolean isValidTeamName(String name) {
 
         return name != null && name.matches("([a-zA-Z0-9]+(\\s[a-zA-Z0-9]*)*)+");
-    }
-
-    public List<Stadium> getStadiums() {
-        return stadiums;
     }
 
     public boolean isClose() {
@@ -245,24 +228,8 @@ public class Team {
         return teamManagers;
     }
 
-    public List<TeamOwner> getTeamOwners() {
-        return teamOwners;
-    }
-
-    public List<Match> getHomeMatches() {
-        return homeMatches;
-    }
-
-    public List<Match> getAwayMatches() {
-        return awayMatches;
-    }
-
     public List<TeamFinancialEntry> getTeamFinancialEntries() {
         return teamFinancialEntries;
-    }
-
-    public List<LeagueSeason> getLeagueSeasons() {
-        return leagueSeasons;
     }
 
     public void setActive(boolean active) {
@@ -273,12 +240,5 @@ public class Team {
         this.close = close;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Team)) return false;
-        Team team = (Team) o;
-        return name.equals(team.name);
-    }
 
 }

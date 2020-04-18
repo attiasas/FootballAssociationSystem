@@ -6,8 +6,7 @@ import BL.Communication.CommunicationUserUnitStub;
 import DL.Administration.AssociationMember;
 import DL.Administration.Financial.FinancialUser;
 import DL.Game.Referee;
-import DL.Team.Members.Player;
-import DL.Team.Members.TeamUser;
+import DL.Team.Members.*;
 import DL.Team.Page.Page;
 import DL.Team.Page.TeamPage;
 import DL.Team.Team;
@@ -27,8 +26,8 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     test class to the HandleUserUnit class
+ * ID:              4
  **/
 public class HandleUserUnitTest
 {
@@ -40,7 +39,10 @@ public class HandleUserUnitTest
     public void init()
     {
         communication = new CommunicationUserUnitStub();
-        userUnit = new HandleUserUnit(communication);
+        TeamAssetUnit teamAssetUnit = new TeamAssetUnit(communication);
+        NomineePermissionUnit nomineePermissionUnit = new NomineePermissionUnit();
+        AssociationManagementUnit associationManagementUnit = new AssociationManagementUnit(communication);
+        userUnit = new HandleUserUnit(communication, nomineePermissionUnit, teamAssetUnit, associationManagementUnit);
 
         //init fans like pages
         Fan u1 = new Fan("Assaf","test@mail.com", DigestUtils.sha1Hex("abcde"));
@@ -73,6 +75,19 @@ public class HandleUserUnitTest
 
         Referee referee = new Referee("linesMan", "AssafReferee", u1, true);
         communication.insert(referee);
+
+        AssociationMember associationMember = new AssociationMember("Yoram", "yoram@mail.com", "abcde");
+        communication.insert(associationMember);
+
+        Coach amitCoach = new Coach("AmitCoach", true, u3, "High", "Main", t1);
+        communication.insert(amitCoach);
+
+        Fan teamManagerFan = new Fan("teamManager","test@mail.com",DigestUtils.sha1Hex("abcde"));
+        communication.insert(teamManagerFan);
+
+        TeamManager teamManager = new TeamManager("teamManager", true, teamManagerFan, t1, new TeamOwner());
+        communication.insert(teamManager);
+
     }
 
 
@@ -126,26 +141,10 @@ public class HandleUserUnitTest
     }
 
     @Test
-    public void testRemoveNotAFanUser()
+    public void testRemoveAssociationMember()
     {
-        AssociationMember associationMember = new AssociationMember();
-        assertFalse(userUnit.removeUser(associationMember));
-    }
-
-    @Test
-    public void testRemovePlayer()
-    {
-        //creating the user object that is similar to the user that a player contains in the DB
-        Fan fanUser = new Fan("Amir","test@mail.com",DigestUtils.sha1Hex("abcde"));
-        assertFalse(userUnit.removeUser(fanUser));
-    }
-
-    @Test
-    public void testRemoveReferee()
-    {
-        //creating the user object that is similar to the user that a referee contains in the DB
-        Fan fanUser = new Fan("Assaf","test@mail.com", DigestUtils.sha1Hex("abcde"));
-        assertFalse(userUnit.removeUser(fanUser));
+        AssociationMember associationMember = new AssociationMember("Yoram", "yoram@mail.com", "abcde");
+        assertTrue(userUnit.removeUser(associationMember));
     }
 
     @Test
@@ -157,7 +156,6 @@ public class HandleUserUnitTest
         parametersUser.put("username", "Avihai");
         List<Object> users = communication.query("UserByUserName", parametersUser);
         Fan fanUser = (Fan)users.get(0);
-
 
         boolean isRemoved = userUnit.removeUser(fanUser);
 
@@ -172,27 +170,96 @@ public class HandleUserUnitTest
         assertFalse(t1Page.isFollower(fanUser));
         //check the fan does not exist in the DB
         assertTrue(isRemoved);
-
     }
 
     @Test
-    public void testAddNewRefereeBadParameters()
+    public void testRemoveFanInPlayer()
     {
-        assertNull(userUnit.addNewReferee("","","","",""));
+        //get the user from the DB
+        Map<String, Object> parametersUser = new HashMap<>();
+        parametersUser.put("username", "Amir");
+        List<Object> users = communication.query("UserByUserName", parametersUser);
+        Fan fanUser = (Fan)users.get(0);
+
+        boolean isRemoved = userUnit.removeUser(fanUser);
+
+        //get the player from the DB to check if he became not active
+        List<Object> teamUsersObjects = getAllTeamUsersOfFan(fanUser);
+        Player player = (Player)teamUsersObjects.get(0);
+
+        assertTrue(isRemoved);
+        assertFalse(fanUser.getActive());
+        assertFalse(player.isActive());
     }
 
     @Test
-    public void testAddNewReferee()
+    public void testRemoveFanInCoach()
     {
-        Referee referee = userUnit.addNewReferee("Yossi", "test@mail.com", "abcde", "Yossi", "High");
+        //get the user from the DB
+        Map<String, Object> parametersUser = new HashMap<>();
+        parametersUser.put("username", "Amit");
+        List<Object> users = communication.query("UserByUserName", parametersUser);
+        Fan fanUser = (Fan)users.get(0);
 
-        //Get the referee from the Database and see if he was saved successfully in the database
-        Referee dbReferee = getRefereeByUsernameFromDB("Yossi");
+        boolean isRemoved = userUnit.removeUser(fanUser);
 
-        // check if the referee from the userUnit function is the right one
-        assertEquals("Yossi", referee.getName());
-        //check if the referee from the db hs the right one
-        assertEquals("Yossi", dbReferee.getName());
+        //get the player and coach from the DB to check if they became not active
+        List<Object> teamUsersObjects = getAllTeamUsersOfFan(fanUser);
+        Coach amitCoach = (Coach)teamUsersObjects.get(0);
+
+        assertTrue(isRemoved);
+        assertFalse(fanUser.getActive());
+        assertFalse(amitCoach.isActive());
+    }
+
+    @Test
+    public void testRemoveFanInTeamManager()
+    {
+        //get the user from the DB
+        Map<String, Object> parametersUser = new HashMap<>();
+        parametersUser.put("username", "teamManager");
+        List<Object> users = communication.query("UserByUserName", parametersUser);
+        Fan fanUser = (Fan)users.get(0);
+
+        boolean isRemoved = userUnit.removeUser(fanUser);
+
+        //get the player and coach from the DB to check if they became not active
+        List<Object> teamUsersObjects = getAllTeamUsersOfFan(fanUser);
+        TeamManager teamManager = (TeamManager)teamUsersObjects.get(0);
+
+        assertTrue(isRemoved);
+        assertFalse(fanUser.getActive());
+        assertFalse(teamManager.isActive());
+    }
+
+
+
+//    @Test
+//    public void testAddNewRefereeBadParameters()
+//    {
+//        assertNull(userUnit.addNewReferee("","","","",""));
+//    }
+
+//    @Test
+//    public void testAddNewReferee()
+//    {
+//        Referee referee = userUnit.addNewReferee("Yossi", "test@mail.com", "abcde", "Yossi", "High");
+//
+//        //Get the referee from the Database and see if he was saved successfully in the database
+//        Referee dbReferee = getRefereeByUsernameFromDB("Yossi");
+//
+//        // check if the referee from the userUnit function is the right one
+//        assertEquals("Yossi", referee.getName());
+//        //check if the referee from the db hs the right one
+//        assertEquals("Yossi", dbReferee.getName());
+//    }
+
+    @Test
+    public void testLogOut()
+    {
+        userUnit.logIn("Amir", "abcde");
+        assertTrue(userUnit.logOut());
+        assertNull(ClientSystem.getLoggedUser());
     }
 
 
@@ -213,6 +280,14 @@ public class HandleUserUnitTest
         List<Object> users = communication.query("UserByUserName", parametersUser);
         Fan fanUser = (Fan)users.get(0);
         return fanUser;
+    }
+
+    private List<Object> getAllTeamUsersOfFan(Fan fan)
+    {
+        Map<String, Object> parametersTeamUser = new HashMap<>();
+        parametersTeamUser.put("fan", fan);
+        List<Object> teamUsers = communication.query("AllTeamUsersByFan", parametersTeamUser);
+        return teamUsers;
     }
 
 }

@@ -3,13 +3,11 @@ package DL.Users;
 import DL.Team.Page.Page;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Description:     Represents a Fan in the System. A Fan is the first User object that a registered User gets.
- * ID:              X
+ * ID:              7
  **/
 @Entity
 @NamedQueries( value = {
@@ -33,6 +31,11 @@ public class Fan extends User
         this("", "", "");
     }
 
+    /**
+     *
+     * @param page
+     * @return true if the fan follows the page
+     */
     public boolean followPage(Page page)
     {
         if(page == null)

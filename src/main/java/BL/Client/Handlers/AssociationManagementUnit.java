@@ -1,7 +1,9 @@
 package BL.Client.Handlers;
 
 import BL.Communication.ClientServerCommunication;
+import DL.Game.Referee;
 import DL.Team.Team;
+import DL.Users.Fan;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,5 +53,34 @@ public class AssociationManagementUnit {
     private boolean isValidTeamName(String name) {
 
         return name != null && name.matches("([a-zA-Z0-9]+(\\s[a-zA-Z0-9]*)*)+");
+    }
+
+
+    /**
+     * Signs up a user and injects it in a Referee object
+     * @param fan
+     * @param qualification
+     * @return A referee object. Returns null if the user can not be created or arguments were wrong
+     */
+    public boolean addNewReferee(Fan fan, String name, String qualification)
+    {
+        if(fan == null || qualification == null || qualification.equals(""))
+        {
+            return false;
+        }
+
+        // Create a new Referee with the fan we received
+        Referee referee = new Referee(qualification, name, fan, true);
+
+        if(!clientServerCommunication.insert(referee))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean removeReferee(Referee referee)
+    {
+        return false;
     }
 }

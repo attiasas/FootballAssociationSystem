@@ -1,6 +1,7 @@
 package DL.Game;
 
 import DL.Game.LeagueSeason.LeagueSeason;
+import DL.Users.Fan;
 import DL.Users.User;
 
 import javax.persistence.*;
@@ -15,9 +16,10 @@ import java.util.List;
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "AllReferees", query = "SELECT r From Referee r"),
-        @NamedQuery(name = "UpdateRefereeLeagueSeasonList", query = "UPDATE Referee r SET r.leagueSeasons = :newLeagueSeasonList WHERE  r.username = : username")
+        @NamedQuery(name = "UpdateRefereeLeagueSeasonList", query = "UPDATE Referee r SET r.leagueSeasons = :newLeagueSeasonList WHERE r.username = : username"),
+        @NamedQuery(name = "RefereeeByFan", query = "SELECT r FROM Referee r WHERE fan = :fan"),
 })
-public class Referee extends User {
+public class Referee {
 
     @Id
     @Column

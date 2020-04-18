@@ -1,5 +1,6 @@
 package BL.Communication;
 
+import DL.Administration.AssociationMember;
 import DL.Game.Referee;
 import DL.Team.Members.Player;
 import DL.Team.Members.TeamOwner;
@@ -78,6 +79,18 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
             }
             return result;
         }
+        else if(queryName.equals("teamUserByFan"))
+        {
+            List<TeamUser> result = new ArrayList<>();
+            for(TeamUser teamUser : teamUsers)
+            {
+                if(teamUser.getFan().getUsername().equals(((User)(parameters.get("fan"))).getUsername()))
+                {
+                    result.add(teamUser);
+                }
+            }
+            return result;
+        }
         else if(queryName.equals("RefereeByFan"))
         {
             List<Referee> result = new ArrayList<>();
@@ -118,13 +131,30 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
             }
             return result;
         }
-
-//        if(queryName.equals("TeamOwnerByTeamUser"))
-//        {
-//            List<TeamOwner> result = new ArrayList<>();
-//            for(TeamOwner owner : owners) if(owner.isMyOwner((TeamUser)parameters.get("teamUser"))) result.add(owner);
-//            return result;
-//        }
+        else if(queryName.equals("ActiveTeamUserByFan"))
+        {
+            List<TeamUser> result = new ArrayList<>();
+            for(TeamUser teamUser : teamUsers)
+            {
+                if(teamUser.getFan().equals(parameters.get("fan")) && teamUser.isActive())
+                {
+                    result.add(teamUser);
+                }
+            }
+            return result;
+        }
+        else if(queryName.equals("AllTeamUsersByFan"))
+        {
+            List<TeamUser> result = new ArrayList<>();
+            for(TeamUser teamUser : teamUsers)
+            {
+                if(teamUser.getFan().equals(parameters.get("fan")))
+                {
+                    result.add(teamUser);
+                }
+            }
+            return result;
+        }
 
         return null;
     }
@@ -132,6 +162,31 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
     @Override
     public boolean update(String queryName, Map<String, Object> parameters)
     {
+
+        if(queryName.equals("SetActiveTeamUser"))
+        {
+            TeamUser requestTeamUser = (TeamUser)parameters.get("teamUser");
+            for(TeamUser teamUser : teamUsers)
+            {
+                if(teamUser.equals(requestTeamUser))
+                {
+                    teamUser.setActive((boolean)parameters.get("active"));
+                }
+            }
+            return true;
+        }
+        if(queryName.equals("DeactivateUser"))
+        {
+            User requestUser = (User)parameters.get("user");
+            for(User user : users)
+            {
+                if(user.equals(requestUser))
+                {
+                    user.setActive(false);
+                }
+            }
+            return true;
+        }
 
         return false;
     }
@@ -141,6 +196,7 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
     @Override
     public boolean insert(Object toInsert)
     {
+
         if(toInsert instanceof User)
         {
             users.add((User)toInsert);
@@ -179,6 +235,11 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
 
             Fan fanToDelete = (Fan)toDelete;
             fanToDelete.unfollowAllPages();
+            return true;
+        }
+        if(toDelete instanceof User)
+        {
+            users.remove((User)toDelete);
             return true;
         }
 

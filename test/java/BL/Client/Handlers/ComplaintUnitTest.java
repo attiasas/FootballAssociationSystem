@@ -21,8 +21,8 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     tests for the ComplaintUnitTest class
+ * ID:              5
  **/
 public class ComplaintUnitTest
 {

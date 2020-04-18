@@ -14,12 +14,16 @@ import java.util.Objects;
 @NamedQueries( value = {
         @NamedQuery(name = "UserByUsername", query = "SELECT u From User u WHERE u.username = :username"),
         @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword"),
-        @NamedQuery(name = "UpdateUserPermission", query = "update User u set u.userPermission = :permission where u = :user")
+        @NamedQuery(name = "UpdateUserPermission", query = "update User u set u.userPermission = :permission where u = :user"),
+        @NamedQuery(name = "DeactivateUser", query = "UPDATE User u SET u.active = false where user = :user"),
+        @NamedQuery(name = "ActivateUser", query = "UPDATE User u SET u.active = true where user=:user")
 })
 public abstract class User
 {
     @Id
     private String username;
+    @Column
+    private boolean active;
     @Column
     private List<String> searches;
     @Column
@@ -43,6 +47,7 @@ public abstract class User
     public User (String userName, String email, String hashedPassword, List<UserPermission.Permission> permissionList)
     {
         this.username = userName;
+        this.active = true;
         this.searches = new ArrayList<String>();
         this.email = email;
         this.hashedPassword = hashedPassword;
@@ -78,11 +83,6 @@ public abstract class User
 
     public String getUsername() {
         return username;
-    }
-
-    public String getUsername()
-    {
-        return this.username;
     }
 
     public String getHashedPassword()
@@ -134,6 +134,16 @@ public abstract class User
             return true;
         }
         return false;
+    }
+
+    public boolean setActive(boolean active)
+    {
+        this.active = active;
+        return true;
+    }
+    public boolean getActive()
+    {
+        return active;
     }
 
 
