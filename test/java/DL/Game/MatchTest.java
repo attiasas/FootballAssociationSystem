@@ -10,10 +10,25 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     This testClass tests the Match class.
+ * ID:              18
  **/
 public class MatchTest {
+
+    /**
+     * Tests the default ctor.
+     */
+    @Test
+    public void defaultCtorTest() {
+        Match match = new Match();
+        assertEquals(0, match.getHomeScore());
+        assertEquals(0, match.getAwayScore());
+        assertNull(match.getHomeTeam());
+        assertNull(match.getAwayTeam());
+        assertNull(match.getStadium());
+        assertNull(match.getStartTime());
+        assertNull(match.getEndTime());
+    }
 
     /**
      * Tests ctor with parameters - should be okay
@@ -21,8 +36,8 @@ public class MatchTest {
     @Test
     public void ctorWithParamTest() {
         Date d1 = new Date(120);
-        Team t1 = new Team();
-        Team t2 = new Team();
+        Team t1 = new Team("Test1",false,false);
+        Team t2 = new Team("Test2",false,false);
         LeagueSeason ls = new LeagueSeason();
         Stadium st = new Stadium();
         Match match = new Match(d1, t1, t2, ls, st);
@@ -43,6 +58,9 @@ public class MatchTest {
         assertNull(match.getAwayTeam());
     }
 
+    /**
+     * Tests the setter of main referee in a match
+     */
     @Test
     public void setMainRefereeTest() {
         Match match = new Match();
@@ -51,6 +69,9 @@ public class MatchTest {
         assertEquals(r, match.getMainReferee());
     }
 
+    /**
+     * Tests the setter of main referee in a match while the referee is null
+     */
     @Test
     public void setMainRefereeNullParamTest() {
         Match match = new Match();
@@ -58,6 +79,9 @@ public class MatchTest {
         assertNull(match.getMainReferee());
     }
 
+    /**
+     * Tests the setter of LinesMan referee in a match while the referee is null
+     */
     @Test
     public void setLinesManRefereesNullTest() {
         Match match = new Match();
@@ -66,35 +90,47 @@ public class MatchTest {
         assertNull(match.getSecondLineManReferee());
     }
 
-//    @Test
-//    public void setLinesManRefereesTest() {
-//        Match match = new Match();
-//        Referee r = new Referee(null, "Test1", null, null);
-//        Referee r2 = new Referee(null, "Test2", null, null);
-//        match.setLinesManReferees(r, r2);
-//        assertEquals(r, match.getFirstLineManReferee());
-//        assertEquals(r2, match.getSecondLineManReferee());
-//    }
+    /**
+     * Tests the setter of LinesMan referee in a match
+     */
+    @Test
+    public void setLinesManRefereesTest() {
+        Match match = new Match();
+        Referee r = new Referee(null, "Test1", null, false);
+        Referee r2 = new Referee(null, "Test2", null, false);
+        match.setLinesManReferees(r, r2);
+        assertEquals(r, match.getFirstLineManReferee());
+        assertEquals(r2, match.getSecondLineManReferee());
+    }
 
-//    @Test
-//    public void setSameLinesManRefereesTest() {
-//        Match match = new Match();
-//        Referee r = new Referee(null, "Test1", null, null);
-//        match.setLinesManReferees(r, r);
-//        assertNull(match.getFirstLineManReferee());
-//        assertNull(match.getSecondLineManReferee());
-//    }
+    /**
+     * Tests the setter of LinesMan referee in a match with same referees - should be false
+     */
+    @Test
+    public void setSameLinesManRefereesTest() {
+        Match match = new Match();
+        Referee r = new Referee(null, "Test1", null, false);
+        match.setLinesManReferees(r, r);
+        assertNull(match.getFirstLineManReferee());
+        assertNull(match.getSecondLineManReferee());
+    }
 
+    /**
+     * Tests the setters of linesMan referee and mainReferee while the main referee equals to the linesMan
+     */
     @Test
     public void setMainRefereeEqualsToLinesManTest() {
         Match match = new Match();
-        Referee r = new Referee();
-        Referee r1 = new Referee();
+        Referee r = new Referee(null,"Test1",null,false);
+        Referee r1 = new Referee(null,"Test2",null,false);
         match.setLinesManReferees(r, r1);
         match.setMainReferee(r);
         assertNull(match.getMainReferee());
     }
 
+    /**
+     * Tests the setters of linesMan referee and mainReferee while the linesMan equals to the main referee
+     */
     @Test
     public void setToLinesManEqualsMainRefereeTest() {
         Match match = new Match();
@@ -106,6 +142,9 @@ public class MatchTest {
         assertNull(match.getSecondLineManReferee());
     }
 
+    /**
+     * Test the setter of the score
+     */
     @Test
     public void setScoreTest() {
         Match match = new Match();
@@ -114,6 +153,9 @@ public class MatchTest {
         assertEquals(0, match.getAwayScore());
     }
 
+    /**
+     * Test the setter of the score with negative values
+     */
     @Test
     public void setScoreNegativeValuesTest() {
         Match match = new Match();
@@ -122,15 +164,20 @@ public class MatchTest {
         assertEquals(0, match.getAwayScore());
     }
 
+    /**
+     * Tests the setter ot the start time
+     */
     @Test
     public void setStartTimeTest() {
         Match match = new Match();
         Date d = new Date(120);
         match.setStartTime(d);
-        d.setYear(d.getYear() - 1900);
-        assertEquals(d.getYear(), match.getStartTime().getYear());
+        assertEquals(d, match.getStartTime());
     }
 
+    /**
+     * test the setter of the start time with null parameters - should be null
+     */
     @Test
     public void setStartTimeNullTest() {
         Match match = new Match();
@@ -138,6 +185,9 @@ public class MatchTest {
         assertNull(match.getStartTime());
     }
 
+    /**
+     * test the setter of the end time with null parameters - should be null
+     */
     @Test
     public void setEndTimeNullTest() {
         Match match = new Match();
@@ -145,15 +195,20 @@ public class MatchTest {
         assertNull(match.getEndTime());
     }
 
+    /**
+     * Tests the setter ot the end time
+     */
     @Test
     public void setEndTimeTest() {
         Match match = new Match();
         Date d = new Date(120);
         match.setEndTime(d);
-        d.setYear(d.getYear() - 1900);
-        assertEquals(d.getYear(), match.getEndTime().getYear());
+        assertEquals(d, match.getEndTime());
     }
 
+    /**
+     * test the setter of the stadium with null parameters - should be null
+     */
     @Test
     public void setStadiumNullTest() {
         Match match = new Match();
@@ -161,6 +216,9 @@ public class MatchTest {
         assertNull(match.getStadium());
     }
 
+    /**
+     * test the setter of the stadium
+     */
     @Test
     public void setStadiumTest() {
         Match match = new Match();
@@ -169,6 +227,9 @@ public class MatchTest {
         assertEquals(st, match.getStadium());
     }
 
+    /**
+     * Tests the equals function - two equals matches
+     */
     @Test
     public void equalsMatchesTest() {
         Team t1 = new Team();
@@ -179,6 +240,9 @@ public class MatchTest {
         assertEquals(true,m1.equals(m2));
     }
 
+    /**
+     * Tests the equals function - not equals matches
+     */
     @Test
     public void notEqualsMatchesTest() {
         Team t1 = new Team();
@@ -190,6 +254,9 @@ public class MatchTest {
         assertEquals(false,m1.equals(m2));
     }
 
+    /**
+     * Tests the hashCode function - two equals matches
+     */
     @Test
     public void hashCodeEqualsTest(){
         Team t1 = new Team();
@@ -200,6 +267,9 @@ public class MatchTest {
         assertEquals(true,m1.hashCode() == m2.hashCode());
     }
 
+    /**
+     * Tests the hashCode function - not equals matches
+     */
     @Test
     public void hashCodeNotEqualsTest(){
         Team t1 = new Team();

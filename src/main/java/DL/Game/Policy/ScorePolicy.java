@@ -36,12 +36,21 @@ public class ScorePolicy {
     private int losePoints;
 
 
+    /**
+     * Ctor
+     * @param winPoints
+     * @param drawPoints
+     * @param losePoints
+     */
     public ScorePolicy(int winPoints, int drawPoints, int losePoints) {
         this.winPoints = winPoints;
         this.drawPoints = drawPoints;
         this.losePoints = losePoints;
     }
 
+    /**
+     * Default ctor
+     */
     public ScorePolicy() {
         this(3, 1, 0);
     }
@@ -58,6 +67,13 @@ public class ScorePolicy {
         return losePoints;
     }
 
+    /**
+     * Caculates the league table.
+     * First runs over the matches and updates the team points and goal difference according to the match score.
+     * than sorts the list according to the team points - if the points equal, checks the goal difference.
+     * @param leagueSeason
+     * @return sorted list of team and their points and goals - leagueTable
+     */
     public List<Map.Entry<Team, Integer[]>> calculateLeagueTable(LeagueSeason leagueSeason) {
         HashMap<Team, Integer[]> leagueTable = new HashMap<>();
         if (leagueSeason != null && leagueSeason.getMatches().size() > 0) {

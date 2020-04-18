@@ -17,6 +17,10 @@ public class League {
     @Id
     private String name;
 
+    /**
+     * Ctor
+     * @param name
+     */
     public League(String name) {
         if (name == null || name.equals(""))
             this.name = "DefaultName";
@@ -24,10 +28,17 @@ public class League {
             this.name = name;
     }
 
+    /**
+     * Default ctor
+     */
     public League() {
         this("");
     }
 
+    /**
+     * Getter
+     * @return league name
+     */
     public String getName() {
         return name;
     }

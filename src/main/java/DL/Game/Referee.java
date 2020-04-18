@@ -106,5 +106,19 @@ public class Referee
     public List<Match> getLinesManMatches() {
         return linesManMatches;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if(other == null || !(other instanceof Referee))
+        {
+            return false;
+        }
+        Referee otherReferee = (Referee) other;
+        if (super.equals(other) && otherReferee.getName().equals(this.getName())){
+            return true;
+        }
+        return false;
+    }
+
 }
 

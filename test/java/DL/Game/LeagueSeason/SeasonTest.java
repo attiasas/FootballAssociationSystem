@@ -5,8 +5,8 @@ import org.junit.Test;
 
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     This testClass tests the seasonTest class.
+ * ID:              21
  **/
 public class SeasonTest {
 

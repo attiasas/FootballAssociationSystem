@@ -1,6 +1,5 @@
 package DL.Game.Policy;
 
-import DL.Game.LeagueSeason.League;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Match;
 import DL.Team.Team;
@@ -14,6 +13,7 @@ import static org.junit.Assert.*;
 
 /**
  * Description:     This testClass tests the scorePolicy class.
+ * ID:              20
  **/
 public class ScorePolicyTest {
 
@@ -48,7 +48,6 @@ public class ScorePolicyTest {
         assertEquals(false, firstScorePolicy.equals(secondScorePolicy));
     }
 
-
     /**
      * Test Hash code of equals scorePolicies
      */
@@ -69,66 +68,73 @@ public class ScorePolicyTest {
         assertEquals(false, firstScorePolicy.hashCode() == secondScorePolicy.hashCode());
     }
 
-//    /**
-//     * Tests the calculation of the league table
-//     */
-//    @Test
-//    public void calculateLeagueTableTest() {
-//        ScorePolicy sp = new ScorePolicy(3, 1, 0);
-//        LeagueSeason leagueSeason = new LeagueSeason(null, null, null, sp, null);
-//        List<Match> matches = new ArrayList<>();
-//        Team t = new Team("t", true, true, null);
-//        Team t1 = new Team("t1", true, true, null);
-//        Team t2 = new Team("t2", true, true, null);
-//        Team t3 = new Team("t3", true, true, null);
-//        Match a = new Match(null, t, t1, null, null);
-//        a.setScore(2, 0);
-//        Match a1 = new Match(null, t2, t3, null, null);
-//        a1.setScore(0, 3);
-//        Match a2 = new Match(null, t, t2, null, null);
-//        a2.setScore(1, 1);
-//        Match a3 = new Match(null, t1, t3, null, null);
-//        a3.setScore(2, 6);
-//        Match a4 = new Match(null, t, t3, null, null);
-//        a4.setScore(1, 0);
-//        Match a5 = new Match(null, t1, t2, null, null);
-//        a5.setScore(0, 3);
-//        Match a6 = new Match(null, t1, t3, null, null);
-//        a6.setScore(2, 2);
-//        matches.add(a);
-//        matches.add(a1);
-//        matches.add(a2);
-//        matches.add(a3);
-//        matches.add(a4);
-//        matches.add(a5);
-//        matches.add(a6);
-//        leagueSeason.setGames(matches);
-//        List<Map.Entry<Team, Integer[]>> leagueTable = sp.calculateLeagueTable(leagueSeason);
-//        for (Map.Entry<Team, Integer[]> e : leagueTable) {
-//            System.out.println("Team: " + e.getKey().getName() + ", Points: " + e.getValue()[0] + ", Goals: " + e.getValue()[1]);
-//        }
-//        assertEquals(t3, leagueTable.get(0).getKey());
-//        assertEquals(t, leagueTable.get(1).getKey());
-//        assertEquals(t2, leagueTable.get(2).getKey());
-//        assertEquals(t1, leagueTable.get(3).getKey());
-//        assertEquals(7, (int) leagueTable.get(0).getValue()[0]);
-//        assertEquals(6, (int) leagueTable.get(0).getValue()[1]);
-//        assertEquals(7, (int) leagueTable.get(1).getValue()[0]);
-//        assertEquals(3, (int) leagueTable.get(1).getValue()[1]);
-//        assertEquals(4, (int) leagueTable.get(2).getValue()[0]);
-//        assertEquals(0, (int) leagueTable.get(2).getValue()[1]);
-//        assertEquals(1, (int) leagueTable.get(3).getValue()[0]);
-//        assertEquals(-9, (int) leagueTable.get(3).getValue()[1]);
-//
-//
-//    }
+    /**
+     * Tests the calculation of the league table
+     */
+    @Test
+    public void calculateLeagueTableTest() {
+        ScorePolicy sp = new ScorePolicy(3, 1, 0);
+        LeagueSeason leagueSeason = new LeagueSeason(null, null, null, sp, null);
+        List<Match> matches = new ArrayList<>();
+        Team t = new Team("t", true, true);
+        Team t1 = new Team("t1", true, true);
+        Team t2 = new Team("t2", true, true);
+        Team t3 = new Team("t3", true, true);
+        Match a = new Match(null, t, t1, null, null);
+        a.setScore(2, 0);
+        Match a1 = new Match(null, t2, t3, null, null);
+        a1.setScore(0, 3);
+        Match a2 = new Match(null, t, t2, null, null);
+        a2.setScore(1, 1);
+        Match a3 = new Match(null, t1, t3, null, null);
+        a3.setScore(2, 6);
+        Match a4 = new Match(null, t, t3, null, null);
+        a4.setScore(1, 0);
+        Match a5 = new Match(null, t1, t2, null, null);
+        a5.setScore(0, 3);
+        Match a6 = new Match(null, t1, t3, null, null);
+        a6.setScore(2, 2);
+        matches.add(a);
+        matches.add(a1);
+        matches.add(a2);
+        matches.add(a3);
+        matches.add(a4);
+        matches.add(a5);
+        matches.add(a6);
+        leagueSeason.setGames(matches);
+        List<Map.Entry<Team, Integer[]>> leagueTable = sp.calculateLeagueTable(leagueSeason);
+        for (Map.Entry<Team, Integer[]> e : leagueTable) {
+            System.out.println("Team: " + e.getKey().getName() + ", Points: " + e.getValue()[0] + ", Goals: " + e.getValue()[1]);
+        }
+        assertEquals(t3, leagueTable.get(0).getKey());
+        assertEquals(t, leagueTable.get(1).getKey());
+        assertEquals(t2, leagueTable.get(2).getKey());
+        assertEquals(t1, leagueTable.get(3).getKey());
+        assertEquals(7, (int) leagueTable.get(0).getValue()[0]);
+        assertEquals(6, (int) leagueTable.get(0).getValue()[1]);
+        assertEquals(7, (int) leagueTable.get(1).getValue()[0]);
+        assertEquals(3, (int) leagueTable.get(1).getValue()[1]);
+        assertEquals(4, (int) leagueTable.get(2).getValue()[0]);
+        assertEquals(0, (int) leagueTable.get(2).getValue()[1]);
+        assertEquals(1, (int) leagueTable.get(3).getValue()[0]);
+        assertEquals(-9, (int) leagueTable.get(3).getValue()[1]);
 
+
+    }
+
+    /**
+     * Tests the calculation of the league table with null table - should return null
+     */
     @Test
     public void calculateLeagueTableNullParamTest() {
         ScorePolicy sp = new ScorePolicy(3, 1, 0);
         assertNull(sp.calculateLeagueTable(null));
     }
 
+
+    /**
+     * Tests the calculation of the league table without teams - should return false
+     */
     @Test
     public void calculateLeagueTableWithoutTeamsTest() {
         ScorePolicy sp = new ScorePolicy(3, 1, 0);
