@@ -87,7 +87,7 @@ public class LeagueSeason {
      * @param team to add
      */
     public boolean addTeam(Team team) {
-        if (team != null && !checkIfObjectExists(team, teamsParticipate)) {
+        if (team != null && team.isActive() && !checkIfObjectExists(team, teamsParticipate)) {
             teamsParticipate.add(team);
             team.addLeagueSeason(this);
             return true;
@@ -246,7 +246,6 @@ public class LeagueSeason {
     }
 
     /**
-     *
      * @return the scorePolicy of the leagueSeason
      */
     public ScorePolicy getScorePolicy() {

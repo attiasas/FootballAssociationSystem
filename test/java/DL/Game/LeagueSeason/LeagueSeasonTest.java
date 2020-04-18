@@ -62,11 +62,22 @@ public class LeagueSeasonTest {
     @Test
     public void addTeamTest() {
         LeagueSeason ls = new LeagueSeason();
-        Team t1 = new Team();
+        Team t1 = new Team("Test1",true,false);
         assertTrue(ls.addTeam(t1));
         assertEquals(t1, ls.getTeamsParticipate().get(0));
         assertEquals(1, ls.getTeamsParticipate().size());
         assertEquals(ls, t1.getLeagueSeasons().get(0));
+    }
+
+    /**
+     * Tests if the team added to the leagueSeason and if the leagueSeason added to the team
+     */
+    @Test
+    public void addFalseActiveTeamTest() {
+        LeagueSeason ls = new LeagueSeason();
+        Team t1 = new Team("Test1",false,false);
+        assertFalse(ls.addTeam(t1));
+        assertEquals(0, ls.getTeamsParticipate().size());
     }
 
     /**
@@ -75,7 +86,7 @@ public class LeagueSeasonTest {
     @Test
     public void addSameTeamTest() {
         LeagueSeason ls = new LeagueSeason();
-        Team t1 = new Team();
+        Team t1 = new Team("Test1",true,false);
         assertTrue(ls.addTeam(t1));
         assertFalse(ls.addTeam(t1));
         assertEquals(1, ls.getTeamsParticipate().size());
@@ -217,9 +228,9 @@ public class LeagueSeasonTest {
     @Test
     public void scheduleLeagueMatchesTest(){
         LeagueSeason ls = new LeagueSeason(null,null,new GamePolicy(),null,null);
-        Team t1 = new Team("Test1",false,false);
-        Team t2 = new Team("Test2",false,false);
-        Team t3 = new Team("Test3",false,false);
+        Team t1 = new Team("Test1",true,false);
+        Team t2 = new Team("Test2",true,false);
+        Team t3 = new Team("Test3",true,false);
         ls.addTeam(t1);
         ls.addTeam(t2);
         ls.addTeam(t3);
@@ -259,12 +270,12 @@ public class LeagueSeasonTest {
     @Test
     public void setRefereeInMatchesTest(){
         LeagueSeason ls = new LeagueSeason(null,null,new GamePolicy(),null,null);
-        Team t1 = new Team("Test1",false,false);
-        Team t2 = new Team("Test2",false,false);
-        Team t3 = new Team("Test3",false,false);
-        Referee r1 = new Referee(null,"Test1",null,false);
-        Referee r2 = new Referee(null,"Test2",null,false);
-        Referee r3 = new Referee(null,"Test3",null,false);
+        Team t1 = new Team("Test1",true,false);
+        Team t2 = new Team("Test2",true,false);
+        Team t3 = new Team("Test3",true,false);
+        Referee r1 = new Referee(null,"Test1",null,true);
+        Referee r2 = new Referee(null,"Test2",null,true);
+        Referee r3 = new Referee(null,"Test3",null,true);
         ls.addTeam(t1);
         ls.addTeam(t2);
         ls.addTeam(t3);
