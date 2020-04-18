@@ -14,6 +14,8 @@
         <!-- The missing values are added by ServerSystem -->
         <property name="hibernate.hbm2ddl.auto" value="create"/>
         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL57Dialect"/>
+        <property name="hibernate.show_sql" value="true"/>
+        <property name="hibernate.format_sql" value="false"/>
       </properties>
 
     </persistence-unit>
