@@ -1,4 +1,5 @@
 package BL.Client;
+
 import BL.Client.Handlers.AssociationManagementUnit;
 import BL.Client.Handlers.TeamAssetUnit;
 import BL.Communication.ClientServerCommunication;
@@ -6,29 +7,21 @@ import DL.Administration.AssociationMember;
 import DL.Administration.SystemManager;
 import DL.Game.Match;
 import DL.Team.Assets.Stadium;
-import DL.Team.Members.*;
+import DL.Team.Members.Coach;
+import DL.Team.Members.Player;
+import DL.Team.Members.TeamManager;
+import DL.Team.Members.TeamOwner;
+import DL.Team.Members.TeamUser;
 import DL.Team.Team;
 import DL.Users.Fan;
 import DL.Users.User;
 import DL.Users.UserPermission;
-
 import java.net.InetAddress;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import BL.Client.Handlers.ComplaintUnit;
-import BL.Client.Handlers.HandleUserUnit;
-import DL.Game.Referee;
-import DL.Users.User;
-import DL.Users.UserComplaint;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-
-import lombok.Setter;
-import lombok.extern.log4j.Log4j;
-
-import java.util.List;
 
 /**
  * Description:     X ID:              X
@@ -461,19 +454,18 @@ public class ClientSystem
      */
     private boolean isTeamOwner(User loggedInUser) {
 
-        TeamUser teamUser = getTeamUser(loggedInUser);
+      TeamUser teamUser = getTeamUser(loggedInUser);
 
-        if (teamUser == null)
-            return false;
+      if (teamUser == null) {
+        return false;
+      }
 
-        HashMap<String, Object> args = new HashMap<>();
-        args.put("teamUser", teamUser);
-        List<TeamOwner> teamOwners = clientServerCommunication.query("TeamOwnerByTeamUser", args);
+      HashMap<String, Object> args = new HashMap<>();
+      args.put("teamUser", teamUser);
+      List<TeamOwner> teamOwners = clientServerCommunication.query("TeamOwnerByTeamUser", args);
 
-        if (teamOwners == null || teamOwners.isEmpty()) // given user isn't a teamOwner
-            return false;
-
-        return true;
+      // given user isn't a teamOwner
+      return teamOwners != null && !teamOwners.isEmpty();
     }
 
     /**

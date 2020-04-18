@@ -49,24 +49,37 @@ public class ServerSystem implements IServerStrategy {
   static final String PERSISTENCE_UNIT_NAME = "sportify";  /* The name of the persistence unit*/
   @PersistenceUnit
   static EntityManagerFactory emf;  /* The central, shared entity manager factory instance. */
-  Server server;
-  DB dataBase;
+  static Server server;
+  private DB dataBase;
 
+  /**
+   * c`tor
+   *
+   * @param dbType   database type , choose between dev (deploy) and test (junit)
+   * @param strategy database persistence strategy
+   */
   public ServerSystem(DbSelector dbType, Strategy strategy) {
-    dataBase = DB.getDataBaseInstance(createEntityManagerFactory(dbType, strategy));
+    final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
+    dataBase = DB.getDataBaseInstance(entityManagerFactory);
     final boolean systemManagers =
-            createEM().createNamedQuery("SystemManagers").getFirstResult() == 0;
+        createEM().createNamedQuery("SystemManagers").getFirstResult() == 0;
     if (systemManagers) {
       signUp("admin", "admin@admin.com", "admin");
     }
-    initializeServer();
-    initializeExternalSystems();
   }
 
+  /**
+   * inserts a new user to db sends email to user generate token for user
+   *
+   * @param userName username of the user
+   * @param email    email of the user
+   * @param password password of the user
+   * @return the system manager user
+   */
   public User signUp(String userName, String email, String password) {
 
     if (password == null || email == null || userName == null || userName.equals("") || email
-            .equals("") || password.equals("")) {
+        .equals("") || password.equals("")) {
       log.log(Level.WARN, "invalid username or password");
       return null;
     }
@@ -85,7 +98,22 @@ public class ServerSystem implements IServerStrategy {
     return systemManager;
   }
 
-  void initializeServer() {
+  /**
+   * Demo the connection to external systems like Finance, Tax etc.
+   */
+  @SuppressWarnings("unused")
+  private void initializeExternalSystems() {
+    log.log(Level.INFO, "external systems integration completed");
+  }
+
+  /**
+   * Initializes the given server and builds the endpoint Read default login servers from {@code
+   * config.properties} Default url {@code https://localhost:5400}
+   *
+   * @throws java.io.IOException I/O exception
+   */
+  @SuppressWarnings("unused")
+  private void initializeServer() throws java.io.IOException {
     int serverPort = Integer.parseInt(Settings.getPropertyValue("server.port"));
     int poolSize = Integer.parseInt(Settings.getPropertyValue("server.poolSize"));
     int listeningInterval = Integer.parseInt(Settings.getPropertyValue("server.listeningInterval"));

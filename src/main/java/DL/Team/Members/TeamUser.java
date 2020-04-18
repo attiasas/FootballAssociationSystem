@@ -1,12 +1,14 @@
 package DL.Team.Members;
-import javax.persistence.*;
 
 import DL.Team.Team;
 import DL.Users.Fan;
-import DL.Users.User;
-import DL.Users.UserPermission;
-
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 /**
  * Description:  Defines a TeamUser object - a user related to a team object   X

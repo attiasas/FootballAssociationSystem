@@ -7,7 +7,7 @@
       <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
       <class>BL.Server.utils.Mock</class>
       <!--true for db unit test false for deploy-->
-      <exclude-unlisted-classes>true</exclude-unlisted-classes>
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
       <properties>
         <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
