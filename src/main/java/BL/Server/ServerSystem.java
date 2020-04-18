@@ -120,6 +120,7 @@ public class ServerSystem implements IServerStrategy {
     server = new Server(serverPort, poolSize, listeningInterval, this);
     server.start();
     log.log(Level.INFO, "server is up and listen on port: " + serverPort);
+    initializeExternalSystems();
   }
 
   /**

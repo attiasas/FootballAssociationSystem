@@ -158,19 +158,21 @@ public class HandleUserUnit
 
         List<Object> fanTeamUsersObjects = getTeamUsersOfFan(fan); //teamUsers of the fan
 
-        if(fanTeamUsersObjects == null || fanTeamUsersObjects.size() == 0)
-        {//there are no teamUsers to remove
-            return true;
+        if(isTeamOwner(fan))
+        {//get all the requests needed for removing the team owner
+            teamOwnerNeedToBeRemoved = true;
+            teamOwnerRemovalRequests = nomineePermissionUnit.removeTeamOwner(fan);
+            //will send all these requests to the db once we make sure all other requests worked
         }
+
+//        if(fanTeamUsersObjects == null || fanTeamUsersObjects.size() == 0)
+//        {//there are no teamUsers to remove
+//            return true;
+//        }
 
         if(fanTeamUsersObjects != null && fanTeamUsersObjects.size() > 0)
         {//the user is a teamUser. can have multiple positions as a teamUser (for example Player and a TeamManager). We will treat all of the user's jobs and then delete it
-            if(isTeamOwner(fan))
-            {//get all the requests needed for removing the team owner
-                teamOwnerNeedToBeRemoved = true;
-                teamOwnerRemovalRequests = nomineePermissionUnit.removeTeamOwner(fan);
-                //will send all these requests to the db once we make sure all other requests worked
-            }
+
             if(listIncludeTeamManager(fanTeamUsersObjects))
             {
                 teamManagerNeedToBeRemoved = true;

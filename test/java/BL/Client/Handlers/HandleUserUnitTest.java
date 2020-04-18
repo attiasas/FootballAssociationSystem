@@ -88,11 +88,37 @@ public class HandleUserUnitTest
         Fan ownerFan = new Fan("teamOwner","test@mail.com","ebcde");
         TeamUser ownerTeamUser = new TeamUser("bla",true,ownerFan,t1);
         TeamOwner owner = new TeamOwner(t1,ownerTeamUser);
+        communication.insert(ownerFan);
         communication.insert(owner);
+
         TeamManager teamManager = new TeamManager("teamManager", true, teamManagerFan, t1, owner);
         owner.getManageNominees().add(teamManager);
-
         communication.insert(teamManager);
+
+
+        Team t2 = new Team("WorstTeam",true,false);
+
+        Fan teamManagerFan2 = new Fan("teamManager2","test@mail.com",DigestUtils.sha1Hex("abcde"));
+        communication.insert(teamManagerFan2);
+
+        Fan ownerFan2 = new Fan("teamOwner2","test@mail.com","ebcde");
+        TeamUser ownerTeamUser2 = new TeamUser("bla",true,ownerFan2,t2);
+        TeamOwner owner2 = new TeamOwner(t2,ownerTeamUser2);
+
+        communication.insert(ownerFan2);
+        communication.insert(owner2);
+
+        Fan teamManagerFan3 = new Fan("teamManager3","test@mail.com",DigestUtils.sha1Hex("abcde"));
+        communication.insert(teamManagerFan3);
+
+        Fan ownerFan3 = new Fan("teamOwner3","test@mail.com","ebcde");
+        TeamUser ownerTeamUser3 = new TeamUser("bla",true,ownerFan3,t2);
+        TeamOwner owner3 = new TeamOwner(t2,ownerTeamUser3);
+        communication.insert(ownerFan3);
+        communication.insert(owner3);
+
+
+
 
     }
 
@@ -229,7 +255,6 @@ public class HandleUserUnitTest
 
         boolean isRemoved = userUnit.removeUser(fanUser);
 
-        //get the player and coach from the DB to check if they became not active
         List<Object> teamUsersObjects = getAllTeamUsersOfFan(fanUser);
         TeamManager teamManager = (TeamManager)teamUsersObjects.get(0);
 
@@ -237,6 +262,7 @@ public class HandleUserUnitTest
         assertFalse(fanUser.getActive());
         assertFalse(teamManager.isActive());
     }
+
 
 //    @Test
 //    public void testAddNewRefereeBadParameters()
@@ -292,6 +318,14 @@ public class HandleUserUnitTest
         parametersTeamUser.put("fan", fan);
         List<Object> teamUsers = communication.query("AllTeamUsersByFan", parametersTeamUser);
         return teamUsers;
+    }
+
+    private List<Object> getTeamOwnerOfFan(Fan fan)
+    {
+        Map<String, Object> parametersTeamOwner = new HashMap<>();
+        parametersTeamOwner.put("fan", fan);
+        List<Object> teamOwners = communication.query("TeamOwnerByUser", parametersTeamOwner);
+        return teamOwners;
     }
 
 }

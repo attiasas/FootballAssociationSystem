@@ -169,6 +169,18 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
             }
             return result;
         }
+        else if(queryName.equals("TeamOwnerByUser"))
+        {
+            List<TeamOwner> result = new ArrayList<>();
+            for(TeamOwner teamOwner : owners)
+            {
+                if(teamOwner.getTeamUser().getFan().equals(parameters.get("fan")))
+                {
+                    result.add(teamOwner);
+                }
+            }
+            return result;
+        }
 
 
         return null;
@@ -268,6 +280,20 @@ public class CommunicationUserUnitStub extends ClientServerCommunication
     @Override
     public boolean transaction(List<SystemRequest> requests)
     {
-        return false;
+        boolean res = true;
+
+        for(int i = 0; i < requests.size() && res; i++)
+        {
+            SystemRequest current = requests.get(i);
+            switch (current.type)
+            {
+                case Insert: res = insert(current.data); break;
+                case Delete: res = delete(current.data); break;
+                case Update: res = update(current.queryName,(Map<String,Object>)current.data); break;
+                default: res = false;
+            }
+        }
+
+        return res;
     }
 }
