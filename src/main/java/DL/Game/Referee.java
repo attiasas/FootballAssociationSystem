@@ -18,10 +18,10 @@ import java.util.List;
         @NamedQuery(name = "AllReferees", query = "SELECT r From Referee r"),
         @NamedQuery(name = "UpdateRefereeLeagueSeasonList", query = "UPDATE Referee r SET r.leagueSeasons = :newLeagueSeasonList WHERE  r.username = : username"),
         @NamedQuery(name = "setRefereeActivity", query = "UPDATE Referee r SET r.active = :active WHERE r.fan = :fan"),
-        @NamedQuery(name = "activeRefereeByUser", query = "select r from Referee where r.fan = :uesr and r.active = true")
+        @NamedQuery(name = "activeRefereeByUser", query = "select r from Referee where r.fan = :uesr and r.active = true"),
+        @NamedQuery(name = "RefereeeByFan", query = "SELECT r FROM Referee r WHERE fan = :fan")
 })
-public class Referee
-{
+public class Referee {
 
     @Id
     @Column

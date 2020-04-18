@@ -51,6 +51,22 @@
             <version>5.1.21</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.14</version>
+        </dependency>
+
+        <dependency>
+            <artifactId>lombok</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <scope>provided</scope>
+            <version>1.18.12</version>
+        </dependency>
+
+
+
         <!-- Persistence Management -->
         <dependency>
             <groupId>org.hibernate</groupId>

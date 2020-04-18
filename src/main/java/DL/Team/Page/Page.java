@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * Description: Defines a Page object - a personal page of coach/player/team fan can follow    X
- * ID:              X
+ * ID:              6
  **/
 
 @MappedSuperclass
@@ -50,6 +50,11 @@ public abstract class Page
             return true;
         }
         return false;
+    }
+
+    public Set<Fan> getFollowers()
+    {
+        return followers;
     }
 
 

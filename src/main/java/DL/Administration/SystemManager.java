@@ -25,4 +25,9 @@ public class SystemManager extends User
      * Default Constructor
      */
     public SystemManager(){}
+
+    public SystemManager(String userName, String email, String hashedPassword)
+    {
+        super(userName, email, hashedPassword);
+    }
 }

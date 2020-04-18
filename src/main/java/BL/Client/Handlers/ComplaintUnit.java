@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     This class handles all requests from the client the refers to complaints
+ * ID:              5
  **/
 public class ComplaintUnit
 {

@@ -1,29 +1,10 @@
 package BL.Client.Handlers;
 
-import BL.Communication.ClientServerCommunication;
 import BL.Communication.SystemRequest;
-import DL.Team.Members.PageUser;
-import DL.Team.Members.TeamManager;
-import DL.Team.Members.TeamOwner;
-import DL.Team.Members.TeamUser;
-import DL.Team.Team;
-import DL.Users.Fan;
 import DL.Users.User;
-import DL.Users.UserPermission;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * Description:     This Unit responsible for managing all the nominees of team owner
- *                  Only Users That have an active TeamUser and a TeamOwner can use this unit
- * ID:              X
- * Usage:           * Query for Nominees of a user
- *                  * Update (Add/Remove) Nominees
- *                  * Changing Permissions of Managers Nominees
- **/
 public class NomineePermissionUnit
 {
 
@@ -46,18 +27,10 @@ public class NomineePermissionUnit
 
     private Map<String,Object> mapOf(String k1, Object v1, String k2, Object v2)
     {
-        Map<String,Object> parameters = new HashMap<>();
-        parameters.put(k1,v1);
-        parameters.put(k2,v2);
-        return parameters;
+        return null;
     }
 
-    /**
-     * Handle Validation that the given user has an active teamOwner and fetching this information from the DB, storing into cache.
-     * @param user - user to validate if it has a matching active teamOwner
-     * @return true if the fetching is success and the user has a matching active teamOwner, false otherwise
-     */
-    private boolean getOwnerFromServer(User user)
+    public boolean removeTeamManager(User user)
     {
         if(user == null) return false;
         if(cachedOwner != null && cachedOwner.getTeamUser().getFan().equals(user)) return true; // cached user, nothing to get

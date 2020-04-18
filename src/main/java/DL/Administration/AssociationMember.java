@@ -33,6 +33,12 @@ public class AssociationMember extends User implements FinancialUser
         myEntries = new ArrayList<>();
     }
 
+    public AssociationMember(String userName, String email, String hashedPassword)
+    {
+        super(userName, email, hashedPassword);
+        myEntries = new ArrayList<>();
+    }
+
     @Override
     public List<FinancialEntry> getFinancialEntries() {
         return myEntries;

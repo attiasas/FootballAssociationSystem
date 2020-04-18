@@ -25,6 +25,9 @@ import DL.Users.UserComplaint;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+
 import java.util.List;
 
 /**
@@ -49,6 +52,22 @@ public class ClientSystem
         }
 
         loggedUser = user;
+        return true;
+    }
+
+
+    /**
+     * log out from the logged user
+     * @return true if the logged user was exist and now is logged out
+     */
+    public static boolean logOut()
+    {
+        if(loggedUser == null)
+        {
+            return false;
+        }
+
+        loggedUser = null;
         return true;
     }
 

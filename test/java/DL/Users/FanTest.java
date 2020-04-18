@@ -11,8 +11,8 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 /**
- * Description:     X
- * ID:              X
+ * Description:     Test suite for fan class
+ * ID:              7
  **/
 public class FanTest
 {
