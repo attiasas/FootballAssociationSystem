@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
  **/
 public class NomineePermissionUnitTest
 {
-   /* private List<User> users;
+    private List<User> users;
     private List<TeamUser> teamUsers;
     private List<TeamOwner> owners;
     private List<Team> teams;
@@ -260,5 +260,5 @@ public class NomineePermissionUnitTest
         assertFalse(users.get(1).hasPermission(UserPermission.Permission.ADD));
         assertFalse(users.get(1).hasPermission(UserPermission.Permission.REMOVE));
         assertFalse(users.get(1).hasPermission(UserPermission.Permission.EDIT));
-    }*/
+    }
 }
