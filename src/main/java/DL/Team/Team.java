@@ -1,18 +1,25 @@
 package DL.Team;
 
 import DL.Administration.Financial.TeamFinancialEntry;
-import DL.Game.LeagueSeason.League;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Match;
 import DL.Team.Assets.Stadium;
-import DL.Team.Members.*;
+import DL.Team.Members.Coach;
+import DL.Team.Members.Player;
+import DL.Team.Members.TeamManager;
+import DL.Team.Members.TeamOwner;
 import DL.Team.Page.TeamPage;
-
-import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * Description:  Defines a Team object - consists of players, manager, coaches, etc.   X
@@ -21,24 +28,24 @@ import java.util.Objects;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "Team", query = "SELECT t FROM Team t"),
-        @NamedQuery(name = "teamByName", query = "SELECT t FROM Team t WHERE t.name = :name "),
-        @NamedQuery(name = "activeTeam", query = "SELECT t FROM Team t WHERE t.active = true AND t.close = false"),
-        @NamedQuery(name = "inActiveTeam", query = "SELECT t FROM Team t WHERE t.active = false "),
-        @NamedQuery(name = "setActivity", query = "UPDATE Team t SET t.active = :active WHERE t.name = :name "),
-        @NamedQuery(name = "closedTeam", query = "SELECT t FROM Team t  WHERE t.close = true"),
-        @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
-        @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
-        @NamedQuery(name =  "updateTeamOwnersOfTeam", query = "update Team t set t.teamOwners = :teamOwners where t = :team"),
-        @NamedQuery(name =  "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team")
-        @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name ")
-        @NamedQuery(name = "activateTeam", query = "UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false "),
-        @NamedQuery(name = "deactivateTeam", query = "UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false"),
-        @NamedQuery(name = "closedTeamsList", query = "SELECT t FROM Team t  WHERE t.close = true"),
-        @NamedQuery(name = "openTeamsList", query = "SELECT t FROM Team t  WHERE t.close = false"),
-        @NamedQuery(name = "teamsByStadium", query = "SELECT t FROM Team t  WHERE :stadium IN (t.stadiums)"),
-        @NamedQuery(name = "closeTeam", query = "UPDATE Team t SET t.close = true, t.active = false WHERE t.name = :name AND t.close = false "),
-        @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false "),
+    @NamedQuery(name = "Team", query = "SELECT t FROM Team t"),
+    @NamedQuery(name = "teamByName", query = "SELECT t FROM Team t WHERE t.name = :name "),
+    @NamedQuery(name = "activeTeam", query = "SELECT t FROM Team t WHERE t.active = true AND t.close = false"),
+    @NamedQuery(name = "inActiveTeam", query = "SELECT t FROM Team t WHERE t.active = false "),
+    @NamedQuery(name = "setActivity", query = "UPDATE Team t SET t.active = :active WHERE t.name = :name "),
+    @NamedQuery(name = "closedTeam", query = "SELECT t FROM Team t  WHERE t.close = true"),
+    @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
+    @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
+    @NamedQuery(name = "updateTeamOwnersOfTeam", query = "update Team t set t.teamOwners = :teamOwners where t = :team"),
+    @NamedQuery(name = "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team"),
+    @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name "),
+    @NamedQuery(name = "activateTeam", query = "UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false "),
+    @NamedQuery(name = "deactivateTeam", query = "UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false"),
+    @NamedQuery(name = "closedTeamsList", query = "SELECT t FROM Team t  WHERE t.close = true"),
+    @NamedQuery(name = "openTeamsList", query = "SELECT t FROM Team t  WHERE t.close = false"),
+    @NamedQuery(name = "teamsByStadium", query = "SELECT t FROM Team t  WHERE :stadium IN (t.stadiums)"),
+    @NamedQuery(name = "closeTeam", query = "UPDATE Team t SET t.close = true, t.active = false WHERE t.name = :name AND t.close = false "),
+    @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false "),
 })
 
 public class Team {
