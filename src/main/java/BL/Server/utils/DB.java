@@ -2,22 +2,23 @@ package BL.Server.utils;
 
 import BL.Server.ServerSystem;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
 
 /**
- * Description: This class contains the methods for connecting to the database, getting data,
- * updating the database, preparing statements, executing prepared statements, starting
- * transactions, committing transactions, and rolling back transactions
+ * Description: A JPA service that'll handle interacting with the database for all User
+ * interactions. contains the methods for connecting to the database, getting data, updating the
+ * database, preparing statements, executing prepared statements, starting transactions, committing
+ * transactions, and rolling back transactions
  *
  * @author Serfati
  * @version Id: 1.0
@@ -25,20 +26,20 @@ import org.apache.log4j.Level;
 @Log4j /* install lombok plugin in intellij */
 public class DB implements Serializable {
 
-  @PersistenceUnit
-  private static EntityManagerFactory emf;
+  @PersistenceContext
+  private static EntityManager em;
   private static DB instance;
 
   /**
    * Singleton instance for all jpa service
    *
-   * @param _emf- Entity Manager Factory object
+   * @param emf- Entity Manager Factory object
    * @return the instance of this facade.
    */
-  public static DB getDataBaseInstance(EntityManagerFactory _emf) {
-    if (instance == null) {
+  public static DB getDataBaseInstance(EntityManagerFactory emf) {
+    if (instance == null && emf != null) {
       log.removeAllAppenders();
-      emf = _emf;
+      em = emf.createEntityManager();
       instance = new DB();
       log.log(Level.INFO,
           "Database launched and alive on jdbc:mysql://localhost:3306/sportify");
@@ -61,7 +62,6 @@ public class DB implements Serializable {
    * @return True if successful creation of object by JPA else false
    */
   public static boolean persist(Object entity) {
-    EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
     try {
       em.persist(entity);
@@ -86,7 +86,6 @@ public class DB implements Serializable {
    * @param entities the list tof entities to persist.
    */
   public static boolean persistAll(List<?> entities) {
-    EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
     try {
       entities.forEach(em::persist);
@@ -104,7 +103,6 @@ public class DB implements Serializable {
    * @return True iff successful deletion by JPA else false
    */
   public static boolean remove(Object entity) {
-    EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
     try {
       //Re-attach the entity if not attached
@@ -130,7 +128,6 @@ public class DB implements Serializable {
    * @param entities the list of objects to remove from the database.
    */
   public static boolean removeAll(List<?> entities) {
-    EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
     try {
       entities.forEach(em::remove);
@@ -150,7 +147,6 @@ public class DB implements Serializable {
    * @param entity the entity to update.
    */
   public static boolean merge(Object entity) {
-    EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
     try {
       entity = em.merge(entity);
@@ -167,7 +163,6 @@ public class DB implements Serializable {
   }
 
   public static boolean update(String queryName, Object data) {
-    EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
     Map<String, Object> map = (Map<String, Object>) data;
     Query fixed = em.createNamedQuery(queryName);
@@ -187,13 +182,12 @@ public class DB implements Serializable {
   }
 
   public static List query(String queryName, Object data) {
-    EntityManager em = emf.createEntityManager();
     List resultList = null;
     em.getTransaction().begin();
-    Map<String, Object> map = (Map<String, Object>) data;
+    HashMap<String, Object> map = (HashMap<String, Object>) data;
     Query fixed = em.createNamedQuery(queryName);
     try {
-      map.forEach(fixed::setParameter);
+      fixed = getParameteredQuery(fixed, map);
       resultList = fixed.getResultList();
       em.getTransaction().commit();
     } catch (Exception e) {
@@ -207,17 +201,18 @@ public class DB implements Serializable {
     return resultList;
   }
 
-  /**
-   * Builds a fixed query from variables
-   *
-   * @param ql   - sql query with parameters fields
-   * @param args - the parameters
-   * @return fixed query
-   */
-  public static Query newQuery(String ql, Object... args) {
-    Query query = emf.createEntityManager().createQuery(ql);
-    IntStream.range(0, args.length).forEach(i -> query.setParameter(i, args[i]));
-    return query;
+  public static Query getParameteredQuery(Query q, HashMap<String, Object> filterMap) {
+    if (filterMap != null && !filterMap.isEmpty()) {
+      filterMap.keySet().forEach(column -> {
+        if (filterMap.get(column) instanceof String) {
+          String value = (String) filterMap.get(column);
+          q.setParameter(column, value.toUpperCase() + "%");
+        } else {
+          q.setParameter(column, filterMap.get(column));
+        }
+      });
+    }
+    return q;
   }
 
   // Query methods -------------------------------------------------------------------------------
@@ -225,10 +220,9 @@ public class DB implements Serializable {
   //  /* Simple manual tests ------------------------------------------------------------------------------- */
 //  // tested - CREATE TRUNCATE INSERT SELECT DROP CONNECTION  UPDATE namedQuery Parameters
   public static void main(String[] args) {
-    emf = ServerSystem
+    ServerSystem
         .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
     EntityTransaction txn;
-    EntityManager em = emf.createEntityManager();
     txn = em.getTransaction();
     txn.begin();
     em.createNativeQuery(
@@ -261,7 +255,6 @@ public class DB implements Serializable {
     txn.commit();
 
     em.close();
-    emf.close();
   }
 
   /**
@@ -278,7 +271,6 @@ public class DB implements Serializable {
     queryString.append(id);
 
     //Begin Transaction
-    EntityManager em = emf.createEntityManager();
     em.getTransaction().begin();
 
     TypedQuery<Object> query = em.createQuery(queryString.toString(), Object.class);
