@@ -1,16 +1,6 @@
 package BL.Server.utils;
 
 import BL.Server.ServerSystem;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
 
@@ -20,10 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Description: A JPA service that'll handle interacting with the database for all User
- * interactions. contains the methods for connecting to the database, getting data, updating the
- * database, preparing statements, executing prepared statements, starting transactions, committing
- * transactions, and rolling back transactions
+ * Description: This class contains the methods for connecting to the database, getting data,
+ * updating the database, preparing statements, executing prepared statements, starting
+ * transactions, committing transactions, and rolling back transactions.
  *
  * @author Serfati
  * @version Id: 1.0
@@ -31,9 +20,9 @@ import java.util.List;
 @Log4j(topic = "event") /* install lombok plugin in intellij */
 public class DB implements Serializable {
 
-  @PersistenceContext
-  private static EntityManager em;
-  private static DB instance;
+    @PersistenceUnit
+    private static EntityManagerFactory emf;
+    private static DB instance;
 
     /**
      * @param _emf- Entity Manager Factory object
@@ -48,8 +37,6 @@ public class DB implements Serializable {
         }
         return instance;
     }
-    return instance;
-  }
 
     /*
      --------------------------------------------------------------------
@@ -81,90 +68,91 @@ public class DB implements Serializable {
         }
         return true;
     }
-    return true;
-  }
 
-  /**
-   * Persists the list of objects in the parameter to the database.
-   *
-   * @param entities the list tof entities to persist.
-   */
-  public static boolean persistAll(List<?> entities) {
-    em.getTransaction().begin();
-    try {
-      entities.forEach(em::persist);
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      return false;
+    /**
+     * Persists the list of objects in the parameter to the database.
+     *
+     * @param entities the list tof entities to persist.
+     */
+    public static boolean persistAll(List<?> entities) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            entities.forEach(em::persist);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            return false;
+        }
+        return true;
     }
-    return true;
-  }
 
-  /**
-   * Generic method to delete an object from DB
-   *
-   * @param entity The object entity to be deleted
-   * @return True iff successful deletion by JPA else false
-   */
-  public static boolean remove(Object entity) {
-    em.getTransaction().begin();
-    try {
-      //Re-attach the entity if not attached
-      if (!em.contains(entity)) {
-        entity = em.merge(entity);
-      }
-      em.remove(entity);
-      em.getTransaction().commit();
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      log.log(Level.WARN, "remove failed");
-      return false;
-    } finally {
-      em.close();
-      log.log(Level.INFO, "object removed");
+    /**
+     * Remove the object passes as parameter from the database.
+     *
+     * @param entity the entity to remove.
+     */
+    public static boolean remove(Object entity) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.remove(entity);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            log.log(Level.WARN, "remove failed");
+            return false;
+        } finally {
+            em.close();
+            log.log(Level.INFO, "object removed");
+        }
+        return true;
     }
-    return true;
-  }
 
-  /**
-   * Remove the list of objects from the database.
-   *
-   * @param entities the list of objects to remove from the database.
-   */
-  public static boolean removeAll(List<?> entities) {
-    em.getTransaction().begin();
-    try {
-      entities.forEach(em::remove);
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      return false;
-    } finally {
-      em.close();
+    /**
+     * Remove the list of objects from the database.
+     *
+     * @param entities the list of objects to remove from the database.
+     */
+    public static boolean removeAll(List<?> entities) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            for (Object entity : entities) {
+                em.remove(entity);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            return false;
+        } finally {
+            em.close();
+        }
+        return true;
     }
-    return true;
-  }
 
 
-  /**
-   * Updates the object passes as parameter from the database.
-   *
-   * @param entity the entity to update.
-   */
-  public static boolean merge(Object entity) {
-    em.getTransaction().begin();
-    try {
-      entity = em.merge(entity);
-      em.getTransaction().commit();
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      log.log(Level.WARN, "merge failed");
-      return false;
-    } finally {
-      em.close();
-      log.log(Level.INFO, "object merged");
+    /**
+     * Updates the object passes as parameter from the database.
+     *
+     * @param entity the entity to update.
+     */
+    public static boolean merge(Object entity) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            entity = em.merge(entity);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            log.log(Level.WARN, "merge failed");
+            return false;
+        } finally {
+            em.close();
+            log.log(Level.INFO, "object merged");
+        }
+        return true;
     }
-    return true;
-  }
 
     /**
      * Updates the object passes by the query.
@@ -192,8 +180,6 @@ public class DB implements Serializable {
         }
         return true;
     }
-    return resultList;
-  }
 
     /**
      * @param queryName the name of the namedQuery
@@ -218,12 +204,10 @@ public class DB implements Serializable {
             em.close();
             log.log(Level.INFO, "query results returned");
         }
-      });
+        return resultList;
     }
-    return q;
-  }
 
-  // Query methods -------------------------------------------------------------------------------
+    // Query methods -------------------------------------------------------------------------------
 
     /**
      * Create a query with set of parameters represents by a map
