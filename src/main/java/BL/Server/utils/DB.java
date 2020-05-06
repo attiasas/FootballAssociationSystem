@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Description: This class contains the methods for connecting to the database, getting data,
  * updating the database, preparing statements, executing prepared statements, starting
- * transactions, committing transactions, and rolling back transactions
+ * transactions, committing transactions, and rolling back transactions.
  *
  * @author Serfati
  * @version Id: 1.0
