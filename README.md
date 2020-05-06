@@ -1,12 +1,12 @@
-![logo](src/main/resources/img/icon.png)
+![logo](https://gdurl.com/kita)
 
-![MIT License](https://codeclimate.com/github/JonSn0w/Hyde/badges/gpa.svg) ![MIT License](https://david-dm.org/tterb/Hyde.svg) ![MIT License](https://badge.fury.io/gh/tterb%2FHyde.svg) ![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)
+![MIT License](https://codeclimate.com/github/JonSn0w/Hyde/badges/gpa.svg) ![MIT License](https://david-dm.org/tterb/Hyde.svg) ![MIT License](https://badge.fury.io/gh/tterb%2FHyde.svg)![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)
 
 # Description
 
 **Sportify** is a JavaFX desktop application that collects and presents information on the top European football leagues using JPA Persistence API for database management.
 
-Installation
+## Installation
 
 ---
 
@@ -15,65 +15,76 @@ Installation
 - [JDK 8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 - [Apache Maven 3.6.0](https://maven.apache.org/download.cgi)
 - [MySQL 8.0](https://dev.mysql.com/downloads/installer/)
-- [Git 2.26](<https://git-scm.com/downloads](https://git-scm.com/downloads)>)
+- [Git 2.26](https://git-scm.com/downloads/)
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) (recommend )
 - other dependencies you can see in [pom.xml](https://github.com/attiasas/FootballAssociationSystem/blob/master/pom.xml)
 
 ---
 
-**How To Install**
+### How To Install
 
 You can modify or contribute to this project by following the steps below:
 
 **1. Clone the repository**
 
-- [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) or download to a location on your machine.
+- Open terminal ( <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd> )
 
-      ```bash
-      # Clone the repository
-      $> git clone https://github.com/attiasas/sportify.git
+- [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) to a location on your machine.
 
-      # Navigate to the directory
-      $> cd sportify
-      ```
+	```bash
+	# Clone the repository
+	$> git clone https://github.com/attiasas/sportify.git
 
-  **2. Database connection**
+	# Navigate to the directory
+	$> cd sportify
+	```
+
+**2. Database connection**
 
 - Create an empty base
-  `sql mysql> CREATE DATABASE IF NOT EXISTS sportify; mysql> USE sportify;`
+
+	```bash
+	$> mysql -u root -p
+	# Enter your mysql root password
+	Enter password:
+
+	# Create empty bases
+	mysql> CREATE DATABASE IF NOT EXISTS sportify;
+	mysql> CREATE DATABASE IF NOT EXISTS sportify_test;
+	mysql> USE sportify;
+	```
+
 - [Connecting it to IntelliJ IDEA](https://www.jetbrains.com/help/idea/working-with-the-database-tool-window.html#create_data_source)
 
 - Set up a connection for JPA
 
-  ```bash
-  # Navigate to the directory
-  $> cd sportify
+	```bash
+	# Navigate to the directory
+	$> cd sportify
 
-  # Open config file
-  $> nano src/main/resources/config.properties
-  ```
+	# Open config file
+	$> nano src/main/resources/config.properties
 
-````
-
-```properties
-# Edit with the correct values
-      ...
-db.database=sportify
-db.port=3306
-db.user=root
-db.password=
-      ...
-````
+	# Edit with the correct values
+		...
+	db.database=sportify
+	db.port=3306
+	db.user=root
+	db.password=
+		...
+	```
 
 **3. Assembly and launch of the project**
 
-```bash
-# Navigate to the directory
-$> cd sportify
+- Open terminal ( <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd> )
 
-# compile and run
-$> mvn package && java -jar target/sportify-0.0.1-SNAPSHOT.jar
-```
+	```bash
+	# Navigate to the directory
+	$> cd sportify
+
+	# compile and run
+	$> mvn clean package && java -jar target/sportify-0.0.1-SNAPSHOT-jar-with-dependecies.jar
+	```
 
 **_Note to IntelliJ Users_**
 
@@ -81,7 +92,7 @@ This project uses the lombok library in some of the model classes to cut down on
 
 **Run** the main application using the appropriate process for your set-up by IntelliJ Run/Debug.
 
-Test Instructions
+## Test Instructions
 
 ---
 
@@ -96,13 +107,15 @@ Test Instructions
   $> mvn verify
   ```
 
-Aditional Links
+## Aditional Links
 
 ---
 
-- [System Demo](https://sportify.com/) - todo
+- [System Demo]() - TODO
+- [Final Presentation]() - TODO
+- [Setup Demo]() - TODO
 - [Trace Google Sheet](https://docs.google.com/spreadsheets/u/1/d/17n6JLLVUFWz8y_0te5-axufSroGrtFTEjjgtUX7Dgyw/edit?usp=drive_web&ouid=104494091826522493400)
-- [Trello Board](https://trello.com/b/H4fnsVwZ/v3)
+- [Trello Board](https://trello.com/b/tQHRhOYQ/sportify-v3)
 
 **Design Patterns and Techniques**
 
@@ -120,9 +133,9 @@ Aditional Links
 | _Amit Damri_     | [amitdamri](https://github.com/amitdamri)   | amitdamr@post.bgu.ac.il |
 | _Avihai Serfati_ | [serfati](https://github.com/serfati)       | serfata@post.bgu.ac.il  |
 | _Asaf Attias_    | [attiasas93](https://github.com/attiasas93) | assafattias93@gmail.com |
-| _Dvir Simchon_   | [dvirsimhon](https://github.com/dvirsimhon) | dvirsim@post.bgu.ac.il  |
+| _Dvir Simhon_    | [dvirsimhon](https://github.com/dvirsimhon) | dvirsim@post.bgu.ac.il  |
 
-> Author _serfati_
+> ...
 
 ## License
 
