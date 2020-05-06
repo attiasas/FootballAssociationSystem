@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" prefHeight="488.0" prefWidth="439.0"
+            styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns="http://javafx.com/javafx/8.0.171"
+            fx:controller="PL.about.AboutController">
+    <ImageView fitHeight="154.0" fitWidth="247.0" layoutX="129.0" layoutY="31.0" pickOnBounds="true"
+               preserveRatio="true">
+        <Image url="@../img/icon.png"/>
+    </ImageView>
+    <Text fontSmoothingType="LCD" layoutX="23.0" layoutY="463.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          styleClass="about-text" text="Built with love and couple of lines of code" textAlignment="CENTER">
+        <font>
+            <Font size="19.0"/>
+        </font>
+    </Text>
+    <VBox layoutX="168.0" layoutY="31.0" spacing="5.0"/>
+    <JFXButton layoutX="72.0" layoutY="323.0" onAction="#loadFacebook" prefHeight="40.0" prefWidth="269.0"
+               styleClass="bigaction-button" text="Personal Facebook Page"/>
+    <JFXButton layoutX="72.0" layoutY="267.0" onAction="#loadLinkedIN" prefHeight="40.0" prefWidth="269.0"
+               styleClass="bigaction-button" text="Linked In"/>
+    <JFXButton layoutX="72.0" layoutY="380.0" onAction="#loadBlog" prefHeight="40.0" prefWidth="269.0"
+               styleClass="bigaction-button" text="University"/>
+    <JFXButton layoutX="72.0" layoutY="209.0" onAction="#loadGithub" prefHeight="40.0" prefWidth="269.0"
+               styleClass="bigaction-button" text="Github"/>
+</AnchorPane>

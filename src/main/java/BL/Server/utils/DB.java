@@ -1,15 +1,13 @@
 package BL.Server.utils;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.IntStream;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Query;
+import BL.Server.ServerSystem;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Description: This class contains the methods for connecting to the database, getting data,
@@ -19,7 +17,7 @@ import org.apache.log4j.Level;
  * @author Serfati
  * @version Id: 1.0
  **/
-@Log4j /* install lombok plugin in intellij */
+@Log4j(topic = "event") /* install lombok plugin in intellij */
 public class DB implements Serializable {
 
     @PersistenceUnit
@@ -35,8 +33,7 @@ public class DB implements Serializable {
             log.removeAllAppenders();
             emf = _emf;
             instance = new DB();
-            log.log(Level.INFO,
-                "Database launched and alive on jdbc:mysql://localhost:3306/sportify");
+            log.log(Level.INFO, "Database launched and alive on jdbc:mysql://localhost:3306/sportify");
         }
         return instance;
     }
@@ -59,6 +56,7 @@ public class DB implements Serializable {
         em.getTransaction().begin();
         try {
             em.persist(entity);
+            em.flush();
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -156,13 +154,20 @@ public class DB implements Serializable {
         return true;
     }
 
+    /**
+     * Updates the object passes by the query.
+     *
+     * @param queryName the name of the namedQuery
+     * @param data      the update parameters
+     * @return true if object updated false otherwise
+     */
     public static boolean update(String queryName, Object data) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Map<String, Object> map = (Map<String, Object>) data;
+        HashMap<String, Object> map = (HashMap<String, Object>) data;
         Query fixed = em.createNamedQuery(queryName);
         try {
-            map.forEach(fixed::setParameter);
+            fixed = getParameteredQuery(fixed, map);
             fixed.executeUpdate();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -176,15 +181,19 @@ public class DB implements Serializable {
         return true;
     }
 
+    /**
+     * @param queryName the name of the namedQuery
+     * @param data      the query parameters
+     * @return a results list
+     */
     public static List query(String queryName, Object data) {
+        List resultList;
         EntityManager em = emf.createEntityManager();
-        List resultList = null;
         em.getTransaction().begin();
-        Map<String, Object> map = (Map<String, Object>) data;
+        HashMap<String, Object> map = (HashMap<String, Object>) data;
         Query fixed = em.createNamedQuery(queryName);
         try {
-            map.forEach(fixed::setParameter);
-            System.out.println("\n\nrunning query: " + fixed);
+            fixed = getParameteredQuery(fixed, map);
             resultList = fixed.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -201,56 +210,85 @@ public class DB implements Serializable {
     // Query methods -------------------------------------------------------------------------------
 
     /**
-     * Builds a fixed query from variables
+     * Create a query with set of parameters represents by a map
      *
-     * @param ql   - sql query with parameters fields
-     * @param args - the parameters
-     * @return fixed query
+     * @param q         - the query to be filled
+     * @param filterMap - parameters map <attribute , value>
+     * @return - fixed query filled with the @params
      */
-    public static Query newQuery(String ql, Object... args) {
-        Query query = emf.createEntityManager().createQuery(ql);
-        IntStream.range(0, args.length).forEach(i -> query.setParameter(i, args[i]));
-        return query;
+    public static Query getParameteredQuery(Query q, HashMap<String, Object> filterMap) {
+        if (filterMap != null && !filterMap.isEmpty()) {
+            filterMap.keySet().forEach(column -> {
+                if (filterMap.get(column) instanceof String) {
+                    String value = (String) filterMap.get(column);
+                    q.setParameter(column, value.toUpperCase() + "%");
+                } else {
+                    q.setParameter(column, filterMap.get(column));
+                }
+            });
+        }
+        return q;
     }
+
+    public static void main(String[] args) {
+        emf = ServerSystem
+                .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
+        EntityTransaction txn;
+        EntityManager em = emf.createEntityManager();
+        txn = em.getTransaction();
+        txn.begin();
+        em.createNativeQuery(
+                "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
+                .executeUpdate();
+        em.createNativeQuery("TRUNCATE TABLE Standings")
+                .executeUpdate(); // clears the table content
+        em.createNativeQuery(
+                "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
+                .executeUpdate(); // insert values
+        em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
+                .executeUpdate();
+        Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
+        List<Object[]> ids = q.getResultList();
+        for (Object[] a : ids)
+            log.log(Level.INFO, "Standings ~ " + a[0] + ":" + a[1]);// Show Result
+        //em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
+        txn.commit();
+        em.close();
+        emf.close();
+    }
+
+    /**
+     * Generic method to get a particular entity from the DB
+     *
+     * @param object String to identify which entity we need to get
+     * @param id     The integer value id
+     * @return a particular entity from the DB
+     */
+    public Object getEntity(String object, int id) {
+        EntityManager em = emf.createEntityManager();
+        //Begin Transaction
+        em.getTransaction().begin();
+
+        String queryString = "SELECT o FROM " + object
+                + " o WHERE o.id = "
+                + id;
+        TypedQuery<Object> query = em.createQuery(queryString, Object.class);
+        return query.getSingleResult();
+    }
+
 //  /* Simple manual tests ------------------------------------------------------------------------------- */
 //  // tested - CREATE TRUNCATE INSERT SELECT DROP CONNECTION  UPDATE namedQuery Parameters
-//  public static void main(String[] args) {
-//    emf = ServerSystem
-//        .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
-//    EntityTransaction txn;
-//    EntityManager em = emf.createEntityManager();
-//    txn = em.getTransaction();
-//    txn.begin();
-//    em.createNativeQuery(
-//        "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
-//        .executeUpdate();
-//    em.createNativeQuery("TRUNCATE TABLE Standings")
-//        .executeUpdate(); // clears the table content
-//    em.createNativeQuery(
-//        "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
-//        .executeUpdate(); // insert values
-//    em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
-//        .executeUpdate();
-//    Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
-//    List<Object[]> ids = q.getResultList();
-//    for (Object[] a : ids) {
-//      System.out.println("Standings ~ " + a[0] + ":" + a[1]);// Show Result
-//    }
-//    em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
-//
-////        Query q = em.createNativeQuery("SELECT s.name, s.capacity FROM Stadium s");
-////        List<Object[]> ids = q.getResultList();
-//    for (Object[] s : ids) {
-//      System.out.println("Stadium ~ " + s[0] + ":" + s[1]);// Show Result
-//    }
-//
-////        HashMap<String,Object> map = new HashMap<>() ;
-////        map.put("name", "anfield");
-////        query("stadiumByName", map);
-//
-//    txn.commit();
-//
-//    em.close();
-//    emf.close();
-//  }
+
+    /**
+     * Calculate the number of records in a table (class)
+     *
+     * @param entityClass the table to be checked
+     * @return number of records
+     */
+    public Long getCount(Class entityClass) {
+        EntityManager em = emf.createEntityManager();
+        Query q = em.createQuery(
+                "select count(e) from " + entityClass.getName() + " e ");
+        return (Long) q.getSingleResult();
+    }
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootAnchorPane" stylesheets="@../dark-theme.css"
+           xmlns="http://javafx.com/javafx/8.0.171" fx:controller="PL.signup.RolesController">
+    <AnchorPane fx:id="rolesContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                minWidth="-Infinity" prefHeight="690.0" prefWidth="1000.0" style="-fx-background-color:  #2e3034;">
+        <Pane prefHeight="173.0" prefWidth="1000.0" style="-fx-background-color: #121212;" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Label layoutX="130.0" layoutY="44.0" styleClass="text-logo" text="Sportify" textFill="WHITE">
+                <font>
+                    <Font size="44.0"/>
+                </font>
+            </Label>
+            <Label layoutX="129.0" layoutY="105.0" text="Fédération Internationale de Football Association"
+                   textFill="WHITE">
+                <font>
+                    <Font name="Montserrat Light Italic" size="16.0"/>
+                </font>
+            </Label>
+            <ImageView blendMode="SRC_ATOP" fitHeight="104.0" fitWidth="102.0" layoutX="36.0" layoutY="17.0"
+                       pickOnBounds="true" preserveRatio="true">
+                <Image url="@../img/sportift-logo.png"/>
+            </ImageView>
+            <Label layoutX="260.0" layoutY="54.0" style="-fx-font-family: 'Montserrat Light Italic'" text="®">
+                <font>
+                    <Font size="17.0"/>
+                </font>
+            </Label>
+        </Pane>
+        <GridPane alignment="CENTER" hgap="10.0" layoutX="99.0" layoutY="228.0" prefHeight="357.0" prefWidth="772.0"
+                  vgap="10.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="130.0"
+                  AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="250.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="10.0"
+                                valignment="CENTER" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Button fx:id="btnOwner" contentDisplay="TOP" mnemonicParsing="false" prefHeight="140.0" prefWidth="202.0"
+                    styleClass="bigaction-button" text="Owner">
+                <graphic>
+                    <FontAwesomeIconView fill="#3f495a" glyphName="CUBE" size="50"/>
+                </graphic>
+            </Button>
+            <Button fx:id="btnChairman" contentDisplay="TOP" mnemonicParsing="false" prefHeight="140.0"
+                    prefWidth="202.0" styleClass="bigaction-button" text="Chairman" GridPane.columnIndex="1">
+                <graphic>
+                    <FontAwesomeIconView fill="#3f495a" glyphName="SLIDERS" size="50"/>
+                </graphic>
+            </Button>
+            <Button fx:id="btnManager" contentDisplay="TOP" mnemonicParsing="false" prefHeight="140.0" prefWidth="202.0"
+                    styleClass="bigaction-button" text="Manager" GridPane.columnIndex="2">
+                <graphic>
+                    <FontAwesomeIconView fill="#3f495a" fontSmoothingType="LCD" glyphName="CONNECTDEVELOP" size="50"/>
+                </graphic>
+            </Button>
+            <Button fx:id="btnPlayer" contentDisplay="TOP" mnemonicParsing="false" prefHeight="140.0" prefWidth="202.0"
+                    styleClass="bigaction-button" text="Player" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <graphic>
+                    <FontAwesomeIconView fill="#3f495a" glyphName="STREET_VIEW" size="50"/>
+                </graphic>
+                <GridPane.margin>
+                    <Insets/>
+                </GridPane.margin>
+            </Button>
+            <Button fx:id="btuReferee" contentDisplay="TOP" mnemonicParsing="false" prefHeight="140.0" prefWidth="202.0"
+                    styleClass="bigaction-button" text="Referee" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <graphic>
+                    <FontAwesomeIconView fill="#3f495a" glyphName="EXCHANGE" size="50"/>
+                </graphic>
+            </Button>
+            <Button fx:id="btnAssociation" contentDisplay="TOP" mnemonicParsing="false" prefHeight="140.0"
+                    prefWidth="202.0" styleClass="bigaction-button" text="Association" GridPane.rowIndex="1">
+                <graphic>
+                    <FontAwesomeIconView fill="#3f495a" glyphName="BALANCE_SCALE" size="50"/>
+                </graphic>
+            </Button>
+        </GridPane>
+        <Label layoutX="43.0" layoutY="187.0" style="-fx-font-family: Montserrat"
+               text="Please choose a role from below:" textFill="WHITE">
+            <font>
+                <Font size="19.0"/>
+            </font>
+        </Label>
+        <JFXButton layoutX="379.0" layoutY="657.0" onAction="#loadMain" prefHeight="25.0" prefWidth="237.0"
+                   styleClass="label-button" text="Or continue as a fan to Sportify"/>
+        <JFXButton fx:id="btn_back" layoutX="900.0" layoutY="19.0" onAction="#backToMain" prefHeight="23.0"
+                   prefWidth="78.0" styleClass="smallaction-button" text="Back"/>
+    </AnchorPane>
+</StackPane>
