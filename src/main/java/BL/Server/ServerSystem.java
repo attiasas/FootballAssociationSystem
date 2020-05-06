@@ -36,7 +36,7 @@ import java.util.Properties;
  * </p>
  *
  * @author Serfati
- * @version Id: 1.0
+ * @version Id: 1.0.
  */
 @Log4j(topic = "event")
 @Setter
