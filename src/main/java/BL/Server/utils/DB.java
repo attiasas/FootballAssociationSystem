@@ -14,6 +14,11 @@ import javax.persistence.TypedQuery;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Description: A JPA service that'll handle interacting with the database for all User
  * interactions. contains the methods for connecting to the database, getting data, updating the
@@ -23,26 +28,25 @@ import org.apache.log4j.Level;
  * @author Serfati
  * @version Id: 1.0
  **/
-@Log4j /* install lombok plugin in intellij */
+@Log4j(topic = "event") /* install lombok plugin in intellij */
 public class DB implements Serializable {
 
   @PersistenceContext
   private static EntityManager em;
   private static DB instance;
 
-  /**
-   * Singleton instance for all jpa service
-   *
-   * @param emf- Entity Manager Factory object
-   * @return the instance of this facade.
-   */
-  public static DB getDataBaseInstance(EntityManagerFactory emf) {
-    if (instance == null && emf != null) {
-      log.removeAllAppenders();
-      em = emf.createEntityManager();
-      instance = new DB();
-      log.log(Level.INFO,
-          "Database launched and alive on jdbc:mysql://localhost:3306/sportify");
+    /**
+     * @param _emf- Entity Manager Factory object
+     * @return the instance of this facade.
+     */
+    public static DB getDataBaseInstance(EntityManagerFactory _emf) {
+        if (instance == null) {
+            log.removeAllAppenders();
+            emf = _emf;
+            instance = new DB();
+            log.log(Level.INFO, "Database launched and alive on jdbc:mysql://localhost:3306/sportify");
+        }
+        return instance;
     }
     return instance;
   }
@@ -55,27 +59,27 @@ public class DB implements Serializable {
       --------------------------------------------------------------------
     */
 
-  /**
-   * Generic method to persist the given object in the DB
-   *
-   * @param entity Object entity
-   * @return True if successful creation of object by JPA else false
-   */
-  public static boolean persist(Object entity) {
-    em.getTransaction().begin();
-    try {
-      em.persist(entity);
-      em.flush();
-
-      //End Transaction
-      em.getTransaction().commit();
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      log.log(Level.WARN, "persist failed");
-      return false;
-    } finally {
-      em.close();
-      log.log(Level.INFO, "object persisted");
+    /**
+     * Persists the object provided as a parameter to the database.
+     *
+     * @param entity the entity to persists.
+     */
+    public static boolean persist(Object entity) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(entity);
+            em.flush();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            log.log(Level.WARN, "persist failed");
+            return false;
+        } finally {
+            em.close();
+            log.log(Level.INFO, "object persisted");
+        }
+        return true;
     }
     return true;
   }
@@ -162,53 +166,57 @@ public class DB implements Serializable {
     return true;
   }
 
-  public static boolean update(String queryName, Object data) {
-    em.getTransaction().begin();
-    Map<String, Object> map = (Map<String, Object>) data;
-    Query fixed = em.createNamedQuery(queryName);
-    try {
-      map.forEach(fixed::setParameter);
-      fixed.executeUpdate();
-      em.getTransaction().commit();
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      log.log(Level.WARN, "update failed");
-      return false;
-    } finally {
-      em.close();
-      log.log(Level.INFO, "object updated");
-    }
-    return true;
-  }
-
-  public static List query(String queryName, Object data) {
-    List resultList = null;
-    em.getTransaction().begin();
-    HashMap<String, Object> map = (HashMap<String, Object>) data;
-    Query fixed = em.createNamedQuery(queryName);
-    try {
-      fixed = getParameteredQuery(fixed, map);
-      resultList = fixed.getResultList();
-      em.getTransaction().commit();
-    } catch (Exception e) {
-      em.getTransaction().rollback();
-      log.log(Level.WARN, "query failed");
-      return null;
-    } finally {
-      em.close();
-      log.log(Level.INFO, "query results returned");
+    /**
+     * Updates the object passes by the query.
+     *
+     * @param queryName the name of the namedQuery
+     * @param data      the update parameters
+     * @return true if object updated false otherwise
+     */
+    public static boolean update(String queryName, Object data) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        HashMap<String, Object> map = (HashMap<String, Object>) data;
+        Query fixed = em.createNamedQuery(queryName);
+        try {
+            fixed = getParameteredQuery(fixed, map);
+            fixed.executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            log.log(Level.WARN, "update failed");
+            return false;
+        } finally {
+            em.close();
+            log.log(Level.INFO, "object updated");
+        }
+        return true;
     }
     return resultList;
   }
 
-  public static Query getParameteredQuery(Query q, HashMap<String, Object> filterMap) {
-    if (filterMap != null && !filterMap.isEmpty()) {
-      filterMap.keySet().forEach(column -> {
-        if (filterMap.get(column) instanceof String) {
-          String value = (String) filterMap.get(column);
-          q.setParameter(column, value.toUpperCase() + "%");
-        } else {
-          q.setParameter(column, filterMap.get(column));
+    /**
+     * @param queryName the name of the namedQuery
+     * @param data      the query parameters
+     * @return a results list
+     */
+    public static List query(String queryName, Object data) {
+        List resultList;
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        HashMap<String, Object> map = (HashMap<String, Object>) data;
+        Query fixed = em.createNamedQuery(queryName);
+        try {
+            fixed = getParameteredQuery(fixed, map);
+            resultList = fixed.getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            log.log(Level.WARN, "query failed");
+            return null;
+        } finally {
+            em.close();
+            log.log(Level.INFO, "query results returned");
         }
       });
     }
@@ -217,63 +225,86 @@ public class DB implements Serializable {
 
   // Query methods -------------------------------------------------------------------------------
 
-  //  /* Simple manual tests ------------------------------------------------------------------------------- */
+    /**
+     * Create a query with set of parameters represents by a map
+     *
+     * @param q         - the query to be filled
+     * @param filterMap - parameters map <attribute , value>
+     * @return - fixed query filled with the @params
+     */
+    public static Query getParameteredQuery(Query q, HashMap<String, Object> filterMap) {
+        if (filterMap != null && !filterMap.isEmpty()) {
+            filterMap.keySet().forEach(column -> {
+                if (filterMap.get(column) instanceof String) {
+                    String value = (String) filterMap.get(column);
+                    q.setParameter(column, value.toUpperCase() + "%");
+                } else {
+                    q.setParameter(column, filterMap.get(column));
+                }
+            });
+        }
+        return q;
+    }
+
+    public static void main(String[] args) {
+        emf = ServerSystem
+                .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
+        EntityTransaction txn;
+        EntityManager em = emf.createEntityManager();
+        txn = em.getTransaction();
+        txn.begin();
+        em.createNativeQuery(
+                "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
+                .executeUpdate();
+        em.createNativeQuery("TRUNCATE TABLE Standings")
+                .executeUpdate(); // clears the table content
+        em.createNativeQuery(
+                "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
+                .executeUpdate(); // insert values
+        em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
+                .executeUpdate();
+        Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
+        List<Object[]> ids = q.getResultList();
+        for (Object[] a : ids)
+            log.log(Level.INFO, "Standings ~ " + a[0] + ":" + a[1]);// Show Result
+        //em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
+        txn.commit();
+        em.close();
+        emf.close();
+    }
+
+    /**
+     * Generic method to get a particular entity from the DB
+     *
+     * @param object String to identify which entity we need to get
+     * @param id     The integer value id
+     * @return a particular entity from the DB
+     */
+    public Object getEntity(String object, int id) {
+        EntityManager em = emf.createEntityManager();
+        //Begin Transaction
+        em.getTransaction().begin();
+
+        String queryString = "SELECT o FROM " + object
+                + " o WHERE o.id = "
+                + id;
+        TypedQuery<Object> query = em.createQuery(queryString, Object.class);
+        return query.getSingleResult();
+    }
+
+//  /* Simple manual tests ------------------------------------------------------------------------------- */
 //  // tested - CREATE TRUNCATE INSERT SELECT DROP CONNECTION  UPDATE namedQuery Parameters
-  public static void main(String[] args) {
-    ServerSystem
-        .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
-    EntityTransaction txn;
-    txn = em.getTransaction();
-    txn.begin();
-    em.createNativeQuery(
-        "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
-        .executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE Standings")
-        .executeUpdate(); // clears the table content
-    em.createNativeQuery(
-        "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
-        .executeUpdate(); // insert values
-    em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
-        .executeUpdate();
-    Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
-    List<Object[]> ids = q.getResultList();
-    for (Object[] a : ids) {
-      System.out.println("Standings ~ " + a[0] + ":" + a[1]);// Show Result
+
+    /**
+     * Calculate the number of records in a table (class)
+     *
+     * @param entityClass the table to be checked
+     * @return number of records
+     */
+    public Long getCount(Class entityClass) {
+        EntityManager em = emf.createEntityManager();
+        Query q = em.createQuery(
+                "select count(e) from " + entityClass.getName() + " e ");
+        return (Long) q.getSingleResult();
     }
-    em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
-
-//        Query q = em.createNativeQuery("SELECT s.name, s.capacity FROM Stadium s");
-//        List<Object[]> ids = q.getResultList();
-    for (Object[] s : ids) {
-      System.out.println("Stadium ~ " + s[0] + ":" + s[1]);// Show Result
-    }
-
-//        HashMap<String,Object> map = new HashMap<>() ;
-//        map.put("name", "anfield");
-//        query("stadiumByName", map);
-
-    txn.commit();
-
-    em.close();
-  }
-
-  /**
-   * Generic method to get a particular entity from the DB
-   *
-   * @param object String to identify which entity we need to get
-   * @param id     The integer value id
-   * @return a particular entity from the DB
-   */
-  public Object getEntity(String object, int id) {
-    StringBuilder queryString = new StringBuilder("SELECT o FROM ");
-    queryString.append(object);
-    queryString.append(" o WHERE o.id = ");
-    queryString.append(id);
-
-    //Begin Transaction
-    em.getTransaction().begin();
-
-    TypedQuery<Object> query = em.createQuery(queryString.toString(), Object.class);
-    return query.getSingleResult();
-  }
 }

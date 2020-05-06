@@ -1,0 +1,374 @@
+* {
+    -fx-primary: #2e3034;
+    -fx-secondary: #ffffff;
+    -fx-primarytext: #3f495a;
+
+    -fx-green-100: #38a169;
+    -fx-green-200: #2cca60;
+    -fx-green-300: #47be58;
+
+    -fx-meetup-blue: #00455d;
+    -fx-meetup-purple: #1f24cc;
+
+    -fx-gray-750: #3f495a;
+    -fx-gray-850: #222733;
+    -fx-gray-900: #121212;
+    -fx-gray-800: #181818;
+    -fx-gray-700: #282828;
+    -fx-gray-600: #535353;
+
+    -fx-red-100: #ef5350;
+}
+
+.root {
+    -fx-background-color: -fx-primary;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url("/fonts/Montserrat-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Circular Black";
+    src: url("/fonts/lineto-circular-black.ttf");
+}
+
+@font-face {
+    font-family: "Montserrat Light Italic";
+    src: url("/fonts/Montserrat-LightItalic.ttf");
+}
+
+@font-face {
+    font-family: "Montserrat SemiBold";
+    src: url("/fonts/Montserrat-SemiBold.ttf");
+}
+
+
+.glyph-icon {
+    -fx-fill: #e5e5e5;
+}
+
+/**********************  Label  **********************/
+.title {
+    -fx-font-family: "Circular Black";
+    -fx-fill: white;
+    -fx-font-size: 20pt;
+    -fx-underline: true;
+}
+
+.text-logo {
+    -fx-font-family: "Circular Black";
+    -fx-font-size: 25pt;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.label-button {
+    -fx-text-fill: -fx-secondary;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 10pt;
+    -fx-opacity: 0.6;
+}
+
+.label-button:hover,
+.label-button:focused {
+    -fx-text-fill: -fx-secondary;
+    -fx-underline: true;
+}
+
+
+.bigaction-button {
+    -fx-font-size: 11pt;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-family: "Circular Black";
+    -fx-text-fill: black;
+    -fx-background-color: white;
+}
+
+.bigaction-button:hover,
+.bigaction-button:focused {
+    -fx-border-color: black;
+    -fx-background-color: -fx-green-200;
+    -fx-text-fill: -fx-secondary;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-scale-z: 1;
+}
+
+.smallaction-button {
+    -fx-font-size: 12px;
+    -fx-padding: 3 20;
+    -fx-border-color: white;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-family: "Montserrat SemiBold";
+    -fx-text-fill: white;
+    -fx-background-color: -fx-primary;
+}
+
+.smallaction-button:hover,
+.smallaction-button:focused {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-scale-z: 1;
+
+}
+
+.text-field {
+    -fx-font-size: 12pt;
+    -jfx-focus-color: -fx-secondary;
+    -fx-text-fill: -fx-secondary;
+}
+
+/*Login Screen Specific*/
+
+.wrong-credentials {
+    -jfx-unfocus-color: -fx-red-100;
+    -jfx-focus-color: -fx-red-100;
+    -fx-text-fill: -fx-red-100;
+    -jfx-checked-color: -fx-red-100;
+}
+
+.correct-credentials {
+    -jfx-unfocus-color: -fx-green-100;
+    -jfx-focus-color: -fx-green-100;
+    -fx-text-fill: white;
+    -jfx-checked-color: -fx-meetup-blue;
+}
+
+/*Main Screen CSS Styling starts here*/
+
+/*TablPane styling*/
+.tab {
+    -fx-background-color: -fx-primary;
+}
+
+.tab-header-background {
+    -fx-background-color: -fx-primary;
+}
+
+.tab-label {
+    -fx-text-fill: -fx-secondary;
+    -fx-font-size: 10.2pt;
+    -fx-font-weight: bold;
+}
+
+.tab-main {
+    -fx-pref-height: 60;
+    -fx-max-height: 60;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: -fx-green-100;
+    -fx-pref-height: 3pt;
+}
+
+.settings-tab {
+    -fx-background-color: derive(-fx-primary, 10%);
+    -fx-padding: 5px 20px 5px 20px;
+}
+
+.settings-tab:selected {
+    -fx-background-color: -fx-secondary;
+}
+
+.settings-tab:selected .tab-label {
+    -fx-text-fill: -fx-primary;
+}
+
+.settings-tab .tab-header-background {
+    -fx-background-color: derive(-fx-primary, -50%);
+}
+
+/*Menu bar Styling*/
+.menu-bar {
+    -fx-font-size: 14;
+    -fx-base: -fx-primary;
+    -fx-background-color: -fx-primary;
+}
+
+.context-menu {
+    -fx-background-color: derive(-fx-primary, 20%);
+    -fx-font-size: 14;
+    -fx-min-width: 150px;
+}
+
+/*Hamburger Styling*/
+.jfx-hamburger-icon {
+    -fx-spacing: 7;
+}
+
+.jfx-hamburger-icon StackPane {
+    -fx-background-color: -fx-secondary;
+    -fx-background-radius: 5px;
+}
+
+/*Toolbar buttons*/
+.toolbar-button {
+    -fx-font-family: "monospace";
+    -fx-font-size: 10pt;
+    -fx-border-color: transparent;
+    -fx-background-color: derive(-fx-primary, 10%);
+    -fx-background-radius: 0px;
+    -fx-border-radius: 0px;
+}
+
+.toolbar-button:hover,
+.toolbar-button:focused {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.toolbar-button:hover .glyph-icon,
+.toolbar-button:hover .glyph-icon {
+    -fx-fill: black;
+}
+
+/*Text styling*/
+.main-text {
+    -fx-fill: white;
+    -fx-font-size: 14pt;
+    -fx-text-alignment: center;
+}
+
+.submission-container {
+    -fx-background-color: derive(-fx-primary, 10%);
+}
+
+/*Dialog styling*/
+.dialog-button {
+    -fx-border-color: -fx-primarytext;
+    -fx-text-fill: white;
+    -fx-border-radius: 1px;
+    -fx-background-radius: 3px;
+}
+
+.dialog-button:hover {
+    -fx-background-color: -fx-primarytext;
+    -fx-border-color: derive(-fx-primarytext, -20%);
+    -fx-text-fill: white;
+}
+
+.jfx-layout-actions {
+    -fx-hgap: 8;
+}
+
+/*Chart Styling*/
+.data0.chart-pie {
+    -fx-pie-color: -fx-secondary;
+    -fx-border-color: derive(-fx-secondary, -30%);
+}
+
+.data1.chart-pie {
+    -fx-pie-color: derive(-fx-primary, 30%);
+    -fx-border-color: derive(-fx-primary, 30%);
+}
+
+.chart-pie-label {
+    -fx-fill: derive(-fx-secondary, -5%);
+}
+
+/*About window*/
+.about-text {
+    -fx-fill: -fx-secondary;
+}
+
+.about-button {
+    -fx-border-color: transparent;
+}
+
+/*Custom window background*/
+.custom-pane {
+    -fx-background-color: derive(-fx-primary, 5%);
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: derive(-fx-primary, 60%);
+    -fx-border-color: transparent;
+    -fx-background-radius: 5em;
+}
+
+/*JFXDialog styling*/
+.jfx-layout-heading {
+    -fx-background-color: -fx-primarytext;
+}
+
+.jfx-layout-heading .label {
+    -fx-text-fill: white;
+    -fx-font-size: 12pt;
+}
+
+.jfx-layout-body,
+.jfx-layout-actions {
+    -fx-background-color: -fx-primary;
+}
+
+.jfx-layout-body .label {
+    -fx-text-fill: white;
+    -fx-padding: 20px 0 0 0;
+}
+
+/*Dashboard label*/
+.not-available {
+    -fx-background-radius: 5px;
+    -fx-fill: derive(-fx-meetup-blue, 80%);
+    -fx-cursor: hand;
+}
+
+/*Checkbox*/
+
+.checkbox-main {
+    -fx-text-fill: -fx-secondary;
+    -jfx-checked-color: -fx-primary;
+    -fx-font-size: 10pt;
+}
+
+/*Alert Dialog*/
+
+.custom-alert {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: white;
+}
+
+.custom-alert > *.button-bar > *.container {
+    -fx-background-color: -fx-primary;
+}
+
+.custom-alert > *.label.content {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.custom-alert *.header-panel {
+    -fx-background-color: -fx-gray-700;
+}
+
+.custom-alert .header-panel .label {
+    -fx-font-style: normal;
+    -fx-text-fill: white;
+}
+
+.custom-alert *.header-panel *.label {
+    -fx-font-size: 18px;
+    -fx-font-style: italic;
+    -fx-fill: -fx-primary;
+}
+
+/* Context menu */
+
+.colored-context-menu .menu-item:focused {
+    -fx-background-color: -fx-secondary;
+    -fx-text-fill: black;
+}
+
+.colored-context-menu .menu-item:focused .label {
+    -fx-text-fill: black;
+}

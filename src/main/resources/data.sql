@@ -1,6 +1,6 @@
 CREATE
-DATABASE  sportify;
-USE sportify;
+DATABASE sportify_test;
+USE sportify_test;
 
 CREATE TABLE IF NOT EXISTS Users
 (

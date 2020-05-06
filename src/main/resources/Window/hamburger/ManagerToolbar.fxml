@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="534.0" prefWidth="155.0"
+      stylesheets="@../../dark-theme.css" xmlns="http://javafx.com/javafx/8.0.171"
+      fx:controller="PL.main.TeamOwnerToolbarController">
+    <JFXButton alignment="CENTER" buttonType="RAISED" disable="true" mnemonicParsing="false"
+               onAction="#loadAddTeam" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button"
+               text="Hello, Manager" textFill="WHITE" textOverrun="CENTER_ELLIPSIS"/>
+    <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#loadAddTeam" prefHeight="400.0"
+               prefWidth="160.0" styleClass="toolbar-button" text="Blog" textAlignment="CENTER" textFill="WHITE">
+        <graphic>
+            <FontAwesomeIconView glyphName="" size="25" text=""/>
+        </graphic>
+    </JFXButton>
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadAddPlayer"
+               prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Edit Details"
+               textAlignment="CENTER" textFill="WHITE">
+        <graphic>
+            <FontAwesomeIconView size="25" text=""/>
+        </graphic>
+    </JFXButton>
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
+               onAction="#loadAddAsset" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button"
+               text="Edit My Page" textAlignment="CENTER" textFill="WHITE">
+        <graphic>
+            <FontAwesomeIconView size="26" text=""/>
+        </graphic>
+    </JFXButton>
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" onAction="#loadDatabase"
+               prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Data" textAlignment="CENTER"
+               textFill="WHITE">
+        <graphic>
+            <FontAwesomeIconView size="25" text=""/>
+        </graphic>
+    </JFXButton>
+    <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#loadNotification" prefHeight="400.0"
+               prefWidth="160.0" styleClass="toolbar-button" text="Notification" textAlignment="CENTER"
+               textFill="WHITE">
+        <graphic>
+            <FontAwesomeIconView size="25" text="" textAlignment="CENTER"/>
+        </graphic>
+    </JFXButton>
+    <JFXBadge prefHeight="54.0" prefWidth="155.0"/>
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="223.0" mnemonicParsing="false"
+               onAction="#loadManageSettings"
+               prefHeight="243.0" prefWidth="154.0" styleClass="toolbar-button" text="Manage" textAlignment="CENTER"
+               textFill="WHITE">
+        <graphic>
+            <FontAwesomeIconView glyphName="COG" size="25"/>
+        </graphic>
+    </JFXButton>
+</VBox>
