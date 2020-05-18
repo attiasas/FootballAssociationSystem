@@ -1,7 +1,12 @@
 package DL.Administration.Financial;
 
+import DL.Users.User;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
+
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
 /**
  * Description:     This abstract class represents a financial entry.
@@ -13,19 +18,19 @@ import java.util.Objects;
         @NamedQuery(name = "FinancialEntries", query = "Select e From FinancialEntry e")
 })
 @IdClass(FinancialEntry.EntryPK.class)
-public abstract class FinancialEntry
+public abstract class FinancialEntry implements Serializable
 {
     /**
      * For Composite Primary Key
      */
-    public class EntryPK
+    public class EntryPK implements Serializable
     {
         public FinancialUser source;
         public long timeStamp;
     }
     @Id
-    @OneToOne(cascade = CascadeType.MERGE)
-    private FinancialUser source;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private User source;
     @Id
     private long timeStamp;
     @Column
@@ -40,7 +45,7 @@ public abstract class FinancialEntry
      * @param amount - amount of entry, positive is income negative is expense
      * @param timeStamp - the date and time that the entry occurred
      */
-    public FinancialEntry(FinancialUser source, String name, double amount, long timeStamp)
+    public FinancialEntry(User source, String name, double amount, long timeStamp)
     {
         this.source = source;
         this.name = name;
@@ -54,7 +59,7 @@ public abstract class FinancialEntry
      * @param name - the name (description) of the entry
      * @param amount - amount of entry, positive is income negative is expense
      */
-    public FinancialEntry(FinancialUser source, String name, double amount)
+    public FinancialEntry(User source, String name, double amount)
     {
         this(source,name,amount, System.currentTimeMillis());
     }

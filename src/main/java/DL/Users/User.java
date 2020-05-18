@@ -10,7 +10,7 @@ import java.util.Objects;
  * Description:     Represents a user in the system
  * ID:              X
  **/
-@MappedSuperclass
+@Entity
 @NamedQueries( value = {
         @NamedQuery(name = "UserByUsername", query = "SELECT u From User u WHERE u.username = :username"),
         @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword"),
@@ -148,5 +148,15 @@ public abstract class User
     }
 
 
+    public void addNotification(Notification notification)
+    {
+        if(notification == null) return;
+        notificationsOwner.put(notification,false);
+    }
 
+    public void readNotification(Notification notification)
+    {
+        if(notification == null || !notificationsOwner.containsKey(notification)) return;
+        notificationsOwner.replace(notification,true);
+    }
 }

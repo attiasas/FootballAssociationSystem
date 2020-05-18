@@ -9,8 +9,12 @@ import DL.Team.Members.Player;
 import DL.Team.Members.TeamManager;
 import DL.Team.Members.TeamOwner;
 import DL.Team.Page.TeamPage;
+import DL.Users.User;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -225,6 +229,18 @@ public class Team {
         return teamOwners;
     }
 
+    public Set getTeamMembers()
+    {
+        Set<User> result = new HashSet<>();
+
+        for(Coach coach : coaches) if(coach.isActive()) result.add(coach.getFan());
+        for(Player player : players) if(player.isActive()) result.add(player.getFan());
+        for(TeamManager manager : teamManagers) if(manager.isActive()) result.add(manager.getFan());
+        for(TeamOwner owner : teamOwners) if(owner.isActive()) result.add(owner.getTeamUser().getFan());
+
+        return result;
+    }
+
     public List<TeamFinancialEntry> getTeamFinancialEntries() {
         return teamFinancialEntries;
     }
@@ -239,5 +255,12 @@ public class Team {
 
     public List<Stadium> getStadiums() {
         return stadiums;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

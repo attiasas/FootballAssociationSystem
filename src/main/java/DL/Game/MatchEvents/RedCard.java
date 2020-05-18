@@ -24,4 +24,16 @@ public class RedCard extends OnePlayerEvent {
     public RedCard() {
         super(null,null,0,null);
     }
+
+    public static String Type() { return "Red Card"; }
+
+    @Override
+    public String getType() {
+        return Type();
+    }
+
+    @Override
+    public String toString() {
+        return getPlayer() + " Got A Red Card";
+    }
 }

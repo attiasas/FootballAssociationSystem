@@ -19,4 +19,14 @@ public class Foul extends TwoPlayersEvent {
     public Foul() {
         super(null,null,0,null,null);
     }
+
+    public static String Type() { return "Foul"; }
+
+    @Override
+    public String getType() { return Type(); }
+
+    @Override
+    public String toString() {
+        return "" + getSecondPlayer() + " Foul On " + getFirstPlayer();
+    }
 }

@@ -7,14 +7,9 @@ import DL.Team.Members.TeamManager;
 import DL.Team.Members.TeamOwner;
 import DL.Team.Members.TeamUser;
 import DL.Team.Team;
-import DL.Users.Fan;
-import DL.Users.User;
-import DL.Users.UserPermission;
+import DL.Users.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NomineePermissionUnit
 {
@@ -175,6 +170,23 @@ public class NomineePermissionUnit
         serverRequests.add(SystemRequest.update("TeamOwnerAddOwnerNominee",mapOf("newNomineesList",nominees,"teamOwner",cachedOwner)));
         serverRequests.add(SystemRequest.update("updateTeamOwnersOfTeam",mapOf("teamOwners",team.getTeamOwners(),"team",team)));
 
+        Notifiable notify = new Notifiable() {
+            // for query name: TeamOwnerAddOwnerNominee
+            @Override
+            public Notification getNotification() {
+                return new Notification("You have been nominated as a new team owner of " + team.getName() + " by " + user);
+            }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set result = new HashSet();
+
+                result.add(potentialNominee);
+
+                return result;
+            }
+        };
+
         return communication.transaction(serverRequests);
     }
 
@@ -211,6 +223,23 @@ public class NomineePermissionUnit
         serverRequests.add(SystemRequest.update("TeamOwnerAddManageNominee",mapOf("newNomineesList",nominees,"teamOwner",cachedOwner)));
         serverRequests.add(SystemRequest.update("updateTeamManagersOfTeam",mapOf("teamManagers",team.getTeamOwners(),"team",team)));
 
+        Notifiable notify = new Notifiable() {
+            // for query name: TeamOwnerAddOwnerNominee
+            @Override
+            public Notification getNotification() {
+                return new Notification("You have been nominated as a new team manager of " + team.getName() + " by " + user);
+            }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set result = new HashSet();
+
+                result.add(potentialNominee);
+
+                return result;
+            }
+        };
+
         return communication.transaction(serverRequests);
     }
 
@@ -236,9 +265,26 @@ public class NomineePermissionUnit
 
         // Deactivate All of this owner nominees
         List<SystemRequest> serverRequests = new ArrayList<>();
-        deactivateNominees(toRemove,serverRequests);
+        Set<User> users = new HashSet<>();
+        deactivateNominees(toRemove,serverRequests,users);
 
-        // TODO: Add Notification
+        TeamOwner finalToRemove = toRemove;
+        Notifiable notify = new Notifiable() {
+            // for query name: TeamOwnerAddOwnerNominee
+            @Override
+            public Notification getNotification() {
+                return new Notification("You have been removed from managing " + finalToRemove.getTeam() + " by " + user);
+            }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set result = new HashSet();
+
+                result.add(users);
+
+                return result;
+            }
+        };
 
         // Update Server
         return communication.transaction(serverRequests);
@@ -249,7 +295,7 @@ public class NomineePermissionUnit
      * @param toRemove - owner to deactivate
      * @param requests - DB Requests to update the active flags of the nominees
      */
-    private void deactivateNominees(TeamOwner toRemove, List<SystemRequest> requests)
+    private void deactivateNominees(TeamOwner toRemove, List<SystemRequest> requests, Set<User> users)
     {
         if(toRemove == null) return;
 
@@ -259,7 +305,8 @@ public class NomineePermissionUnit
         // deactivate owners nominees
         for(TeamOwner owner : ownerList)
         {
-            deactivateNominees(owner,requests);
+            deactivateNominees(owner,requests,users);
+            users.add(owner.getTeamUser().getFan());
             requests.add(SystemRequest.update("setActiveTeamOwner",mapOf("active",false,"teamOwner",owner)));
         }
 
@@ -267,11 +314,13 @@ public class NomineePermissionUnit
         for(TeamManager manager : managerList)
         {
             manager.setActive(false);
+            users.add(manager.getFan());
             requests.add(SystemRequest.update("setActiveTeamUser",mapOf("active",false,"teamUser",manager)));
         }
 
         // deactivate my owner
         toRemove.setActive(false);
+        users.add(toRemove.getTeamUser().getFan());
         requests.add(SystemRequest.update("setActiveTeamOwner",mapOf("active",false,"teamOwner",toRemove)));
         // deactivate teamUser if the user is only an owner
         TeamUser ownerUser = toRemove.getTeamUser();
@@ -340,7 +389,7 @@ public class NomineePermissionUnit
         }
 
         // deactivate owner
-        deactivateNominees(cachedOwner,serverRequests);
+        //deactivateNominees(cachedOwner,serverRequests,users);
         cachedOwner = null;
 
         return serverRequests;

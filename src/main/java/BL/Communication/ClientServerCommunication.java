@@ -2,14 +2,18 @@ package BL.Communication;
 
 import static java.net.InetAddress.getLocalHost;
 
-import BL.Server.utils.Settings;
+import BL.Client.ClientSystem;
+import BL.Server.utils.Configuration;
+import DL.Users.Notification;
+import DL.Users.User;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Description:     This Class Defines a CRUD Interface for communication with DB
@@ -25,14 +29,57 @@ import java.util.Map;
 public class ClientServerCommunication {
 
     private static InetAddress serverIP;
-    private static final int serverPort = Integer
-        .parseInt(Settings.getPropertyValue("server.port"));
+    private static final int serverPort = Integer.parseInt(Configuration.getPropertyValue("server.port"));
 
     static {
         try {
             serverIP = getLocalHost();
         } catch (UnknownHostException ignored) {
         }
+    }
+
+    private Thread listenerThread;
+    private volatile boolean listen;
+
+    public boolean startNotificationListener()
+    {
+        if(listenerThread != null && listenerThread.isAlive()) return false;
+
+        listen = true;
+        listenerThread = new Thread(() -> notificationDemon());
+        return true;
+    }
+
+    public void notificationDemon()
+    {
+        int listenPort = Integer.parseInt(Configuration.getPropertyValue("clientNotification.port"));
+
+        try(ServerSocket listenSocket = new ServerSocket(listenPort))
+        {
+            // init
+            while (listen)
+            {
+                Socket serverSocket = listenSocket.accept(); // blocking call
+                User loggedUser = ClientSystem.getLoggedUser();
+                if(loggedUser != null)
+                {
+                    try(ObjectInputStream fromServer = new ObjectInputStream(serverSocket.getInputStream()))
+                    {
+                        Object objFromServer = fromServer.readObject();
+                        if(objFromServer instanceof Notification) loggedUser.addNotification((Notification)objFromServer);
+                    } catch (SocketTimeoutException e) { }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopListener()
+    {
+        listen = false;
     }
 
     /**
@@ -136,6 +183,25 @@ public class ClientServerCommunication {
         return false;
     }
 
+    public List login(String username,String password)
+    {
+        try(Socket serverSocket = new Socket(serverIP,serverPort))
+        {
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
+            out.writeObject(SystemRequest.login(username,password));
+            out.flush();
+
+            List answer = (List) in.readObject();
+            return answer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     /**
      * this method will make sure that all of the given request will be preformed with the same connection and atomic
      * @param requests - insert,delete and update requests
@@ -144,7 +210,7 @@ public class ClientServerCommunication {
     public boolean transaction(List<SystemRequest> requests)
     {
         // validate no query/transaction requests
-        for(SystemRequest request : requests) if(request.type.equals(SystemRequest.Type.Query) || request.type.equals(SystemRequest.Type.Transaction)) return false;
+        for(SystemRequest request : requests) if(request.type.equals(SystemRequest.Type.Query) || request.type.equals(SystemRequest.Type.Transaction) || request.type.equals(SystemRequest.Type.Login)) return false;
 
         try(Socket serverSocket = new Socket(serverIP,serverPort))
         {

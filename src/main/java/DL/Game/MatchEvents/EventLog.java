@@ -1,5 +1,7 @@
 package DL.Game.MatchEvents;
 
+import DL.Game.Match;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +18,20 @@ public class EventLog {
 
     @OneToMany(cascade = CascadeType.MERGE)
     private List<Event> eventList;
+    @OneToOne
+    private Match myMatch;
+
+    public EventLog(Match match)
+    {
+        this.myMatch = match;
+        this.eventList = new ArrayList<>();
+    }
 
     /**
      * Default Constructor
      */
     public EventLog() {
-        this.eventList = new ArrayList<>();
+        this(null);
     }
 
     public boolean addMatchEvent(Event event) {
@@ -33,8 +43,10 @@ public class EventLog {
     }
 
     public List<Event> getEvents() {
-
         return eventList;
     }
 
+    public Match getMyMatch() {
+        return myMatch;
+    }
 }

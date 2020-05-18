@@ -24,4 +24,14 @@ public class YellowCard extends OnePlayerEvent {
     public YellowCard() {
         super(null, null, 0,null);
     }
+
+    @Override
+    public String getType() { return Type(); }
+
+    public static String Type() { return "Yellow Card"; }
+
+    @Override
+    public String toString() {
+        return getPlayer() + " Got A Yellow Card";
+    }
 }

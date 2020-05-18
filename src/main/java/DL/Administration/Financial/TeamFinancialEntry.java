@@ -1,6 +1,7 @@
 package DL.Administration.Financial;
 
 import DL.Team.Team;
+import DL.Users.User;
 
 import javax.persistence.*;
 
@@ -25,7 +26,7 @@ public class TeamFinancialEntry extends FinancialEntry
      * @param timeStamp - the date and time that the entry occurred
      * @param team - the team that the entry belongs to
      */
-    public TeamFinancialEntry(FinancialUser source, String name, double amount, long timeStamp, Team team)
+    public TeamFinancialEntry(User source, String name, double amount, long timeStamp, Team team)
     {
         super(source, name, amount, timeStamp);
         this.team = team;
@@ -37,7 +38,7 @@ public class TeamFinancialEntry extends FinancialEntry
      * @param name - the name (description) of the entry
      * @param amount - amount of entry, positive is income negative is expense
      */
-    public TeamFinancialEntry(FinancialUser source, String name, double amount, Team team)
+    public TeamFinancialEntry(User source, String name, double amount, Team team)
     {
         super(source, name, amount);
         this.team = team;

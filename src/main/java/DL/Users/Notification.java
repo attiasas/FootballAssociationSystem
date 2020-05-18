@@ -20,25 +20,21 @@ public class Notification
     private String msg;
     @Column
     private boolean read;
-    @ManyToOne
-    private User owner;
 
-
-    public Notification(User owner, String msg, boolean read)
+    public Notification(String msg, boolean read)
     {
-        this.owner = owner;
         this.msg = msg;
         this.read = read;
     }
 
-    public Notification (User owner, String msg)
+    public Notification (String msg)
     {
-        this(owner, msg, false);
+        this(msg, false);
     }
 
     public Notification ()
     {
-        this(null, "");
+        this(null, false);
     }
 
     public void setRead(boolean read)

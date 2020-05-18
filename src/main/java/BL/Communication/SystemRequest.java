@@ -1,6 +1,11 @@
 package BL.Communication;
 
+import org.stringtemplate.v4.ST;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,7 +19,7 @@ public class SystemRequest
 {
     public enum Type
     {
-        Delete,Insert,Update,Query,Transaction
+        Delete,Insert,Update,Query,Transaction,Login,Logout
     }
 
     public final Type type;
@@ -63,5 +68,27 @@ public class SystemRequest
     public static SystemRequest update(String queryName, Map<String,Object> parameters)
     {
         return new SystemRequest(Type.Update,queryName,parameters);
+    }
+
+    public static Object login(String username, String password)
+    {
+        HashMap parameters = new HashMap();
+        parameters.put("username",username);
+        parameters.put("password",password);
+        return new SystemRequest(Type.Login,"LOGIN",parameters);
+    }
+
+    public static void main(String[] args) {
+        File f = new File("D:\\University\\ThirdYear\\Semester 6\\Computer & Informaion Security\\Exercises\\Labs\\Lab2\\test.txt");
+        try(FileOutputStream outputStream = new FileOutputStream(f))
+        {
+            String pre = "05";
+            String mid = "-65";
+            for(char c ='0'; c <= '9'; c++)
+            {
+
+            }
+        }
+        catch (Exception e){}
     }
 }
