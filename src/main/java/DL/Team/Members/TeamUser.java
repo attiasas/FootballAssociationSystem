@@ -1,14 +1,11 @@
 package DL.Team.Members;
 
+import DL.Game.MatchEvents.Event;
 import DL.Team.Team;
 import DL.Users.Fan;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Description:  Defines a TeamUser object - a user related to a team object   X
@@ -33,19 +30,27 @@ import javax.persistence.OneToOne;
         @NamedQuery(name = "ActivateTeamUserByFan", query = "UPDATE TeamUser tu SET tu.active = true WHERE tu.fan = :fan"),
 })
 
-public class TeamUser
+@IdClass(TeamUser.EntryPK.class)
+public class TeamUser implements Serializable
 {
+
+    /**
+     * For Composite Primary Key
+     */
+    public class EntryPK implements Serializable {
+        public String name;
+        public Fan fan;
+    }
+
     @Id
     @Column
     String name;
 
     @Id
-    @Column
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     Fan fan;
 
-    @Column
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     protected Team team;
 
     @Column

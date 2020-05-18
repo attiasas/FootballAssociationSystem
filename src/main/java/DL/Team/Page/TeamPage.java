@@ -1,5 +1,6 @@
 package DL.Team.Page;
 
+import DL.Team.Members.TeamUser;
 import DL.Team.Team;
 
 import javax.persistence.*;
@@ -9,23 +10,29 @@ import java.io.Serializable;
  * Description: Defines a Page object - a personal page of team, a fan can follow    X
  * ID:              X
  **/
-
-
 @NamedQueries(value = {
         @NamedQuery(name = "TeamPage", query = "SELECT tp from TeamPage tp"),
         @NamedQuery(name = "TeamPageSetContent", query = "UPDATE TeamPage tp SET tp.content = :content WHERE tp.team = :team "),
         @NamedQuery(name = "TeamPageByTeam", query = "SELECT tp from TeamPage tp WHERE team = :team")
 })
-
-
 @Entity
 @DiscriminatorValue(value = "TeamPage")
+@IdClass(TeamPage.EntryPK.class)
 public class TeamPage extends Page implements Serializable
 {
-
     @Id
     @Column
     @OneToOne(cascade = CascadeType.ALL)
+    /**
+     * For Composite Primary Key
+     */
+    public class EntryPK implements Serializable {
+        public long id;
+        public Team team;
+    }
+
+    @Id
+    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private Team team;
 
     public TeamPage(String content, Team team) {

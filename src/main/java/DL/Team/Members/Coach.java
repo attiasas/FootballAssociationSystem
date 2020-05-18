@@ -6,6 +6,8 @@ import DL.Team.Team;
 import DL.Users.Fan;
 
 import javax.persistence.*;
+import java.io.Serializable;
+
 /**
  * Description:  Defines coach object by qualification, role and team it coaches   X
  * ID:              X
@@ -20,7 +22,7 @@ import javax.persistence.*;
         @NamedQuery(name = "updateCoachDetails", query = "UPDATE Coach c SET c.name = :name, c.role = :role, c.team = :team, c.active = :active, c.qualification = :qualification WHERE c.fan = :fan"),
 })
 
-public class Coach extends PageUser
+public class Coach extends PageUser implements Serializable
 {
     @Column
     private String qualification;

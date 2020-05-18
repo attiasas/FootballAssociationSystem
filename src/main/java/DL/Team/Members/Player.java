@@ -7,6 +7,7 @@ import DL.Users.Fan;
 import DL.Users.UserPermission;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,20 +25,15 @@ import java.util.List;
         @NamedQuery(name = "playerByName", query = "SELECT p FROM Player p WHERE p.name = :name "),
         @NamedQuery(name = "playerByFan", query = "SELECT p FROM Player p WHERE p.fan = :fan "),
         @NamedQuery(name = "updatePlayerDetails", query = "UPDATE Player p SET p.name = :name, p.role = :role, p.team = :team, p.active = :active, p.birthDate = :birthDate WHERE p.fan = :fan"),
-        @NamedQuery(name = "updatePlayerEvents", query = "update Player p set p.playerEvents = :playerEvents where p =: player")
 })
 
-public class Player extends PageUser
+public class Player extends PageUser implements Serializable
 {
     @Column
     private Date birthDate;
 
     @Column
     private String role;
-
-    @Column
-    @OneToMany
-    private List<Event> playerEvents;
 
     //Constructor
     public Player(String name, boolean active, Fan fan, Date birthDate, String role, Team team)
@@ -48,16 +44,9 @@ public class Player extends PageUser
 
         this.birthDate = birthDate;
         this.role = role;
-        playerEvents = new ArrayList<>();
     }
 
     public Player() {}
-
-    public List<Event> addEvent(Event event)
-    {
-        playerEvents.add(event);
-        return playerEvents;
-    }
 
     public boolean setDetails(String name, String role, Team team, boolean active, Date birthDate) {
 
@@ -67,7 +56,7 @@ public class Player extends PageUser
         this.name = name;
         this.role = role;
         this.team = team;
-        this.active = true;
+        this.active = active;
         this.birthDate = birthDate;
         return true;
     }
@@ -76,7 +65,4 @@ public class Player extends PageUser
         return role;
     }
 
-    public List<Event> getPlayerEvents() {
-        return playerEvents;
-    }
 }

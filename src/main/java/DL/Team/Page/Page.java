@@ -1,6 +1,8 @@
 package DL.Team.Page;
 
 import DL.Users.Fan;
+import DL.Users.User;
+import com.sun.javafx.beans.IDProperty;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -13,13 +15,6 @@ import java.util.Set;
  * Description: Defines a Page object - a personal page of coach/player/team fan can follow    X
  * ID:              6
  **/
-
-
-@NamedQueries( value = {
-        @NamedQuery(name = "AllPages", query = "SELECT p From Page p"),
-        @NamedQuery(name = "PageByFan", query = "SELECT p from Page p WHERE :fan in (followers)")
-})
-
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "PAGE_TYPE", discriminatorType = DiscriminatorType.STRING)
@@ -31,14 +26,15 @@ public abstract class Page implements Serializable
     private int id;
 
     @Column
-    public String content;
+    protected String content;
 
-    @ManyToMany (cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @JoinTable(name = "JOIN_PAGE_FAN", joinColumns = {@JoinColumn(name = "PAGE_ID")}, inverseJoinColumns = {@JoinColumn(name = "FAN_ID")})
     Set<Fan> followers;
 
     public Page()
     {
-        followers = new HashSet<Fan>();
+        followers = new HashSet<>();
     }
 
     public boolean addFollower(Fan fan)

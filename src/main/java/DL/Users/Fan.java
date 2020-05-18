@@ -21,7 +21,6 @@ public class Fan extends User implements Serializable
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Page> follow;
 
-
     public Fan (String userName, String email, String hashedPassword)
     {
         super(userName, email, hashedPassword);

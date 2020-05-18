@@ -17,10 +17,13 @@ import java.util.Set;
  *                    an eventUser can only enter one event per gameTime to the eventLog
  **/
 
-@MappedSuperclass
+
 @NamedQueries(value = {
         @NamedQuery(name = "Events", query = "Select e From Event e")
 })
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @IdClass(Event.EntryPK.class)
 public abstract class Event implements Serializable, Notifiable {
 
@@ -35,9 +38,14 @@ public abstract class Event implements Serializable, Notifiable {
     @Id
     @OneToOne(cascade = CascadeType.MERGE)
     private Referee createdByUser;
+
     @Id
     @OneToOne(cascade = CascadeType.MERGE)
     private EventLog eventLog;
+
+    //@ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    //TeamUser teamUser;
+
     @Column
     private int gameTime;
 
