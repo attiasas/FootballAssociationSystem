@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane prefHeight="506.0" prefWidth="750.0" stylesheets="@../dark-theme.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.AssociationUI.ManageTeamsController">
+  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane">
+      <VBox layoutX="-86.0" prefHeight="459.0" prefWidth="667.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <padding>
+              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+          </padding>
+          <JFXTextField fx:id="teamName" labelFloat="true" promptText="Team Name">
+              <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="25.0" />
+              </VBox.margin>
+          </JFXTextField>
+          <JFXTextField fx:id="teamOwnerUsername" labelFloat="true" promptText="Team owner username ">
+              <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+              </VBox.margin>
+          </JFXTextField>
+          <HBox alignment="CENTER" prefHeight="43.0" prefWidth="512.0" spacing="25.0">
+              <VBox.margin>
+                  <Insets top="10.0" />
+              </VBox.margin>
+              <JFXButton onAction="#addTeam" prefHeight="30.0" prefWidth="135.0" styleClass="smallaction-button" text="Create Team" />
+              <JFXButton onAction="#clearFieldsCreateTeam" prefHeight="30.0" prefWidth="135.0" styleClass="smallaction-button" text="Clear Fields" />
+              <JFXButton onAction="#closeWindow" layoutX="156.0" layoutY="17.0" prefHeight="30.0" prefWidth="135.0" styleClass="smallaction-button" text="Back To Menu" />
+          </HBox>
+      </VBox>
+  </AnchorPane>
+</StackPane>
