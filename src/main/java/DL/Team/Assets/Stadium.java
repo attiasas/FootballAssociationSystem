@@ -3,6 +3,7 @@ package DL.Team.Assets;
 import DL.Team.Team;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
 
 })
 
-public class Stadium
+public class Stadium implements Serializable
 {
     @Id
     @Column
@@ -34,8 +35,8 @@ public class Stadium
     @Column
     private boolean active;
 
-    @Column
-    @ManyToMany (cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @JoinTable(name = "JOIN_STADIUM_TEAMS", joinColumns = {@JoinColumn(name = "STADIUM_ID")}, inverseJoinColumns = {@JoinColumn(name = "TEAM_ID")})
     private List<Team> teams;
 
     @Override
@@ -64,6 +65,15 @@ public class Stadium
 
     public List<Team> getTeams() {
         return teams;
+    }
+
+    public boolean addTeam(Team team) {
+
+        if (team == null) return false;
+
+        teams.add(team);
+
+        return true;
     }
 
     public boolean setDetails(String newName, int capacity, List<Team> teamsList) {

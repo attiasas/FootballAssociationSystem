@@ -5,6 +5,7 @@ import DL.Users.Fan;
 import DL.Users.UserPermission;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -18,11 +19,9 @@ import java.util.List;
         @NamedQuery(name = "teamManagerByTeam", query = "SELECT tm from TeamManager tm WHERE tm.team = :team AND tm.active = true AND tm.team.close = false"),
         @NamedQuery(name = "teamManagerTeamOwner", query = "SELECT tm from TeamManager tm WHERE tm.teamOwner = :teamOwner AND tm.active = true"),
 })
-public class TeamManager extends TeamUser
+public class TeamManager extends TeamUser implements Serializable
 {
-
-    @Column
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private TeamOwner teamOwner;
 
     //Constructor

@@ -8,18 +8,13 @@ import DL.Team.Members.Coach;
 import DL.Team.Members.Player;
 import DL.Team.Members.TeamManager;
 import DL.Team.Members.TeamOwner;
+import DL.Team.Page.Page;
 import DL.Team.Page.TeamPage;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 /**
  * Description:  Defines a Team object - consists of players, manager, coaches, etc.   X
@@ -48,7 +43,8 @@ import javax.persistence.OneToOne;
     @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false "),
 })
 
-public class Team {
+public class Team implements Serializable
+{
     @Id
     @Column
     private String name;
@@ -59,44 +55,34 @@ public class Team {
     @Column
     private boolean close;
 
-    @Column
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private TeamPage page;
 
-    @Column
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Coach> coaches;
 
-    @Column
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Player> players;
 
-    @Column
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamManager> teamManagers;
 
-    @Column
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamOwner> teamOwners;
 
-    @Column
-    @OneToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Stadium> stadiums;
 
-    @Column
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Match> homeMatches;
 
-    @Column
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Match> awayMatches;
 
-    @Column
-    @OneToMany(cascade = CascadeType.MERGE)
-    private List<TeamFinancialEntry> teamFinancialEntries;
+    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    private TeamFinancialEntry teamFinancialEntries;
 
-    @Column
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<LeagueSeason> leagueSeasons;
 
     //Constructor
@@ -116,7 +102,7 @@ public class Team {
         stadiums = new ArrayList<>();
         homeMatches = new ArrayList<>();
         awayMatches = new ArrayList<>();
-        teamFinancialEntries = new ArrayList<>();
+        teamFinancialEntries = null;
         leagueSeasons = new ArrayList<>();
     }
 
@@ -133,9 +119,12 @@ public class Team {
         return true;
     }
 
-    public void addLeagueSeason(LeagueSeason leagueSeason) {
-        if (leagueSeason != null)
-            leagueSeasons.add(leagueSeason);
+    public boolean addLeagueSeason(LeagueSeason leagueSeason) {
+
+        if (leagueSeason == null) return false;
+
+        leagueSeasons.add(leagueSeason);
+        return true;
     }
 
     public String getName() {
@@ -154,9 +143,38 @@ public class Team {
         return homeMatches;
     }
 
-    public void addStadium(Stadium stadium) {
-        if (stadium != null)
-            stadiums.add(stadium);
+    public boolean addStadium(Stadium stadium) {
+
+        if (stadium == null) return false;
+
+        stadiums.add(stadium);
+
+        return true;
+    }
+
+    public boolean addPlayer(Player player) {
+
+        if (player == null) return false;
+
+        players.add(player);
+
+        return true;
+    }
+
+    public boolean removePlayer(Player player) {
+
+        if (player == null) return false;
+
+        return players.remove(player);
+
+    }
+
+    public boolean removeCoach(Coach coach) {
+
+        if (coach == null) return false;
+
+        return coaches.remove(coach);
+
     }
 
     public void setHomeMatches(Match homeMatch) {
@@ -225,7 +243,7 @@ public class Team {
         return teamOwners;
     }
 
-    public List<TeamFinancialEntry> getTeamFinancialEntries() {
+    public TeamFinancialEntry getTeamFinancialEntries() {
         return teamFinancialEntries;
     }
 

@@ -4,16 +4,11 @@ import DL.Administration.Financial.FinancialEntry;
 import DL.Administration.Financial.FinancialUser;
 import DL.Team.Team;
 import DL.Users.Fan;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 /**
  * Description:  Defines a TeamOwner object - Owner of a specific team  X
@@ -39,23 +34,19 @@ import javax.persistence.OneToOne;
     @NamedQuery(name = "setTeamToTeamOwner", query = "UPDATE TeamOwner to SET to.team = :team WHERE to.teamUser = :teamUser"),
     @NamedQuery(name = "deactivateTeamOwner", query = "UPDATE TeamOwner to SET to.active = :active WHERE to.teamUser = :teamUser AND to.team.close = false"),
 })
-public class TeamOwner implements FinancialUser
+public class TeamOwner implements FinancialUser, Serializable
 {
     @Id
-    @Column
-    @OneToOne (cascade = CascadeType.MERGE)
+    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private TeamUser teamUser;
 
-    @Column
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private Team team;
 
-    @Column
-    @OneToMany (cascade = CascadeType.MERGE)
+    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamOwner> ownerNominees;
 
-    @Column
-    @OneToMany (cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "TEAM_OWNER_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamManager> manageNominees;
 
     @Column

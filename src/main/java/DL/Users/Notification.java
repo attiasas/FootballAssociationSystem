@@ -36,6 +36,11 @@ public class Notification
         this(owner, msg, false);
     }
 
+    public Notification (String msg)
+    {
+        // bla bla bla
+    }
+
     public Notification ()
     {
         this(null, "");

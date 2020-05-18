@@ -16,9 +16,8 @@ import java.util.*;
 public class Fan extends User
 {
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "FAN_ID",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private Set<Page> follow;
-
 
     public Fan (String userName, String email, String hashedPassword)
     {

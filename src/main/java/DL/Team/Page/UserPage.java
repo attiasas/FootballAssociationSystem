@@ -4,6 +4,7 @@ import DL.Team.Members.PageUser;
 import DL.Team.Team;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Description: Defines a Page object - a personal page of coach/player, a fan can follow    X
@@ -11,18 +12,27 @@ import javax.persistence.*;
  **/
 
 
+@Entity
 @NamedQueries(value = {
         @NamedQuery(name = "UserPage", query = "SELECT up from UserPage up"),
         @NamedQuery(name = "UserPageSetContent", query = "UPDATE UserPage us SET us.content = :content WHERE us.pageUser = :pageUser "),
 
 })
 
-@Entity
-public class UserPage extends Page {
+@IdClass(UserPage.EntryPK.class)
+public class UserPage extends Page implements Serializable
+{
+
+    /**
+     * For Composite Primary Key
+     */
+    public class EntryPK implements Serializable {
+        public long id;
+        public PageUser pageUser;
+    }
 
     @Id
-    @Column
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private PageUser pageUser;
 
     public UserPage(String content, PageUser pageUser) {
