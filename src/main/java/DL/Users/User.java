@@ -1,40 +1,62 @@
 package DL.Users;
+import BL.Server.utils.StringListConverter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
 
 
 /**
  * Description:     Represents a user in the system
  * ID:              X
  **/
-@MappedSuperclass
+
 @NamedQueries( value = {
         @NamedQuery(name = "UserByUsername", query = "SELECT u From User u WHERE u.username = :username"),
         @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword"),
         @NamedQuery(name = "UpdateUserPermission", query = "update User u set u.userPermission = :permission where u = :user"),
         @NamedQuery(name = "DeactivateUser", query = "UPDATE User u SET u.active = false where user = :user"),
-        @NamedQuery(name = "ActivateUser", query = "UPDATE User u SET u.active = true where user=:user")
+        @NamedQuery(name = "ActivateUser", query = "UPDATE User u SET u.active = true where user=:user"),
 })
-public abstract class User
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
+public abstract class User implements Serializable
 {
+//    @Id
+
     @Id
     private String username;
+
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+
     @Column
     private boolean active;
+
+
+//    @ElementCollection
     @Column
+    @Convert(converter = StringListConverter.class)
     private List<String> searches;
     @Column
     private String email;
     @Column
     private String hashedPassword;
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name="UserToUserPermission", joinColumns = {@JoinColumn(name = "username")}, inverseJoinColumns = {@JoinColumn(name="id")})
     private UserPermission userPermission;
-    @OneToMany
-    private HashMap<Notification, Boolean> notificationsOwner; //maps from notification to a boolean of read or not read
-    @OneToMany
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name="UserToNotification", joinColumns = {@JoinColumn(name = "username")}, inverseJoinColumns = {@JoinColumn(name="id")})
+    @ElementCollection
+    private Map<Notification, Boolean> notificationsOwner; //maps from notification to a boolean of read or not read
+
+
+    @OneToMany(mappedBy = "UserComplaint", cascade = CascadeType.ALL)
     private List<UserComplaint> userComplaintsOwner;
 
     /**
@@ -148,5 +170,39 @@ public abstract class User
     }
 
 
+    /**
+     * add a totification to the users notifications list.
+     * the notification is added as not read
+     * @param notification
+     * @return true if
+     */
+    public boolean addNotification (Notification notification)
+    {
+        if(notificationsOwner.containsKey(notification))
+        {
+            // the user already has this notification
+            return false;
+        }
 
+        this.notificationsOwner.put(notification, false);
+        return true;
+    }
+
+    public boolean markAllNotificationsAsRead()
+    {
+        Iterator it = this.notificationsOwner.entrySet().iterator();
+        while(it.hasNext())
+        {
+            Map.Entry pair = (Map.Entry)it.next();
+            Notification notification = (Notification)pair.getKey();
+            markNotificationAsRead(notification);
+        }
+        return true;
+    }
+
+    public boolean markNotificationAsRead(Notification notification)
+    {
+        this.notificationsOwner.put(notification, true);
+        return true;
+    }
 }

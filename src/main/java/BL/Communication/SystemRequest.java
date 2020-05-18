@@ -14,7 +14,7 @@ public class SystemRequest
 {
     public enum Type
     {
-        Delete,Insert,Update,Query,Transaction
+        Delete,Insert,Update,Query,Transaction,Login, Logout
     }
 
     public final Type type;

@@ -1,6 +1,7 @@
 package DL.Users;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Description:     Represents a notification in the system
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @NamedQueries( value = {
         @NamedQuery(name = "Notification", query = "SELECT n From Notification n WHERE n.id = :id")
 })
-public class Notification
+public class Notification implements Serializable
 {
 
     @Id
@@ -18,32 +19,15 @@ public class Notification
     private Long id;
     @Column
     private String msg;
-    @Column
-    private boolean read;
-    @ManyToOne
-    private User owner;
 
 
-    public Notification(User owner, String msg, boolean read)
+    public Notification(String msg)
     {
-        this.owner = owner;
         this.msg = msg;
-        this.read = read;
     }
 
-    public Notification (User owner, String msg)
+    public Notification()
     {
-        this(owner, msg, false);
+        this.msg = "";
     }
-
-    public Notification ()
-    {
-        this(null, "");
-    }
-
-    public void setRead(boolean read)
-    {
-        this.read = read;
-    }
-
 }

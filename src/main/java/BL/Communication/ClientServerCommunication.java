@@ -2,7 +2,7 @@ package BL.Communication;
 
 import static java.net.InetAddress.getLocalHost;
 
-import BL.Server.utils.Settings;
+import BL.Server.utils.Configuration;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -26,7 +26,7 @@ public class ClientServerCommunication {
 
     private static InetAddress serverIP;
     private static final int serverPort = Integer
-        .parseInt(Settings.getPropertyValue("server.port"));
+        .parseInt(Configuration.getPropertyValue("server.port"));
 
     static {
         try {

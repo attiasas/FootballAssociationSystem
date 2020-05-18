@@ -117,9 +117,6 @@ public class HandleUserUnitTest
         communication.insert(ownerFan3);
         communication.insert(owner3);
 
-
-
-
     }
 
 
@@ -262,27 +259,6 @@ public class HandleUserUnitTest
         assertFalse(fanUser.getActive());
         assertFalse(teamManager.isActive());
     }
-
-
-//    @Test
-//    public void testAddNewRefereeBadParameters()
-//    {
-//        assertNull(userUnit.addNewReferee("","","","",""));
-//    }
-
-//    @Test
-//    public void testAddNewReferee()
-//    {
-//        Referee referee = userUnit.addNewReferee("Yossi", "test@mail.com", "abcde", "Yossi", "High");
-//
-//        //Get the referee from the Database and see if he was saved successfully in the database
-//        Referee dbReferee = getRefereeByUsernameFromDB("Yossi");
-//
-//        // check if the referee from the userUnit function is the right one
-//        assertEquals("Yossi", referee.getName());
-//        //check if the referee from the db hs the right one
-//        assertEquals("Yossi", dbReferee.getName());
-//    }
 
     @Test
     public void testLogOut()

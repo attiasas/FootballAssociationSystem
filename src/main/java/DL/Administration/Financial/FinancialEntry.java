@@ -1,6 +1,7 @@
 package DL.Administration.Financial;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -8,21 +9,24 @@ import java.util.Objects;
  *                  * a user can only enter one entry per timestamp (id)
  *                  * negative amount represents an expense and positive an income.
  **/
-@MappedSuperclass
 @NamedQueries(value = {
         @NamedQuery(name = "FinancialEntries", query = "Select e From FinancialEntry e")
 })
 @IdClass(FinancialEntry.EntryPK.class)
-public abstract class FinancialEntry
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "FINANCIAL_TYPE", discriminatorType = DiscriminatorType.STRING)
+public abstract class FinancialEntry implements Serializable
 {
     /**
      * For Composite Primary Key
      */
-    public class EntryPK
+    public class EntryPK implements Serializable
     {
         public FinancialUser source;
         public long timeStamp;
     }
+
     @Id
     @OneToOne(cascade = CascadeType.MERGE)
     private FinancialUser source;

@@ -7,6 +7,8 @@ import BL.Communication.SystemRequest.Type;
 import BL.Server.utils.Configuration;
 import BL.Server.utils.DB;
 import DL.Administration.SystemManager;
+import DL.Users.Notifiable;
+import DL.Users.Notification;
 import DL.Users.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +21,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import java.io.*;
+import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -49,13 +53,16 @@ public class ServerSystem implements IServerStrategy {
     static Server server;
     private DB dataBase;
 
+    //notification handling objects
+    private NotificationUnit notificationUnit;
+
     /**
      * c`tor
      *
      * @param dbType   database type , choose between dev (deploy) and test (junit)
      * @param strategy database persistence strategy
      */
-    public ServerSystem(DbSelector dbType, Strategy strategy) {
+    public ServerSystem(DbSelector dbType, Strategy strategy, NotificationUnit notificationUnit) {
         final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
         dataBase = DB.getDataBaseInstance(entityManagerFactory);
         final String sysQueryName = "SystemManagers";
@@ -64,6 +71,8 @@ public class ServerSystem implements IServerStrategy {
         if (systemManagers) {
             signUp("admin", "admin@admin.com", "admin");
         }
+
+        this.notificationUnit = notificationUnit;
     }
 
     /**
@@ -206,9 +215,21 @@ public class ServerSystem implements IServerStrategy {
         initializeExternalSystems();
     }
 
+
+
+
     @Override
-    public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
+    //public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
+    public void serverStrategy(Socket clientSocket)
+    {
+
         try {
+            InputStream inFromClient = clientSocket.getInputStream();
+            OutputStream outToClient = clientSocket.getOutputStream();
+
+            //TODO: notification subscription only if the client asked for a subscription to the notifications
+
+
             ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
             ObjectOutputStream toClientObject = new ObjectOutputStream(outToClient);
             Object request = fromClient.readObject();
@@ -216,13 +237,18 @@ public class ServerSystem implements IServerStrategy {
             if (systemRequest.type.equals(Type.Transaction) && systemRequest.data instanceof List) {
                 List<SystemRequest> systemRequestList = (List<SystemRequest>) systemRequest.data;
                 systemRequestList
-                        .forEach(requestIterator -> handleRequest(toClientObject, requestIterator));
+                        .forEach(requestIterator -> handleRequest(toClientObject, requestIterator, clientSocket));
             } else {
-                handleRequest(toClientObject, systemRequest);
+                handleRequest(toClientObject, systemRequest, clientSocket);
             }
+
+            //TODO: if the request is unsubscription from notifications - close the socket
         } catch (Exception ignored) {
         }
     }
+
+
+
 
     /**
      * Strategy to execute when communicating with a client
@@ -230,9 +256,28 @@ public class ServerSystem implements IServerStrategy {
      * @param systemRequest  - request to handle
      * @param toClientObject - ObjectOutputStream of a socket to the client
      */
-    public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest) {
+    public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest, Socket clientSocket) {
         try {
+
             switch (systemRequest.type) {
+                case Login:
+                    List userToClient = DB.query("UserByUsernameAndPassword", systemRequest.data); //get list that contains only the user by username and password
+                    toClientObject.writeObject(userToClient);
+                    toClientObject.flush();
+
+                    if(userToClient.size() > 0)
+                    {//there is a user with these credentials
+                        User loggingInUser = (User)userToClient.get(0);
+                        notificationUnit.subscribeUser(loggingInUser, clientSocket.getInetAddress());
+
+                        //after sending the user object with the notifications to the client, make all notifications changed to read
+                        notificationUnit.markAllNotificationsOfUserAsRead(loggingInUser);
+                    }
+                    break;
+                case Logout:
+                    User loggingOutUser = (User)systemRequest.data;
+                    notificationUnit.unsubscribeUser(loggingOutUser);
+                    break;
                 case Delete:
                     if (systemRequest.data instanceof List) {
                         toClientObject.writeObject(DB.removeAll((List) systemRequest.data));
@@ -247,6 +292,12 @@ public class ServerSystem implements IServerStrategy {
                     } else {
                         toClientObject.writeObject(DB.persist(systemRequest.data));
                     }
+
+                    if(systemRequest.data instanceof Notifiable)
+                    {
+                        notificationUnit.notify((Notifiable)systemRequest.data);
+                    }
+
                     toClientObject.flush();
                     break;
                 case Update:

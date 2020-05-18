@@ -2,6 +2,7 @@ package DL.Administration;
 
 import DL.Users.User;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -16,6 +17,7 @@ import javax.persistence.NamedQuery;
  *                          * Building models for the Recommendation system.
  **/
 @Entity
+@DiscriminatorValue(value = "SystemManager")
 @NamedQueries(value = {
         @NamedQuery(name = "SystemManagers", query = "Select m From SystemManager m")
 })

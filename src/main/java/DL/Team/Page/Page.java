@@ -4,6 +4,7 @@ import DL.Users.Fan;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,19 +14,26 @@ import java.util.Set;
  * ID:              6
  **/
 
-@MappedSuperclass
+
 @NamedQueries( value = {
         @NamedQuery(name = "AllPages", query = "SELECT p From Page p"),
         @NamedQuery(name = "PageByFan", query = "SELECT p from Page p WHERE :fan in (followers)")
 })
 
-public abstract class Page
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "PAGE_TYPE", discriminatorType = DiscriminatorType.STRING)
+public abstract class Page implements Serializable
 {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column
     public String content;
 
-    @ManyToMany (cascade = CascadeType.MERGE)
+    @ManyToMany (cascade = CascadeType.ALL)
     Set<Fan> followers;
 
     public Page()

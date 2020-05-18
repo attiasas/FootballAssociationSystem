@@ -4,6 +4,7 @@ import DL.Team.Members.PageUser;
 import DL.Team.Team;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Description: Defines a Page object - a personal page of coach/player, a fan can follow    X
@@ -18,11 +19,11 @@ import javax.persistence.*;
 })
 
 @Entity
-public class UserPage extends Page {
+@DiscriminatorValue(value = "UserPage")
+public class UserPage extends Page implements Serializable
+{
 
-    @Id
-    @Column
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     private PageUser pageUser;
 
     public UserPage(String content, PageUser pageUser) {
