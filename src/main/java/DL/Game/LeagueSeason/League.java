@@ -1,6 +1,7 @@
 package DL.Game.LeagueSeason;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,9 +13,10 @@ import java.util.Objects;
         @NamedQuery(name = "GetLeague", query = "SELECT l From League l WHERE l.name = :name"),
         @NamedQuery(name = "GetAllLeagues", query = "SELECT l From League l")
 })
-public class League {
+public class League implements Serializable {
 
     @Id
+    @Column
     private String name;
 
     /**
@@ -58,9 +60,7 @@ public class League {
 
     @Override
     public String toString() {
-        return "League{" +
-                "name='" + name + '\'' +
-                '}';
+        return "LeagueName=" + name;
     }
 
 }

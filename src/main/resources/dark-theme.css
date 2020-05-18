@@ -142,6 +142,10 @@
     -jfx-checked-color: -fx-meetup-blue;
 }
 
+.combo-box .cell{
+    -fx-text-fill: white;
+    -fx-background-color: -fx-primary;
+}
 /*Main Screen CSS Styling starts here*/
 
 /*TablPane styling*/

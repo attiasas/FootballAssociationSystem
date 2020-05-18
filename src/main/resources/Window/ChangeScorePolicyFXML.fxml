@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="PL.AssociationUI.ScorePolicyController">
+    <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true" />
+    <AnchorPane fx:id="rootAnchorPane" prefHeight="797.0" prefWidth="1076.0">
+        <AnchorPane fx:id="parentAnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+         <Text layoutX="263.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change Score Policy">
+            <font>
+               <Font name="System Bold" size="50.0" />
+            </font>
+         </Text>
+         <Label layoutX="263.0" layoutY="219.0" prefHeight="46.0" prefWidth="138.0" text="League:">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+         <JFXButton layoutX="623.0" layoutY="516.0" onAction="#changeScorePolicy" prefHeight="67.0" prefWidth="138.0" styleClass="smallaction-button" text="Okay" textFill="WHITE" />
+         <JFXButton layoutX="801.0" layoutY="516.0" onAction="#closeWindow" prefHeight="67.0" prefWidth="138.0" styleClass="smallaction-button" text="Cancel" textFill="WHITE" />
+         <JFXComboBox fx:id="leagues" layoutX="497.0" layoutY="224.0" prefHeight="37.0" prefWidth="216.0" promptText="Choose League..." styleClass="combo-box" />
+         <Label layoutX="263.0" layoutY="279.0" prefHeight="46.0" prefWidth="138.0" text="Season:">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+         <Label layoutX="263.0" layoutY="339.0" prefHeight="46.0" prefWidth="138.0" text="Score Policy:">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+         <JFXComboBox fx:id="seasons" layoutX="497.0" layoutY="284.0" prefHeight="37.0" prefWidth="216.0" promptText="Choose Season..." />
+         <JFXComboBox fx:id="scorePolicies" layoutX="497.0" layoutY="344.0" prefHeight="37.0" prefWidth="216.0" promptText="Choose Score Policy..." />
+        </AnchorPane>
+        <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Menu mnemonicParsing="false" text="File">
+                <MenuItem mnemonicParsing="false" text="Open" />
+                <MenuItem mnemonicParsing="false" text="Save" />
+                <MenuItem mnemonicParsing="false" text="Update" />
+                <MenuItem mnemonicParsing="false" text="Settings" />
+                <MenuItem mnemonicParsing="false" text="Logout" />
+            </Menu>
+            <Menu mnemonicParsing="false" text="Add">
+                <MenuItem mnemonicParsing="false" text="Add User" />
+                <MenuItem mnemonicParsing="false" text="Add Asset" />
+                <MenuItem mnemonicParsing="false" text="Add Event" />
+            </Menu>
+            <Menu mnemonicParsing="false" text="View">
+                <MenuItem mnemonicParsing="false" text="Teams List" />
+                <MenuItem mnemonicParsing="false" text="Players List" />
+                <MenuItem mnemonicParsing="false" text="Managers List" />
+                <MenuItem mnemonicParsing="false" text="Refferes List" />
+                <MenuItem mnemonicParsing="false" text="Full Screen" />
+            </Menu>
+            <Menu mnemonicParsing="false" text="Notify">
+                <MenuItem mnemonicParsing="false" text="Notify followers" />
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+                <MenuItem mnemonicParsing="false" text="Donate" />
+                <MenuItem mnemonicParsing="false" text="About" />
+            </Menu>
+        </MenuBar>
+    </AnchorPane>
+</StackPane>

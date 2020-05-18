@@ -55,7 +55,7 @@ public class PoliciesUnitTest {
         Date startDate = new Date();
 
         leagueSeasonUnit.addLeagueSeason(league, season, gp, sp, startDate);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
 
         Team t1 = new Team("Test", true, false);
         Team t2 = new Team("Test2", true, false);
@@ -130,7 +130,7 @@ public class PoliciesUnitTest {
     @Test
     public void scheduleMatchesTest() {
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         assertTrue(policiesUnit.scheduleMatches(ls));
         assertEquals(3, ls.getMatches().size());
     }
@@ -141,7 +141,7 @@ public class PoliciesUnitTest {
     @Test
     public void calculateLeagueTableTest() {
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         ls.scheduleLeagueMatches();
         List<Map.Entry<Team, Integer[]>> leagueTable = policiesUnit.calculateLeagueTable(ls);
         assertEquals(3, leagueTable.size());
@@ -168,7 +168,7 @@ public class PoliciesUnitTest {
     @Test
     public void setRefereeInMatchesTest() {
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         ls.scheduleLeagueMatches();
         Referee r1 = new Referee(null, "Test", null, true);
         Referee r2 = new Referee(null, "Test1", null, true);
@@ -203,7 +203,7 @@ public class PoliciesUnitTest {
     @Test
     public void setRefereeInMatchesWithoutMatchesTest() {
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         ls.setGames(new ArrayList<>());
         assertFalse(policiesUnit.setRefereeInMatches(ls));
     }

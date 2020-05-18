@@ -24,6 +24,7 @@ public class LeagueSeasonUnit {
 
     /**
      * Ctor with parameters
+     *
      * @param clientServerCommunication
      */
     public LeagueSeasonUnit(ClientServerCommunication clientServerCommunication) {
@@ -32,6 +33,7 @@ public class LeagueSeasonUnit {
 
     /**
      * creates new league and adds it into the database. checks if the name is valid - nut null and null empty string.
+     *
      * @param name of the league
      * @return true if the league created
      */
@@ -45,6 +47,7 @@ public class LeagueSeasonUnit {
 
     /**
      * creates new season and adds it into the database. the year should be greater than 1950.
+     *
      * @param year of the season
      * @return true if the season created
      */
@@ -59,16 +62,17 @@ public class LeagueSeasonUnit {
     /**
      * Creates new leagueSeason according to the league and season parameters, and adds it into the database.
      * checks that the parameters aren't null.
-     * @param league league of the leagueSeason
-     * @param season season of the league season
-     * @param gamePolicy the game policy according to it the leagueSeason schedule its matches
-     * @param scorePolicy the score policy according to it the leagueSeason calculates its table.
+     *
+     * @param league          league of the leagueSeason
+     * @param season          season of the league season
+     * @param gamePolicy      the game policy according to it the leagueSeason schedule its matches
+     * @param scorePolicy     the score policy according to it the leagueSeason calculates its table.
      * @param startLeagueDate the date of the first match.
      * @return true if the league season created
      */
-    public boolean addLeagueSeason(League league, Season season, GamePolicy gamePolicy,ScorePolicy scorePolicy, Date startLeagueDate) {
+    public boolean addLeagueSeason(League league, Season season, GamePolicy gamePolicy, ScorePolicy scorePolicy, Date startLeagueDate) {
         if (league != null && season != null && scorePolicy != null && gamePolicy != null) {
-            LeagueSeason newLeagueSeason = new LeagueSeason(league, season, gamePolicy, scorePolicy,startLeagueDate);
+            LeagueSeason newLeagueSeason = new LeagueSeason(league, season, gamePolicy, scorePolicy, startLeagueDate);
             return clientServerCommunication.insert(newLeagueSeason);
         } else
             return false;
@@ -77,13 +81,14 @@ public class LeagueSeasonUnit {
     /**
      * Changes the score policy of a given league season.
      * checks if the parameters aren't null and that the leagueSeason didn't start yet.
+     *
      * @param leagueSeason
      * @param scorePolicy
      * @return true if the scorePolicy changed.
      */
     public boolean changeScorePolicy(LeagueSeason leagueSeason, ScorePolicy scorePolicy) {
         if (leagueSeason != null && scorePolicy != null && leagueSeason.setScorePolicy(scorePolicy)) {
-            HashMap<String,Object> parameters = new HashMap<>();
+            HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("newScorePolicy", scorePolicy);
             parameters.put("league", leagueSeason.getLeague());
             parameters.put("season", leagueSeason.getSeason());
@@ -94,13 +99,14 @@ public class LeagueSeasonUnit {
 
     /**
      * Sets referee In leagueSeason. checks that the referee and leagueSeason aren't null.
+     *
      * @param leagueSeason
      * @param referee
      * @return true if the referee added.
      */
     public boolean setRefereeInLeagueSeason(LeagueSeason leagueSeason, Referee referee) {
         if (leagueSeason != null && referee != null && leagueSeason.addReferee(referee)) {
-            HashMap<String,Object> parameters = new HashMap<>();
+            HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("newReferees", leagueSeason.getReferees());
             parameters.put("league", leagueSeason.getLeague());
             parameters.put("season", leagueSeason.getSeason());
@@ -112,13 +118,14 @@ public class LeagueSeasonUnit {
     /**
      * Adds Team to leagueSeason. checks that the Team and leagueSeason aren't null,
      * and that the team isn't already exists.
+     *
      * @param leagueSeason
      * @param team
      * @return
      */
     public boolean addTeamToLeagueSeason(LeagueSeason leagueSeason, Team team) {
         if (leagueSeason != null && team != null && leagueSeason.addTeam(team)) {
-            HashMap<String,Object> parameters = new HashMap<>();
+            HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("newTeamList", leagueSeason.getTeamsParticipate());
             parameters.put("league", leagueSeason.getLeague());
             parameters.put("season", leagueSeason.getSeason());
@@ -148,9 +155,9 @@ public class LeagueSeasonUnit {
     /**
      * @return the LeagueSeasons in the system.
      */
-    public List<LeagueSeason> getLeagueSeason(Season season) {
+    public List<LeagueSeason> getLeagueSeasons(Season season) {
         if (season != null) {
-            HashMap<String,Object> parameters = new HashMap<>();
+            HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("season", season);
             List<LeagueSeason> leagueSeasons = clientServerCommunication.query("GetAllLeagueSeasons", parameters);
             return leagueSeasons;
@@ -158,4 +165,32 @@ public class LeagueSeasonUnit {
         return null;
     }
 
+
+    /**TODO: ADD TESTS FOR THOSE FUNCTION
+    /**
+     * @return the specific season
+     */
+    public Season getSeason(int year) throws Exception {
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("year", year);
+        List<Season> requiredSeason = clientServerCommunication.query("GetSeason", parameters);
+        if (requiredSeason.size() > 0) {
+            return requiredSeason.get(0);
+        } else {
+            throw new Exception("The season does not exist.");
+        }
+    }
+
+
+    public LeagueSeason getLeagueSeason(Season season, League league) throws Exception {
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("season", season);
+        parameters.put("league", league);
+        List<LeagueSeason> requiredLeagueSeason = clientServerCommunication.query("GetLeagueSeason", parameters);
+        if (requiredLeagueSeason.size() > 0) {
+            return requiredLeagueSeason.get(0);
+        } else {
+            throw new Exception("The required League Season does not exist.");
+        }
+    }
 }
