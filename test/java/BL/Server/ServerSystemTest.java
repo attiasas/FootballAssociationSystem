@@ -3,7 +3,7 @@ package BL.Server;
 import BL.Client.ClientSystem;
 import BL.Communication.ClientServerCommunication;
 import BL.Server.utils.Mock;
-import BL.Server.utils.Settings;
+//import BL.Server.utils.Settings;
 import java.net.InetAddress;
 import lombok.SneakyThrows;
 import org.junit.Test;

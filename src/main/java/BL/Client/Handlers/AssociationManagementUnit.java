@@ -7,6 +7,7 @@ import DL.Team.Members.TeamOwner;
 import DL.Team.Members.TeamUser;
 import DL.Team.Team;
 import DL.Users.Fan;
+import DL.Users.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,17 +37,40 @@ public class AssociationManagementUnit {
      * @param name
      * @return true if the operation succeeded, or false otherwise (invalid input, db failure)
      */
-    public boolean addTeam(String name, String teamUserName, Fan fan) {
+    public boolean addTeam(String name, Fan fan) {
 
-        if (name == null || !isValidTeamName(name) || fan == null) return false;
+        if (fan == null || name == null || !isValidTeamName(name)) return false;
 
         Team team = new Team(name, true, false);
-        TeamUser teamUser = new TeamUser(teamUserName, true, fan, team);
+        TeamUser teamUser = new TeamUser(fan.getUsername(), true, fan, team);
         TeamOwner teamOwner = new TeamOwner(team, teamUser);
         boolean teamInsertion = clientServerCommunication.insert(team);
         boolean teamOwnerInsertion = clientServerCommunication.insert(teamOwner);
 
         return teamInsertion && teamOwnerInsertion;
+    }
+
+    /**
+     * Signs up a user and injects it in a Referee object
+     * @param username
+     * @param qualification
+     * @return A referee object. Returns null if the user can not be created or arguments were wrong
+     */
+    public boolean addNewReferee(Fan fan, String name, String qualification)
+    {
+        if(fan == null || name == null || name.isEmpty() || qualification == null || qualification.isEmpty())
+        {
+            return false;
+        }
+
+        // Create a new Referee with the fan we received
+        Referee referee = new Referee(qualification, name, fan, true);
+
+        if(!clientServerCommunication.insert(referee))
+        {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -76,7 +100,6 @@ public class AssociationManagementUnit {
 
     }
 
-
     // ** Private methods ** //
     /**
      * Check name validation (valid name contains letters and numbers only)
@@ -88,27 +111,4 @@ public class AssociationManagementUnit {
         return name != null && name.matches("([a-zA-Z0-9]+(\\s[a-zA-Z0-9]*)*)+");
     }
 
-
-    /**
-     * Signs up a user and injects it in a Referee object
-     * @param fan
-     * @param qualification
-     * @return A referee object. Returns null if the user can not be created or arguments were wrong
-     */
-    public boolean addNewReferee(Fan fan, String name, String qualification)
-    {
-        if(fan == null || qualification == null || qualification.equals(""))
-        {
-            return false;
-        }
-
-        // Create a new Referee with the fan we received
-        Referee referee = new Referee(qualification, name, fan, true);
-
-        if(!clientServerCommunication.insert(referee))
-        {
-            return false;
-        }
-        return true;
-    }
 }

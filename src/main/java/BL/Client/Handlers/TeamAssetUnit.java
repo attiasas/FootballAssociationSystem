@@ -7,15 +7,9 @@ import DL.Team.Members.*;
 import DL.Team.Page.Page;
 import DL.Team.Page.UserPage;
 import DL.Team.Team;
-import DL.Users.Fan;
-import DL.Users.User;
-import DL.Users.UserPermission;
+import DL.Users.*;
 
-import javax.management.OperationsException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description:  TeamAssetUnit responsible for  team management operations by a logged-in user X
@@ -104,6 +98,7 @@ public class TeamAssetUnit {
         if (!isValidStadiumName(name) || capacity <= 0 || team == null || isClosedTeam(team))
             return false;
 
+
         //get stadium by name
         HashMap<String, Object> args = new HashMap<>();
         args.put("name", name);
@@ -113,7 +108,15 @@ public class TeamAssetUnit {
             return false;
 
         Stadium stadium = new Stadium(name, capacity, team);
+
         boolean status = clientServerCommunication.insert(stadium);
+
+        if (status)
+        {
+            // update in client
+            if (!team.addStadium(stadium)) return false;
+            if (!stadium.addTeam(team)) return false;
+        }
 
         return status;
     }
@@ -139,6 +142,13 @@ public class TeamAssetUnit {
         args.put("teamsList", teamsList);
         boolean status = clientServerCommunication.update("setStadiumDetails", args);
 
+        if (status)
+        {
+            if (!stadium.setDetails(newName, capacity, teamsList)) return false;
+
+            for (Team t : teamsList) t.addStadium(stadium);
+        }
+
         return status;
     }
 
@@ -150,6 +160,8 @@ public class TeamAssetUnit {
      * this stadium)
      */
     public boolean removeStadium(String name) {
+
+        boolean status = false;
 
         //get stadium by name
         HashMap<String, Object> args = new HashMap<>();
@@ -166,9 +178,15 @@ public class TeamAssetUnit {
         args.put("name", name);
         args.put("active", false);
         if (teams != null && teams.size() == 0) // there are no teams related to this stadium
-            return clientServerCommunication.update("setStadiumActivity", args);
+            status = clientServerCommunication.update("setStadiumActivity", args);
 
-        return false;
+        if (status)
+        {
+            // set in client
+            stadiums.get(0).setActive(false);
+        }
+
+        return status;
 
     }
 
@@ -187,6 +205,13 @@ public class TeamAssetUnit {
         args.put("newStadiumsList", stadiums);
         args.put("name", team.getName());
         boolean status = clientServerCommunication.update("updateStadiumsToTeam", args);
+
+        if (status)
+        {
+            if (!team.setStadiumsList(stadiums)) return false;
+
+            for (Stadium stadium : stadiums) stadium.addTeam(team);
+        }
 
         return status;
 
@@ -217,6 +242,25 @@ public class TeamAssetUnit {
 
         boolean status = clientServerCommunication.update("SetTeamActivity", args);
 
+        if (status)
+        {
+            team.setActive(active);
+        }
+
+        Notifiable closeTeamNot = new Notifiable() {
+
+            public Notification getNotification() {
+                if (active)
+                    return new Notification(String.format("Team: %s is open. \n You will get notifications related to it from now on.", team.getName()));
+
+                return new Notification(String.format("Team: %s was closed temporarily. \n You will no longer get notifications about it.", team.getName()));
+            }
+
+            public Set getNotifyUsersList() {
+                return team.getPage().getFollowers();
+            }
+        };
+
         return status;
     }
 
@@ -235,6 +279,19 @@ public class TeamAssetUnit {
 
         args.put("name", team.getName());
         boolean status = clientServerCommunication.update("closeTeam", args);
+
+        if (status)  team.setClose(true);
+
+        Notifiable closeTeamPermanentlyNot = new Notifiable() {
+
+            public Notification getNotification() {
+                return new Notification(String.format("Team: %s was closed permanently. \n You will no longer get notifications about it.", team.getName()));
+            }
+
+            public Set getNotifyUsersList() {
+                return team.getPage().getFollowers();
+            }
+        };
 
         return status;
 
@@ -262,6 +319,11 @@ public class TeamAssetUnit {
         Player player = new Player(name, true, fan, birthDate, role, team);
 
         boolean status = clientServerCommunication.insert(player);
+
+        if (status)
+        {
+            if (!team.addPlayer(player)) return false;
+        }
 
         return status;
     }
@@ -293,6 +355,11 @@ public class TeamAssetUnit {
         args.put("fan", fan);
 
         boolean status = clientServerCommunication.update("updatePlayerDetails", args);
+
+        if (status)
+        {
+            ((Player) teamUser).setDetails(name, role, team, true, birthDate);
+        }
 
         return status;
 
@@ -448,6 +515,13 @@ public class TeamAssetUnit {
         args.put("active", false);
 
         boolean status = clientServerCommunication.update("SetActiveTeamUser", args);
+
+        if (status)
+        {
+            if (type.equals("Player")) teamUser.getTeam().removePlayer((Player)teamUser);
+
+            else if (type.equals("Coach")) teamUser.getTeam().removeCoach((Coach)teamUser);
+        }
 
         return status;
 

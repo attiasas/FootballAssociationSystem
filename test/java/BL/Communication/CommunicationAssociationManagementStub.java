@@ -5,6 +5,7 @@ import DL.Game.Referee;
 import DL.Team.Assets.Stadium;
 import DL.Team.Members.TeamOwner;
 import DL.Team.Team;
+import DL.Users.Fan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,9 @@ public class CommunicationAssociationManagementStub extends ClientServerCommunic
 
             for(Referee referee : referees)
             {
-                if(referee.getFan().equals(parameters.get("fan")))
+                Fan temp = referee.getFan();
+                Fan temp2 = (Fan) parameters.get("fan");
+                if(temp.equals(temp2))
                     result.add(referee);
             }
 
@@ -64,6 +67,7 @@ public class CommunicationAssociationManagementStub extends ClientServerCommunic
             return matches;
 
         }
+
         return new ArrayList();
     }
 

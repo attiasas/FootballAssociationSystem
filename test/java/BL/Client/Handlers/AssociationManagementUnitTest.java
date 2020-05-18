@@ -1,6 +1,7 @@
 package BL.Client.Handlers;
 
 import BL.Communication.CommunicationAssociationManagementStub;
+import BL.Communication.CommunicationUserUnitStub;
 import DL.Game.LeagueSeason.League;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.LeagueSeason.Season;
@@ -34,6 +35,7 @@ public class AssociationManagementUnitTest {
     private List<TeamOwner> teamOwners;
     private List<Referee> referees;
     private AssociationManagementUnit associationManagementUnit;
+    private CommunicationUserUnitStub communicationUserUnitStub;
 
     @Before
     public void setUp() {
@@ -41,6 +43,7 @@ public class AssociationManagementUnitTest {
         teamOwners = new ArrayList<>();
         referees = new ArrayList<>();
         associationManagementUnit = new AssociationManagementUnit(new CommunicationAssociationManagementStub(teams, teamOwners, referees));
+        communicationUserUnitStub = new CommunicationUserUnitStub();
     }
 
     // ID: 17.1
@@ -48,7 +51,7 @@ public class AssociationManagementUnitTest {
     public void testAddTeam() {
 
         Fan fan = new Fan("Dvir", "dvir@gmail.com", "123");
-        boolean result = associationManagementUnit.addTeam("Hapoel Beer Sheva", "dvir", fan);
+        boolean result = associationManagementUnit.addTeam("Hapoel Beer Sheva", fan);
         assertTrue(result);
         assertEquals(1, teams.size());
 
@@ -59,7 +62,7 @@ public class AssociationManagementUnitTest {
     public void testAddTeamInvalidName() {
 
         Fan fan = new Fan("Dvir", "dvir@gmail.com", "123");
-        boolean result = associationManagementUnit.addTeam("Hapoel Be'er Sheva", "dvir", fan);
+        boolean result = associationManagementUnit.addTeam("Hapoel Be'er Sheva", fan);
         assertFalse(result);
         assertEquals(0, teams.size());
     }
@@ -100,7 +103,7 @@ public class AssociationManagementUnitTest {
     @Test
     public void testAddNewReferee() {
 
-        Fan fan = new Fan("dvir", "dvir@gmail.com", "123");
+        Fan fan = new Fan("Dvir", "dvir@gmail.com", "123");
         boolean status = associationManagementUnit.addNewReferee(fan, "dvir", "UEFA");
         assertTrue(status);
     }

@@ -1,6 +1,6 @@
 package BL.Server.utils;
 
-import static BL.Server.utils.Settings.getPropertyValue;
+//import static BL.Server.utils.Settings.getPropertyValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 

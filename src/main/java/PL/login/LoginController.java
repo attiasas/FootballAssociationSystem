@@ -1,5 +1,6 @@
 package PL.login;
 
+import PL.main.App;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
@@ -115,6 +116,7 @@ public class LoginController implements Initializable {
             stage.setResizable(false);
             stage.setTitle("Sportify");
             stage.setScene(new Scene(parent));
+            App.mainStage = stage;
             stage.show();
         } catch (IOException ex) {
             log.info(ex.getMessage());

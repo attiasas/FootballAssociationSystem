@@ -1,5 +1,7 @@
 package PL.main;
 
+import DL.Users.Fan;
+import DL.Users.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +9,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.extern.log4j.Log4j;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 @Log4j(topic = "event")
@@ -17,7 +22,12 @@ public class App extends Application {
      *
      * @param args - ignored
      */
+
+    public static Stage mainStage;
+    public static Stack<Scene> scenes;
+
     public static void main(String[] args) {
+
         long startTime = System.currentTimeMillis();
         log.info("Sportify launched");
         launch(args);
@@ -32,6 +42,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        scenes = new Stack<>();
+        mainStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/Window/Login.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
