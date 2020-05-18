@@ -1,6 +1,7 @@
 package DL.Users;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Description:     X
@@ -12,7 +13,8 @@ import javax.persistence.*;
         @NamedQuery(name = "UserComplaintsByUser", query = "SELECT uc FROM UserComplaint uc WHERE uc.owner = :user"),
         @NamedQuery(name = "UserSetComment", query = "UPDATE UserComplaint uc SET comment = :comment WHERE id = :id")
 })
-public class UserComplaint {
+public class UserComplaint implements Serializable
+{
 
     @Id
     @GeneratedValue
@@ -22,6 +24,7 @@ public class UserComplaint {
     @Column
     private String response;
     @ManyToOne
+    @JoinTable(name="UserToUserComplaint", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name="username")})
     private User owner;
 
 

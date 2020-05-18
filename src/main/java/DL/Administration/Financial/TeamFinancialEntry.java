@@ -8,11 +8,13 @@ import javax.persistence.*;
 /**
  * Description:     A Financial Entry for a team.
  **/
-@Entity
 @NamedQueries(value = {
         @NamedQuery(name = "AllTeamFinancialEntries", query = "Select e From TeamFinancialEntry e"),
         @NamedQuery(name = "TeamFinancialEntries", query = "Select e From TeamFinancialEntry e where e.team=:team")
 })
+
+@Entity
+@DiscriminatorValue(value = "TeamFinancialEntry")
 public class TeamFinancialEntry extends FinancialEntry
 {
     @OneToOne(cascade = CascadeType.MERGE)

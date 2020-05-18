@@ -3,20 +3,22 @@ package DL.Users;
 import DL.Team.Page.Page;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Description:     Represents a Fan in the System. A Fan is the first User object that a registered User gets.
  * ID:              7
  **/
-@Entity
 @NamedQueries( value = {
         @NamedQuery(name = "AllFans", query = "SELECT f From Fan f")
 })
-public class Fan extends User
+@Entity
+@DiscriminatorValue(value = "Fan")
+public class Fan extends User implements Serializable
 {
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Page> follow;
 
 

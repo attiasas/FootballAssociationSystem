@@ -89,14 +89,15 @@ public class Server
     {
         try
         {
-            serverStrategy.serverStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
-            clientSocket.close();
+            serverStrategy.serverStrategy(clientSocket);
+            clientSocket.close(); //will only happen in the server strategy
 
         } catch (Exception e)
         {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Stop the server form running and shutdown

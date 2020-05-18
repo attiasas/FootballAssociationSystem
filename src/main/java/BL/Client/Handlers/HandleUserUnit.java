@@ -9,17 +9,11 @@ import DL.Game.Referee;
 import DL.Team.Members.Coach;
 import DL.Team.Members.Player;
 import DL.Team.Members.TeamManager;
-import DL.Team.Members.TeamUser;
-import DL.Team.Team;
-import org.apache.commons.codec.digest.Crypt;
 
 import DL.Users.Fan;
 import DL.Users.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +86,7 @@ public class HandleUserUnit
     {
         if(user instanceof AssociationMember)
         {
-            return deActiveteUser(user);
+            return deActivateUser(user);
         }
 
         if(user instanceof SystemManager)
@@ -101,7 +95,7 @@ public class HandleUserUnit
             {//there is only one system manager so we can not remove it
                 return false;
             }
-            return deActiveteUser(user);
+            return deActivateUser(user);
         }
 
         if(!(user instanceof Fan))
@@ -224,7 +218,7 @@ public class HandleUserUnit
 
     }
 
-    private boolean deActiveteUser(User user)
+    private boolean deActivateUser(User user)
     {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("user", user);
@@ -381,112 +375,4 @@ public class HandleUserUnit
 
 
 
-
-//    /**
-//     * Signs up a user and injects it in a Referee object
-//     * @param userName
-//     * @param email
-//     * @param password
-//     * @param name
-//     * @param qualification
-//     * @return A referee object. Returns null if the user can not be created or arguments were wrong
-//     */
-//    public Referee addNewReferee(String userName, String email, String password, String name, String qualification)
-//    {
-//        if(userName == null || userName.equals("") || email == null || email.equals("") || password == null || password.equals("") ||
-//                name == null || name.equals("") || qualification == null || qualification.equals(""))
-//        {
-//            return null;
-//        }
-//
-//        // Create a new fan user that will be injected to the referee object
-//        Fan fan = (Fan)signUp(userName, email, password);
-//
-//        if(fan == null)
-//        {
-//            return null;
-//        }
-//
-//        // Create a new Referee with the fan that we have already created
-//        Referee referee = new Referee(qualification, name, fan, true);
-//
-//        if(!communication.insert(referee))
-//        {
-//            return null;
-//        }
-//        return referee;
-//    }
-
-
-
-
-
-
-
 }
-//    /**
-//     * Removes a user. Only Fan users that are not a TeamUser and are not a Referee can be removed
-//     * @param user
-//     * @return false if the user is not a Fan and if the user is not a TeamUser and not Referee
-//     */
-//    public boolean removeUser(User user)
-//    {
-//        if(user == null)
-//        {
-//            return false;
-//        }
-//
-//        //if the user is an associationMember- delete it
-//        if(user instanceof AssociationMember)
-//        {
-//            communication.delete((AssociationMember)user);
-//            return true;
-//        }
-//
-//        //System manager can not be deleted
-//
-//        if(!(user instanceof Fan))
-//        {
-//            return false;
-//        }
-//
-//        Fan fanUser = (Fan)user;
-//
-//
-//        //Check the user is not a teamUser
-//        Map<String, Object> queryTeamUserMap = new HashMap<>();
-//        queryTeamUserMap.put("fan", fanUser);
-//        //get teamUsers with this fan
-//        List<Object> userTeamUsers = communication.query("TeamUserByFan", queryTeamUserMap);
-//
-//        if(userTeamUsers.size() > 0)
-//        {// the user is a TeamUser
-//            if(isTeamOwner((TeamUser)userTeamUsers.get(0)))
-//            {//the user is a team owner
-//                //TODO: remove a team owner - might be in another unit
-//            }
-//            //the user is a teamUser but not a team owner
-//            //TODO: remove a TeamUser - might be in another unit
-//            return false;
-//        }
-//
-//        //Check the user is not a Referee
-//        Map<String, Object> queryRefereeMap = new HashMap<>();
-//        queryRefereeMap.put("fan", fanUser);
-//        //get Referees with this fan
-//        List<Object> userReferees = communication.query("RefereeByFan", queryRefereeMap);
-//
-//        if(userReferees.size() > 0)
-//        {// the user is a Referee
-//            //TODO: remove a referee - might be in another unit
-//            return false;
-//        }
-//
-//        //the user is just a Fan - We can remove it
-//        //first we remove it from all pages he likes
-//        fanUser.unfollowAllPages();
-//        //remove the user from the database
-//        communication.delete(fanUser);
-//
-//        return true;
-//    }

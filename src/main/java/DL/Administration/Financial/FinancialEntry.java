@@ -14,9 +14,6 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
  *                  * negative amount represents an expense and positive an income.
  **/
 @MappedSuperclass
-@NamedQueries(value = {
-        @NamedQuery(name = "FinancialEntries", query = "Select e From FinancialEntry e")
-})
 @IdClass(FinancialEntry.EntryPK.class)
 public abstract class FinancialEntry implements Serializable
 {
@@ -28,6 +25,7 @@ public abstract class FinancialEntry implements Serializable
         public FinancialUser source;
         public long timeStamp;
     }
+
     @Id
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private User source;

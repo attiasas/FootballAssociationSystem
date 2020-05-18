@@ -17,6 +17,7 @@ import java.util.List;
  *                          * Assigning Referees to the associations and matches.
  **/
 @Entity
+@DiscriminatorValue(value = "AssociationMember")
 @NamedQueries(value = {
     @NamedQuery(name = "AssociationMembers", query = "Select m From AssociationMember m"),
         @NamedQuery(name = "UpdateAssociationEntries", query = "Update AssociationMember m set m.myEntries=:entries where m=:member")
