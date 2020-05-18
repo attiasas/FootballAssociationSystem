@@ -27,6 +27,9 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Stack;
+
+import static PL.AlertUtil.showSimpleAlert;
 
 
 public class MainController implements Initializable {
@@ -35,7 +38,7 @@ public class MainController implements Initializable {
     private static final String NO_SUCH_AVAILABLE = "No Such Available";
     private static final String NO_MEMBER_AVAILABLE = "No Member Available";
     private static final String AVAILABLE = "Available";
-    public Tab tabOverView;
+
     @FXML
     public AnchorPane parentAnchorPane;
     @FXML
@@ -46,18 +49,10 @@ public class MainController implements Initializable {
     private JFXDrawer drawer;
     @FXML
     private AnchorPane rootAnchorPane;
-    @FXML
-    private JFXTabPane mainTabPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initDrawer("TeamOwnerToolbar");
-        initGraphs();
-        initComponents();
-    }
-
-    private void initComponents() {
-        mainTabPane.tabMinWidthProperty().bind(rootAnchorPane.widthProperty().divide(mainTabPane.getTabs().size()).subtract(15));
+        initDrawer("AssociationToolbar");
     }
 
     private Stage getStage() {
@@ -71,10 +66,6 @@ public class MainController implements Initializable {
     @FXML
     private void handleMenuAbout() {
         loadStage("About");
-    }
-
-    private void closeStage() {
-        ((Stage) rootPane.getScene().getWindow()).close();
     }
 
     public void handleMenuFileLogout() {
@@ -102,8 +93,8 @@ public class MainController implements Initializable {
             Parent parent = FXMLLoader.load(getClass().getResource(String.format("/Window/%s.fxml", fxmlFileName)));
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle("Sportify");
-
             stage.setScene(new Scene(parent));
+            App.mainStage = stage;
             stage.show();
         } catch (IOException ignored) {
         }
@@ -135,19 +126,27 @@ public class MainController implements Initializable {
         }
         HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);
         task.setRate(-1);
+        //open tab
         hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> {
             drawer.toggle();
         });
+        //set x
         drawer.setOnDrawerOpening((event) -> {
             task.setRate(task.getRate() * -1);
             task.play();
             drawer.toFront();
         });
+        //list
         drawer.setOnDrawerClosed((event) -> {
             drawer.toBack();
             task.setRate(task.getRate() * -1);
             task.play();
         });
+
+    }
+
+    private void closeStage() {
+        ((Stage) rootPane.getScene().getWindow()).close();
     }
 
     /*
@@ -181,13 +180,6 @@ public class MainController implements Initializable {
 
     }
 
-    private void initGraphs() {
-
-    }
-
-    @FXML
-    private void handleMenuNotification(ActionEvent event) {
-    }
 
     public void handleMenuDonate(ActionEvent actionEvent) {
 
@@ -223,6 +215,10 @@ public class MainController implements Initializable {
     }
 
     public void handleMenuFileSave(ActionEvent actionEvent) {
+
+    }
+
+    public void handleMenuNotification(){
 
     }
 }

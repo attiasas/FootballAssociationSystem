@@ -5,6 +5,7 @@ import DL.Game.Match;
 import DL.Team.Team;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -17,21 +18,23 @@ import java.util.*;
 
 })
 @IdClass(ScorePolicy.EntryPK.class)
-public class ScorePolicy {
+public class ScorePolicy implements Serializable {
 
     /**
      * For Composite Primary Key
      */
-    public class EntryPK {
+    public class EntryPK implements Serializable{
         public int winPoints;
         public int drawPoints;
         public int losePoints;
     }
-
+    @Id
     @Column
     private int winPoints;
+    @Id
     @Column
     private int drawPoints;
+    @Id
     @Column
     private int losePoints;
 
@@ -160,6 +163,13 @@ public class ScorePolicy {
         return Objects.hash(winPoints, drawPoints, losePoints);
     }
 
+    @Override
+    public String toString() {
+        return "winPoints=" + winPoints +
+                ", drawPoints=" + drawPoints +
+                ", losePoints=" + losePoints;
+
+    }
 
     /**
      * This nested class compares between two Teams according to their points. if ths they have equal points, it compares them according to the goal difference.

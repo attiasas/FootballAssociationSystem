@@ -1,6 +1,7 @@
 package DL.Game.LeagueSeason;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -13,9 +14,10 @@ import java.util.Objects;
         @NamedQuery(name = "GetSeason", query = "SELECT s From Season s WHERE s.year = :year"),
         @NamedQuery(name = "GetAllSeasons", query = "SELECT s From Season s")
 })
-public class Season {
+public class Season implements Serializable {
 
     @Id
+    @Column
     private int year;
 
     /**

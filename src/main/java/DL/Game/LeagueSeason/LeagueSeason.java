@@ -7,6 +7,7 @@ import DL.Game.Referee;
 import DL.Team.Team;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -16,6 +17,7 @@ import java.util.*;
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "GetAllLeagueSeasons", query = "SELECT ls From LeagueSeason ls WHERE ls.seaon =: season"),
+        @NamedQuery(name = "GetLeagueSeason", query = "SELECT ls From LeagueSeason ls WHERE ls.seaon =: season AND ls.league =: league"),
         @NamedQuery(name = "UpdateScorePolicy", query = "UPDATE LeagueSeason ls SET ls.scorePolicy = :newScorePolicy WHERE  ls.league = : league AND ls.season =: season"),
         @NamedQuery(name = "UpdateLeagueSeasonRefereesList", query = "UPDATE LeagueSeason ls SET ls.referees = :newReferees WHERE  ls.league = : league AND ls.season =: season"),
         @NamedQuery(name = "UpdateLeagueSeasonTeamList", query = "UPDATE LeagueSeason ls SET ls.teamsParticipate = :newTeamList WHERE  ls.league = : league AND ls.season =: season"),
@@ -24,30 +26,37 @@ import java.util.*;
 
 })
 @IdClass(LeagueSeason.EntryPK.class)
-public class LeagueSeason {
+public class LeagueSeason implements Serializable {
 
     /**
      * For Composite Primary Key
      */
-    public class EntryPK {
+    public class EntryPK implements Serializable{
         public League league;
         public Season season;
     }
 
-
+    @Id
     @OneToOne(cascade = CascadeType.ALL)
     private League league;
+    @Id
     @OneToOne(cascade = CascadeType.ALL)
     private Season season;
     @OneToOne(cascade = CascadeType.ALL)
     private GamePolicy gamePolicy;
     @OneToOne(cascade = CascadeType.ALL)
     private ScorePolicy scorePolicy;
-    @OneToMany(targetEntity = Match.class)
+    @OneToMany(targetEntity = Match.class,cascade = CascadeType.ALL,mappedBy = "leagueSeason")
     private List<Match> matches;
     @ManyToMany
+    @JoinTable(name="LeagueSeason_Teams",
+            joinColumns=@JoinColumn(name="LeagueSeason_ID"),
+            inverseJoinColumns=@JoinColumn(name="Team_ID"))
     private List<Team> teamsParticipate;
     @ManyToMany
+    @JoinTable(name="LeagueSeason_Referees",
+            joinColumns=@JoinColumn(name="LeagueSeason_ID"),
+            inverseJoinColumns=@JoinColumn(name="Referee_ID"))
     private List<Referee> referees;
     @Column
     private Date startDate;

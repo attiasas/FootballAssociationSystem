@@ -6,6 +6,7 @@ import DL.Team.Assets.Stadium;
 import DL.Team.Team;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,9 +21,10 @@ import java.util.Objects;
         @NamedQuery(name = "nextMatchesListByTeam", query = "SELECT m FROM Match m WHERE m.endTime = null AND (m.homeTeam = :team OR m.awayTeam = :team)"),
         @NamedQuery(name = "nextMatchesListByReferee", query = "SELECT m FROM Match m WHERE m.endTime = null AND (m.mainReferee = :referee OR m.firstLineManReferee = :referee OR m.secondLineManReferee = :referee)")
 })
-public class Match {
+public class Match implements Serializable {
 
     @Id
+    @Column(name = "Match_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int matchID;
     @Column

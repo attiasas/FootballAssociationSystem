@@ -7,11 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.extern.log4j.Log4j;
 
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 @Log4j(topic = "event")
 public class App extends Application {
 
+    public static Stage mainStage;
+    public static Stack<Scene> scenes;
     /**
      * The main function that runs the entire program
      *
@@ -41,6 +44,10 @@ public class App extends Application {
 //        AlertUtil.showErrorMessage(new IOException(),"IOException","some exception contenet");
 //        AlertUtil.showErrorMessage(new IOException());
         primaryStage.setResizable(false);
+
+        mainStage = primaryStage;
+        scenes = new Stack<>();
+
         primaryStage.show();
         new Thread(() -> {
         }).start();

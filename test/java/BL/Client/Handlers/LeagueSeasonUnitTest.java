@@ -51,7 +51,7 @@ public class LeagueSeasonUnitTest {
         Date startDate = new Date(121);
 
         leagueSeasonUnit.addLeagueSeason(league, season, gp, sp, startDate);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
 
         Team t1 = new Team("Test", true, false);
         Team t2 = new Team("Test2", true, false);
@@ -122,7 +122,7 @@ public class LeagueSeasonUnitTest {
     public void addLeagueSeasonNullTest() {
         List<League> leagueSeasonListExpected = new ArrayList<>();
         assertFalse(leagueSeasonUnit.addLeagueSeason(null, null, null, null, null));
-        assertNull(leagueSeasonUnit.getLeagueSeason(null));
+        assertNull(leagueSeasonUnit.getLeagueSeasons(null));
     }
 
     /**
@@ -140,7 +140,7 @@ public class LeagueSeasonUnitTest {
         Date startDate = new Date();
         assertTrue(leagueSeasonUnitEmpty.addLeagueSeason(league, season, gp, sp, startDate));
         leagueSeasonListExpected.add(new LeagueSeason(league, season, gp, sp, startDate));
-        assertEquals(leagueSeasonListExpected, leagueSeasonUnitEmpty.getLeagueSeason(season));
+        assertEquals(leagueSeasonListExpected, leagueSeasonUnitEmpty.getLeagueSeasons(season));
     }
 
     /**
@@ -149,7 +149,7 @@ public class LeagueSeasonUnitTest {
     @Test
     public void changeScorePolicyTest() {
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         policiesUnit.addNewScorePolicy(5,4,3);
         ScorePolicy sp = policiesUnit.getScorePolicies().get(1);
         assertTrue(leagueSeasonUnit.changeScorePolicy(ls,sp));
@@ -165,7 +165,7 @@ public class LeagueSeasonUnitTest {
         ScorePolicy sp = policiesUnit.getScorePolicies().get(0);
         assertFalse(leagueSeasonUnit.changeScorePolicy(null, sp));
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         assertFalse(leagueSeasonUnit.changeScorePolicy(ls,null));
     }
 
@@ -176,7 +176,7 @@ public class LeagueSeasonUnitTest {
     public void setRefereeInLeagueSeasonNullTest(){
         assertFalse(leagueSeasonUnit.setRefereeInLeagueSeason(null,null));
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         assertFalse(leagueSeasonUnit.setRefereeInLeagueSeason(ls,null));
         Referee r = new Referee(null,"Test3",null,true);
         assertFalse(leagueSeasonUnit.setRefereeInLeagueSeason(null,r));
@@ -189,7 +189,7 @@ public class LeagueSeasonUnitTest {
     public void setRefereeInLeagueSeasonTest(){
         Referee r = new Referee(null,"Test3",null,true);
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         assertTrue(leagueSeasonUnit.setRefereeInLeagueSeason(ls,r));
         assertEquals(r,ls.getReferees().get(0));
         assertEquals(ls,r.getLeagueSeasons().get(0));
@@ -202,7 +202,7 @@ public class LeagueSeasonUnitTest {
     public void addTeamToLeagueSeasonNullTest(){
         assertFalse(leagueSeasonUnit.addTeamToLeagueSeason(null,null));
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         assertFalse(leagueSeasonUnit.addTeamToLeagueSeason(ls,null));
         Team t = new Team("Test1",true,false);
         assertFalse(leagueSeasonUnit.addTeamToLeagueSeason(null,t));
@@ -215,7 +215,7 @@ public class LeagueSeasonUnitTest {
     public void addTeamToLeagueSeasonTest(){
         Team t = new Team("Test1",true,false);
         Season season = leagueSeasonUnit.getSeasons().get(0);
-        LeagueSeason ls = leagueSeasonUnit.getLeagueSeason(season).get(0);
+        LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
         assertTrue(leagueSeasonUnit.addTeamToLeagueSeason(ls,t));
         assertEquals(t,ls.getTeamsParticipate().get(3));
         assertEquals(ls,t.getLeagueSeasons().get(0));

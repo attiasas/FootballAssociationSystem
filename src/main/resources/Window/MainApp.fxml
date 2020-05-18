@@ -1,295 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import org.controlsfx.control.MasterDetailPane?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity"
-           minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane"
-           stylesheets="@../dark-theme.css" xmlns="http://javafx.com/javafx/8.0.171"
-           fx:controller="PL.main.MainController">
-    <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true"/>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0"
+           styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.main.MainController">
+    <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true" />
     <AnchorPane fx:id="rootAnchorPane" prefHeight="797.0" prefWidth="1076.0">
-        <AnchorPane fx:id="parentAnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-            <JFXTabPane fx:id="mainTabPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <Tab fx:id="tabOverView" closable="false" styleClass="tab-main" text="Overview">
-                    <AnchorPane fx:id="overViewAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0"
-                                prefWidth="200.0">
-                        <VBox prefHeight="412.0" prefWidth="557.0" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <HBox alignment="CENTER" prefHeight="200.0" prefWidth="1000.0">
-                                <VBox.margin>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-                                </VBox.margin>
-                                <VBox alignment="CENTER" spacing="20.0">
-                                    <HBox.margin>
-                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-                                    </HBox.margin>
-                                    <FontAwesomeIconView glyphName="GROUP" size="30"/>
-                                    <JFXTextField labelFloat="true" onAction="#loadTeamInfo" prefHeight="26.0"
-                                                  prefWidth="230.0" promptText="Team ID"/>
-                                </VBox>
-                                <StackPane fx:id="InfoContainer">
-                                    <HBox.margin>
-                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-                                    </HBox.margin>
-                                    <VBox alignment="CENTER" prefHeight="147.0" prefWidth="550.0">
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              textAlignment="CENTER" wrappingWidth="460.0">
-                                            <VBox.margin>
-                                                <Insets top="10.0"/>
-                                            </VBox.margin>
-                                        </Text>
-                                        <Text layoutX="10.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              styleClass="main-text" textAlignment="CENTER" wrappingWidth="460.0">
-                                            <VBox.margin>
-                                                <Insets top="10.0"/>
-                                            </VBox.margin>
-                                        </Text>
-                                        <Text layoutX="10.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              styleClass="main-text" textAlignment="CENTER" wrappingWidth="460.0">
-                                            <VBox.margin>
-                                                <Insets top="10.0"/>
-                                            </VBox.margin>
-                                        </Text>
-                                    </VBox>
-                                </StackPane>
-                            </HBox>
-                            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0"
-                                  prefWidth="1000.0">
-                                <VBox.margin>
-                                    <Insets bottom="5.0" left="20.0" right="20.0"/>
-                                </VBox.margin>
-                                <VBox alignment="CENTER" spacing="20.0">
-                                    <HBox.margin>
-                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-                                    </HBox.margin>
-                                    <FontAwesomeIconView glyphName="USER" size="30"/>
-                                    <JFXTextField labelFloat="true" onAction="#loadMemberInfo" prefWidth="230.0"
-                                                  promptText="Player ID"/>
-                                </VBox>
-                                <StackPane fx:id="userInfoContainer">
-                                    <HBox.margin>
-                                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-                                    </HBox.margin>
-                                    <VBox alignment="CENTER" prefHeight="151.0" prefWidth="550.0">
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              textAlignment="CENTER" wrappingWidth="460.0">
-                                            <VBox.margin>
-                                                <Insets top="10.0"/>
-                                            </VBox.margin>
-                                        </Text>
-                                        <Text layoutX="10.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              styleClass="main-text" textAlignment="CENTER" wrappingWidth="460.0">
-                                            <VBox.margin>
-                                                <Insets top="10.0"/>
-                                            </VBox.margin>
-                                        </Text>
-                                    </VBox>
-                                </StackPane>
-                            </HBox>
-                            <HBox alignment="CENTER" prefHeight="93.0" prefWidth="1000.0">
-                                <JFXButton onAction="#loadOperation" prefHeight="20.0" prefWidth="194.0"
-                                           styleClass="bigaction-button" text="Run">
-                                    <HBox.margin>
-                                        <Insets/>
-                                    </HBox.margin>
-                                    <padding>
-                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                                    </padding>
-                                </JFXButton>
-                            </HBox>
-                            <ImageView blendMode="ADD" cache="true" cacheHint="ROTATE" fitHeight="90.0" fitWidth="90.0"
-                                       pickOnBounds="true" preserveRatio="true">
-                                <effect>
-                                    <ColorAdjust brightness="-0.54" contrast="1.0" hue="1.0" saturation="-1.0"/>
-                                </effect>
-                                <Image url="@../img/sportift-logo.png"/>
-                            </ImageView>
-                        </VBox>
-                    </AnchorPane>
-                </Tab>
-                <Tab fx:id="tabView1" closable="false" styleClass="tab-main" text="View">
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                        <BorderPane layoutX="251.0" layoutY="71.0" minHeight="-Infinity" minWidth="-Infinity"
-                                    prefHeight="412.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0"
-                                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <top>
-                                <JFXTextField labelFloat="true" maxWidth="274.0" minWidth="274.0" onAction="#loadInfo2"
-                                              prefHeight="32.0" prefWidth="274.0" promptText="Enter Player/Manager/Team"
-                                              BorderPane.alignment="CENTER">
-                                    <BorderPane.margin>
-                                        <Insets top="30.0"/>
-                                    </BorderPane.margin>
-                                </JFXTextField>
-                            </top>
-                            <center>
-                                <AnchorPane BorderPane.alignment="CENTER">
-                                    <children>
-                                        <MasterDetailPane layoutX="160.0" layoutY="21.0" maxHeight="-Infinity"
-                                                          maxWidth="-Infinity" minHeight="-Infinity"
-                                                          minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0"/>
-                                    </children>
-                                </AnchorPane>
-                            </center>
-                        </BorderPane>
-                    </AnchorPane>
-                </Tab>
-                <Tab fx:id="tabView2" closable="false" styleClass="tab-main" text="View">
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                        <BorderPane layoutX="251.0" layoutY="71.0" prefHeight="412.0" prefWidth="557.0"
-                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <top>
-                                <JFXTextField labelFloat="true" maxWidth="274.0" minWidth="274.0" onAction="#loadInfo2"
-                                              prefHeight="32.0" prefWidth="274.0" promptText="Enter Player/Manager/Team"
-                                              BorderPane.alignment="CENTER">
-                                    <BorderPane.margin>
-                                        <Insets top="30.0"/>
-                                    </BorderPane.margin>
-                                </JFXTextField>
-                            </top>
-                            <bottom>
-                                <HBox alignment="CENTER" prefHeight="69.0" prefWidth="557.0"
-                                      BorderPane.alignment="CENTER">
-                                    <JFXButton onAction="#loadAddOp" prefWidth="150.0" styleClass="smallaction-button"
-                                               text="Add">
-                                        <HBox.margin>
-                                            <Insets right="20.0"/>
-                                        </HBox.margin>
-                                    </JFXButton>
-                                    <JFXButton disable="true" onAction="#loadSubmissionOp" prefWidth="150.0"
-                                               styleClass="smallaction-button" text="Remove">
-                                        <HBox.margin>
-                                            <Insets right="20.0"/>
-                                        </HBox.margin>
-                                    </JFXButton>
-                                </HBox>
-                            </bottom>
-                            <center>
-                                <HBox alignment="CENTER" opacity="0.0" prefHeight="10000.0" prefWidth="10000.0"
-                                      BorderPane.alignment="CENTER">
-                                    <BorderPane.margin>
-                                        <Insets top="20.0"/>
-                                    </BorderPane.margin>
-                                    <VBox alignment="TOP_CENTER" prefHeight="336.0" prefWidth="234.0" spacing="20.0"
-                                          styleClass="submission-container">
-                                        <HBox.margin>
-                                            <Insets right="20.0"/>
-                                        </HBox.margin>
-                                        <FontAwesomeIconView glyphName="USER" size="60">
-                                            <VBox.margin>
-                                                <Insets top="20.0"/>
-                                            </VBox.margin>
-                                        </FontAwesomeIconView>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                    </VBox>
-                                    <VBox alignment="TOP_CENTER" prefHeight="336.0" prefWidth="248.0" spacing="20.0"
-                                          styleClass="submission-container">
-                                        <HBox.margin>
-                                            <Insets right="20.0"/>
-                                        </HBox.margin>
-                                        <FontAwesomeIconView glyphName="USER" size="60">
-                                            <VBox.margin>
-                                                <Insets top="20.0"/>
-                                            </VBox.margin>
-                                        </FontAwesomeIconView>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                    </VBox>
-                                    <VBox alignment="TOP_CENTER" prefHeight="336.0" prefWidth="248.0" spacing="20.0"
-                                          styleClass="submission-container">
-                                        <FontAwesomeIconView glyphName="CALENDAR_CHECK_ALT" size="60">
-                                            <VBox.margin>
-                                                <Insets top="20.0"/>
-                                            </VBox.margin>
-                                        </FontAwesomeIconView>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="main-text"
-                                              wrappingWidth="300.0"/>
-                                    </VBox>
-                                </HBox>
-                            </center>
-                        </BorderPane>
-                    </AnchorPane>
-                </Tab>
-                <Tab fx:id="tabMyBlog" closable="false" styleClass="tab-main" text="My Blog">
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                        <BorderPane layoutX="251.0" layoutY="71.0" prefHeight="412.0" prefWidth="557.0"
-                                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <bottom>
-                                <HBox alignment="CENTER" prefHeight="69.0" prefWidth="557.0"
-                                      BorderPane.alignment="CENTER">
-                                    <children>
-                                        <JFXButton onAction="#loadAddOp" prefWidth="150.0"
-                                                   styleClass="smallaction-button" text="Save">
-                                            <HBox.margin>
-                                                <Insets right="20.0"/>
-                                            </HBox.margin>
-                                        </JFXButton>
-                                        <JFXButton disable="true" onAction="#loadSubmissionOp" prefWidth="150.0"
-                                                   styleClass="smallaction-button" text="Publish">
-                                            <HBox.margin>
-                                                <Insets right="20.0"/>
-                                            </HBox.margin>
-                                        </JFXButton>
-                                    </children>
-                                </HBox>
-                            </bottom>
-                        </BorderPane>
-                    </AnchorPane>
-                </Tab>
-            </JFXTabPane>
-            <JFXHamburger fx:id="hamburger" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="20.0"
-                          AnchorPane.topAnchor="75.0"/>
+        <AnchorPane fx:id="parentAnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <JFXHamburger fx:id="hamburger" layoutX="956.0" layoutY="27.0" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="27.0" />
+         <Text layoutX="291.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main Screen">
+            <font>
+               <Font name="System Bold" size="76.0" />
+            </font>
+         </Text>
         </AnchorPane>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Menu mnemonicParsing="false" text="File">
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileOpen" text="Open"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileSave" text="Save"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileUpdate" text="Update"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileSettings" text="Settings"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileLogout" text="Logout"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileOpen" text="Open" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileSave" text="Save" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileUpdate" text="Update" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileSettings" text="Settings" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuFileLogout" text="Logout" />
             </Menu>
             <Menu mnemonicParsing="false" text="Add">
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuAddPlayer" text="Add User"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuAddAsset" text="Add Asset"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuAddEvent" text="Add Event"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuAddPlayer" text="Add User" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuAddAsset" text="Add Asset" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuAddEvent" text="Add Event" />
             </Menu>
             <Menu mnemonicParsing="false" text="View">
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewTeams" text="Teams List"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewPlayers" text="Players List"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewManagers" text="Managers List"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewManagers" text="Refferes List"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewFullScreen" text="Full Screen"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewTeams" text="Teams List" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewPlayers" text="Players List" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewManagers" text="Managers List" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewManagers" text="Refferes List" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuViewFullScreen" text="Full Screen" />
             </Menu>
             <Menu mnemonicParsing="false" text="Notify">
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuNotification" text="Notify followers"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuNotification" text="Notify followers" />
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuDonate" text="Donate"/>
-                <MenuItem mnemonicParsing="false" onAction="#handleMenuAbout" text="About"/>
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuDonate" text="Donate" />
+                <MenuItem mnemonicParsing="false" onAction="#handleMenuAbout" text="About" />
             </Menu>
         </MenuBar>
     </AnchorPane>

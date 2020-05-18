@@ -6,6 +6,7 @@ import DL.Game.Match;
 import DL.Team.Team;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -17,18 +18,20 @@ import java.util.*;
         @NamedQuery(name = "getGamePolicy", query = "SELECT gp FROM GamePolicy gp WHERE gp.numberOfRounds =: numberOfRounds AND gp.gamesPerDay =: gamesPerDay "),
 })
 @IdClass(GamePolicy.EntryPK.class)
-public class GamePolicy {
+public class GamePolicy implements Serializable{
 
     /**
      * For Composite Primary Key
      */
-    public class EntryPK {
+    public class EntryPK implements Serializable {
         public int numberOfRounds;
         public boolean homeAwayMethod;
     }
 
+    @Id
     @Column
     private int numberOfRounds;
+    @Id
     @Column
     private int gamesPerDay;
 
@@ -297,5 +300,10 @@ public class GamePolicy {
     @Override
     public int hashCode() {
         return Objects.hash(numberOfRounds, gamesPerDay);
+    }
+
+    @Override
+    public String toString() {
+        return "Rounds=" + numberOfRounds + " , GamesPerDay=" + gamesPerDay;
     }
 }

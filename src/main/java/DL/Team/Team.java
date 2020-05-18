@@ -100,7 +100,7 @@ public class Team {
     private List<TeamFinancialEntry> teamFinancialEntries;
 
     @Column
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "teamsParticipate")
     private List<LeagueSeason> leagueSeasons;
 
     //Constructor
