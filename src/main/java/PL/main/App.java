@@ -1,5 +1,6 @@
 package PL.main;
 
+import BL.Client.ClientSystem;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +16,8 @@ public class App extends Application {
 
     public static Stage mainStage;
     public static Stack<Scene> scenes;
+    public ClientSystem clientSystem;
+
     /**
      * The main function that runs the entire program
      *

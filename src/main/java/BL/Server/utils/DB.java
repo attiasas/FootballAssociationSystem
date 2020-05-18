@@ -1,6 +1,8 @@
 package BL.Server.utils;
 
 import BL.Server.ServerSystem;
+import DL.Team.Assets.Stadium;
+import DL.Team.Team;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
 
@@ -237,6 +239,12 @@ public class DB implements Serializable {
         EntityManager em = emf.createEntityManager();
         txn = em.getTransaction();
         txn.begin();
+        Team t = new Team("team test",true,false);
+        em.persist(t);
+        HashMap<String,Object> para = new HashMap<>();
+        para.put("name","team test");
+        List l = em.createNamedQuery("Team").getResultList();
+        System.out.println(l.size() + " | " + (!l.isEmpty() ? l.get(0) : "Empty"));
         em.createNativeQuery(
                 "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
                 .executeUpdate();

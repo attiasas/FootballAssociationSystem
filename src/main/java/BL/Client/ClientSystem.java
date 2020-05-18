@@ -33,7 +33,8 @@ public class ClientSystem
 {
     private static User loggedUser = null;
     private ClientServerCommunication communication;
-    private MatchEventUnit matchEventUnit;
+
+    public MatchEventUnit matchEventUnit;
 
     public ClientSystem()
     {
