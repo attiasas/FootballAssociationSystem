@@ -23,4 +23,14 @@ public class StoppageTime extends Event {
         super(null, null, 0);
         this.addedTime = 0;
     }
+
+    @Override
+    public String getType() { return Type(); }
+
+    public static String Type() { return "Time Stopped"; }
+
+    @Override
+    public String toString() {
+        return "Match Was Stopped, " + addedTime + " Time Added";
+    }
 }

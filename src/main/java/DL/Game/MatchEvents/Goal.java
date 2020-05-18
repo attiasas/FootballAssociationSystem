@@ -23,4 +23,14 @@ public class Goal extends OnePlayerEvent {
     public Goal() {
         super(null,null,0,null);
     }
+
+    public static String Type() { return "Goal"; }
+
+    @Override
+    public String getType() { return Type(); }
+
+    @Override
+    public String toString() {
+        return "" + getPlayer() + " Scored A Goal";
+    }
 }

@@ -19,4 +19,14 @@ public class EndGame extends Event {
     public EndGame(Referee createdByUser, EventLog eventLog, int gameTime) {
         super(createdByUser, eventLog, gameTime);
     }
+
+    public static String Type() { return "End Game"; }
+
+    @Override
+    public String getType() { return Type(); }
+
+    @Override
+    public String toString() {
+        return "Match Ended";
+    }
 }

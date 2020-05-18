@@ -34,4 +34,12 @@ public abstract class TwoPlayersEvent extends Event {
         super(null,null,0);
         firstPlayer = secondPlayer = null;
     }
+
+    public Player getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public Player getSecondPlayer() {
+        return secondPlayer;
+    }
 }

@@ -18,4 +18,14 @@ public class PlayerChange extends TwoPlayersEvent {
     public PlayerChange() {
         super(null,null,0,null,null);
     }
+
+    public static String Type() { return "Player Change"; }
+
+    @Override
+    public String getType() { return Type(); }
+
+    @Override
+    public String toString() {
+        return getSecondPlayer() + " Changed With " + getFirstPlayer();
+    }
 }

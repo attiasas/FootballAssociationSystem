@@ -69,7 +69,7 @@ public class Match {
         }
         this.leagueSeason = leagueSeason;
         this.stadium = stadium;
-        this.myEventLog = new EventLog();
+        this.myEventLog = new EventLog(this);
         this.homeScore = this.awayScore = 0;
 
     }
@@ -219,4 +219,12 @@ public class Match {
         return Objects.hash(startTime, homeTeam, awayTeam) + Objects.hash(startTime, awayTeam, homeTeam);
     }
 
+    @Override
+    public String toString() {
+        return "" +
+                matchID +
+                ", " + homeTeam +
+                " VS " + awayTeam +
+                " | At: " + startTime;
+    }
 }

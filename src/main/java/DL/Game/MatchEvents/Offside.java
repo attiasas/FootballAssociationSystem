@@ -24,4 +24,14 @@ public class Offside extends OnePlayerEvent {
     public Offside() {
         super(null,null,0,null);
     }
+
+    @Override
+    public String getType() { return Type(); }
+
+    public static String Type() { return "Offside"; }
+
+    @Override
+    public String toString() {
+        return getPlayer() + " Made An Offside";
+    }
 }

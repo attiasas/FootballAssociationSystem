@@ -23,4 +23,14 @@ public class PenaltyKick extends Event
     public PenaltyKick() {
         super(null,null,0);
     }
+
+    @Override
+    public String getType() { return Type(); }
+
+    public static String Type() { return "Penalty Kick"; }
+
+    @Override
+    public String toString() {
+        return "Penalty Kick";
+    }
 }

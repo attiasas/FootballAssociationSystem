@@ -24,4 +24,14 @@ public class Injury extends OnePlayerEvent {
     public Injury() {
         super(null,null,0,null);
     }
+
+    public static String Type() { return "Injury"; }
+
+    @Override
+    public String getType() { return Type(); }
+
+    @Override
+    public String toString() {
+        return getPlayer() + " Injured";
+    }
 }

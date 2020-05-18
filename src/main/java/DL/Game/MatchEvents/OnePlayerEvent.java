@@ -26,4 +26,8 @@ abstract class OnePlayerEvent extends Event {
         super(null,null,0);
         player = null;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

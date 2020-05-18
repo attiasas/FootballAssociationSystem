@@ -1,8 +1,16 @@
 package DL.Game.MatchEvents;
 
 import DL.Game.Referee;
+import DL.Team.Team;
+import DL.Users.Notifiable;
+import DL.Users.Notification;
+import DL.Users.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Description:       This abstract class represents a game Event.
@@ -14,12 +22,12 @@ import javax.persistence.*;
         @NamedQuery(name = "Events", query = "Select e From Event e")
 })
 @IdClass(Event.EntryPK.class)
-public abstract class Event {
+public abstract class Event implements Serializable, Notifiable {
 
     /**
      * For Composite Primary Key
      */
-    public class EntryPK {
+    public class EntryPK implements Serializable {
         public Referee createdByUser;
         public EventLog eventLog;
     }
@@ -52,5 +60,30 @@ public abstract class Event {
      */
     public Event() {
         this(null, null, 0);
+    }
+
+    public abstract String getType();
+
+    public int getEventGameTime() { return gameTime; }
+
+    @Override
+    public Notification getNotification() {
+        return new Notification(toString());
+    }
+
+    @Override
+    public Set getNotifyUsersList()
+    {
+        Set<User> result = new HashSet<>();
+
+        Team homeTeam = eventLog.getMyMatch().getHomeTeam();
+        Team awayTeam = eventLog.getMyMatch().getAwayTeam();
+
+        result.addAll(homeTeam.getTeamMembers());
+        result.addAll(homeTeam.getPage().getFollowers());
+        result.addAll(awayTeam.getTeamMembers());
+        result.addAll(awayTeam.getPage().getFollowers());
+
+        return result;
     }
 }

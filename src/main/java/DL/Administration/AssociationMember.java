@@ -1,5 +1,6 @@
 package DL.Administration;
 
+import DL.Administration.Financial.AssociationFinancialEntry;
 import DL.Administration.Financial.FinancialEntry;
 import DL.Administration.Financial.FinancialUser;
 import DL.Users.User;
@@ -23,7 +24,7 @@ import java.util.List;
 public class AssociationMember extends User implements FinancialUser
 {
     @OneToMany(cascade = CascadeType.MERGE)
-    private List<FinancialEntry> myEntries;
+    private List<AssociationFinancialEntry> myEntries;
 
     /**
      * Default Constructor
@@ -40,7 +41,7 @@ public class AssociationMember extends User implements FinancialUser
     }
 
     @Override
-    public List<FinancialEntry> getFinancialEntries() {
+    public List getFinancialEntries() {
         return myEntries;
     }
 }

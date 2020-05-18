@@ -1,6 +1,7 @@
 package BL.Client;
 
 import BL.Client.Handlers.AssociationManagementUnit;
+import BL.Client.Handlers.MatchEventUnit;
 import BL.Client.Handlers.TeamAssetUnit;
 import BL.Communication.ClientServerCommunication;
 import DL.Administration.AssociationMember;
@@ -20,6 +21,8 @@ import java.net.InetAddress;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import PL.RefereeController;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
@@ -29,6 +32,14 @@ import lombok.extern.log4j.Log4j;
 public class ClientSystem
 {
     private static User loggedUser = null;
+    private ClientServerCommunication communication;
+    private MatchEventUnit matchEventUnit;
+
+    public ClientSystem()
+    {
+        communication = new ClientServerCommunication();
+        communication.startNotificationListener();
+    }
 
     public static User getLoggedUser()
     {
@@ -43,6 +54,7 @@ public class ClientSystem
         }
 
         loggedUser = user;
+
         return true;
     }
 
@@ -60,5 +72,10 @@ public class ClientSystem
 
         loggedUser = null;
         return true;
+    }
+
+    public void close()
+    {
+        communication.stopListener();
     }
 }
