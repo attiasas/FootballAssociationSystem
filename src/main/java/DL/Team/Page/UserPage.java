@@ -13,7 +13,6 @@ import java.io.Serializable;
 @NamedQueries(value = {
         @NamedQuery(name = "UserPage", query = "SELECT up from UserPage up"),
         @NamedQuery(name = "UserPageSetContent", query = "UPDATE UserPage us SET us.content = :content WHERE us.pageUser = :pageUser "),
-
 })
 @Entity
 @DiscriminatorValue(value = "UserPage")

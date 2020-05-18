@@ -37,7 +37,7 @@ public class TeamUser implements Serializable
     /**
      * For Composite Primary Key
      */
-    public class EntryPK implements Serializable {
+    public static class EntryPK implements Serializable {
         public String name;
         public Fan fan;
     }

@@ -17,7 +17,7 @@ import java.util.List;
         @NamedQuery(name = "stadium", query = "SELECT s FROM Stadium s"),
         @NamedQuery(name = "stadiumByName", query = "SELECT s FROM Stadium s WHERE s.name = :name"),
         @NamedQuery(name = "stadiumsByCapacity", query = "SELECT s FROM Stadium s WHERE s.capacity = :capcity"),
-        @NamedQuery(name = "stadiumsByTeam", query = "SELECT s FROM Stadium s WHERE :team IN (s.teams) AND s.team.close = false"),
+        @NamedQuery(name = "stadiumsByTeam", query = "SELECT s FROM Stadium s WHERE :team IN (s.teams)"),
         @NamedQuery(name = "setStadiumDetails", query = "UPDATE Stadium s SET s.name = :newName, s.capacity = :newCapacity, s.teams = :teamsList WHERE s.name = :name"),
         @NamedQuery(name = "setStadiumActivity", query = "UPDATE Stadium s SET s.active = :active WHERE s.name = :name"),
 
@@ -34,7 +34,6 @@ public class Stadium implements Serializable
     private boolean active;
 
     @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
-    @JoinTable(name = "JOIN_STADIUM_TEAMS", joinColumns = {@JoinColumn(name = "STADIUM_ID")}, inverseJoinColumns = {@JoinColumn(name = "TEAM_ID")})
     private List<Team> teams;
 
     @Override

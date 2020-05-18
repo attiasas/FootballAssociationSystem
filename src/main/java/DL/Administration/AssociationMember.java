@@ -24,7 +24,7 @@ import java.util.List;
 })
 public class AssociationMember extends User implements FinancialUser
 {
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "source",cascade = CascadeType.MERGE)
     private List<AssociationFinancialEntry> myEntries;
 
     /**

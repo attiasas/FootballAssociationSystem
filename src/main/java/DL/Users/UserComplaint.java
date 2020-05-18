@@ -11,11 +11,10 @@ import java.io.Serializable;
 @NamedQueries( value = {
         @NamedQuery(name = "UserComplaint", query = "SELECT uc FROM UserComplaint uc WHERE uc.id = :id"),
         @NamedQuery(name = "UserComplaintsByUser", query = "SELECT uc FROM UserComplaint uc WHERE uc.owner = :user"),
-        @NamedQuery(name = "UserSetComment", query = "UPDATE UserComplaint uc SET comment = :comment WHERE id = :id")
+        @NamedQuery(name = "UserSetComment", query = "UPDATE UserComplaint uc SET uc= :comment WHERE id = :id")
 })
 public class UserComplaint implements Serializable
 {
-
     @Id
     @GeneratedValue
     private int id;
@@ -24,9 +23,7 @@ public class UserComplaint implements Serializable
     @Column
     private String response;
     @ManyToOne
-    @JoinTable(name="UserToUserComplaint", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name="username")})
     private User owner;
-
 
     /**
      * Constructor without response

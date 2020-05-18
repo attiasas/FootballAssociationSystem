@@ -1,5 +1,7 @@
 package DL.Administration.Financial;
 
+import DL.Administration.AssociationMember;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;

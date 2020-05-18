@@ -29,10 +29,10 @@ public abstract class Event implements Serializable, Notifiable {
     @GeneratedValue
     private int id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Referee createdByUser;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private EventLog eventLog;
 
     //@ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
@@ -40,7 +40,6 @@ public abstract class Event implements Serializable, Notifiable {
 
     @Column
     private int gameTime;
-
 
     /**
      * Constructor

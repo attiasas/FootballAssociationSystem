@@ -23,7 +23,7 @@ public class GamePolicy implements Serializable{
     /**
      * For Composite Primary Key
      */
-    public class EntryPK implements Serializable {
+    public static class EntryPK implements Serializable {
         public int numberOfRounds;
         public int gamesPerDay;
     }

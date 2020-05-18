@@ -19,7 +19,7 @@ public class EventLog {
     @GeneratedValue
     private int id;
 
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "eventLog" ,cascade = CascadeType.MERGE)
     private List<Event> eventList;
 
     @OneToOne

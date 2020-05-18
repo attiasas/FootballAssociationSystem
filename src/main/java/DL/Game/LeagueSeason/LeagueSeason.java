@@ -16,8 +16,8 @@ import java.util.*;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "GetAllLeagueSeasons", query = "SELECT ls From LeagueSeason ls WHERE ls.seaon =: season"),
-        @NamedQuery(name = "GetLeagueSeason", query = "SELECT ls From LeagueSeason ls WHERE ls.seaon =: season AND ls.league =: league"),
+        @NamedQuery(name = "GetAllLeagueSeasons", query = "SELECT ls From LeagueSeason ls WHERE ls.season =: season"),
+        @NamedQuery(name = "GetLeagueSeason", query = "SELECT ls From LeagueSeason ls WHERE ls.season =: season AND ls.league =: league"),
         @NamedQuery(name = "UpdateScorePolicy", query = "UPDATE LeagueSeason ls SET ls.scorePolicy = :newScorePolicy WHERE  ls.league = : league AND ls.season =: season"),
         @NamedQuery(name = "UpdateLeagueSeasonRefereesList", query = "UPDATE LeagueSeason ls SET ls.referees = :newReferees WHERE  ls.league = : league AND ls.season =: season"),
         @NamedQuery(name = "UpdateLeagueSeasonTeamList", query = "UPDATE LeagueSeason ls SET ls.teamsParticipate = :newTeamList WHERE  ls.league = : league AND ls.season =: season"),
@@ -31,7 +31,7 @@ public class LeagueSeason implements Serializable {
     /**
      * For Composite Primary Key
      */
-    public class EntryPK implements Serializable{
+    public static class EntryPK implements Serializable{
         public League league;
         public Season season;
     }

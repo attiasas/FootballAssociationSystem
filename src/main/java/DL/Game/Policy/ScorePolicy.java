@@ -23,7 +23,7 @@ public class ScorePolicy implements Serializable {
     /**
      * For Composite Primary Key
      */
-    public class EntryPK implements Serializable{
+    public static class EntryPK implements Serializable{
         public int winPoints;
         public int drawPoints;
         public int losePoints;

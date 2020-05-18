@@ -54,7 +54,6 @@ import javax.persistence.*;
     @NamedQuery(name = "closeTeam", query = "UPDATE Team t SET t.close = true, t.active = false WHERE t.name = :name AND t.close = false "),
     @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false "),
 })
-
 public class Team implements Serializable
 {
     @Id
@@ -69,28 +68,28 @@ public class Team implements Serializable
     @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private TeamPage page;
 
-    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Coach> coaches;
 
-    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Player> players;
 
-    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamManager> teamManagers;
 
-    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamOwner> teamOwners;
 
     @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Stadium> stadiums;
 
-    @OneToMany(mappedBy = "matchID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "homeTeam", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Match> homeMatches;
 
-    @OneToMany(mappedBy = "matchID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "awayTeam", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Match> awayMatches;
 
-    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamFinancialEntry> teamFinancialEntries;
 
     @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})

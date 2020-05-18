@@ -29,7 +29,6 @@ public abstract class Page implements Serializable
     protected String content;
 
     @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
-    @JoinTable(name = "JOIN_PAGE_FAN", joinColumns = {@JoinColumn(name = "PAGE_ID")}, inverseJoinColumns = {@JoinColumn(name = "FAN_ID")})
     Set<Fan> followers;
 
     public Page()

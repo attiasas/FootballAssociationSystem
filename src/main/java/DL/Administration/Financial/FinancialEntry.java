@@ -20,7 +20,7 @@ public abstract class FinancialEntry implements Serializable
     /**
      * For Composite Primary Key
      */
-    public class EntryPK implements Serializable
+    public static class EntryPK implements Serializable
     {
         public User source;
         public long timeStamp;

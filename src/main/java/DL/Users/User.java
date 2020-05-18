@@ -15,10 +15,11 @@ import java.util.*;
         @NamedQuery(name = "UserByUsername", query = "SELECT u From User u WHERE u.username = :username"),
         @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword"),
         @NamedQuery(name = "UpdateUserPermission", query = "update User u set u.userPermission = :permission where u = :user"),
-        @NamedQuery(name = "DeactivateUser", query = "UPDATE User u SET u.active = false where user = :user"),
-        @NamedQuery(name = "ActivateUser", query = "UPDATE User u SET u.active = true where user=:user"),
+        @NamedQuery(name = "DeactivateUser", query = "UPDATE User u SET u.active = false where u= :user"),
+        @NamedQuery(name = "ActivateUser", query = "UPDATE User u SET u.active = true where u=:user"),
 })
 @Entity
+@Table(name = "UserTable")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
 public abstract class User implements Serializable
@@ -46,7 +47,7 @@ public abstract class User implements Serializable
     private String hashedPassword;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name="UserToUserPermission", joinColumns = {@JoinColumn(name = "username")}, inverseJoinColumns = {@JoinColumn(name="id")})
+    //@JoinTable(name="UserToUserPermission", joinColumns = {@JoinColumn(name = "username")}, inverseJoinColumns = {@JoinColumn(name="id")})
     private UserPermission userPermission;
 
 //    @OneToMany(cascade = CascadeType.ALL)
@@ -54,8 +55,7 @@ public abstract class User implements Serializable
     @ElementCollection
     private Map<Notification, Boolean> notificationsOwner; //maps from notification to a boolean of read or not read
 
-
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<UserComplaint> userComplaintsOwner;
 
     /**
