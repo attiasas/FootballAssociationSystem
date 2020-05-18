@@ -1,4 +1,4 @@
-![logo](https://gdurl.com/kita)
+![logo](https://res.cloudinary.com/serfati/image/upload/v1589354855/icon_iqs8if.png)
 
 ![MIT License](https://codeclimate.com/github/JonSn0w/Hyde/badges/gpa.svg) ![MIT License](https://david-dm.org/tterb/Hyde.svg) ![MIT License](https://badge.fury.io/gh/tterb%2FHyde.svg)![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)
 
