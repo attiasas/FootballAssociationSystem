@@ -16,19 +16,9 @@ import java.io.Serializable;
 
 })
 @Entity
-@IdClass(UserPage.EntryPK.class)
 @DiscriminatorValue(value = "UserPage")
 public class UserPage extends Page implements Serializable
 {
-    /**
-     * For Composite Primary Key
-     */
-    public class EntryPK implements Serializable {
-        public long id;
-        public PageUser pageUser;
-    }
-
-    @Id
     @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private PageUser pageUser;
 

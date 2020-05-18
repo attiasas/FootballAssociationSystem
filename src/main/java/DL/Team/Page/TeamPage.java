@@ -17,21 +17,8 @@ import java.io.Serializable;
 })
 @Entity
 @DiscriminatorValue(value = "TeamPage")
-@IdClass(TeamPage.EntryPK.class)
 public class TeamPage extends Page implements Serializable
 {
-    @Id
-    @Column
-    @OneToOne(cascade = CascadeType.ALL)
-    /**
-     * For Composite Primary Key
-     */
-    public class EntryPK implements Serializable {
-        public long id;
-        public Team team;
-    }
-
-    @Id
     @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private Team team;
 

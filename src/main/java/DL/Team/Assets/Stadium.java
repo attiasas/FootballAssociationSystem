@@ -22,11 +22,9 @@ import java.util.List;
         @NamedQuery(name = "setStadiumActivity", query = "UPDATE Stadium s SET s.active = :active WHERE s.name = :name"),
 
 })
-
 public class Stadium implements Serializable
 {
     @Id
-    @Column
     private String name;
 
     @Column

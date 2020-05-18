@@ -25,7 +25,7 @@ public class GamePolicy implements Serializable{
      */
     public class EntryPK implements Serializable {
         public int numberOfRounds;
-        public boolean homeAwayMethod;
+        public int gamesPerDay;
     }
 
     @Id

@@ -126,7 +126,6 @@ public class MatchEventUnit
 
         YellowCard yellowCard = new YellowCard(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(yellowCard);
-        List<Event> playerEvents = player.addEvent(yellowCard);
 
         // Notify
         // TODO: Add notification to users if game is not ended (real time notification)
@@ -134,7 +133,6 @@ public class MatchEventUnit
         // Update Server
         requests.add(SystemRequest.insert(yellowCard));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",playerEvents,"player",player)));
 
         return communication.transaction(requests);
     }
@@ -160,7 +158,6 @@ public class MatchEventUnit
 
         RedCard redCard = new RedCard(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(redCard);
-        List<Event> playerEvents = player.addEvent(redCard);
 
         // Notify
         // TODO: Add notification to users if game is not ended (real time notification)
@@ -168,7 +165,6 @@ public class MatchEventUnit
         // Update Server
         requests.add(SystemRequest.insert(redCard));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",playerEvents,"player",player)));
 
         return communication.transaction(requests);
     }
@@ -194,7 +190,6 @@ public class MatchEventUnit
 
         Goal goal = new Goal(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(goal);
-        List<Event> playerEvents = player.addEvent(goal);
 
         // Notify
         // TODO: Add notification to users if game is not ended (real time notification)
@@ -202,7 +197,6 @@ public class MatchEventUnit
         // Update Server
         requests.add(SystemRequest.insert(goal));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",playerEvents,"player",player)));
 
         return communication.transaction(requests);
     }
@@ -228,7 +222,6 @@ public class MatchEventUnit
 
         Injury injury = new Injury(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(injury);
-        List<Event> playerEvents = player.addEvent(injury);
 
         // Notify
         // TODO: Add notification to users if game is not ended (real time notification)
@@ -236,7 +229,6 @@ public class MatchEventUnit
         // Update Server
         requests.add(SystemRequest.insert(injury));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",playerEvents,"player",player)));
 
         return communication.transaction(requests);
     }
@@ -262,7 +254,6 @@ public class MatchEventUnit
 
         Offside offside = new Offside(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(offside);
-        List<Event> playerEvents = player.addEvent(offside);
 
         // Notify
         // TODO: Add notification to users if game is not ended (real time notification)
@@ -270,7 +261,6 @@ public class MatchEventUnit
         // Update Server
         requests.add(SystemRequest.insert(offside));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",playerEvents,"player",player)));
 
         return communication.transaction(requests);
     }
@@ -297,8 +287,6 @@ public class MatchEventUnit
 
         Foul foul = new Foul(cachedReferee,matchEventLog,matchTime,injuredPlayer,foulPlayer);
         matchEventLog.addMatchEvent(foul);
-        List<Event> injuredPlayerEvents = injuredPlayer.addEvent(foul);
-        List<Event> foulPlayerEvents = foulPlayer.addEvent(foul);
 
         // Notify
         // TODO: Add notification to users if game is not ended (real time notification)
@@ -306,8 +294,6 @@ public class MatchEventUnit
         // Update Server
         requests.add(SystemRequest.insert(foul));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",injuredPlayerEvents,"player",injuredPlayer)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",foulPlayerEvents,"player",foulPlayer)));
 
         return communication.transaction(requests);
     }
@@ -334,8 +320,6 @@ public class MatchEventUnit
 
         PlayerChange playerChange = new PlayerChange(cachedReferee,matchEventLog,matchTime,outPlayer,inPlayer);
         matchEventLog.addMatchEvent(playerChange);
-        List<Event> outPlayerEvents = outPlayer.addEvent(playerChange);
-        List<Event> inPlayerEvents = inPlayer.addEvent(playerChange);
 
         // Notify
         // TODO: Add notification to users if game is not ended (real time notification)
@@ -343,8 +327,6 @@ public class MatchEventUnit
         // Update Server
         requests.add(SystemRequest.insert(playerChange));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",outPlayerEvents,"player",outPlayer)));
-        requests.add(SystemRequest.update("updatePlayerEvents", mapOf("playerEvents",inPlayerEvents,"player",inPlayer)));
 
         return communication.transaction(requests);
     }

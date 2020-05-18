@@ -5,6 +5,7 @@ import DL.Team.Team;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
+import com.sun.javafx.beans.IDProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,31 +17,22 @@ import java.util.Set;
  * Description:       This abstract class represents a game Event.
  *                    an eventUser can only enter one event per gameTime to the eventLog
  **/
-
-
 @NamedQueries(value = {
         @NamedQuery(name = "Events", query = "Select e From Event e")
 })
-
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@IdClass(Event.EntryPK.class)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "EVENT_TYPE", discriminatorType = DiscriminatorType.STRING)
 public abstract class Event implements Serializable, Notifiable {
 
-    /**
-     * For Composite Primary Key
-     */
-    public class EntryPK implements Serializable {
-        public Referee createdByUser;
-        public EventLog eventLog;
-    }
-
     @Id
-    @OneToOne(cascade = CascadeType.MERGE)
+    @GeneratedValue
+    private int id;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Referee createdByUser;
 
-    @Id
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private EventLog eventLog;
 
     //@ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})

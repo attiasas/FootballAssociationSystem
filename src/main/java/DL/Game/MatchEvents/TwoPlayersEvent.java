@@ -11,17 +11,16 @@ import javax.persistence.*;
  */
 
 
-@MappedSuperclass
+@Entity
 @NamedQueries(value = {
         @NamedQuery(name = "TwoPlayersEvents", query = "Select tp From TwoPlayersEvent tp")
 })
-
-@IdClass(Event.EntryPK.class)
+@DiscriminatorValue(value = "TwoPlayersEvent")
 public abstract class TwoPlayersEvent extends Event {
 
-    @Column
+    @ManyToOne
     private Player firstPlayer;
-    @Column
+    @ManyToOne
     private Player secondPlayer;
 
     public TwoPlayersEvent(Referee createdByUser, EventLog eventLog, int gameTime, Player firstPlayer, Player secondPlayer) {

@@ -55,7 +55,7 @@ public abstract class User implements Serializable
     private Map<Notification, Boolean> notificationsOwner; //maps from notification to a boolean of read or not read
 
 
-    @OneToMany(mappedBy = "UserComplaint", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<UserComplaint> userComplaintsOwner;
 
     /**

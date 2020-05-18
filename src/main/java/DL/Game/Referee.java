@@ -5,6 +5,7 @@ import DL.Users.Fan;
 import DL.Users.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,18 +22,20 @@ import java.util.List;
         @NamedQuery(name = "activeRefereeByUser", query = "select r from Referee where r.fan = :uesr and r.active = true"),
         @NamedQuery(name = "RefereeeByFan", query = "SELECT r FROM Referee r WHERE fan = :fan")
 })
-public class Referee {
+public class Referee implements Serializable {
 
     @Id
-    @Column
-    String name;
-
-    @Id
-    @Column
-    Fan fan;
+    @GeneratedValue
+    private int id;
 
     @Column
-    boolean active;
+    private String name;
+
+    @ManyToOne
+    private Fan fan;
+
+    @Column
+    private boolean active;
 
     @Column
     private String qualification;

@@ -58,7 +58,6 @@ import javax.persistence.*;
 public class Team implements Serializable
 {
     @Id
-    @Column
     private String name;
 
     @Column
@@ -70,31 +69,31 @@ public class Team implements Serializable
     @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private TeamPage page;
 
-    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Coach> coaches;
 
-    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Player> players;
 
-    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamManager> teamManagers;
 
-    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamOwner> teamOwners;
 
-    @ManyToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Stadium> stadiums;
 
-    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "matchID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Match> homeMatches;
 
-    @OneToMany(mappedBy = "TEAM_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "matchID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Match> awayMatches;
 
-    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
-    private TeamFinancialEntry teamFinancialEntries;
+    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    private List<TeamFinancialEntry> teamFinancialEntries;
 
-    @ManyToMany(mappedBy = "teamsParticipate", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<LeagueSeason> leagueSeasons;
 
     //Constructor

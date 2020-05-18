@@ -22,12 +22,12 @@ public abstract class FinancialEntry implements Serializable
      */
     public class EntryPK implements Serializable
     {
-        public FinancialUser source;
+        public User source;
         public long timeStamp;
     }
 
     @Id
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.ALL)
     private User source;
     @Id
     private long timeStamp;

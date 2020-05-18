@@ -9,15 +9,19 @@ import java.util.List;
 /**
  * Description:     this class represents the event log of a game
  **/
-
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "EventLogs", query = "Select e From EventLog e")
 })
 public class EventLog {
 
+    @Id
+    @GeneratedValue
+    private int id;
+
     @OneToMany(cascade = CascadeType.MERGE)
     private List<Event> eventList;
+
     @OneToOne
     private Match myMatch;
 

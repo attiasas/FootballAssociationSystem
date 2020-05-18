@@ -8,13 +8,14 @@ import javax.persistence.*;
 /**
  * Description:     this class represents events of one player
  */
-@MappedSuperclass
+@Entity
 @NamedQueries(value = {
         @NamedQuery(name = "OnePlayersEvents", query = "Select op From OnePlayerEvent op")
 })
+@DiscriminatorValue(value = "OnePlayerEvent")
 abstract class OnePlayerEvent extends Event {
 
-    @Column
+    @ManyToOne
     private Player player;
 
     public OnePlayerEvent(Referee createdByUser, EventLog eventLog, int gameTime, Player player) {

@@ -13,7 +13,6 @@ import java.io.Serializable;
 })
 public class Notification implements Serializable
 {
-
     @Id
     @GeneratedValue
     private Long id;

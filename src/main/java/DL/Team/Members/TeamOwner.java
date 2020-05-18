@@ -17,13 +17,7 @@ import javax.persistence.*;
 
 @Entity
 @NamedQueries(value = {
-    @NamedQuery(name = "TeamOwner", query = "SELECT to FROM TeamOwner to"),
-    @NamedQuery(name = "TeamOwnerByTeam", query = "SELECT to FROM TeamOwner to WHERE to.team = :team"),
-    @NamedQuery(name = "TeamOwnerByTeamUser", query = "SELECT to FROM TeamOwner to WHERE to.teamUser = :teamUser"),
     @NamedQuery(name = "TeamOwnerByUser", query = "SELECT to FROM TeamOwner to WHERE to.active = true and to.teamUser.myUser = :user"),
-    @NamedQuery(name = "TeamOwnerByNominee", query = "SELECT to FROM TeamOwner to WHERE to.nominees = :nominee"),
-    @NamedQuery(name = "TeamOwnerAddOwnerNominee", query = "UPDATE TeamOwner to SET to.ownerNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
-    @NamedQuery(name = "TeamOwnerAddManageNominee", query = "UPDATE TeamOwner to SET to.manageNominees = :newNomineesList WHERE to =:teamOwner and to.active = true"),
     @NamedQuery(name = "setActiveTeamOwner", query = "UPDATE TeamOwner to SET to.active = : active where to =: teamOwner"),
     @NamedQuery(name = "TeamOwner", query = "SELECT to FROM TeamOwner to WHERE to.team.close = false"),
     @NamedQuery(name = "TeamOwnerByTeam", query = "SELECT to FROM TeamOwner to WHERE to.team = :team AND to.active = true AND to.team.close = false"),
@@ -37,6 +31,9 @@ import javax.persistence.*;
 public class TeamOwner implements FinancialUser, Serializable
 {
     @Id
+    @GeneratedValue
+    private int id;
+
     @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private TeamUser teamUser;
 
@@ -46,7 +43,7 @@ public class TeamOwner implements FinancialUser, Serializable
     @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamOwner> ownerNominees;
 
-    @OneToMany(mappedBy = "TEAM_OWNER_ID", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamManager> manageNominees;
 
     @Column

@@ -24,7 +24,6 @@ import java.util.Objects;
 public class Match implements Serializable {
 
     @Id
-    @Column(name = "Match_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int matchID;
     @Column

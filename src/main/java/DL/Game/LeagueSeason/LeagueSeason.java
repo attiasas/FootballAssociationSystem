@@ -49,14 +49,8 @@ public class LeagueSeason implements Serializable {
     @OneToMany(targetEntity = Match.class,cascade = CascadeType.ALL,mappedBy = "leagueSeason")
     private List<Match> matches;
     @ManyToMany
-    @JoinTable(name="LeagueSeason_Teams",
-            joinColumns=@JoinColumn(name="LeagueSeason_ID"),
-            inverseJoinColumns=@JoinColumn(name="Team_ID"))
     private List<Team> teamsParticipate;
     @ManyToMany
-    @JoinTable(name="LeagueSeason_Referees",
-            joinColumns=@JoinColumn(name="LeagueSeason_ID"),
-            inverseJoinColumns=@JoinColumn(name="Referee_ID"))
     private List<Referee> referees;
     @Column
     private Date startDate;

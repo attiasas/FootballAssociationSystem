@@ -24,7 +24,8 @@ public class UserPermission
     @Id
     @GeneratedValue
     private Long id;
-    @Column
+
+    @ElementCollection
     private List<Permission> teamPermissions;
 
 
