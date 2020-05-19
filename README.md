@@ -1,6 +1,6 @@
-
-<img src=https://res.cloudinary.com/serfati/image/upload/v1589354855/icon_iqs8if.png height="145px" align="center"/>  
 <img src="https://in.bgu.ac.il/marketing/graphics/BGU.sig3-he-en-white.png" height="48px" align="right" />  
+<img src=https://res.cloudinary.com/serfati/image/upload/v1589354855/icon_iqs8if.png height="120"/>  
+
   
 ![](https://codeclimate.com/github/JonSn0w/Hyde/badges/gpa.svg)   ![](https://img.shields.io/badge/version-0.1.0-blueviolet)  ![](https://img.shields.io/apm/l/atomic-design-ui.svg?)  
 # Description  
@@ -59,7 +59,8 @@ You can modify or contribute to this project by following the steps below:
  # Edit with the correct values 
 	 ... 
 	 db.server={localhost or postgres server} 
-	 db.port=5432 db.user={Enter username} 
+	 db.port=5432 
+	 db.user={Enter username} 
 	 db.password={Enter password} 
 	 db.database=sportify 
 	 ... 
