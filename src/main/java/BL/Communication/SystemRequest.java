@@ -1,5 +1,6 @@
 package BL.Communication;
 
+import DL.Users.Notifiable;
 import org.stringtemplate.v4.ST;
 
 import java.io.File;
@@ -19,7 +20,7 @@ public class SystemRequest
 {
     public enum Type
     {
-        Delete,Insert,Update,Query,Transaction,Login,Logout
+        Delete,Insert,Update,Query,Transaction,Login,Logout,Notify
     }
 
     public final Type type;
@@ -48,6 +49,8 @@ public class SystemRequest
     {
         return new SystemRequest(Type.Insert,"INSERT",data);
     }
+
+    public static SystemRequest notify(Notifiable notifiable) { return new SystemRequest(Type.Notify,"NOTIFY",notifiable); }
 
     /**
      * Generate A Deletion Request

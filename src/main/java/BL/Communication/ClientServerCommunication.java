@@ -4,6 +4,7 @@ import static java.net.InetAddress.getLocalHost;
 
 import BL.Client.ClientSystem;
 import BL.Server.utils.Configuration;
+import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
 
@@ -172,6 +173,25 @@ public class ClientServerCommunication {
             ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
 
             out.writeObject(SystemRequest.delete(toDelete));
+            out.flush();
+
+            boolean answer = (boolean) in.readObject();
+            return answer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean notify(Notifiable notifiable)
+    {
+        try(Socket serverSocket = new Socket(serverIP,serverPort))
+        {
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
+            out.writeObject(SystemRequest.notify(notifiable));
             out.flush();
 
             boolean answer = (boolean) in.readObject();
