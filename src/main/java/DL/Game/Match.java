@@ -138,6 +138,7 @@ public class Match implements Serializable {
     public void setEndTime(Date endTime) {
         if (endTime != null)
             this.endTime = new Date(endTime.getTime());
+        else this.endTime = null;
     }
 
     /**
