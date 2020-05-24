@@ -26,7 +26,7 @@ public class GamePolicyController{
                 rounds = Integer.parseInt(numberOfRounds.getText());
                 games = Integer.parseInt(gamesPerDay.getText());
                 System.out.println("Rounds: " + rounds + " ,games: " + games);
-                AssociationController.policiesUnit.addNewGamePolicy(rounds, games);
+                App.clientSystem.policiesUnit.addNewGamePolicy(rounds, games);
                 showSimpleAlert("Success","Game Policy added successfully!");
             } else {
                 showSimpleAlert("Error","Please fill the required (*) fields.");

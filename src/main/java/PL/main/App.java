@@ -16,7 +16,7 @@ public class App extends Application {
 
     public static Stage mainStage;
     public static Stack<Scene> scenes;
-    public ClientSystem clientSystem;
+    public static ClientSystem clientSystem;
 
     /**
      * The main function that runs the entire program
@@ -50,6 +50,7 @@ public class App extends Application {
 
         mainStage = primaryStage;
         scenes = new Stack<>();
+        clientSystem = new ClientSystem();
 
         primaryStage.show();
         new Thread(() -> {

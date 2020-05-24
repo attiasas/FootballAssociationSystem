@@ -140,57 +140,66 @@ public class LeagueSeasonUnit {
      * @return the leagues in the system.
      */
     public List<League> getLeagues() {
-        List<League> leagues = clientServerCommunication.query("GetAllLeagues", null);
-        return leagues;
+            List<League> leagues = clientServerCommunication.query("GetAllLeagues", null);
+            return leagues;
     }
 
     /**
      * @return the Seasons in the system.
      */
     public List<Season> getSeasons() {
-        List<Season> seasons = clientServerCommunication.query("GetAllSeasons", null);
-        return seasons;
+            List<Season> seasons = clientServerCommunication.query("GetAllSeasons", null);
+            return seasons;
+    }
+
+    /**
+     * @return the teams in the system.
+     */
+    public List<Team> getTeams() {
+            List<Team> teams = clientServerCommunication.query("Team", null);
+            return teams;
     }
 
     /**
      * @return the LeagueSeasons in the system.
      */
     public List<LeagueSeason> getLeagueSeasons(Season season) {
-        if (season != null) {
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("season", season);
-            List<LeagueSeason> leagueSeasons = clientServerCommunication.query("GetAllLeagueSeasons", parameters);
-            return leagueSeasons;
-        }
-        return null;
+            if (season != null) {
+                HashMap<String, Object> parameters = new HashMap<>();
+                parameters.put("season", season);
+                List<LeagueSeason> leagueSeasons = clientServerCommunication.query("GetAllLeagueSeasons", parameters);
+                return leagueSeasons;
+            }
+            return null;
     }
 
 
-    /**TODO: ADD TESTS FOR THOSE FUNCTION
     /**
+     * TODO: ADD TESTS FOR THOSE FUNCTION
+     * /**
+     *
      * @return the specific season
      */
-    public Season getSeason(int year) throws Exception {
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put("year", year);
-        List<Season> requiredSeason = clientServerCommunication.query("GetSeason", parameters);
-        if (requiredSeason.size() > 0) {
-            return requiredSeason.get(0);
-        } else {
-            throw new Exception("The season does not exist.");
-        }
+    public Season getSeason(int year) {
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("year", year);
+            List<Season> requiredSeason = clientServerCommunication.query("GetSeason", parameters);
+            if (requiredSeason.size() > 0) {
+                return requiredSeason.get(0);
+            }
+            return null;
     }
 
 
-    public LeagueSeason getLeagueSeason(Season season, League league) throws Exception {
-        HashMap<String, Object> parameters = new HashMap<>();
-        parameters.put("season", season);
-        parameters.put("league", league);
-        List<LeagueSeason> requiredLeagueSeason = clientServerCommunication.query("GetLeagueSeason", parameters);
-        if (requiredLeagueSeason.size() > 0) {
-            return requiredLeagueSeason.get(0);
-        } else {
-            throw new Exception("The required League Season does not exist.");
-        }
+    public LeagueSeason getLeagueSeason(Season season, League league) {
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("season", season);
+            parameters.put("league", league);
+            List<LeagueSeason> requiredLeagueSeason = clientServerCommunication.query("GetLeagueSeason", parameters);
+            if (requiredLeagueSeason.size() > 0) {
+                return requiredLeagueSeason.get(0);
+            }
+            return null;
+
     }
 }

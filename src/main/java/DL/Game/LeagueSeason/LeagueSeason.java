@@ -314,10 +314,7 @@ public class LeagueSeason implements Serializable {
 
     @Override
     public String toString() {
-        return "LeagueSeason{" +
-                "league=" + league +
-                ", season=" + season +
-                '}';
+        return "LeagueSeason{" + league + ", " + season + '}';
     }
 
 

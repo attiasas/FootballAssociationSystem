@@ -5,6 +5,8 @@ import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.LeagueSeason.Season;
 import DL.Game.Policy.GamePolicy;
 import DL.Game.Policy.ScorePolicy;
+import DL.Game.Referee;
+import DL.Team.Team;
 import PL.main.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -119,15 +121,15 @@ public abstract class AInitComboBoxObjects {
         }
     }
 
-    public void initLeagueSeasonsChoices(ComboBox<LeagueSeason> leagueSeason,Season season) {
+    public void initLeagueSeasonsChoices(ComboBox<LeagueSeason> leagueSeason, Season season) {
         try {
             ObservableList<LeagueSeason> leagueSeasonsList = FXCollections.observableArrayList();
             leagueSeason.setItems(leagueSeasonsList);
             /**TODO:example - should remove*/
             List<LeagueSeason> addLeagueSeasonsList = new ArrayList<>();
-            addLeagueSeasonsList.add(new LeagueSeason(new League("check"),new Season(2011),null,null,null));
-            addLeagueSeasonsList.add(new LeagueSeason(new League("check1"),new Season(2011),null,null,null));
-            addLeagueSeasonsList.add(new LeagueSeason(new League("check2"),new Season(2012),null,null,null));
+            addLeagueSeasonsList.add(new LeagueSeason(new League("check"), new Season(2011), null, null, null));
+            addLeagueSeasonsList.add(new LeagueSeason(new League("check1"), new Season(2011), null, null, null));
+            addLeagueSeasonsList.add(new LeagueSeason(new League("check2"), new Season(2012), null, null, null));
 
             /**TODO: REMOVE THE COMMENT WHEN COMMUNICATION IS WORKING*/
             //List<LeagueSeason> addLeagueSeasonsList = AssociationController.leagueSeasonUnit.getLeagueSeasons(season);
@@ -144,8 +146,61 @@ public abstract class AInitComboBoxObjects {
             showSimpleAlert("Error", "There was a problem with the server. please try again");
         }
     }
-    
-    public void closeWindow(){
+
+    public void initRefereesChoices(ComboBox<Referee> referees) {
+        try {
+            ObservableList<Referee> refereesList = FXCollections.observableArrayList();
+            referees.setItems(refereesList);
+            /**TODO:example - should remove*/
+            List<Referee> addRefereesList = new ArrayList<>();
+            addRefereesList.add(new Referee("main", "check", null, true));
+            addRefereesList.add(new Referee("main", "check1", null, true));
+            addRefereesList.add(new Referee("main", "check2", null, true));
+
+            /**TODO: REMOVE THE COMMENT WHEN COMMUNICATION IS WORKING*/
+            //List<Referee> addRefereesList = App.clientSystem.leagueSeasonUnit.getReferees();
+            if (addRefereesList != null && addRefereesList.size() > 0) {
+                refereesList.addAll(addRefereesList);
+                referees.setPromptText("Please select referee");
+                referees.setTooltip(new Tooltip("Select the referee."));
+
+            } else {
+                closeWindow();
+                showSimpleAlert("Error", "Please add a new Referee to the system First and then try again.");
+            }
+        } catch (Exception e) {
+            showSimpleAlert("Error", "There was a problem with the server. please try again");
+        }
+    }
+
+    public void initTeamChoices(ComboBox<Team> teams) {
+        try {
+            ObservableList<Team> teamList = FXCollections.observableArrayList();
+            teams.setItems(teamList);
+            /**TODO:example - should remove*/
+            List<Team> addTeamList = new ArrayList<>();
+            addTeamList.add(new Team("check1", true, false));
+            addTeamList.add(new Team("check2", true, false));
+            addTeamList.add(new Team("check3", true, false));
+
+
+            /**TODO: REMOVE THE COMMENT WHEN COMMUNICATION IS WORKING*/
+            //List<Team> addTeamList = App.clientSystem.leagueSeasonUnit.getTeams();
+            if (addTeamList != null && addTeamList.size() > 0) {
+                teamList.addAll(addTeamList);
+                teams.setPromptText("Please select team");
+                teams.setTooltip(new Tooltip("Select the team."));
+
+            } else {
+                closeWindow();
+                showSimpleAlert("Error", "Please add a new Team to the system First and then try again.");
+            }
+        } catch (Exception e) {
+            showSimpleAlert("Error", "There was a problem with the server. please try again");
+        }
+    }
+
+    public void closeWindow() {
         if (!App.scenes.empty())
             App.mainStage.setScene(App.scenes.pop());
     }

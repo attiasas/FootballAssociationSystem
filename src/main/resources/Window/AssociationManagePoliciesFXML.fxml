@@ -46,7 +46,6 @@
                 <MenuItem mnemonicParsing="false" text="About" />
             </Menu>
         </MenuBar>
-         <JFXHamburger fx:id="hamburger" layoutX="949.0" layoutY="38.0" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="38.0" />
       <ImageView blendMode="ADD" cache="true" fitHeight="665.0" fitWidth="442.0" layoutX="556.0" layoutY="30.0" preserveRatio="true" styleClass="title">
          <image>
             <Image url="@../img/signup-cover.jpeg" />

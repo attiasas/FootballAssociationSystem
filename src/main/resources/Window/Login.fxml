@@ -44,7 +44,7 @@
             <Font size="28.0"/>
         </font>
     </Text>
-    <JFXButton contentDisplay="TOP" graphicTextGap="3.0" layoutX="216.0" layoutY="418.0" onAction="#handleGuestButton"
+    <JFXButton fx:id="guestButton" contentDisplay="TOP" graphicTextGap="3.0" layoutX="216.0" layoutY="418.0" onAction="#handleGuestButton"
                prefHeight="34.0" prefWidth="164.0" ripplerFill="WHITE" styleClass="label-button"
                text="Checkout as a guest"/>
     <JFXSpinner fx:id="loggingProgress" layoutX="185.0" layoutY="482.0" visible="false"/>

@@ -4,6 +4,7 @@ import DL.Game.LeagueSeason.League;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.LeagueSeason.Season;
 import DL.Game.Policy.ScorePolicy;
+import PL.main.App;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
@@ -46,7 +47,7 @@ public class ScorePolicyController extends AInitComboBoxObjects {
                 win = Integer.parseInt(winPoints.getText());
                 draw = Integer.parseInt(drawPoints.getText());
                 lose = Integer.parseInt(losePoints.getText());
-                AssociationController.policiesUnit.addNewScorePolicy(win, draw, lose);
+                App.clientSystem.policiesUnit.addNewScorePolicy(win, draw, lose);
                 showSimpleAlert("Success", "Score Policy added successfully!");
             } else {
                 showSimpleAlert("Error", "Please fill the required (*) fields.");
@@ -72,8 +73,8 @@ public class ScorePolicyController extends AInitComboBoxObjects {
             season = seasons.getValue();
             newScorePolicy = scorePolicies.getValue();
 
-            leagueSeason = AssociationController.leagueSeasonUnit.getLeagueSeason(season,league);
-            AssociationController.leagueSeasonUnit.changeScorePolicy(leagueSeason,newScorePolicy);
+            leagueSeason = App.clientSystem.leagueSeasonUnit.getLeagueSeason(season,league);
+            App.clientSystem.leagueSeasonUnit.changeScorePolicy(leagueSeason,newScorePolicy);
             showSimpleAlert("Success","Score Policy changed successfully!");
 
         } catch (Exception e){

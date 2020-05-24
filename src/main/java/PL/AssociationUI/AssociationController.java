@@ -1,8 +1,5 @@
 package PL.AssociationUI;
 
-import BL.Client.Handlers.LeagueSeasonUnit;
-import BL.Client.Handlers.PoliciesUnit;
-import BL.Communication.ClientServerCommunication;
 import PL.main.App;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,24 +12,9 @@ import static PL.AlertUtil.showSimpleAlert;
 
 public class AssociationController {
 
-    public static LeagueSeasonUnit leagueSeasonUnit;
-    public static PoliciesUnit policiesUnit;
-
-    public AssociationController() {
-        leagueSeasonUnit = new LeagueSeasonUnit(new ClientServerCommunication());
-        policiesUnit = new PoliciesUnit(new ClientServerCommunication());
-    }
-
+    //LeagueSeason controller functions
     public void createNewLeague() {
         loadScreen("LeagueFXML");
-    }
-
-    public void createNewGamePolicy() {
-        loadScreen("GamePolicyFXML");
-    }
-
-    public void createNewScorePolicy() {
-        loadScreen("ScorePolicyFXML");
     }
 
     public void addNewLeagueSeason() {
@@ -42,6 +24,22 @@ public class AssociationController {
         }
     }
 
+    public void scheduleMatches(){
+        LeagueSeasonController lsController = (LeagueSeasonController) loadScreen("ScheduleMatchesFXML");
+        if (lsController != null) {
+            lsController.initScheduleComboBoxOptions();
+        }
+    }
+
+    //Policies Functions
+    public void createNewGamePolicy() {
+        loadScreen("GamePolicyFXML");
+    }
+
+    public void createNewScorePolicy() {
+        loadScreen("ScorePolicyFXML");
+    }
+
     public void changeScorePolicy() {
         ScorePolicyController lsController = (ScorePolicyController) loadScreen("ChangeScorePolicyFXML");
         if (lsController != null) {
@@ -49,15 +47,41 @@ public class AssociationController {
         }
     }
 
+    //Referees functions
     public void setRefereesInLeagueSeason(){
+        RefereeController lsController = (RefereeController) loadScreen("RefereeInLeagueSeasonFXML");
+        if (lsController != null) {
+            lsController.initRefereesInLeagueComboBoxOptions();
+        }
+    }
+
+    public void addNewReferee(){
 
     }
 
-    public void scheduleMatches(){
-        LeagueSeasonController lsController = (LeagueSeasonController) loadScreen("ScheduleMatchesFXML");
+    public void removeReferee(){
+
+    }
+
+    //Teams functions
+    public void addNewTeam(){
+
+    }
+
+    public void addTeamToLeagueSeason(){
+        TeamController lsController = (TeamController) loadScreen("SetTeamInLeagueSeasonFXML");
         if (lsController != null) {
-            lsController.initScheduleComboBoxOptions();
+            lsController.initTeamInLeagueSeasonsComboBoxOptions();
         }
+    }
+
+    //Financial functions
+    public void setFinancialRules(){
+
+    }
+
+    public void manageAssociationFinancial(){
+
     }
 
     private Object loadScreen(String fxmlFileName) {

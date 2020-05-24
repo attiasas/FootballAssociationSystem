@@ -32,8 +32,8 @@ public class AlertUtil {
         stage.setAlwaysOnTop(true);
         stage.toFront();
         stage.initStyle(StageStyle.UNDECORATED);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
+        //alert.setTitle(title);
+        alert.setHeaderText(title);
         alert.setContentText(content);
         //styleAlert(alert);
         alert.showAndWait();

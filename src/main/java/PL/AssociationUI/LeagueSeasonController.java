@@ -5,6 +5,7 @@ import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.LeagueSeason.Season;
 import DL.Game.Policy.GamePolicy;
 import DL.Game.Policy.ScorePolicy;
+import PL.main.App;
 import com.jfoenix.controls.*;
 import javafx.fxml.FXML;
 import java.time.Instant;
@@ -58,7 +59,7 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
     public void createNewLeague(){
         try {
             if (leagueName.getText() != null && !leagueName.getText().equals("")) {
-                AssociationController.leagueSeasonUnit.addNewLeague(leagueName.getText());
+                App.clientSystem.leagueSeasonUnit.addNewLeague(leagueName.getText());
                 showSimpleAlert("Succeeded", "New league added successfully");
             } else {
                 showSimpleAlert("Error", "League name can not be empty.");
@@ -93,10 +94,10 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
             start = Date.from(instant);
 
             seasonYear = Integer.parseInt(season.getText());
-            AssociationController.leagueSeasonUnit.addNewSeason(seasonYear);
-            newSeason = AssociationController.leagueSeasonUnit.getSeason(seasonYear);
+            App.clientSystem.leagueSeasonUnit.addNewSeason(seasonYear);
+            newSeason = App.clientSystem.leagueSeasonUnit.getSeason(seasonYear);
 
-            AssociationController.leagueSeasonUnit.addLeagueSeason(league, newSeason, gamePolicy, scorePolicy, start);
+            App.clientSystem.leagueSeasonUnit.addLeagueSeason(league, newSeason, gamePolicy, scorePolicy, start);
             showSimpleAlert("Success", "League Season added successfully!");
 
         } catch (NumberFormatException e) {
@@ -116,17 +117,13 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
 
             else {
                 showWaitStage();
-                AssociationController.policiesUnit.scheduleMatches(leagueSeason);
+                App.clientSystem.policiesUnit.scheduleMatches(leagueSeason);
                 closeWaitStage();
                 showSimpleAlert("Successful!", "The league matches scheduled successfully.");
             }
         } catch (Exception e) {
             showSimpleAlert("Error", e.getMessage());
         }
-    }
-
-    public void setRefereesInLeagueSeason(){
-
     }
 
     public void showLeagueTable() {

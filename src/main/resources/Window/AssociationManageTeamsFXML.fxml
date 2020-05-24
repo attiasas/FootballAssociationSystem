@@ -15,7 +15,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.AssociationUI.AssociationController">
+<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0"
+           styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.AssociationUI.AssociationController">
     <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true" />
     <AnchorPane fx:id="rootAnchorPane" prefHeight="797.0" prefWidth="1076.0">
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -46,7 +47,6 @@
                 <MenuItem mnemonicParsing="false" text="About" />
             </Menu>
         </MenuBar>
-         <JFXHamburger fx:id="hamburger" layoutX="949.0" layoutY="38.0" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="38.0" />
       <ImageView blendMode="ADD" cache="true" fitHeight="665.0" fitWidth="442.0" layoutX="556.0" layoutY="30.0" preserveRatio="true" styleClass="title">
          <image>
             <Image url="@../img/signup-cover.jpeg" />
@@ -54,8 +54,8 @@
       </ImageView>
       <VBox layoutY="284.0" prefHeight="415.0" prefWidth="556.0">
          <children>
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#createNewLeague" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Add New Team" textFill="WHITE" />
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#addNewLeagueSeason" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Add Team To League" textFill="WHITE" />
+            <JFXButton alignment="CENTER" contentDisplay="TOP"  prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Add New Team" textFill="WHITE" />
+            <JFXButton alignment="CENTER" contentDisplay="TOP"  onAction="#addTeamToLeagueSeason" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Add Team To League" textFill="WHITE" />
             <Label prefHeight="166.0" prefWidth="556.0" />
             <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#closeWindow" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Back" textFill="WHITE" />
          </children>

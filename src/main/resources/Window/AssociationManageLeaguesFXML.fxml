@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -45,7 +44,6 @@
                 <MenuItem mnemonicParsing="false" text="About" />
             </Menu>
         </MenuBar>
-         <JFXHamburger fx:id="hamburger" layoutX="949.0" layoutY="38.0" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="38.0" />
       <ImageView blendMode="ADD" cache="true" fitHeight="665.0" fitWidth="442.0" layoutX="556.0" layoutY="30.0" preserveRatio="true" styleClass="title">
          <image>
             <Image url="@../img/signup-cover.jpeg" />
@@ -53,7 +51,7 @@
       </ImageView>
       <VBox layoutY="284.0" prefHeight="415.0" prefWidth="556.0">
          <children>
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#createNewLeague" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Create League" textFill="WHITE" />
+            <JFXButton fx:id="createLeagueButton" alignment="CENTER" contentDisplay="TOP" onAction="#createNewLeague" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Create League" textFill="WHITE" />
             <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#addNewLeagueSeason" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Create Season" textFill="WHITE" />
             <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#scheduleMatches" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Schedule Matches" textFill="WHITE" />
             <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#setRefereesInLeagueSeason" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Set Referees In Matches" textFill="WHITE" />

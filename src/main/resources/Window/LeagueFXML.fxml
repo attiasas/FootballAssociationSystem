@@ -28,7 +28,7 @@
                <Font size="20.0" />
             </font>
          </Label>
-         <JFXButton layoutX="623.0" layoutY="516.0" onAction="#createNewLeague" prefHeight="67.0" prefWidth="138.0" styleClass="smallaction-button" text="Okay" textFill="WHITE" />
+         <JFXButton fx:id="okayButton" layoutX="623.0" layoutY="516.0" onAction="#createNewLeague" prefHeight="67.0" prefWidth="138.0" styleClass="smallaction-button" text="Okay" textFill="WHITE" />
          <JFXButton layoutX="801.0" layoutY="516.0" onAction="#closeWindow" prefHeight="67.0" prefWidth="138.0" styleClass="smallaction-button" text="Cancel" textFill="WHITE" />
         </AnchorPane>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
