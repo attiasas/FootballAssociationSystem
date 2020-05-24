@@ -5,18 +5,23 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import lombok.extern.log4j.Log4j;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
+
+import static PL.AlertUtil.showSimpleAlert;
 
 @Log4j(topic = "event")
 public class App extends Application {
 
     public static Stage mainStage;
     public static Stack<Scene> scenes;
-    public ClientSystem clientSystem;
+    public static ClientSystem clientSystem = new ClientSystem();
 
     /**
      * The main function that runs the entire program
@@ -54,5 +59,24 @@ public class App extends Application {
         primaryStage.show();
         new Thread(() -> {
         }).start();
+    }
+
+    public static Object loadScreen(String fxmlFileName) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(new File(String.format("src/main/resources/Window/%s.fxml", fxmlFileName)).toURI().toURL());
+
+            Scene scene = new Scene(fxmlLoader.load());
+            Object controller = fxmlLoader.getController();
+
+            scenes.push(mainStage.getScene());
+            mainStage.setScene(scene);
+
+            return controller;
+        } catch (IOException e) {
+            e.printStackTrace();
+            showSimpleAlert("Error", "Can't load screen. Please try again");
+            return null;
+        }
     }
 }

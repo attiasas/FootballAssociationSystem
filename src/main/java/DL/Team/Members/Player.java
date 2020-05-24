@@ -65,4 +65,9 @@ public class Player extends PageUser implements Serializable
         return role;
     }
 
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

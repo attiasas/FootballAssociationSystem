@@ -117,8 +117,11 @@ public class MatchEventUnit
     {
         // Validate inputs and match is active and the user can update his events
         List<Match> matches = getActiveMatches(user);
+        //System.out.println("After active match Validate");
         if(match == null || matches == null || !matches.contains(match) || matchTime < 0) return false;
+        //System.out.println("After null Validate");
         if(!isActivePlayerOfMatch(match,player)) return false;
+        //System.out.println("After Validate");
 
         // Add Event
         List<SystemRequest> requests = new ArrayList<>();
@@ -423,6 +426,31 @@ public class MatchEventUnit
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
         requests.add(SystemRequest.update("UpdateMatchEndTime",mapOf("endTime",endTime, "match",match)));
 
+        return communication.transaction(requests);
+    }
+
+    public boolean removeEvent(User user, Match match,Event event)
+    {
+        if(!getRefereeFromServer(user)) return false;
+        if(!cachedReferee.getMainMatches().contains(match)) return false;
+        if(!match.getMyEventLog().getEvents().contains(event)) return false;
+
+        List<SystemRequest> requests = new ArrayList<>();
+        EventLog matchEventLog = match.getMyEventLog();
+
+        // check if end game
+        if(event instanceof EndGame)
+        {
+            System.out.println("Match Not Ended");
+            match.setEndTime(null);
+            requests.add(SystemRequest.update("UpdateMatchEndTime",mapOf("endTime",null, "match",match)));
+        }
+
+        matchEventLog.getEvents().remove(event);
+
+        // Update Server
+        requests.add(SystemRequest.delete(event));
+        requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
         return communication.transaction(requests);
     }
 }
