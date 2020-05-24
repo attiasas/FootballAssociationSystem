@@ -1,55 +1,54 @@
 package BL.Server.utils;
 
+import DL.Game.LeagueSeason.League;
+import DL.Game.LeagueSeason.LeagueSeason;
+import DL.Game.LeagueSeason.Season;
+import DL.Game.Match;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 
-@NamedQueries(value = {
-        @NamedQuery(name = "Mock.deleteAllRows", query = "DELETE from Mock mock"),
-        @NamedQuery(name = "Mock.findAll", query = "SELECT mock FROM Mock mock"),
-        @NamedQuery(name = "Mock.ByName", query = "SELECT mock FROM Mock mock WHERE mock.name = :name"),
-        @NamedQuery(name = "Mock.ByID", query = "SELECT mock FROM Mock mock WHERE mock.id = :id"),
-})
-
-@Setter
-@Getter
-@NoArgsConstructor
-@Transactional
 @Table(name = "MOCK")
 @Entity
-@SuppressWarnings("serial")
+@IdClass(Mock.EntryPK.class)
 public class Mock implements Serializable {
-    @Transient
-    public String draft;
+
+    /**
+     * For Composite Primary Key
+     */
+    public static class EntryPK implements Serializable{
+        public int id;
+        public int id2;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
-    private Long id;
-    @Column(name = "USER_NAME", nullable = false, unique = true)
+    @GeneratedValue
+    private int id;
+    @Id
+    @GeneratedValue
+    private int id2;
+    @Column(name = "USER_NAME", unique = true)
     private String username;
-    @Column(name = "PASSWORD", nullable = false)
-    private String password;
-    @Column(name = "FIRSTNAME", nullable = false)
-    private String firstname;
-    @Column(name = "LASTNAME", nullable = false)
-    private String lastname;
-    @Column(name = "GENDER", nullable = false)
-    private Long gender;
-    @Temporal(TemporalType.DATE)
-    @Column(name = "DOB", nullable = false)
-    private Date dob;
     @Column(name = "ACTIVE")
     private Boolean active = true;
-    @Column
+    @Column(name = "name_check")
     private String name;
 
-    public Mock(String name) {
-        this.name = name;
+    @OneToMany(targetEntity = MockTemp.class,orphanRemoval = true,mappedBy = "mock",cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<MockTemp> mockTemps;
+
+    public void addMock(List<MockTemp> m ){
+        mockTemps = new ArrayList<>();
+        mockTemps.addAll(m);
     }
 }
+

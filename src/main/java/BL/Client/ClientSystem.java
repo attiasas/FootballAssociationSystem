@@ -1,11 +1,10 @@
 package BL.Client;
 
-import BL.Client.Handlers.AssociationManagementUnit;
-import BL.Client.Handlers.MatchEventUnit;
-import BL.Client.Handlers.TeamAssetUnit;
+import BL.Client.Handlers.*;
 import BL.Communication.ClientServerCommunication;
 import DL.Administration.AssociationMember;
 import DL.Administration.SystemManager;
+import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Match;
 import DL.Team.Assets.Stadium;
 import DL.Team.Members.Coach;
@@ -22,7 +21,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-//import PL.RefereeController;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
@@ -35,11 +33,15 @@ public class ClientSystem
     private ClientServerCommunication communication;
 
     public MatchEventUnit matchEventUnit;
+    public LeagueSeasonUnit leagueSeasonUnit;
+    public PoliciesUnit policiesUnit;
 
     public ClientSystem()
     {
         communication = new ClientServerCommunication();
         communication.startNotificationListener();
+        leagueSeasonUnit = new LeagueSeasonUnit(communication);
+        policiesUnit = new PoliciesUnit(communication);
     }
 
     public static User getLoggedUser()
