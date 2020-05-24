@@ -34,9 +34,9 @@ public final class Configuration {
      */
     public static String getDEV_DBConnection() {
         initializeProperties();
-        return String.format("jdbc:postgresql://%s:%s/%s?user=%s&password%s&sslmode=require"
-                ,props.getProperty("db.server"), props.getProperty("db.port"), props.getProperty("db.database"),
-                props.getProperty("db.user"), props.getProperty("db.password"));
+        return String.format("jdbc:postgresql://%s:%s/%s?user=%s&password%s"
+                ,props.getProperty("db.local.server"), props.getProperty("db.local.port"), props.getProperty("db.local.database"),
+                props.getProperty("db.local.user"), props.getProperty("db.local.password"));
     }
 
     /**
@@ -47,9 +47,9 @@ public final class Configuration {
     public static String getTEST_DBConnection() {
         initializeProperties();
 //        return String.format("jdbc:postgresql://%s:%s/%s", props.getProperty("db.server"), props.getProperty("dbtest.port"), props.getProperty("dbtest.database"));
-        return String.format("jdbc:postgresql://%s:%s/%s?user=%s&password%s&sslmode=require"
-                ,props.getProperty("db.server"), props.getProperty("db.test.port"), props.getProperty("db.test.database"),
-                props.getProperty("db.test.user"), props.getProperty("db.test.password"));
+        return String.format("jdbc:postgresql://%s:%s/%s?user=%s&password%s"
+                ,props.getProperty("db.local.server"), props.getProperty("db.local.port"), props.getProperty("db.local.database.test"),
+                props.getProperty("db.local.user"), props.getProperty("db.local.password"));
     }
 
     /**

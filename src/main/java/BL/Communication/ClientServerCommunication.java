@@ -33,7 +33,7 @@ public class ClientServerCommunication {
 
     static {
         try {
-            serverIP = getLocalHost();
+            serverIP = InetAddress.getByName(Configuration.getPropertyValue("server.ip"));
         } catch (UnknownHostException ignored) {
         }
     }

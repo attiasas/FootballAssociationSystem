@@ -88,14 +88,14 @@ public class ServerSystem implements IServerStrategy {
         String pw;
         if (dbType == DbSelector.DEV) {
             connectionStr = Configuration.getDEV_DBConnection();
-            user = Configuration.getPropertyValue("db.user");
-            pw = Configuration.getPropertyValue("db.password");
+            user = Configuration.getPropertyValue("db.local.user");
+            pw = Configuration.getPropertyValue("db.local.password");
         } else {
             connectionStr = Configuration.getTEST_DBConnection();
-            user = Configuration.getPropertyValue("dbtest.user") != null ? Configuration
-                    .getPropertyValue("dbtest.user") : Configuration.getPropertyValue("db.user");
-            pw = Configuration.getPropertyValue("dbtest.password") != null ? Configuration
-                    .getPropertyValue("dbtest.password") : Configuration.getPropertyValue("db.password");
+            user = Configuration.getPropertyValue("db.local.user") != null ? Configuration
+                    .getPropertyValue("db.local.user") : Configuration.getPropertyValue("db.local.user");
+            pw = Configuration.getPropertyValue("db.local.password") != null ? Configuration
+                    .getPropertyValue("db.local.password") : Configuration.getPropertyValue("db.local.password");
         }
         return createEntityManagerFactory(PERSISTENCE_UNIT_NAME, connectionStr, user, pw, strategy);
     }
@@ -361,4 +361,14 @@ public class ServerSystem implements IServerStrategy {
             }
         }
     }
+
+    public static void main(String[] args) {
+        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST,Strategy.DROP_AND_CREATE,null);
+        try {
+            serverSystem.initializeServer();
+        }catch (Exception e){
+            System.out.println("Error when connection to the server"+ e.getMessage());
+        }
+    }
+
 }
