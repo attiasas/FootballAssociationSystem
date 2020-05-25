@@ -22,6 +22,12 @@ public class LeagueSeasonUnit {
 
     private ClientServerCommunication clientServerCommunication;
 
+    public static void main(String[] args) {
+        LeagueSeasonUnit l = new LeagueSeasonUnit(new ClientServerCommunication());
+        l.addNewLeague("Champions League");
+        l.addNewSeason(2016);
+    }
+
     /**
      * Ctor with parameters
      *
@@ -192,5 +198,13 @@ public class LeagueSeasonUnit {
         } else {
             throw new Exception("The required League Season does not exist.");
         }
+    }
+
+    /**
+     * @return the teams in the system.
+     */
+    public List<Team> getTeams() {
+        List<Team> teams = clientServerCommunication.query("Team", null);
+        return teams;
     }
 }

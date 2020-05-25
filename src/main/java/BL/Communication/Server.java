@@ -89,6 +89,7 @@ public class Server
     {
         try
         {
+            System.out.println("Connected");
             serverStrategy.serverStrategy(clientSocket);
             clientSocket.close(); //will only happen in the server strategy
 
