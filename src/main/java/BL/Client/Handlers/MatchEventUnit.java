@@ -130,9 +130,6 @@ public class MatchEventUnit
         YellowCard yellowCard = new YellowCard(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(yellowCard);
 
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
-
         // Update Server
         requests.add(SystemRequest.insert(yellowCard));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
@@ -161,9 +158,6 @@ public class MatchEventUnit
 
         RedCard redCard = new RedCard(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(redCard);
-
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
 
         // Update Server
         requests.add(SystemRequest.insert(redCard));
@@ -194,9 +188,6 @@ public class MatchEventUnit
         Goal goal = new Goal(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(goal);
 
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
-
         // Update Server
         requests.add(SystemRequest.insert(goal));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
@@ -226,9 +217,6 @@ public class MatchEventUnit
         Injury injury = new Injury(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(injury);
 
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
-
         // Update Server
         requests.add(SystemRequest.insert(injury));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
@@ -257,9 +245,6 @@ public class MatchEventUnit
 
         Offside offside = new Offside(cachedReferee,matchEventLog, matchTime,player);
         matchEventLog.addMatchEvent(offside);
-
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
 
         // Update Server
         requests.add(SystemRequest.insert(offside));
@@ -291,9 +276,6 @@ public class MatchEventUnit
         Foul foul = new Foul(cachedReferee,matchEventLog,matchTime,injuredPlayer,foulPlayer);
         matchEventLog.addMatchEvent(foul);
 
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
-
         // Update Server
         requests.add(SystemRequest.insert(foul));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
@@ -324,9 +306,6 @@ public class MatchEventUnit
         PlayerChange playerChange = new PlayerChange(cachedReferee,matchEventLog,matchTime,outPlayer,inPlayer);
         matchEventLog.addMatchEvent(playerChange);
 
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
-
         // Update Server
         requests.add(SystemRequest.insert(playerChange));
         requests.add(SystemRequest.update("UpdateMatchEventLog",mapOf("eventLog",matchEventLog, "match",match)));
@@ -353,9 +332,6 @@ public class MatchEventUnit
 
         PenaltyKick penaltyKick = new PenaltyKick(cachedReferee,matchEventLog,matchTime);
         matchEventLog.addMatchEvent(penaltyKick);
-
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
 
         // Update Server
         requests.add(SystemRequest.insert(penaltyKick));
@@ -384,9 +360,6 @@ public class MatchEventUnit
 
         StoppageTime stoppageTime = new StoppageTime(cachedReferee,matchEventLog,matchTime,timeAdd);
         matchEventLog.addMatchEvent(stoppageTime);
-
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
 
         // Update Server
         requests.add(SystemRequest.insert(stoppageTime));
@@ -417,9 +390,6 @@ public class MatchEventUnit
         matchEventLog.addMatchEvent(endGame);
         Date endTime = new Date(match.getStartTime().getTime() + (matchTime * 1000 * 60)); // start time + matchTime (minutes) * 1000 * 60 (convert to milli sec)
         match.setEndTime(endTime);
-
-        // Notify
-        // TODO: Add notification to users if game is not ended (real time notification)
 
         // Update Server
         requests.add(SystemRequest.insert(endGame));

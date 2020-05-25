@@ -169,9 +169,7 @@ public class NomineePermissionUnit
         serverRequests.add(SystemRequest.insert(owner));
         serverRequests.add(SystemRequest.update("TeamOwnerAddOwnerNominee",mapOf("newNomineesList",nominees,"teamOwner",cachedOwner)));
         serverRequests.add(SystemRequest.update("updateTeamOwnersOfTeam",mapOf("teamOwners",team.getTeamOwners(),"team",team)));
-
-        Notifiable notify = new Notifiable() {
-            // for query name: TeamOwnerAddOwnerNominee
+        serverRequests.add(SystemRequest.notify(new Notifiable() {
             @Override
             public Notification getNotification() {
                 return new Notification("You have been nominated as a new team owner of " + team.getName() + " by " + user);
@@ -185,7 +183,7 @@ public class NomineePermissionUnit
 
                 return result;
             }
-        };
+        }));
 
         return communication.transaction(serverRequests);
     }
@@ -222,8 +220,7 @@ public class NomineePermissionUnit
         serverRequests.add(SystemRequest.insert(teamManager));
         serverRequests.add(SystemRequest.update("TeamOwnerAddManageNominee",mapOf("newNomineesList",nominees,"teamOwner",cachedOwner)));
         serverRequests.add(SystemRequest.update("updateTeamManagersOfTeam",mapOf("teamManagers",team.getTeamOwners(),"team",team)));
-
-        Notifiable notify = new Notifiable() {
+        serverRequests.add(SystemRequest.notify(new Notifiable() {
             // for query name: TeamOwnerAddOwnerNominee
             @Override
             public Notification getNotification() {
@@ -238,7 +235,7 @@ public class NomineePermissionUnit
 
                 return result;
             }
-        };
+        }));
 
         return communication.transaction(serverRequests);
     }
@@ -269,8 +266,8 @@ public class NomineePermissionUnit
         deactivateNominees(toRemove,serverRequests,users);
 
         TeamOwner finalToRemove = toRemove;
-        Notifiable notify = new Notifiable() {
-            // for query name: TeamOwnerAddOwnerNominee
+
+        serverRequests.add(SystemRequest.notify(new Notifiable() {
             @Override
             public Notification getNotification() {
                 return new Notification("You have been removed from managing " + finalToRemove.getTeam() + " by " + user);
@@ -284,7 +281,7 @@ public class NomineePermissionUnit
 
                 return result;
             }
-        };
+        }));
 
         // Update Server
         return communication.transaction(serverRequests);
@@ -351,11 +348,26 @@ public class NomineePermissionUnit
         }
         if(!found) return false; // not an active nominee of the user
 
+        List<SystemRequest> serverRequests = new ArrayList<>();
+
         nominee.setActive(false);
+        serverRequests.add(SystemRequest.update("setActiveTeamUser",mapOf("active",false,"teamUser",nominee)));
 
-        // TODO: Add Notification
+        serverRequests.add(SystemRequest.notify(new Notifiable() {
+            @Override
+            public Notification getNotification() {
+                return new Notification("You have been removed from managing " + cachedOwner.getTeam() + " by " + user);
+            }
 
-        return communication.update("setActiveTeamUser",mapOf("active",false,"teamUser",nominee));
+            @Override
+            public Set getNotifyUsersList() {
+                Set result = new HashSet();
+                result.add(nominee.getFan());
+                return result;
+            }
+        }));
+
+        return communication.transaction(serverRequests);
     }
 
     /**

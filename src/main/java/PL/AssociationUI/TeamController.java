@@ -22,7 +22,7 @@ public class TeamController extends AInitComboBoxObjects{
 
     public void initTeamInLeagueSeasonsComboBoxOptions(){
         initSeasonChoices(seasons);
-        initTeamChoices(teams);
+        //initTeamChoices(teams);
         seasons.setOnAction((e) -> {
             if (seasons.getValue() != null) {
                 leagueSeasons.setItems(null);
