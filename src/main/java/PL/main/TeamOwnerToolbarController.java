@@ -47,7 +47,9 @@ public class TeamOwnerToolbarController implements Initializable {
     }
 
     @FXML
-    private void loadNotification(ActionEvent event) {
+    private void loadNotification(ActionEvent event)
+    {
+        loadStage("NotificationsFXML");
     }
 
     private void closeStage() {

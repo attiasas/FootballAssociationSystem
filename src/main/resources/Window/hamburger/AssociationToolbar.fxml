@@ -32,7 +32,7 @@
          <FontAwesomeIconView size="25" text="" />
       </graphic>
    </JFXButton>
-    <JFXButton contentDisplay="TOP" mnemonicParsing="false"  prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Notifications" textAlignment="CENTER">
+    <JFXButton contentDisplay="TOP" mnemonicParsing="false"  prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Notifications" textAlignment="CENTER" onAction="#loadNotifications">
         <graphic>
             <FontAwesomeIconView size="25" text="" textAlignment="CENTER" />
         </graphic>

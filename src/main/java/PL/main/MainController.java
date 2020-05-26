@@ -218,7 +218,35 @@ public class MainController implements Initializable {
 
     }
 
-    public void handleMenuNotification(){
+    public void handleMenuNotification()
+    {
+        try {
+            loadNotifications();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void loadNotifications() throws IOException
+    {
+        Parent root = FXMLLoader.load(getClass().getResource("/Window/NotificationsFXML.fxml"));
+
+        App.mainStage.setScene(root.getScene());
+
+//
+//        Scene scene = rootAnchorPane.getScene();
+//
+//
+//
+//        root.translateXProperty().set(scene.getWidth());
+//
+//        rootAnchorPane.getChildren().add(root);
+//
+//        Timeline timeline = new Timeline();
+//        KeyValue kv = new KeyValue(root.translateXProperty(), 0, Interpolator.LINEAR);
+//        KeyFrame kf = new KeyFrame(Duration.seconds(0.5), kv);
+//        timeline.getKeyFrames().add(kf);
+//        timeline.setOnFinished(t -> rootAnchorPane.getChildren().remove(parentAnchorPane));
+//        timeline.play();
     }
 }

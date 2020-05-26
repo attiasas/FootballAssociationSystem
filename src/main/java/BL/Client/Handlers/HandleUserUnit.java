@@ -347,11 +347,11 @@ public class HandleUserUnit
             return false;
         }
 
-        Map<String, Object> logInParameters = new HashMap<>();
-        logInParameters.put("username", userName);
-        logInParameters.put("hashedPassword", DigestUtils.sha1Hex(password));
+//        Map<String, Object> logInParameters = new HashMap<>();
+//        logInParameters.put("username", userName);
+//        logInParameters.put("hashedPassword", DigestUtils.sha1Hex(password));
 
-        List<Object> users = communication.query("UserByUserNameAndPassword", logInParameters);
+        List<Object> users = communication.login(userName, DigestUtils.sha1Hex(password));
 
         if(users.size()<=0)
         {

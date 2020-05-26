@@ -1,6 +1,8 @@
 package PL.main;
 
 import BL.Client.ClientSystem;
+import DL.Users.Fan;
+import DL.Users.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +28,15 @@ public class App extends Application {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
         log.info("Sportify launched");
+
+
+        //------------------- Testing Notifications --------------------
+
+//        User userAdmin = new Fan("admin", "admin", "admin");
+//        ClientSystem.logIn(userAdmin);
+
+        // -------------------------------------------------------------
+
         launch(args);
         Runtime.getRuntime().addShutdownHook(new Thread() {
         });

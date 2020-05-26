@@ -57,4 +57,10 @@ public class AssociationToolbarController {
             return null;
         }
     }
+
+    @FXML
+    private void loadNotifications()
+    {
+        loadStage("NotificationsFXML");
+    }
 }

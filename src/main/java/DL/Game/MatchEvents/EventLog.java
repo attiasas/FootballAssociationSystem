@@ -3,6 +3,7 @@ package DL.Game.MatchEvents;
 import DL.Game.Match;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @NamedQueries(value = {
         @NamedQuery(name = "EventLogs", query = "Select e From EventLog e")
 })
-public class EventLog {
+public class EventLog implements Serializable {
 
     @Id
     @GeneratedValue

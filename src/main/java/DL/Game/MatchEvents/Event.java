@@ -2,6 +2,7 @@ package DL.Game.MatchEvents;
 
 import DL.Game.Referee;
 import DL.Team.Team;
+import DL.Users.Fan;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
@@ -67,22 +68,28 @@ public abstract class Event implements Serializable, Notifiable {
 
     @Override
     public Notification getNotification() {
-        return new Notification(toString());
+
+        //return new Notification(toString());
+        return new Notification("Goal!!!");
     }
 
     @Override
     public Set getNotifyUsersList()
     {
-        Set<User> result = new HashSet<>();
+//        Set<User> result = new HashSet<>();
+//
+//        Team homeTeam = eventLog.getMyMatch().getHomeTeam();
+//        Team awayTeam = eventLog.getMyMatch().getAwayTeam();
+//
+//        result.addAll(homeTeam.getTeamMembers());
+//        result.addAll(homeTeam.getPage().getFollowers());
+//        result.addAll(awayTeam.getTeamMembers());
+//        result.addAll(awayTeam.getPage().getFollowers());
+//
+//        return result;
 
-        Team homeTeam = eventLog.getMyMatch().getHomeTeam();
-        Team awayTeam = eventLog.getMyMatch().getAwayTeam();
-
-        result.addAll(homeTeam.getTeamMembers());
-        result.addAll(homeTeam.getPage().getFollowers());
-        result.addAll(awayTeam.getTeamMembers());
-        result.addAll(awayTeam.getPage().getFollowers());
-
-        return result;
+        Set<User> res = new HashSet<>();
+        res.add(new Fan("admin", "admin", "admin"));
+        return res;
     }
 }

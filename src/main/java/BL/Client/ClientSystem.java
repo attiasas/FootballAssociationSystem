@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import PL.RefereeController;
+//import PL.RefereeController;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
@@ -38,8 +38,8 @@ public class ClientSystem
 
     public ClientSystem()
     {
-        communication = new ClientServerCommunication();
-        communication.startNotificationListener();
+//        communication = new ClientServerCommunication();
+//        communication.startNotificationListener();
     }
 
     public static User getLoggedUser()
