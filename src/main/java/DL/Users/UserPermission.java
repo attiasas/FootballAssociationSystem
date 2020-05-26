@@ -1,6 +1,7 @@
 package DL.Users;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @NamedQueries( value = {
         @NamedQuery(name = "UserPermission", query = "SELECT up From UserPermission up WHERE up.id = :id")
 })
-public class UserPermission
+public class UserPermission implements Serializable
 {
     public enum Permission
     {

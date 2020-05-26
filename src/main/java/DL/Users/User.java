@@ -203,4 +203,9 @@ public abstract class User implements Serializable
         this.notificationsOwner.put(notification, true);
         return true;
     }
+
+    public Map<Notification, Boolean> getNotifications()
+    {
+        return new HashMap(this.notificationsOwner);
+    }
 }

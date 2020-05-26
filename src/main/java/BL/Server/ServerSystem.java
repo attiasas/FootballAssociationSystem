@@ -7,6 +7,7 @@ import BL.Communication.SystemRequest.Type;
 import BL.Server.utils.Configuration;
 import BL.Server.utils.DB;
 import DL.Administration.SystemManager;
+import DL.Users.Fan;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
@@ -22,6 +23,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -262,13 +264,16 @@ public class ServerSystem implements IServerStrategy {
             switch (systemRequest.type) {
                 case Login:
                     List userToClient = DB.query("UserByUsernameAndPassword", systemRequest.data); //get list that contains only the user by username and password
-                    toClientObject.writeObject(userToClient);
+//                    List userToClient = new ArrayList();
+//                    userToClient.add(new Fan("admin", "admin", "admin"));
+//                    toClientObject.writeObject((Serializable)userToClient);
+
                     toClientObject.flush();
 
                     if(userToClient.size() > 0)
                     {//there is a user with these credentials
                         User loggingInUser = (User)userToClient.get(0);
-                        notificationUnit.subscribeUser(loggingInUser, clientSocket.getInetAddress());
+                        notificationUnit.subscribeUser(loggingInUser.getUsername(), clientSocket.getInetAddress());
 
                         //after sending the user object with the notifications to the client, make all notifications changed to read
                         notificationUnit.markAllNotificationsOfUserAsRead(loggingInUser);
@@ -276,7 +281,13 @@ public class ServerSystem implements IServerStrategy {
                     break;
                 case Logout:
                     User loggingOutUser = (User)systemRequest.data;
-                    notificationUnit.unsubscribeUser(loggingOutUser);
+                    notificationUnit.unsubscribeUser(loggingOutUser.getUsername());
+                    toClientObject.writeObject(true);
+                    break;
+                case Notify:
+                    Notifiable notifiable = (Notifiable)systemRequest.data;
+                    notificationUnit.notify(notifiable);
+                    toClientObject.writeObject(true);
                     break;
                 case Delete:
                     if (systemRequest.data instanceof List) {
@@ -303,6 +314,11 @@ public class ServerSystem implements IServerStrategy {
                 case Update:
                     toClientObject.writeObject(DB.update(systemRequest.queryName, systemRequest.data));
                     toClientObject.flush();
+
+                    //handle notifications for update queries
+
+
+
                     break;
                 case Query:
                     List toClient = DB.query(systemRequest.queryName, systemRequest.data);

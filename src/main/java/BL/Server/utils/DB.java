@@ -239,8 +239,8 @@ public class DB implements Serializable {
         EntityManager em = emf.createEntityManager();
         txn = em.getTransaction();
         txn.begin();
-        Team t = new Team("team test",true,false);
-        em.persist(t);
+//        Team t = new Team("team test",true,false);
+//        em.persist(t);
         HashMap<String,Object> para = new HashMap<>();
         para.put("name","team test");
         List l = em.createNamedQuery("Team").getResultList();

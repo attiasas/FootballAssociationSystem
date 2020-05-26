@@ -4,6 +4,11 @@ import static java.net.InetAddress.getLocalHost;
 
 import BL.Client.ClientSystem;
 import BL.Server.utils.Configuration;
+import DL.Game.MatchEvents.EventLog;
+import DL.Game.MatchEvents.Goal;
+import DL.Game.Referee;
+import DL.Team.Members.Player;
+import DL.Users.Fan;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
@@ -11,8 +16,10 @@ import DL.Users.User;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -42,12 +49,70 @@ public class ClientServerCommunication {
     private Thread listenerThread;
     private volatile boolean listen;
 
+
+    public static void main(String[] args)
+    {
+        ClientServerCommunication client = new ClientServerCommunication();
+
+        User userAdmin = new Fan("admin", "admin", "admin");
+        ClientSystem.logIn(userAdmin);
+        client.login("admin", "admin");
+
+//        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
+
+        Notifiable notifiable = new Notifiable() {
+            @Override
+            public Notification getNotification() {
+                return new Notification("notifcation!!!");
+//                return null;
+            }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set<User> set = new HashSet<>();
+                Fan fan = new Fan("admin", "admin", "admin");
+                set.add(fan);
+                return set;
+//                return null;
+            }
+        };
+
+        client.notify(notifiable);
+        System.out.println();
+
+    }
+
+    public ClientServerCommunication()
+    {
+        startNotificationListener();
+    }
+
+    //    public ClientServerCommunication()
+//    {
+//        startNotificationListener();
+//    }
+//
+//
+//    private Thread listenerThread;
+//    private volatile boolean listen;
+//
+//    public boolean startNotificationListener()
+//    {
+//        if(listenerThread != null && listenerThread.isAlive()) return false;
+//
+//        listen = true;
+//        listenerThread = new Thread(() -> notificationDemon());
+//        listenerThread.start();
+//        return true;
+//    }
+
     public boolean startNotificationListener()
     {
         if(listenerThread != null && listenerThread.isAlive()) return false;
 
         listen = true;
         listenerThread = new Thread(() -> notificationDemon());
+        listenerThread.start();
         return true;
     }
 
@@ -67,6 +132,7 @@ public class ClientServerCommunication {
                     try(ObjectInputStream fromServer = new ObjectInputStream(serverSocket.getInputStream()))
                     {
                         Object objFromServer = fromServer.readObject();
+                        System.out.println("Received from server: " + objFromServer.toString());
                         if(objFromServer instanceof Notification) loggedUser.addNotification((Notification)objFromServer);
                     } catch (SocketTimeoutException e) { }
                 }
