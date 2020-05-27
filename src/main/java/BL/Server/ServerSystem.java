@@ -260,7 +260,6 @@ public class ServerSystem implements IServerStrategy {
      */
     public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest, Socket clientSocket) {
         try {
-
             switch (systemRequest.type) {
                 case Login:
                     List userToClient = DB.query("UserByUsernameAndPassword", systemRequest.data); //get list that contains only the user by username and password
