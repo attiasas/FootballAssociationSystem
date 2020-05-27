@@ -2,26 +2,26 @@ package PL.AssociationUI;
 
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.LeagueSeason.Season;
-import DL.Game.Referee;
+import DL.Team.Team;
 import PL.main.App;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.fxml.FXML;
 
 import static PL.AlertUtil.showSimpleAlert;
 
-public class RefereeController extends AInitComboBoxObjects {
+public class TeamController extends AInitComboBoxObjects{
 
     @FXML
-    private JFXComboBox<Season> seasons;
+    JFXComboBox<Season> seasons;
 
     @FXML
-    private JFXComboBox<LeagueSeason> leagueSeasons;
+    JFXComboBox<LeagueSeason> leagueSeasons;
 
     @FXML
-    private JFXComboBox<Referee> referees;
+    JFXComboBox<Team> teams;
 
-    public void initRefereesInLeagueComboBoxOptions() {
-        if (!initSeasonChoices(seasons) || !initRefereesChoices(referees)) {
+    public void initTeamInLeagueSeasonsComboBoxOptions(){
+        if (!initSeasonChoices(seasons) || !initTeamChoices(teams)){
             closeWindow();
             return;
         }
@@ -29,46 +29,41 @@ public class RefereeController extends AInitComboBoxObjects {
         seasons.setOnAction((e) -> {
             if (seasons.getValue() != null) {
                 leagueSeasons.setItems(null);
-                if (!initLeagueSeasonsChoices(leagueSeasons, seasons.getValue()))
+                if(!initLeagueSeasonsChoices(leagueSeasons, seasons.getValue()))
                     closeWindow();
             }
         });
-
     }
 
-    public void setRefereesInLeagueSeason() {
+    public void setTeamInLeagueSeason(){
+
         LeagueSeason leagueSeason;
-        Referee referee;
+        Team team;
 
         try {
-            if (seasons.getValue() == null || leagueSeasons.getValue() == null || referees.getValue() == null) {
+
+            if (seasons.getValue() == null || leagueSeasons.getValue() == null || teams.getValue() == null){
                 throw new Exception("Please fill all the required fields.");
             }
 
             //get fields values
             leagueSeason = leagueSeasons.getValue();
-            referee = referees.getValue();
+            team = teams.getValue();
 
-            if (App.clientSystem.leagueSeasonUnit.setRefereeInLeagueSeason(leagueSeason, referee)) {
-                showSimpleAlert("Success", "Referee added successfully to the required LeagueSeason!");
+            if (App.clientSystem.leagueSeasonUnit.addTeamToLeagueSeason(leagueSeason,team)){
+                showSimpleAlert("Success", "Team added to the league successfully!");
             } else {
                 showSimpleAlert("Error", "There was a problem with the server. Please try again later");
             }
             closeWindow();
+
         } catch (Exception e) {
             showSimpleAlert("Error", e.getMessage());
         }
-    }
-
-    public void addNewReferee() {
-
-    }
-
-    public void removeReferee() {
 
     }
 
     public void closeWindow() {
-        AssociationController.loadScreen("AssociationManageRefereesFXML");
+        AssociationController.loadScreen("AssociationManageTeamsFXML");
     }
 }

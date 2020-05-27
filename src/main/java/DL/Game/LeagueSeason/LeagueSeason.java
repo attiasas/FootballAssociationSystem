@@ -7,6 +7,7 @@ import DL.Game.Referee;
 import DL.Team.Team;
 
 import javax.persistence.*;
+import javax.swing.table.TableColumn;
 import java.io.Serializable;
 import java.util.*;
 
@@ -25,32 +26,26 @@ import java.util.*;
         @NamedQuery(name = "UpdateLeagueSeasonRefereeList", query = "UPDATE LeagueSeason ls SET ls.referees = :refereesList WHERE  ls.league = : league AND ls.season =: season")
 
 })
-@IdClass(LeagueSeason.EntryPK.class)
 public class LeagueSeason implements Serializable {
 
-    /**
-     * For Composite Primary Key
-     */
-    public static class EntryPK implements Serializable{
-        public League league;
-        public Season season;
-    }
 
     @Id
-    @OneToOne(cascade = CascadeType.ALL)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int leagueSeasonID;
+
+    @OneToOne(cascade = CascadeType.MERGE)
     private League league;
-    @Id
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     private Season season;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     private GamePolicy gamePolicy;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     private ScorePolicy scorePolicy;
     @OneToMany(targetEntity = Match.class,cascade = CascadeType.ALL,mappedBy = "leagueSeason")
     private List<Match> matches;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Team> teamsParticipate;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Referee> referees;
     @Column
     private Date startDate;
@@ -139,19 +134,6 @@ public class LeagueSeason implements Serializable {
     }
 
     /**
-     * TODO:
-     * Sets the leagueSeason matches
-     *
-     * @param matches list of matches after assignment
-     */
-    public void setGames(List<Match> matches) {
-        if (matches != null) {
-            this.matches.clear();
-            this.matches.addAll(matches);
-        }
-    }
-
-    /**
      * Sets referees for all of the matches
      */
     public boolean setRefereesInMatches() {
@@ -198,6 +180,10 @@ public class LeagueSeason implements Serializable {
     /**************************************************************************
      ***************************Getters****************************************
      **************************************************************************/
+
+    public int getLeagueSeasonID() {
+        return leagueSeasonID;
+    }
 
     /**
      * @return the league that represents the LeagueSeason
@@ -253,6 +239,50 @@ public class LeagueSeason implements Serializable {
      */
     public ScorePolicy getScorePolicy() {
         return scorePolicy;
+    }
+
+    /**************************************************************************
+     ***************************Setter****************************************
+     **************************************************************************/
+    public void setLeague(League league) {
+        this.league = league;
+    }
+
+    public void setSeason(Season season) {
+        this.season = season;
+    }
+
+    public void setGamePolicy(GamePolicy gamePolicy) {
+        this.gamePolicy = gamePolicy;
+    }
+
+    public void setTeamsParticipate(List<Team> teamsParticipate) {
+        this.teamsParticipate = teamsParticipate;
+    }
+
+    public void setReferees(List<Referee> referees) {
+        this.referees = referees;
+    }
+
+    public void setLeagueSeasonID(int leagueSeasonID) {
+        this.leagueSeasonID = leagueSeasonID;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * TODO:
+     * Sets the leagueSeason matches
+     *
+     * @param matches list of matches after assignment
+     */
+    public void setGames(List<Match> matches) {
+        if (matches != null) {
+            this.matches.clear();
+            this.matches.addAll(matches);
+        }
     }
 
     /**************************************************************************

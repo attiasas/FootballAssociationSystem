@@ -2,6 +2,7 @@ package DL.Users;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Description:     Represents a notification in the system
@@ -18,15 +19,40 @@ public class Notification implements Serializable
     private Long id;
     @Column
     private String msg;
+    @Column
+    private Date creationDate;
 
 
     public Notification(String msg)
     {
         this.msg = msg;
+        this.creationDate = new Date();
     }
 
     public Notification()
     {
         this.msg = "";
     }
+
+    public String getMsg()
+    {
+        return this.msg;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.msg;
+    }
+
+    public Date getCreationDate()
+    {
+        return this.creationDate;
+    }
+
+//    @Override
+//    public boolean equals(Object other)
+//    {
+//        return this.msg == ((Notification)other).msg;
+//    }
 }

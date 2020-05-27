@@ -18,6 +18,11 @@ import java.util.List;
 
 public class AssociationManagementUnit {
 
+    public static void main(String[] args) {
+        AssociationManagementUnit s = new AssociationManagementUnit(new ClientServerCommunication());
+        s.addTeam("beitar","check",new Fan("check","amit","avihay"));
+    }
+
     ClientServerCommunication clientServerCommunication;
 
     /**

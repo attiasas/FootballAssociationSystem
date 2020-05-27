@@ -13,43 +13,45 @@
 <?import javafx.scene.text.Text?>
 
 <StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-           prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane" stylesheets="@../dark-theme.css"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="PL.AssociationUI.ScorePolicyController">
+           prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane"
+           stylesheets="@../dark-theme.css" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="PL.AssociationUI.RefereeController">
     <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true"/>
     <AnchorPane fx:id="rootAnchorPane" prefHeight="797.0" prefWidth="1076.0">
         <AnchorPane fx:id="parentAnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-            <Text layoutX="263.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Change Score Policy">
+            <Text layoutX="143.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                  text="Add Referee In LeagueSeason ">
                 <font>
                     <Font name="System Bold" size="50.0"/>
                 </font>
             </Text>
-            <Label layoutX="263.0" layoutY="219.0" prefHeight="46.0" prefWidth="138.0" text="League:">
+            <Label layoutX="266.0" layoutY="175.0" prefHeight="46.0" prefWidth="138.0" text="Season:">
                 <font>
                     <Font size="20.0"/>
                 </font>
             </Label>
-            <JFXButton layoutX="623.0" layoutY="516.0" onAction="#changeScorePolicy" prefHeight="67.0" prefWidth="138.0"
-                       styleClass="smallaction-button" text="Okay" textFill="WHITE"/>
-            <JFXButton layoutX="801.0" layoutY="516.0" onAction="#closeWindow" prefHeight="67.0" prefWidth="138.0"
-                       styleClass="smallaction-button" text="Cancel" textFill="WHITE"/>
-            <JFXComboBox fx:id="leagues" layoutX="497.0" layoutY="224.0" prefHeight="37.0" prefWidth="216.0"
-                         promptText="Choose League..." styleClass="combo-box"/>
-            <Label layoutX="263.0" layoutY="279.0" prefHeight="46.0" prefWidth="138.0" text="Season:">
+            <JFXButton layoutX="623.0" layoutY="516.0" prefHeight="67.0" prefWidth="138.0"
+                       styleClass="smallaction-button" text="Okay" textFill="WHITE"
+                       onAction="#setRefereesInLeagueSeason"/>
+            <JFXButton layoutX="801.0" layoutY="516.0" prefHeight="67.0" prefWidth="138.0"
+                       styleClass="smallaction-button" text="Cancel" textFill="WHITE" onAction="#closeWindow"/>
+            <JFXComboBox fx:id="leagueSeasons" layoutX="500.0" layoutY="240.0" prefHeight="37.0" prefWidth="216.0"
+                         promptText="Choose League..."/>
+            <Label layoutX="266.0" layoutY="235.0" prefHeight="46.0" prefWidth="138.0" text="League Name:">
                 <font>
                     <Font size="20.0"/>
                 </font>
             </Label>
-            <Label layoutX="263.0" layoutY="339.0" prefHeight="46.0" prefWidth="138.0" text="Score Policy:">
+            <Label layoutX="266.0" layoutY="295.0" prefHeight="46.0" prefWidth="138.0" text="Referee:">
                 <font>
                     <Font size="20.0"/>
                 </font>
             </Label>
-            <JFXComboBox fx:id="seasons" layoutX="497.0" layoutY="284.0" prefHeight="37.0" prefWidth="216.0"
+            <JFXComboBox fx:id="referees" layoutX="500.0" layoutY="300.0" prefHeight="37.0" prefWidth="216.0"
+                         promptText="Choose Referee..."/>
+            <JFXComboBox fx:id="seasons" layoutX="500.0" layoutY="180.0" prefHeight="37.0" prefWidth="216.0"
                          promptText="Choose Season..."/>
-            <JFXComboBox fx:id="scorePolicies" layoutX="497.0" layoutY="344.0" prefHeight="37.0" prefWidth="216.0"
-                         promptText="Choose Score Policy..."/>
         </AnchorPane>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Menu mnemonicParsing="false" text="File">

@@ -8,6 +8,11 @@ import DL.Game.Policy.ScorePolicy;
 import PL.main.App;
 import com.jfoenix.controls.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -41,31 +46,46 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
 
 
     public void initCreateLeagueComboBoxOptions() {
-        initLeagueChoices(leagueNames);
-        initGamePolicyChoices(gamePolicies);
-        initScorePolicyChoices(scorePolicies);
+        if (!initLeagueChoices(leagueNames) || !initGamePolicyChoices(gamePolicies) || !initScorePolicyChoices(scorePolicies)) {
+            closeWindow();
+        }
     }
 
     public void initScheduleComboBoxOptions() {
-        initSeasonChoices(seasons);
+        //inits seasons combo box
+        if (!initSeasonChoices(seasons)) {
+            closeWindow();
+            return;
+        }
+
+        //inits leagueSeason combo box after choosing season
         seasons.setOnAction((e) -> {
             if (seasons.getValue() != null) {
                 leagueSeasons.setItems(null);
-                initLeagueSeasonsChoices(leagueSeasons, seasons.getValue());
+                if (!initLeagueSeasonsChoices(leagueSeasons, seasons.getValue()))
+                    closeWindow();
             }
         });
     }
 
-    public void createNewLeague(){
+    public void createNewLeague() {
         try {
             if (leagueName.getText() != null && !leagueName.getText().equals("")) {
-                App.clientSystem.leagueSeasonUnit.addNewLeague(leagueName.getText());
-                showSimpleAlert("Succeeded", "New league added successfully");
+
+                if (App.clientSystem.leagueSeasonUnit.addNewLeague(leagueName.getText())) {
+                    showSimpleAlert("Succeeded", "New league added successfully");
+
+                } else {
+                    showSimpleAlert("Error", "There was a problem with the server. Please try again later");
+                }
+
             } else {
                 showSimpleAlert("Error", "League name can not be empty.");
             }
-        } catch (Exception e){
-            showSimpleAlert("Error",e.getMessage());
+            closeWindow();
+
+        } catch (Exception e) {
+            showSimpleAlert("Error", e.getMessage());
         }
     }
 
@@ -89,16 +109,28 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
             gamePolicy = gamePolicies.getValue();
             scorePolicy = scorePolicies.getValue();
 
+            //prepare and set date
             LocalDate localDate = startDate.getValue();
             Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
             start = Date.from(instant);
-
             seasonYear = Integer.parseInt(season.getText());
-            App.clientSystem.leagueSeasonUnit.addNewSeason(seasonYear);
-            newSeason = App.clientSystem.leagueSeasonUnit.getSeason(seasonYear);
 
-            App.clientSystem.leagueSeasonUnit.addLeagueSeason(league, newSeason, gamePolicy, scorePolicy, start);
-            showSimpleAlert("Success", "League Season added successfully!");
+            //add new season (if does'nt exist) and league season
+            if (App.clientSystem.leagueSeasonUnit.addNewSeason(seasonYear)) {
+
+                newSeason = App.clientSystem.leagueSeasonUnit.getSeason(seasonYear);
+
+                if (App.clientSystem.leagueSeasonUnit.addLeagueSeason(league, newSeason, gamePolicy, scorePolicy, start)) {
+                    showSimpleAlert("Success", "League Season added successfully!");
+
+                } else {
+                    showSimpleAlert("Error", "There was a problem with the server. Please try again later");
+                }
+
+            } else {
+                showSimpleAlert("Error", "There was a problem with the server. Please try again later");
+            }
+            closeWindow();
 
         } catch (NumberFormatException e) {
             showSimpleAlert("Error", "Please insert only numbers.");
@@ -106,6 +138,7 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
         } catch (Exception e) {
             showSimpleAlert("Error", e.getMessage());
         }
+
 
     }
 
@@ -117,10 +150,43 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
 
             else {
                 showWaitStage();
-                App.clientSystem.policiesUnit.scheduleMatches(leagueSeason);
-                closeWaitStage();
-                showSimpleAlert("Successful!", "The league matches scheduled successfully.");
+
+                if (App.clientSystem.policiesUnit.scheduleMatches(leagueSeason)) {
+                    closeWaitStage();
+                    showSimpleAlert("Successful!", "The league matches scheduled successfully.");
+
+                } else {
+                    closeWaitStage();
+                    showSimpleAlert("Error", "There was a problem with the server. Please try again later");
+                }
+
             }
+            closeWindow();
+        } catch (Exception e) {
+            showSimpleAlert("Error", e.getMessage());
+        }
+    }
+
+    public void setRefereeInMatches(){
+        try {
+            LeagueSeason leagueSeason = leagueSeasons.getValue();
+            if (leagueSeason == null)
+                throw new Exception("Please select valid league season.");
+
+            else {
+                showWaitStage();
+
+                if (App.clientSystem.policiesUnit.setRefereeInMatches(leagueSeason)) {
+                    closeWaitStage();
+                    showSimpleAlert("Successful!", "Referees set in league matches successfully.");
+
+                } else {
+                    closeWaitStage();
+                    showSimpleAlert("Error", "There was a problem with the server. Please try again later");
+                }
+
+            }
+            closeWindow();
         } catch (Exception e) {
             showSimpleAlert("Error", e.getMessage());
         }
@@ -134,12 +200,15 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
 
     }
 
-    private void showWaitStage(){
+    private void showWaitStage() {
 
     }
 
-    private void closeWaitStage(){
+    private void closeWaitStage() {
 
     }
 
+    public void closeWindow() {
+        AssociationController.loadScreen("AssociationManageLeaguesFXML");
+    }
 }

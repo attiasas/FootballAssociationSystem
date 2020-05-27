@@ -1,3 +1,4 @@
+
 package BL.Server;
 
 import BL.Communication.IServerStrategy;
@@ -7,6 +8,7 @@ import BL.Communication.SystemRequest.Type;
 import BL.Server.utils.Configuration;
 import BL.Server.utils.DB;
 import DL.Administration.SystemManager;
+import DL.Users.Fan;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
@@ -22,6 +24,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -63,14 +66,14 @@ public class ServerSystem implements IServerStrategy {
      * @param strategy database persistence strategy
      */
     public ServerSystem(DbSelector dbType, Strategy strategy, NotificationUnit notificationUnit) {
-        final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
-        dataBase = DB.getDataBaseInstance(entityManagerFactory);
-        final String sysQueryName = "SystemManagers";
-        final boolean systemManagers =
-                createEM().createNamedQuery(sysQueryName).getFirstResult() == 0;
-        if (systemManagers) {
-            signUp("admin", "admin@admin.com", "admin");
-        }
+//        final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
+//        dataBase = DB.getDataBaseInstance(entityManagerFactory);
+//        final String sysQueryName = "SystemManagers";
+//        final boolean systemManagers =
+//                createEM().createNamedQuery(sysQueryName).getFirstResult() == 0;
+//        if (systemManagers) {
+//            signUp("admin", "admin@admin.com", "admin");
+//        }
 
         this.notificationUnit = notificationUnit;
     }
@@ -88,14 +91,14 @@ public class ServerSystem implements IServerStrategy {
         String pw;
         if (dbType == DbSelector.DEV) {
             connectionStr = Configuration.getDEV_DBConnection();
-            user = Configuration.getPropertyValue("db.user");
-            pw = Configuration.getPropertyValue("db.password");
+            user = Configuration.getPropertyValue("db.local.user");
+            pw = Configuration.getPropertyValue("db.local.password");
         } else {
             connectionStr = Configuration.getTEST_DBConnection();
-            user = Configuration.getPropertyValue("dbtest.user") != null ? Configuration
-                    .getPropertyValue("dbtest.user") : Configuration.getPropertyValue("db.user");
-            pw = Configuration.getPropertyValue("dbtest.password") != null ? Configuration
-                    .getPropertyValue("dbtest.password") : Configuration.getPropertyValue("db.password");
+            user = Configuration.getPropertyValue("db.local.user") != null ? Configuration
+                    .getPropertyValue("db.local.user") : Configuration.getPropertyValue("db.local.user");
+            pw = Configuration.getPropertyValue("db.local.password") != null ? Configuration
+                    .getPropertyValue("db.local.password") : Configuration.getPropertyValue("db.local.password");
         }
         return createEntityManagerFactory(PERSISTENCE_UNIT_NAME, connectionStr, user, pw, strategy);
     }
@@ -178,21 +181,15 @@ public class ServerSystem implements IServerStrategy {
         log.log(Level.INFO, "external systems integration started");
    /*
         FinanceSystem financeSys  = new ;
-
         void makeEntry(List<GroupedItem> itemList, Receipt reciept)
-
         void writeToSystem(Receipt reciept)
-
         void updateSystem(List<GroupedItem> itemList)
     */
 
     /*
         TaxSystem taxSys  = new ;
-
         void makeEntry(List<GroupedItem> itemList, Receipt reciept)
-
         void writeToSystem(Receipt reciept)
-
         void updateSystem(List<GroupedItem> itemList)
     */
         log.log(Level.INFO, "external systems integration completed");
@@ -216,12 +213,9 @@ public class ServerSystem implements IServerStrategy {
     }
 
 
-
-
     @Override
     //public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
-    public void serverStrategy(Socket clientSocket)
-    {
+    public void serverStrategy(Socket clientSocket) {
 
         try {
             InputStream inFromClient = clientSocket.getInputStream();
@@ -244,10 +238,9 @@ public class ServerSystem implements IServerStrategy {
 
             //TODO: if the request is unsubscription from notifications - close the socket
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
     }
-
-
 
 
     /**
@@ -261,22 +254,30 @@ public class ServerSystem implements IServerStrategy {
 
             switch (systemRequest.type) {
                 case Login:
-                    List userToClient = DB.query("UserByUsernameAndPassword", systemRequest.data); //get list that contains only the user by username and password
-                    toClientObject.writeObject(userToClient);
+ //                   List userToClient = DB.query("UserByUsernameAndPassword", systemRequest.data); //get list that contains only the user by username and password
+                   List userToClient = new ArrayList();
+                   userToClient.add(new Fan("admin", "admin", "admin"));
+                   toClientObject.writeObject(userToClient);
+
                     toClientObject.flush();
 
-                    if(userToClient.size() > 0)
-                    {//there is a user with these credentials
-                        User loggingInUser = (User)userToClient.get(0);
-                        notificationUnit.subscribeUser(loggingInUser, clientSocket.getInetAddress());
+                    if (userToClient.size() > 0) {//there is a user with these credentials
+                        User loggingInUser = (User) userToClient.get(0);
+                        notificationUnit.subscribeUser(loggingInUser.getUsername(), clientSocket.getInetAddress());
 
                         //after sending the user object with the notifications to the client, make all notifications changed to read
                         notificationUnit.markAllNotificationsOfUserAsRead(loggingInUser);
                     }
                     break;
                 case Logout:
-                    User loggingOutUser = (User)systemRequest.data;
-                    notificationUnit.unsubscribeUser(loggingOutUser);
+                    User loggingOutUser = (User) systemRequest.data;
+                    notificationUnit.unsubscribeUser(loggingOutUser.getUsername());
+                    toClientObject.writeObject(true);
+                    break;
+                case Notify:
+                    Notifiable notifiable = (Notifiable) systemRequest.data;
+                    notificationUnit.notify(notifiable);
+                    toClientObject.writeObject(true);
                     break;
                 case Delete:
                     if (systemRequest.data instanceof List) {
@@ -293,9 +294,8 @@ public class ServerSystem implements IServerStrategy {
                         toClientObject.writeObject(DB.persist(systemRequest.data));
                     }
 
-                    if(systemRequest.data instanceof Notifiable)
-                    {
-                        notificationUnit.notify((Notifiable)systemRequest.data);
+                    if (systemRequest.data instanceof Notifiable) {
+                        notificationUnit.notify((Notifiable) systemRequest.data);
                     }
 
                     toClientObject.flush();
@@ -303,6 +303,10 @@ public class ServerSystem implements IServerStrategy {
                 case Update:
                     toClientObject.writeObject(DB.update(systemRequest.queryName, systemRequest.data));
                     toClientObject.flush();
+
+                    //handle notifications for update queries
+
+
                     break;
                 case Query:
                     List toClient = DB.query(systemRequest.queryName, systemRequest.data);
@@ -361,4 +365,14 @@ public class ServerSystem implements IServerStrategy {
             }
         }
     }
+
+    public static void main(String[] args) {
+        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.DROP_AND_CREATE, null);
+        try {
+            serverSystem.initializeServer();
+        } catch (Exception e) {
+            System.out.println("Error when connection to the server" + e.getMessage());
+        }
+    }
+
 }

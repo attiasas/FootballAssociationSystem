@@ -234,7 +234,7 @@ public class DB implements Serializable {
 
     public static void main(String[] args) {
         emf = ServerSystem
-                .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
+                .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.DROP_AND_CREATE);
         EntityTransaction txn;
         EntityManager em = emf.createEntityManager();
         txn = em.getTransaction();

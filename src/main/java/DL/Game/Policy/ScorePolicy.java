@@ -58,6 +58,7 @@ public class ScorePolicy implements Serializable {
         this(3, 1, 0);
     }
 
+    //getters
     public int getWinPoints() {
         return winPoints;
     }
@@ -68,6 +69,20 @@ public class ScorePolicy implements Serializable {
 
     public int getLosePoints() {
         return losePoints;
+    }
+
+
+    //Setters
+    public void setWinPoints(int winPoints) {
+        this.winPoints = winPoints;
+    }
+
+    public void setDrawPoints(int drawPoints) {
+        this.drawPoints = drawPoints;
+    }
+
+    public void setLosePoints(int losePoints) {
+        this.losePoints = losePoints;
     }
 
     /**
@@ -134,7 +149,7 @@ public class ScorePolicy implements Serializable {
      *
      * @param leagueTable
      * @param teamToUpdate
-     * @param pointsToAdd
+     * @param goalsToAdd
      */
     private void updateTeamGoalsInTable(HashMap<Team, Integer[]> leagueTable, Team teamToUpdate, int goalsToAdd) {
         Integer[] newTeamInfo;

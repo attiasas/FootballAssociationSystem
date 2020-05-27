@@ -12,57 +12,62 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0"
-           styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.AssociationUI.AssociationController">
-    <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true" />
+<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="691.0" prefWidth="1000.0"
+           styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="PL.AssociationUI.GamePolicyController">
+    <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true"/>
     <AnchorPane fx:id="rootAnchorPane" prefHeight="797.0" prefWidth="1076.0">
-        <AnchorPane fx:id="parentAnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-         <Text layoutX="269.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Game Policy">
-            <font>
-               <Font name="System Bold" size="50.0" />
-            </font>
-         </Text>
-         <Label layoutX="263.0" layoutY="219.0" prefHeight="46.0" prefWidth="187.0" text="Number of Rounds:">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Label>
-         <JFXButton layoutX="623.0" layoutY="516.0" onAction="#createNewGamePolicy" prefHeight="67.0" prefWidth="138.0" styleClass="smallaction-button" text="Okay" textFill="WHITE" />
-         <JFXButton layoutX="801.0" layoutY="516.0" onAction="#closeWindow" prefHeight="67.0" prefWidth="138.0" styleClass="smallaction-button" text="Cancel" textFill="WHITE" />
-         <Label layoutX="263.0" layoutY="279.0" prefHeight="46.0" prefWidth="187.0" text="Games Per Day:">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Label>
-         <JFXTextField fx:id="numberOfRounds" layoutX="516.0" layoutY="227.0" promptText="Rounds..." />
-         <JFXTextField fx:id="gamesPerDay" layoutX="516.0" layoutY="284.0" promptText="Games..." />
+        <AnchorPane fx:id="parentAnchorPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+            <Text layoutX="269.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Game Policy">
+                <font>
+                    <Font name="System Bold" size="50.0"/>
+                </font>
+            </Text>
+            <Label layoutX="263.0" layoutY="219.0" prefHeight="46.0" prefWidth="187.0" text="Number of Rounds:">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+            </Label>
+            <JFXButton layoutX="623.0" layoutY="516.0" onAction="#createGamePolicy" prefHeight="67.0" prefWidth="138.0"
+                       styleClass="smallaction-button" text="Okay" textFill="WHITE"/>
+            <JFXButton layoutX="801.0" layoutY="516.0" onAction="#closeWindow" prefHeight="67.0" prefWidth="138.0"
+                       styleClass="smallaction-button" text="Cancel" textFill="WHITE"/>
+            <Label layoutX="263.0" layoutY="279.0" prefHeight="46.0" prefWidth="187.0" text="Games Per Day:">
+                <font>
+                    <Font size="20.0"/>
+                </font>
+            </Label>
+            <JFXTextField fx:id="numberOfRounds" layoutX="516.0" layoutY="227.0" promptText="Rounds..."/>
+            <JFXTextField fx:id="gamesPerDay" layoutX="516.0" layoutY="284.0" promptText="Games..."/>
         </AnchorPane>
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Menu mnemonicParsing="false" text="File">
-                <MenuItem mnemonicParsing="false" text="Open" />
-                <MenuItem mnemonicParsing="false" text="Save" />
-                <MenuItem mnemonicParsing="false" text="Update" />
-                <MenuItem mnemonicParsing="false" text="Settings" />
-                <MenuItem mnemonicParsing="false" text="Logout" />
+                <MenuItem mnemonicParsing="false" text="Open"/>
+                <MenuItem mnemonicParsing="false" text="Save"/>
+                <MenuItem mnemonicParsing="false" text="Update"/>
+                <MenuItem mnemonicParsing="false" text="Settings"/>
+                <MenuItem mnemonicParsing="false" text="Logout"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Add">
-                <MenuItem mnemonicParsing="false" text="Add User" />
-                <MenuItem mnemonicParsing="false" text="Add Asset" />
-                <MenuItem mnemonicParsing="false" text="Add Event" />
+                <MenuItem mnemonicParsing="false" text="Add User"/>
+                <MenuItem mnemonicParsing="false" text="Add Asset"/>
+                <MenuItem mnemonicParsing="false" text="Add Event"/>
             </Menu>
             <Menu mnemonicParsing="false" text="View">
-                <MenuItem mnemonicParsing="false" text="Teams List" />
-                <MenuItem mnemonicParsing="false" text="Players List" />
-                <MenuItem mnemonicParsing="false" text="Managers List" />
-                <MenuItem mnemonicParsing="false" text="Refferes List" />
-                <MenuItem mnemonicParsing="false" text="Full Screen" />
+                <MenuItem mnemonicParsing="false" text="Teams List"/>
+                <MenuItem mnemonicParsing="false" text="Players List"/>
+                <MenuItem mnemonicParsing="false" text="Managers List"/>
+                <MenuItem mnemonicParsing="false" text="Refferes List"/>
+                <MenuItem mnemonicParsing="false" text="Full Screen"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Notify">
-                <MenuItem mnemonicParsing="false" text="Notify followers" />
+                <MenuItem mnemonicParsing="false" text="Notify followers"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
-                <MenuItem mnemonicParsing="false" text="Donate" />
-                <MenuItem mnemonicParsing="false" text="About" />
+                <MenuItem mnemonicParsing="false" text="Donate"/>
+                <MenuItem mnemonicParsing="false" text="About"/>
             </Menu>
         </MenuBar>
     </AnchorPane>

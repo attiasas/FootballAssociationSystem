@@ -31,6 +31,13 @@ public class AssociationController {
         }
     }
 
+    public void setRefereesInMatches(){
+        LeagueSeasonController lsController = (LeagueSeasonController) loadScreen("SetRefereesInMatchesFXML");
+        if (lsController != null) {
+            lsController.initScheduleComboBoxOptions();
+        }
+    }
+
     //Policies Functions
     public void createNewGamePolicy() {
         loadScreen("GamePolicyFXML");
@@ -84,10 +91,9 @@ public class AssociationController {
 
     }
 
-    private Object loadScreen(String fxmlFileName) {
+    public static Object loadScreen(String fxmlFileName) {
         try {
-            App.scenes.push(App.mainStage.getScene());
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(String.format("/Window/%s.fxml", fxmlFileName)));
+            FXMLLoader fxmlLoader = new FXMLLoader(AssociationController.class.getResource(String.format("/Window/%s.fxml", fxmlFileName)));
             StackPane stackPane = fxmlLoader.load();
             Scene scene = new Scene(stackPane);
             Object controller = fxmlLoader.getController();
@@ -101,7 +107,7 @@ public class AssociationController {
     }
 
     public void closeWindow() {
-        App.mainStage.setScene(App.scenes.pop());
+        loadScreen("MainApp");
     }
 
 }

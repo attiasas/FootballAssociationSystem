@@ -1,9 +1,12 @@
+package PL.AssociationUITest;
+
+import PL.TestFXBase;
 import com.jfoenix.controls.JFXTextField;
 import org.junit.jupiter.api.Test;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
-public class LeagueSeasonControllerTest extends TestFXBase{
+public class LeagueSeasonControllerTest extends TestFXBase {
 
     final String CONNECT_AS_GUEST = "#guestButton";
     final String MENU = "#hamburger";
@@ -13,7 +16,7 @@ public class LeagueSeasonControllerTest extends TestFXBase{
     final String OKAY_BUTTON = "#okayButton";
 
     @Test
-    public void testScreen() throws Exception {
+    public void createNewLeagueSuccessTest() throws Exception {
         robot.clickOn(CONNECT_AS_GUEST);
         sleep(500);
         robot.clickOn(MENU);

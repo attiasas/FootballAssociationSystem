@@ -5,7 +5,9 @@ import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Policy.GamePolicy;
 import DL.Game.Policy.ScorePolicy;
 import DL.Team.Team;
+import org.hibernate.Hibernate;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class PoliciesUnit {
 
     /**
      * Ctor with parameters.
+     *
      * @param clientServerCommunication responsible for the connection to the database.
      */
     public PoliciesUnit(ClientServerCommunication clientServerCommunication) {
@@ -31,106 +34,147 @@ public class PoliciesUnit {
     /**
      * Creates new GamePolicy and adds it into the database.
      * checks that the gamePolicy isn't exist.
+     *
      * @param numberOfRounds should be greater than 0;
-     * @param gamesPerDay should be greater than 0;
+     * @param gamesPerDay    should be greater than 0;
      * @return true if the game policy created
      */
-    public boolean addNewGamePolicy(int numberOfRounds, int gamesPerDay) {
+    public boolean addNewGamePolicy(int numberOfRounds, int gamesPerDay) throws Exception {
         if (numberOfRounds > 0 && gamesPerDay > 0) {
+
+            if (gamesPerDay > 7)
+                throw new Exception("The maximum games per day is 7.");
+
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("numberOfRounds", numberOfRounds);
             parameters.put("gamesPerDay", gamesPerDay);
             List gamesPolicy = clientServerCommunication.query("getGamePolicy", parameters);
-            if (gamesPolicy == null || gamesPolicy.size() == 0) {
+
+            if (gamesPolicy != null && gamesPolicy.size() == 0) {
                 GamePolicy newGamePolicy = new GamePolicy(numberOfRounds, gamesPerDay);
                 return clientServerCommunication.insert(newGamePolicy);
+
+                //error with the server
+            } else if (gamesPolicy == null) {
+                throw new Exception("There was a problem with the connection to the server. Please try again later");
+
+                //game policy exists
+            } else {
+                throw new Exception("Game policy already exists.");
             }
+            //error with parameters
+        } else {
+            throw new Exception("Parameters must be greater than 0.");
         }
-        return false;
     }
 
     /**
      * Creates new scorePolicy and adds it into the database.
      * checks that the scorePolicy isn't exist.
-     * @param winPoints points the team get for winning.
+     *
+     * @param winPoints  points the team get for winning.
      * @param drawPoints points the team get for draw.
      * @param losePoints points the team get for losing.
      * @return true if the score policy created
      */
-    public boolean addNewScorePolicy(int winPoints, int drawPoints, int losePoints) {
+    public boolean addNewScorePolicy(int winPoints, int drawPoints, int losePoints) throws Exception {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("winPoints", winPoints);
         parameters.put("drawPoints", drawPoints);
         parameters.put("losePoints", losePoints);
         List scorePolicy = clientServerCommunication.query("GetScorePolicy", parameters);
-        if (scorePolicy == null || scorePolicy.size() == 0) {
+        if (scorePolicy != null && scorePolicy.size() == 0) {
             ScorePolicy newScorePolicy = new ScorePolicy(winPoints, drawPoints, losePoints);
             return clientServerCommunication.insert(newScorePolicy);
+
+            //error with the server
+        } else if (scorePolicy == null) {
+            throw new Exception("There was a problem with the connection to the server. Please try again later");
+
+            //score policy exists
+        } else {
+            throw new Exception("Score policy already exists.");
         }
-        return false;
     }
 
     /**
      * Schedule matches in the given leagueSeason.
      * checks that the league season isn't null, and that the league season isn't have
      * matches yet (this policy can execute only one time of a league season).
+     *
      * @param leagueSeason
      * @return
      */
     //TODO: update the teams in the database if needed
-    public boolean scheduleMatches(LeagueSeason leagueSeason) {
+    @Transactional
+    public boolean scheduleMatches(LeagueSeason leagueSeason) throws Exception {
         if (leagueSeason != null) {
             if (leagueSeason.getMatches().size() == 0) {
-                leagueSeason.scheduleLeagueMatches();
-                if (leagueSeason.getMatches().size() > 0) {
-                    HashMap<String, Object> parameters = new HashMap<>();
-                    parameters.put("matchList", leagueSeason.getMatches());
-                    parameters.put("league", leagueSeason.getLeague());
-                    parameters.put("season", leagueSeason.getSeason());
-                    return clientServerCommunication.update("UpdateLeagueSeasonMatchList", parameters);
-                }
+                //League has one team
+                if (!leagueSeason.scheduleLeagueMatches())
+                    throw new Exception("There is less than two teams in the leagueSeason. " +
+                            "Please add at least one more team.");
+                //league has matches
+                HashMap<String, Object> parameters = new HashMap<>();
+                parameters.put("matchList", leagueSeason.getMatches());
+                parameters.put("league", leagueSeason.getLeague());
+                parameters.put("season", leagueSeason.getSeason());
+                return clientServerCommunication.update("UpdateLeagueSeasonMatchList", parameters);
             }
+            //LeagueSeason already have matches
+            else {
+                throw new Exception("Matches for this league already scheduled.");
+            }
+        } else {
+            throw new Exception("LeagueSeason can not be empty. Please choose leagueSeason.");
         }
-        return false;
     }
 
     /**
      * Calculates the league table.
      * checks that the leagueSeason isn't null.
+     *
      * @param leagueSeason
      * @return the league table sorted by place.
      */
-    public List<Map.Entry<Team, Integer[]>> calculateLeagueTable(LeagueSeason leagueSeason) {
+    public List<Map.Entry<Team, Integer[]>> calculateLeagueTable(LeagueSeason leagueSeason) throws Exception {
         if (leagueSeason != null) {
             return leagueSeason.getLeagueSeasonTable();
         }
-        return null;
+        throw new Exception("LeagueSeason can not be empty. Please choose leagueSeason.");
+
     }
 
     /**
      * Sets referee in every match of the given leagueSeason.
+     *
      * @param leagueSeason
      * @return true if the assertion succeeded.
      */
     //TODO: update referees list in database if needed
-    public boolean setRefereeInMatches(LeagueSeason leagueSeason) {
-        if (leagueSeason != null && leagueSeason.getMatches().size() > 0) {
-            leagueSeason.setRefereesInMatches();
+    public boolean setRefereeInMatches(LeagueSeason leagueSeason) throws Exception {
 
-            HashMap<String, Object> firstParameters = new HashMap<>();
-            firstParameters.put("matchList", leagueSeason.getMatches());
-            firstParameters.put("league", leagueSeason.getLeague());
-            firstParameters.put("season", leagueSeason.getSeason());
+        if (leagueSeason == null)
+            throw new Exception("LeagueSeason can not be empty. Please choose leagueSeason.");
 
-            HashMap<String, Object> secondParameters = new HashMap<>();
-            secondParameters.put("newReferees", leagueSeason.getReferees());
-            secondParameters.put("league", leagueSeason.getLeague());
-            secondParameters.put("season", leagueSeason.getSeason());
+        if (leagueSeason.getMatches() == null || leagueSeason.getMatches().size() == 0)
+            throw new Exception("LeagueSeason doesn't have matches. Please schedule matches for this leagueSeason first.");
 
-            return clientServerCommunication.update("UpdateLeagueSeasonRefereeList", secondParameters)
-                    && clientServerCommunication.update("UpdateLeagueSeasonMatchList", firstParameters);
-        }
-        return false;
+        if (!leagueSeason.setRefereesInMatches())
+            throw new Exception("LeagueSeason doesn't have enough referees. Please add more referees to the leagueSeason.");
+
+        HashMap<String, Object> firstParameters = new HashMap<>();
+        firstParameters.put("matchList", leagueSeason.getMatches());
+        firstParameters.put("league", leagueSeason.getLeague());
+        firstParameters.put("season", leagueSeason.getSeason());
+
+        HashMap<String, Object> secondParameters = new HashMap<>();
+        secondParameters.put("newReferees", leagueSeason.getReferees());
+        secondParameters.put("league", leagueSeason.getLeague());
+        secondParameters.put("season", leagueSeason.getSeason());
+
+        return clientServerCommunication.update("UpdateLeagueSeasonRefereeList", secondParameters)
+                && clientServerCommunication.update("UpdateLeagueSeasonMatchList", firstParameters);
     }
 
     /**************Getters*******************/

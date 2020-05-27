@@ -1,9 +1,10 @@
 package DL.Users;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-public interface Notifiable
+public interface Notifiable extends Serializable
 {
     /**
      *

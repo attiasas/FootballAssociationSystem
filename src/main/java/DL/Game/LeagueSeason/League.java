@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "GetLeague", query = "SELECT l From League l WHERE l.name = :name"),
+        @NamedQuery(name = "GetLeague", query = "SELECT l From League l WHERE l.name =:name"),
         @NamedQuery(name = "GetAllLeagues", query = "SELECT l From League l")
 })
 public class League implements Serializable {
@@ -21,6 +21,7 @@ public class League implements Serializable {
 
     /**
      * Ctor
+     *
      * @param name
      */
     public League(String name) {
@@ -39,10 +40,20 @@ public class League implements Serializable {
 
     /**
      * Getter
+     *
      * @return league name
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Setter
+     *
+     * @param  League name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

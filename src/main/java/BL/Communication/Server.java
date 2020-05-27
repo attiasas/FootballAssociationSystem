@@ -1,5 +1,9 @@
 package BL.Communication;
 
+import BL.Server.NotificationUnit;
+import BL.Server.ServerSystem;
+import BL.Server.utils.Configuration;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -18,6 +22,15 @@ public class Server
     private volatile boolean stop;
     private ExecutorService threadPoolExecutor;
     private int poolSize;
+
+    public static void main(String[] args)
+    {
+        IServerStrategy serverSystem = new ServerSystem(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE, new NotificationUnit());
+        Server server = new Server(Integer.parseInt(Configuration.getPropertyValue("server.port")), 3, 1000, serverSystem);
+        server.start();
+    }
+
+
 
     /**
      * Constructor
@@ -89,6 +102,7 @@ public class Server
     {
         try
         {
+            System.out.println("Connected");
             serverStrategy.serverStrategy(clientSocket);
             clientSocket.close(); //will only happen in the server strategy
 

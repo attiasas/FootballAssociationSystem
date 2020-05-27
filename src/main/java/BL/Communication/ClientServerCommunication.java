@@ -4,14 +4,22 @@ import static java.net.InetAddress.getLocalHost;
 
 import BL.Client.ClientSystem;
 import BL.Server.utils.Configuration;
+import DL.Game.MatchEvents.EventLog;
+import DL.Game.MatchEvents.Goal;
+import DL.Game.Referee;
+import DL.Team.Members.Player;
+import DL.Users.Fan;
+import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +41,7 @@ public class ClientServerCommunication {
 
     static {
         try {
-            serverIP = getLocalHost();
+            serverIP = InetAddress.getByName(Configuration.getPropertyValue("server.ip"));
         } catch (UnknownHostException ignored) {
         }
     }
@@ -41,41 +49,65 @@ public class ClientServerCommunication {
     private Thread listenerThread;
     private volatile boolean listen;
 
-    public boolean startNotificationListener()
+
+    public static void main(String[] args)
     {
-        if(listenerThread != null && listenerThread.isAlive()) return false;
+        ClientServerCommunication client = new ClientServerCommunication();
 
-        listen = true;
-        listenerThread = new Thread(() -> notificationDemon());
-        return true;
-    }
+        User userAdmin = new Fan("admin", "admin", "admin");
+        ClientSystem.logIn(userAdmin);
+        client.login("admin", "admin");
 
-    public void notificationDemon()
-    {
-        int listenPort = Integer.parseInt(Configuration.getPropertyValue("clientNotification.port"));
+//        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
 
-        try(ServerSocket listenSocket = new ServerSocket(listenPort))
-        {
-            // init
-            while (listen)
-            {
-                Socket serverSocket = listenSocket.accept(); // blocking call
-                User loggedUser = ClientSystem.getLoggedUser();
-                if(loggedUser != null)
-                {
-                    try(ObjectInputStream fromServer = new ObjectInputStream(serverSocket.getInputStream()))
-                    {
-                        Object objFromServer = fromServer.readObject();
-                        if(objFromServer instanceof Notification) loggedUser.addNotification((Notification)objFromServer);
-                    } catch (SocketTimeoutException e) { }
-                }
+        Notifiable notifiable = new Notifiable() {
+            @Override
+            public Notification getNotification() {
+                return new Notification("notifcation!!!");
+//                return null;
             }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set<User> set = new HashSet<>();
+                Fan fan = new Fan("admin", "admin", "admin");
+                set.add(fan);
+                return set;
+//                return null;
+            }
+        };
+
+        client.notify(notifiable);
+        System.out.println();
+
     }
+
+    public ClientServerCommunication()
+    {
+
+    }
+
+    //    public ClientServerCommunication()
+//    {
+//        startNotificationListener();
+//    }
+//
+//
+//    private Thread listenerThread;
+//    private volatile boolean listen;
+//
+//    public boolean startNotificationListener()
+//    {
+//        if(listenerThread != null && listenerThread.isAlive()) return false;
+//
+//        listen = true;
+//        listenerThread = new Thread(() -> notificationDemon());
+//        listenerThread.start();
+//        return true;
+//    }
+
+
+
 
     public void stopListener()
     {
@@ -183,6 +215,25 @@ public class ClientServerCommunication {
         return false;
     }
 
+    public boolean notify(Notifiable notifiable)
+    {
+        try(Socket serverSocket = new Socket(serverIP,serverPort))
+        {
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
+            out.writeObject(SystemRequest.notify(notifiable));
+            out.flush();
+
+            boolean answer = (boolean) in.readObject();
+            return answer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public List login(String username,String password)
     {
         try(Socket serverSocket = new Socket(serverIP,serverPort))
@@ -230,4 +281,5 @@ public class ClientServerCommunication {
 
         return false;
     }
+
 }

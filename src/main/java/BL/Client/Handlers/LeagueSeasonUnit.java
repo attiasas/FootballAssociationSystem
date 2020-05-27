@@ -37,12 +37,27 @@ public class LeagueSeasonUnit {
      * @param name of the league
      * @return true if the league created
      */
-    public boolean addNewLeague(String name) {
+    public boolean addNewLeague(String name) throws Exception {
         if (name != null && !name.equals("")) {
-            League newLeague = new League(name);
-            return clientServerCommunication.insert(newLeague);
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("name", name);
+            List league = clientServerCommunication.query("GetLeague", parameters);
+
+            //connection problem
+            if (league == null)
+                throw new Exception("There was a problem with the connection to the server. Please try again later");
+
+                //league name already exists
+            else if (league.size() > 0)
+                throw new Exception("League with that name already exists. Please insert different name.");
+
+            else {
+                League newLeague = new League(name);
+                return clientServerCommunication.insert(newLeague);
+            }
+
         } else
-            return false;
+            throw new Exception("League name can not be empty. Please try again.");
     }
 
     /**
@@ -51,12 +66,28 @@ public class LeagueSeasonUnit {
      * @param year of the season
      * @return true if the season created
      */
-    public boolean addNewSeason(int year) {
+    public boolean addNewSeason(int year) throws Exception {
+
         if (year >= 1950) {
-            Season newSeason = new Season(year);
-            return clientServerCommunication.insert(newSeason);
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("year", year);
+            List season = clientServerCommunication.query("GetSeason", parameters);
+
+            //connection problem
+            if (season == null)
+                throw new Exception("There was a problem with the connection to the server. Please try again later");
+
+                //league name already exists
+            else if (season.size() > 0)
+                return true;
+
+            else {
+                Season newSeason = new Season(year);
+                return clientServerCommunication.insert(newSeason);
+            }
+
         } else
-            return false;
+            throw new Exception("Year must be greater than 1950. Please try again.");
     }
 
     /**
@@ -70,12 +101,28 @@ public class LeagueSeasonUnit {
      * @param startLeagueDate the date of the first match.
      * @return true if the league season created
      */
-    public boolean addLeagueSeason(League league, Season season, GamePolicy gamePolicy, ScorePolicy scorePolicy, Date startLeagueDate) {
+    public boolean addLeagueSeason(League league, Season season, GamePolicy gamePolicy, ScorePolicy scorePolicy, Date startLeagueDate) throws Exception {
         if (league != null && season != null && scorePolicy != null && gamePolicy != null) {
-            LeagueSeason newLeagueSeason = new LeagueSeason(league, season, gamePolicy, scorePolicy, startLeagueDate);
-            return clientServerCommunication.insert(newLeagueSeason);
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("league", league);
+            parameters.put("season", season);
+            List leagueSeason = clientServerCommunication.query("GetLeagueSeason", parameters);
+
+            //connection problem
+            if (leagueSeason == null)
+                throw new Exception("There was a problem with the connection to the server. Please try again later");
+
+                //league name already exists
+            else if (leagueSeason.size() > 0)
+                throw new Exception("LeagueSeason already exists. Please try with different year or name.");
+
+            else {
+                LeagueSeason newLeagueSeason = new LeagueSeason(league, season, gamePolicy, scorePolicy, startLeagueDate);
+                return clientServerCommunication.insert(newLeagueSeason);
+            }
+
         } else
-            return false;
+            throw new Exception("Parameters should not be null. Please try again");
     }
 
     /**
@@ -86,15 +133,22 @@ public class LeagueSeasonUnit {
      * @param scorePolicy
      * @return true if the scorePolicy changed.
      */
-    public boolean changeScorePolicy(LeagueSeason leagueSeason, ScorePolicy scorePolicy) {
-        if (leagueSeason != null && scorePolicy != null && leagueSeason.setScorePolicy(scorePolicy)) {
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("newScorePolicy", scorePolicy);
-            parameters.put("league", leagueSeason.getLeague());
-            parameters.put("season", leagueSeason.getSeason());
-            return clientServerCommunication.update("UpdateScorePolicy", parameters);
+    public boolean changeScorePolicy(LeagueSeason leagueSeason, ScorePolicy scorePolicy) throws Exception {
+        if (leagueSeason != null && scorePolicy != null) {
+
+            if (leagueSeason.setScorePolicy(scorePolicy)) {
+                HashMap<String, Object> parameters = new HashMap<>();
+                parameters.put("newScorePolicy", scorePolicy);
+                parameters.put("league", leagueSeason.getLeague());
+                parameters.put("season", leagueSeason.getSeason());
+                return clientServerCommunication.update("UpdateScorePolicy", parameters);
+
+            } else {
+                throw new Exception("Sorry, you can not change the score policy because the league is already running.");
+            }
+
         } else
-            return false;
+            throw new Exception("Parameters should not be null. Please try again");
     }
 
     /**
@@ -104,15 +158,22 @@ public class LeagueSeasonUnit {
      * @param referee
      * @return true if the referee added.
      */
-    public boolean setRefereeInLeagueSeason(LeagueSeason leagueSeason, Referee referee) {
-        if (leagueSeason != null && referee != null && leagueSeason.addReferee(referee)) {
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("newReferees", leagueSeason.getReferees());
-            parameters.put("league", leagueSeason.getLeague());
-            parameters.put("season", leagueSeason.getSeason());
-            return clientServerCommunication.update("UpdateLeagueSeasonRefereeList", parameters);
+    public boolean setRefereeInLeagueSeason(LeagueSeason leagueSeason, Referee referee) throws Exception {
+        if (leagueSeason != null && referee != null) {
+
+            if (leagueSeason.addReferee(referee)) {
+                HashMap<String, Object> parameters = new HashMap<>();
+                parameters.put("newReferees", leagueSeason.getReferees());
+                parameters.put("league", leagueSeason.getLeague());
+                parameters.put("season", leagueSeason.getSeason());
+                return clientServerCommunication.update("UpdateLeagueSeasonRefereeList", parameters);
+
+                //referee already exists
+            } else {
+                return true;
+            }
         }
-        return false;
+        throw new Exception("Parameters should not be null. Please try again");
     }
 
     /**
@@ -123,15 +184,22 @@ public class LeagueSeasonUnit {
      * @param team
      * @return
      */
-    public boolean addTeamToLeagueSeason(LeagueSeason leagueSeason, Team team) {
-        if (leagueSeason != null && team != null && leagueSeason.addTeam(team)) {
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("newTeamList", leagueSeason.getTeamsParticipate());
-            parameters.put("league", leagueSeason.getLeague());
-            parameters.put("season", leagueSeason.getSeason());
-            return clientServerCommunication.update("UpdateLeagueSeasonTeamList", parameters);
+    public boolean addTeamToLeagueSeason(LeagueSeason leagueSeason, Team team) throws Exception {
+        if (leagueSeason != null && team != null) {
+
+            if (leagueSeason.addTeam(team)) {
+                HashMap<String, Object> parameters = new HashMap<>();
+                parameters.put("newTeamList", leagueSeason.getTeamsParticipate());
+                parameters.put("league", leagueSeason.getLeague());
+                parameters.put("season", leagueSeason.getSeason());
+                return clientServerCommunication.update("UpdateLeagueSeasonTeamList", parameters);
+
+            } else {
+                throw new Exception("Sorry, the team is not active.");
+            }
+
         } else
-            return false;
+            throw new Exception("Parameters should not be null. Please try again");
     }
 
     /***************Getters*************/
@@ -140,37 +208,29 @@ public class LeagueSeasonUnit {
      * @return the leagues in the system.
      */
     public List<League> getLeagues() {
-            List<League> leagues = clientServerCommunication.query("GetAllLeagues", null);
-            return leagues;
+        List<League> leagues = clientServerCommunication.query("GetAllLeagues", null);
+        return leagues;
     }
 
     /**
      * @return the Seasons in the system.
      */
     public List<Season> getSeasons() {
-            List<Season> seasons = clientServerCommunication.query("GetAllSeasons", null);
-            return seasons;
-    }
-
-    /**
-     * @return the teams in the system.
-     */
-    public List<Team> getTeams() {
-            List<Team> teams = clientServerCommunication.query("Team", null);
-            return teams;
+        List<Season> seasons = clientServerCommunication.query("GetAllSeasons", null);
+        return seasons;
     }
 
     /**
      * @return the LeagueSeasons in the system.
      */
-    public List<LeagueSeason> getLeagueSeasons(Season season) {
-            if (season != null) {
-                HashMap<String, Object> parameters = new HashMap<>();
-                parameters.put("season", season);
-                List<LeagueSeason> leagueSeasons = clientServerCommunication.query("GetAllLeagueSeasons", parameters);
-                return leagueSeasons;
-            }
-            return null;
+    public List<LeagueSeason> getLeagueSeasons(Season season) throws Exception {
+        if (season != null) {
+            HashMap<String, Object> parameters = new HashMap<>();
+            parameters.put("season", season);
+            List<LeagueSeason> leagueSeasons = clientServerCommunication.query("GetAllLeagueSeasons", parameters);
+            return leagueSeasons;
+        }
+        throw new Exception("Parameters should not be null. Please try again");
     }
 
 
@@ -180,26 +240,51 @@ public class LeagueSeasonUnit {
      *
      * @return the specific season
      */
-    public Season getSeason(int year) {
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("year", year);
-            List<Season> requiredSeason = clientServerCommunication.query("GetSeason", parameters);
-            if (requiredSeason.size() > 0) {
-                return requiredSeason.get(0);
-            }
-            return null;
+    public Season getSeason(int year) throws Exception {
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("year", year);
+        List<Season> requiredSeason = clientServerCommunication.query("GetSeason", parameters);
+
+        if (requiredSeason == null) {
+            throw new Exception("There was a problem with the connection to the server. Please try again later");
+
+        } else if (requiredSeason.size() <= 0) {
+            throw new Exception("The season does not exist.");
+
+        } else {
+            return requiredSeason.get(0);
+        }
     }
 
-
-    public LeagueSeason getLeagueSeason(Season season, League league) {
-            HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("season", season);
-            parameters.put("league", league);
-            List<LeagueSeason> requiredLeagueSeason = clientServerCommunication.query("GetLeagueSeason", parameters);
-            if (requiredLeagueSeason.size() > 0) {
-                return requiredLeagueSeason.get(0);
-            }
-            return null;
-
+    /**
+     * @return the specific LeagueSeason
+     */
+    public LeagueSeason getLeagueSeason(Season season, League league) throws Exception {
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("season", season);
+        parameters.put("league", league);
+        List<LeagueSeason> requiredLeagueSeason = clientServerCommunication.query("GetLeagueSeason", parameters);
+        if (requiredLeagueSeason.size() > 0) {
+            return requiredLeagueSeason.get(0);
+        } else {
+            throw new Exception("The required League Season does not exist.");
+        }
     }
+
+    /**
+     * @return the teams in the system.
+     */
+    public List<Team> getTeams() {
+        List<Team> teams = clientServerCommunication.query("Team", null);
+        return teams;
+    }
+
+    /**
+     * @return the Referees in the system.
+     */
+    public List<Referee> getReferees() {
+        List<Referee> referees = clientServerCommunication.query("AllReferees", null);
+        return referees;
+    }
+
 }

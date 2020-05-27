@@ -10,10 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Description:     X
@@ -22,14 +19,45 @@ import java.util.Set;
 public class NotificationUnit
 {
 
-    private Map<User, InetAddress> subscribedUsers; //holds InetAddress port that we decided
+    private Map<String, InetAddress> subscribedUsers; //holds InetAddress port that we decided
     private final int clientPort = Integer
             .parseInt(Configuration.getPropertyValue("clientNotification.port"));
+
+    private Map<String, Notifiable> updateNotifiablesMap; //maps update queries to their notifiable object
 
     public NotificationUnit()
     {
         this.subscribedUsers = new HashMap<>();
+        this.updateNotifiablesMap = new HashMap<>();
+//        initUpdateNotifiablesmap();
     }
+
+
+
+    /**
+     * add all notifiables mapped with their named queries to the map
+     */
+    private void initUpdateNotifiablesmap()
+    {
+//
+//        this.updateNotifiablesMap.put("SetTeamActivity", new Notifiable() {
+//
+//            public Notification getNotification(Object obj)
+//            {
+//                if (active)
+//                    return new Notification(String.format("Team: %s is open. \n You will get notifications rela it from now on.", team.getName()));
+//
+//                return new Notification(String.format("Team: %s was closed temporarily. \n You will no longer get notifications about it.", team.getName()));
+//            }
+//
+//            public Set<User> getNotifyUsersList(Object obj) {
+//                return team.getPage().getFollowers();
+//            }
+//        });
+
+
+    }
+
 
     /**
      * saves the notifications for all the users that need to get them and
@@ -48,15 +76,14 @@ public class NotificationUnit
             //add to the server side and to the db on offline
             user.addNotification(notification);
 
-
             //TODO: add the notification to the DB
 
             //send the notifications to the users that are subscribed
             try
             {
-                if(this.subscribedUsers.containsKey(user))
+                if(this.subscribedUsers.containsKey(user.getUsername()))
                 {//user is subscribed for live notifications, send the user client the notification
-                    InetAddress userIP = this.subscribedUsers.get(user);
+                    InetAddress userIP = this.subscribedUsers.get(user.getUsername());
                     Socket toUserSocket = new Socket(userIP, clientPort);
 
                     ObjectOutputStream out = new ObjectOutputStream(toUserSocket.getOutputStream());
@@ -72,7 +99,7 @@ public class NotificationUnit
             }
             catch(Exception e)
             {
-
+                e.printStackTrace();
             }
         }
 
@@ -83,35 +110,35 @@ public class NotificationUnit
 
     /**
      * add a user to the subscribers list - so he will be able to get live notifications
-     * @param user
+     * @param username
      * @param ipAddress
      * @return
      */
-    public boolean subscribeUser(User user, InetAddress ipAddress)
+    public boolean subscribeUser(String username, InetAddress ipAddress)
     {
-        if(this.subscribedUsers.containsKey(user))
+        if(this.subscribedUsers.containsKey(username))
         {
             return false;
         }
 
-        this.subscribedUsers.put(user, ipAddress);
+        this.subscribedUsers.put(username, ipAddress);
         return true;
     }
 
 
     /**
      * remove a user from the live notifications subscribers list
-     * @param user
+     * @param username
      * @return
      */
-    public boolean unsubscribeUser(User user)
+    public boolean unsubscribeUser(String username)
     {
-        if(!this.subscribedUsers.containsKey(user))
+        if(!this.subscribedUsers.containsKey(username))
         {
             return false;
         }
 
-        this.subscribedUsers.remove(user);
+        this.subscribedUsers.remove(username);
         return true;
     }
 
