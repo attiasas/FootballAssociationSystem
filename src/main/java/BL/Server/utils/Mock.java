@@ -42,13 +42,13 @@ public class Mock implements Serializable {
     @Column(name = "name_check")
     private String name;
 
-    @OneToMany(targetEntity = MockTemp.class,orphanRemoval = true,mappedBy = "mock",cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<MockTemp> mockTemps;
-
-    public void addMock(List<MockTemp> m ){
-        mockTemps = new ArrayList<>();
-        mockTemps.addAll(m);
-    }
+//    @OneToMany(targetEntity = MockTemp.class,orphanRemoval = true,mappedBy = "mock",cascade = CascadeType.ALL)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private List<MockTemp> mockTemps;
+//
+//    public void addMock(List<MockTemp> m ){
+//        mockTemps = new ArrayList<>();
+//        mockTemps.addAll(m);
+//    }
 }
 

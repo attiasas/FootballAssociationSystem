@@ -52,7 +52,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initDrawer("RefereeToolbar");
+        initDrawer("AssociationToolbar");
     }
 
     private Stage getStage() {

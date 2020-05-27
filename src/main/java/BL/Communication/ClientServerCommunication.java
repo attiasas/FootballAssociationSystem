@@ -12,6 +12,9 @@ import DL.Users.Fan;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
+import PL.main.App;
+import io.airlift.command.Cli;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -50,36 +53,58 @@ public class ClientServerCommunication {
     private volatile boolean listen;
 
 
-    public static void main(String[] args)
+    public static void main(String[] args) {
+        loginTestServer();
+        notifyTestServer();
+    }
+
+    public static void loginTestServer()
     {
-        ClientServerCommunication client = new ClientServerCommunication();
+        // ClientServerCommunication client = new ClientServerCommunication();
+        ClientServerCommunication client = App.clientSystem.communication;
 
-        User userAdmin = new Fan("admin", "admin", "admin");
+        User userAdmin = new Fan("admin", "admin", DigestUtils.sha1Hex("admin"));
         ClientSystem.logIn(userAdmin);
-        client.login("admin", "admin");
 
-//        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
+        List userFromServer = client.login("admin", DigestUtils.sha1Hex("admin"));
+    }
 
-        Notifiable notifiable = new Notifiable() {
-            @Override
-            public Notification getNotification() {
-                return new Notification("notifcation!!!");
-//                return null;
-            }
 
-            @Override
-            public Set getNotifyUsersList() {
-                Set<User> set = new HashSet<>();
-                Fan fan = new Fan("admin", "admin", "admin");
-                set.add(fan);
-                return set;
-//                return null;
-            }
-        };
+    public static void notifyTestServer()
+    {
+        // ClientServerCommunication client = new ClientServerCommunication();
+        ClientServerCommunication client = App.clientSystem.communication;
 
-        client.notify(notifiable);
-        System.out.println();
+//        try
+//        {
+//            String myIPAddress = Inet4Address.getLocalHost().getHostAddress();
+//            client.login(myIPAddress, DigestUtils.sha1Hex("admin"));
+//        }
+//        catch (Exception e)
+//        {
+//
+//        }
 
+        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
+
+//        Notifiable notifiable = new Notifiable() {
+//            @Override
+//            public Notification getNotification() {
+//                return new Notification("notifcation!!!");
+////                return null;
+//            }
+//
+//            @Override
+//            public Set getNotifyUsersList() {
+//                Set<User> set = new HashSet<>();
+//                Fan fan = new Fan("admin", "admin", "admin");
+//                set.add(fan);
+//                return set;
+////                return null;
+//            }
+//        };
+//
+//        client.notify(notifiable);
     }
 
     public ClientServerCommunication()
@@ -87,24 +112,6 @@ public class ClientServerCommunication {
         startNotificationListener();
     }
 
-    //    public ClientServerCommunication()
-//    {
-//        startNotificationListener();
-//    }
-//
-//
-//    private Thread listenerThread;
-//    private volatile boolean listen;
-//
-//    public boolean startNotificationListener()
-//    {
-//        if(listenerThread != null && listenerThread.isAlive()) return false;
-//
-//        listen = true;
-//        listenerThread = new Thread(() -> notificationDemon());
-//        listenerThread.start();
-//        return true;
-//    }
 
     public boolean startNotificationListener()
     {
@@ -113,6 +120,7 @@ public class ClientServerCommunication {
         listen = true;
         listenerThread = new Thread(() -> notificationDemon());
         listenerThread.start();
+        System.out.println("Listening on port: " + Configuration.getPropertyValue("clientNotification.port"));
         return true;
     }
 
@@ -133,7 +141,13 @@ public class ClientServerCommunication {
                     {
                         Object objFromServer = fromServer.readObject();
                         System.out.println("Received from server: " + objFromServer.toString());
-                        if(objFromServer instanceof Notification) loggedUser.addNotification((Notification)objFromServer);
+                        if(objFromServer instanceof Notification)
+                        {
+//                            System.out.println("Received object is a Notification object");
+//                            System.out.println("The size of the user's Notifications before adding: "+loggedUser.getNotifications().size());
+                            loggedUser.addNotification((Notification)objFromServer);
+//                            System.out.println("The size of the user's Notifications after adding: "+loggedUser.getNotifications().size());
+                        }
                     } catch (SocketTimeoutException e) { }
                 }
             }

@@ -1,6 +1,8 @@
 package BL.Client;
 
+import BL.Client.Handlers.LeagueSeasonUnit;
 import BL.Client.Handlers.MatchEventUnit;
+import BL.Client.Handlers.PoliciesUnit;
 import BL.Communication.ClientServerCommunication;
 import DL.Game.LeagueSeason.League;
 import DL.Game.LeagueSeason.LeagueSeason;
@@ -28,7 +30,7 @@ import lombok.extern.log4j.Log4j;
 public class ClientSystem
 {
     private static User loggedUser = null;
-    private ClientServerCommunication communication;
+    public ClientServerCommunication communication;
 
     public MatchEventUnit matchEventUnit;
     public LeagueSeasonUnit leagueSeasonUnit;

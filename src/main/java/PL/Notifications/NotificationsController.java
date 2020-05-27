@@ -7,6 +7,7 @@ import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
 import PL.main.App;
+import ch.qos.logback.core.net.server.Client;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import dorkbox.util.jna.windows.structs.MOUSE_EVENT_RECORD;
 import javafx.collections.FXCollections;
@@ -30,16 +31,18 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.extern.log4j.Log4j;
 import javafx.scene.control.Label;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Log4j
-public class NotificationsController implements Initializable
+public class NotificationsController implements Initializable, Serializable
 {
 
     private User currUser;
@@ -113,8 +116,7 @@ public class NotificationsController implements Initializable
     private void loadAllNotifications()
     {
 
-        //initForTest();
-
+//        initForTest();
 
 
 
@@ -238,39 +240,20 @@ public class NotificationsController implements Initializable
     {
         App.mainStage.setScene(App.scenes.pop());
 //        sendTestNotification();
+        markLoggedUserNotificationsAsRead();
+
+        // -------------------- Testing Notifications ---------------------
+
+//        ClientServerCommunication.notifyTestServer();
+
+        // ---------------------------------------------------------------
     }
 
-//    private void sendTestNotification()
-//    {
-//        ClientServerCommunication client = new ClientServerCommunication();
-//
-////        User userAdmin = new Fan("admin", "admin", "admin");
-////        ClientSystem.logIn(userAdmin);
-//        client.login("admin", "admin");
-//
-////        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
-//
-//        Notifiable notifiable = new Notifiable() {
-//            @Override
-//            public Notification getNotification() {
-//                return new Notification("notifcation!!!");
-////                return null;
-//            }
-//
-//            @Override
-//            public Set getNotifyUsersList() {
-//                Set<User> set = new HashSet<>();
-//                Fan fan = new Fan("admin", "admin", "admin");
-//                set.add(fan);
-//                return set;
-////                return null;
-//            }
-//        };
-//
-//        client.notify(notifiable);
-//
-//        this.loadAllNotifications();
-//    }
+    private void markLoggedUserNotificationsAsRead()
+    {
+        User loggedUser = ClientSystem.getLoggedUser();
+        loggedUser.markAllNotificationsAsRead();
+    }
 
 
 }

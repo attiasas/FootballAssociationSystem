@@ -65,14 +65,14 @@ public class ServerSystem implements IServerStrategy {
      * @param strategy database persistence strategy
      */
     public ServerSystem(DbSelector dbType, Strategy strategy, NotificationUnit notificationUnit) {
-        final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
-        dataBase = DB.getDataBaseInstance(entityManagerFactory);
-        final String sysQueryName = "SystemManagers";
-        final boolean systemManagers =
-                createEM().createNamedQuery(sysQueryName).getFirstResult() == 0;
-        if (systemManagers) {
-            signUp("admin", "admin@admin.com", "admin");
-        }
+//        final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
+//        dataBase = DB.getDataBaseInstance(entityManagerFactory);
+//        final String sysQueryName = "SystemManagers";
+//        final boolean systemManagers =
+//                createEM().createNamedQuery(sysQueryName).getFirstResult() == 0;
+//        if (systemManagers) {
+//            signUp("admin", "admin@admin.com", "admin");
+//        }
 
         this.notificationUnit = notificationUnit;
     }
@@ -278,6 +278,7 @@ public class ServerSystem implements IServerStrategy {
                         //after sending the user object with the notifications to the client, make all notifications changed to read
                         notificationUnit.markAllNotificationsOfUserAsRead(loggingInUser);
                     }
+                    toClientObject.writeObject(true);
                     break;
                 case Logout:
                     User loggingOutUser = (User)systemRequest.data;
@@ -314,11 +315,6 @@ public class ServerSystem implements IServerStrategy {
                 case Update:
                     toClientObject.writeObject(DB.update(systemRequest.queryName, systemRequest.data));
                     toClientObject.flush();
-
-                    //handle notifications for update queries
-
-
-
                     break;
                 case Query:
                     List toClient = DB.query(systemRequest.queryName, systemRequest.data);

@@ -1,6 +1,7 @@
 package PL.main;
 
 import BL.Client.ClientSystem;
+import BL.Communication.ClientServerCommunication;
 import DL.Users.Fan;
 import DL.Users.User;
 import javafx.application.Application;
@@ -39,6 +40,7 @@ public class App extends Application {
 
 //        User userAdmin = new Fan("admin", "admin", "admin");
 //        ClientSystem.logIn(userAdmin);
+//        ClientServerCommunication.loginTestServer();
 
         // -------------------------------------------------------------
 
