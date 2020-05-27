@@ -16,7 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import lombok.extern.log4j.Log4j;
 
 import java.io.PrintWriter;
@@ -31,11 +30,10 @@ public class AlertUtil {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.setAlwaysOnTop(true);
         stage.toFront();
-        stage.initStyle(StageStyle.UNDECORATED);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
-        //styleAlert(alert);
+        styleAlert(alert);
         alert.showAndWait();
     }
 

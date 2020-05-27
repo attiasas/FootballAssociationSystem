@@ -1,5 +1,6 @@
 package PL.main;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,19 @@ public class AssociationToolbarController {
     @FXML
     public VBox vbox;
 
+    public JFXButton manageTeams;
+
+    @FXML
+    private void loadManageTeams(ActionEvent actionEvent){
+        loadStage("ManageTeams");
+    }
+
+    @FXML
+    public void loadManageReferees(ActionEvent actionEvent)
+    {
+        loadStage("ManageReferees");
+    }
+
     @FXML
     private void loadManageLeagues(ActionEvent event) {
         loadStage("AssociationManageLeaguesFXML");
@@ -28,15 +42,6 @@ public class AssociationToolbarController {
         loadStage("AssociationManagePoliciesFXML");
     }
 
-    @FXML
-    private void loadManageTeams(){
-        loadStage("AssociationManageTeamsFXML");
-    }
-
-    @FXML
-    private void loadManageReferees(){
-        loadStage("AssociationManageRefereesFXML");
-    }
 
     private void closeStage() {
         ((Stage) vbox.getScene().getWindow()).close();

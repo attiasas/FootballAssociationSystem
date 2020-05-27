@@ -36,8 +36,8 @@ public class Coach extends PageUser implements Serializable
 
         super(name, active, fan, new UserPage(), team);
 
-        if (!onlyLettersString(qualification) || !onlyLettersString(role))
-            throw new IllegalArgumentException();
+        if (team == null || team.isClose() || fan == null || !onlyLettersString(name) || !onlyLettersString(qualification) || !onlyLettersString(role))
+            return;
 
         this.qualification = qualification;
         this.role = role;
@@ -52,7 +52,7 @@ public class Coach extends PageUser implements Serializable
 
     public boolean setDetails(String name, String role, Team team, boolean active, String qualification) {
 
-        if (!onlyLettersString(name) || !onlyLettersString(role) || team == null || !onlyLettersString(qualification))
+        if (team == null || team.isClose() || !onlyLettersString(name) || !onlyLettersString(qualification) || !onlyLettersString(role))
             return false;
 
         this.name = name;

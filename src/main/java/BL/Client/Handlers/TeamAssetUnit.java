@@ -12,6 +12,7 @@ import DL.Users.User;
 import DL.Users.UserPermission;
 
 import javax.management.OperationsException;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -101,8 +102,17 @@ public class TeamAssetUnit {
      */
     public boolean addStadium(String name, int capacity, Team team) {
 
-        if (!isValidStadiumName(name) || capacity <= 0 || team == null || isClosedTeam(team))
-            return false;
+        String err = "";
+
+        if (!isValidStadiumName(name)) {
+            err += "Stadium name: " + name + ". Stadium name should contain only letters and\\or numbers. \n";
+        }
+        if (capacity <= 0 ) {
+            err += "Stadium capacity: " + capacity + ". Stadium capacity should be greater than 0. \n";
+        }
+
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
+
 
         //get stadium by name
         HashMap<String, Object> args = new HashMap<>();
@@ -113,9 +123,8 @@ public class TeamAssetUnit {
             return false;
 
         Stadium stadium = new Stadium(name, capacity, team);
-        boolean status = clientServerCommunication.insert(stadium);
-
-        return status;
+        team.addStadium(stadium);
+        return clientServerCommunication.insert(stadium);
     }
 
     /**
@@ -129,8 +138,24 @@ public class TeamAssetUnit {
      */
     public boolean updateStadium(String newName, int capacity, List<Team> teamsList, Stadium stadium) {
 
-        if (teamsList == null || stadium == null || !isValidStadiumName(newName) || capacity <= 0)
-            return false;
+        String err = "";
+
+        if (stadium == null) {
+            err += "Stadium: Stadium doesn't exist. \n";
+        }
+        if (!isValidStadiumName(newName)) {
+            err += "Stadium name: " + newName + ". Stadium name should contain only letters and\\or numbers. \n";
+        }
+        if (capacity <= 0) {
+            err += "Stadium capacity: " + capacity + ". Stadium capacity should be greater than 0. \n";
+        }
+        if (teamsList == null) {
+            err += "Stadium teams list: Stadium teams list is undefined. \n";
+        }
+         if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
+
+
+        List<Team> oldTeams = stadium.getTeams();
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("newName", newName);
@@ -138,6 +163,20 @@ public class TeamAssetUnit {
         args.put("name", stadium.getName());
         args.put("teamsList", teamsList);
         boolean status = clientServerCommunication.update("setStadiumDetails", args);
+
+
+        if (status) {
+
+            stadium.getTeams().addAll(teamsList);
+
+            for (Team team : oldTeams) {
+                team.removeStadium(stadium);
+            }
+
+            for (Team team : teamsList) {
+                team.addStadium(stadium);
+            }
+        }
 
         return status;
     }
@@ -148,6 +187,7 @@ public class TeamAssetUnit {
      * @param name - stadium name
      * @return true if removal operation succeeded and false otherwise (db failure/ remained teams related to
      * this stadium)
+     * We do not allow removal of stadiums who still have teams related
      */
     public boolean removeStadium(String name) {
 
@@ -156,8 +196,9 @@ public class TeamAssetUnit {
         args.put("name", name);
         List<Stadium> stadiums = clientServerCommunication.query("stadiumByName", args);
 
-        if (stadiums == null || stadiums.isEmpty())
-            return false;
+        if (stadiums == null || stadiums.isEmpty()) {
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nStadium: Stadium doesn't exist. \n");
+        }
 
         args.clear();
         args.put("stadium", stadiums.get(0));
@@ -165,10 +206,16 @@ public class TeamAssetUnit {
         args.clear();
         args.put("name", name);
         args.put("active", false);
-        if (teams != null && teams.size() == 0) // there are no teams related to this stadium
-            return clientServerCommunication.update("setStadiumActivity", args);
+        boolean status;
+        if (teams != null && teams.size() == 0) { // there are no teams related to this stadium
+            status = clientServerCommunication.update("setStadiumActivity", args);
+            if (status) stadiums.get(0).setActive(false);
+        }
+        else {
+            throw new IllegalArgumentException("Cannot remove stadium: \nStadium has active teams related. \n");
+        }
 
-        return false;
+        return status;
 
     }
 
@@ -181,15 +228,28 @@ public class TeamAssetUnit {
      */
     public boolean updateTeamStadiums(Team team, List<Stadium> stadiums) {
 
-        if (team == null || stadiums == null || stadiums.size() == 0 || isClosedTeam(team)) return false;
+        String err = "";
+        if (team == null) {
+            err += "Team: Team doesn't exist. \n";
+        }
+        if (stadiums == null || stadiums.isEmpty()) {
+            err += "Stadiums List: Stadiums list is empty. \n";
+        }
+        if (team != null && isClosedTeam(team)) {
+            err += "Team: Chosen team is closed. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("newStadiumsList", stadiums);
         args.put("name", team.getName());
         boolean status = clientServerCommunication.update("updateStadiumsToTeam", args);
 
-        return status;
+        if (status) {
+            team.setStadiumsList(stadiums);
+        }
 
+        return status;
     }
 
     /**
@@ -197,25 +257,41 @@ public class TeamAssetUnit {
      * @param team
      * @param active - if true -> activate , if false -> deactivate
      * @return true if the operation succeeded, or false otherwise (invalid input, db failure, doesn't doesn't exist)
+     * We do not allow deactivation of teams who still have one of the following: players, coaches, stadiums, managers or
+     * owners related, or matches left
      */
     public boolean setTeamActivity(Team team, boolean active) {
 
-        if (team == null || isClosedTeam(team)) return false;
+        String err = "";
+        if (team == null) {
+            err += "Team: Team doesn't exist. \n";
+        }
+        if (team != null && isClosedTeam(team)) {
+            err += "Team: Team is closed. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
-        if (active == false && remainedMatches(team)) return false;
+        if (team.hasActiveObjectsConnected()) throw new IllegalArgumentException("Team has still active objects related. \n");
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("name", team.getName());
 
         List<Team> queryResult = clientServerCommunication.query("teamByName", args);
 
-        if (queryResult.isEmpty()) return false; // team doesn't exist
+        if (queryResult == null) return false; // server failure
+
+        if (queryResult.isEmpty())
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nTeam: Team doesn't exist. \n"); // team doesn't exist
 
         args.clear();
         args.put("name", team.getName());
         args.put("active", active);
 
         boolean status = clientServerCommunication.update("SetTeamActivity", args);
+
+        if (status) {
+            team.setActive(active);
+        }
 
         return status;
     }
@@ -225,17 +301,30 @@ public class TeamAssetUnit {
      *
      * @param team
      * @return true if the operation succeeded (i.e. changes was set in db)
+     * We do not allow closure of teams who still have one of the following: players, coaches, stadiums, managers or
+     * owners related, or matches left
      */
     public boolean closeTeam(Team team) {
 
-        if (team == null || isClosedTeam(team) || remainedMatches(team))
-            return false;
+        String err = "";
+        if (team == null) {
+            err += "Team: Team doesn't exist. \n";
+        }
+        if (team != null && isClosedTeam(team)) {
+            err += "Team: Team is closed. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
+
+        if (team.hasActiveObjectsConnected()) throw new IllegalArgumentException("Team has still active objects related. \n");
 
         HashMap<String, Object> args = new HashMap<>();
 
         args.put("name", team.getName());
         boolean status = clientServerCommunication.update("closeTeam", args);
 
+        if (status) {
+            team.setClose(true);
+        }
         return status;
 
     }
@@ -252,17 +341,42 @@ public class TeamAssetUnit {
      */
     public boolean addPlayer(Team team, Fan fan, String name, String role, Date birthDate) {
 
-        if (team == null || isClosedTeam(team) || fan == null || birthDate == null || !isValidName(name) || !isValidName(role))
-            return false;
+        String err = "";
+        if (!isValidName(name)) {
+            err += "Name: " + name + ". Name should contain only letters. \n";
+        }
+        if (!isValidName(role)) {
+            err += "Role: " + role + ". Role should contain only letters. \n";
+        }
+        if (fan == null) {
+            err += "Fan: Fan doesn't exist. \n";
+        }
+        if (birthDate == null) {
+            err += "Birth Date: Birth date cannot be empty. \n";
+        }
+        if (birthDate != null && (birthDate.getYear()- Year.now().getValue()) < 13) {
+            err += "Birth Date: Player's age cannot be younger than 13. \n";
+        }
+        if (team == null) {
+            err += "Team: Cannot create player without team. \n";
+        }
+        if (team != null && team.isClose()) {
+            err += "Team: Cannot add player to closed team. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
+
 
         TeamUser teamUser = getTeamUserByFan(fan);
         if (teamUser != null) // a TeamUser connected to this fan already exists
-            return false;
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nUser already has another role.\n");
 
         Player player = new Player(name, true, fan, birthDate, role, team);
 
         boolean status = clientServerCommunication.insert(player);
 
+        if (status) {
+            team.addPlayer(player);
+        }
         return status;
     }
 
@@ -278,11 +392,34 @@ public class TeamAssetUnit {
      */
     public boolean editPlayer(Team team, Fan fan, String name, String role, Date birthDate) {
 
-        if (team == null || isClosedTeam(team) || birthDate == null || !isValidName(name) || !isValidName(role))
-            return false;
+        String err = "";
+        if (!isValidName(name)) {
+            err += "Name: " + name + ". Name should contain only letters. \n";
+        }
+        if (!isValidName(role)) {
+            err += "Role: " + role + ". Role should contain only letters. \n";
+        }
+        if (fan == null) {
+            err += "Fan: Fan doesn't exist. \n";
+        }
+        if (birthDate == null) {
+            err += "Birth Date: Birth date cannot be empty. \n";
+        }
+        if (birthDate != null && (birthDate.getYear()- Year.now().getValue()) < 13) {
+            err += "Birth Date: Player's age cannot be younger than 13. \n";
+        }
+        if (team == null) {
+            err += "Team: Cannot create player without team. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
         TeamUser teamUser = getTeamUserByFan(fan);
-        if (teamUser == null || !(teamUser instanceof Player)) return false;
+        if (teamUser == null)
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nPlayer doesn't exist.\n");
+        if (!(teamUser instanceof Player))
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nChosen user isn't player.\n");
+
+        Team oldTeam = teamUser.getTeam();
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("name", name);
@@ -294,8 +431,12 @@ public class TeamAssetUnit {
 
         boolean status = clientServerCommunication.update("updatePlayerDetails", args);
 
-        return status;
+        if (status && !oldTeam.equals(team)) {
+            oldTeam.removePlayer((Player) teamUser);
+            team.addPlayer((Player) teamUser);
+        }
 
+        return status;
     }
 
     /**
@@ -322,16 +463,35 @@ public class TeamAssetUnit {
      */
     public boolean addCoach(Team team, Fan fan, String name, String qualification, String role) {
 
-        if (team == null || isClosedTeam(team) || fan == null || !isValidName(name) || !isValidName(qualification) || !isValidName(role))
-            return false;
+        String err = "";
+        if (!isValidName(name)) {
+            err += "Name: " + name + ". Name should contain only letters. \n";
+        }
+        if (!isValidName(qualification)) {
+            err += "Qualification: " + qualification + ". Qualification should contain only letters. \n";
+        }
+        if (!isValidName(role)) {
+            err += "Role: " + role + ". Role should contain only letters. \n";
+        }
+        if (fan == null) {
+            err += "Fan: Fan doesn't exist. \n";
+        }
+        if (team == null) {
+            err += "Team: Cannot create coach without team. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
         TeamUser teamUser = getTeamUserByFan(fan);
         if (teamUser != null) // a TeamUser connected to this fan already exists
-            return false;
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nUser already has another role.\n");
 
         Coach coach = new Coach(name, true, fan, qualification, role, team);
 
         boolean status = clientServerCommunication.insert(coach);
+
+        if (status) {
+            team.addCoach(coach);
+        }
 
         return status;
 
@@ -349,11 +509,31 @@ public class TeamAssetUnit {
      */
     public boolean editCoach(Team team, Fan fan, String name, String qualification, String role) {
 
-        if (team == null || isClosedTeam(team) || fan == null || !isValidName(name) || !isValidName(qualification) || !isValidName(role))
-            return false;
+        String err = "";
+        if (!isValidName(name)) {
+            err += "Name: " + name + ". Name should contain only letters. \n";
+        }
+        if (!isValidName(qualification)) {
+            err += "Qualification: " + qualification + ". Qualification should contain only letters. \n";
+        }
+        if (!isValidName(role)) {
+            err += "Role: " + role + ". Role should contain only letters. \n";
+        }
+        if (fan == null) {
+            err += "Fan: Fan doesn't exist. \n";
+        }
+        if (team == null) {
+            err += "Team: Cannot create coach without team. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
         TeamUser teamUser = getTeamUserByFan(fan);
-        if (teamUser == null || !(teamUser instanceof Coach)) return false;
+        if (teamUser == null)
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nCoach doesn't exist.\n");
+        if(!(teamUser instanceof Coach))
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nChosen user isn't coach.\n");
+
+        Team oldTeam = teamUser.getTeam();
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("name", name);
@@ -364,6 +544,11 @@ public class TeamAssetUnit {
         args.put("fan", fan);
 
         boolean status = clientServerCommunication.update("updateCoachDetails", args);
+
+        if (status && !oldTeam.equals(team)) {
+            oldTeam.removeCoach((Coach) teamUser);
+            team.addCoach((Coach) teamUser);
+        }
 
         return status;
 
@@ -380,6 +565,7 @@ public class TeamAssetUnit {
         return deactivateTeamUser(fan, "Coach");
 
     }
+
 
     // ** Private methods ** //
 
@@ -430,17 +616,20 @@ public class TeamAssetUnit {
      */
     private boolean deactivateTeamUser(Fan fan, String type) {
 
-        if (fan == null) return false;
+        if (fan == null) throw new IllegalArgumentException("Illegal Arguments Insertion: \nChosen fan doesn't exist.\n");
 
         TeamUser teamUser;
-        if ((teamUser = getTeamUserByFan(fan)) == null) return false;
+        if ((teamUser = getTeamUserByFan(fan)) == null)
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nChosen user doesn't exist.\n");
 
         if (type.equals("Player")) {
-            if (!(teamUser instanceof Player)) return false;
+            if (!(teamUser instanceof Player))
+                throw new IllegalArgumentException("Illegal Arguments Insertion: \nChosen user isn't player.\n");
         }
 
         else if (type.equals("Coach")) {
-            if (!(teamUser instanceof Coach)) return false;
+            if (!(teamUser instanceof Coach))
+                throw new IllegalArgumentException("Illegal Arguments Insertion: \nChosen user isn't coach.\n");
         }
 
         HashMap<String, Object> args = new HashMap<>();
@@ -448,6 +637,21 @@ public class TeamAssetUnit {
         args.put("active", false);
 
         boolean status = clientServerCommunication.update("SetActiveTeamUser", args);
+
+        if (status) {
+
+            if (type.equals("Player")) {
+                Player player = (Player) teamUser;
+                player.getTeam().removePlayer(player);
+            }
+            else if (type.equals("Coach")) {
+                Coach coach = (Coach) teamUser;
+                coach.getTeam().removeCoach(coach);
+            }
+
+            teamUser.setActive(false);
+
+        }
 
         return status;
 
@@ -466,19 +670,4 @@ public class TeamAssetUnit {
         return closedTeams.contains(team);
     }
 
-    /**
-     * @param team
-     * @return true if there are still matches left for a team to play, or false otherwise
-     */
-    private boolean remainedMatches(Team team) {
-
-        HashMap<String, Object> args = new HashMap<>();
-        args.put("team", team);
-        List<Match> nextMatches = clientServerCommunication.query("nextMatchesListByTeam", args);
-
-        if (nextMatches == null || nextMatches.isEmpty()) return false;
-
-        return true;
-
-    }
 }

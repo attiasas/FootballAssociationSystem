@@ -151,8 +151,8 @@ public class EventLogController
 
     public void addEvent() throws IOException
     {
-        AddEventController controller = (AddEventController)App.loadScreen("addEventScreen");
-        controller.initialize(unit,match,this);
+       // AddEventController controller = (AddEventController)App.loadScreen("addEventScreen");
+      //  controller.initialize(unit,match,this);
     }
 
     public void closeWindow()

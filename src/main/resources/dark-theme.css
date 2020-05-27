@@ -120,11 +120,31 @@
 
 }
 
+.smallaction-button-light {
+    -fx-font-size: 12px;
+    -fx-padding: 3 20;
+    -fx-border-color: black;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-family: "Montserrat SemiBold";
+    -fx-text-fill: black;
+    -fx-background-color: -fx-primary;
+}
+
+.smallaction-button-light:hover,
+.smallaction-button-light:focused {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-scale-z: 1;
+
+}
+
 .text-field {
     -fx-font-size: 12pt;
     -jfx-focus-color: -fx-secondary;
     -fx-text-fill: -fx-secondary;
 }
+
 
 /*Login Screen Specific*/
 
@@ -142,10 +162,6 @@
     -jfx-checked-color: -fx-meetup-blue;
 }
 
-.combo-box .cell{
-    -fx-text-fill: white;
-    -fx-background-color: -fx-primary;
-}
 /*Main Screen CSS Styling starts here*/
 
 /*TablPane styling*/
@@ -376,3 +392,5 @@
 .colored-context-menu .menu-item:focused .label {
     -fx-text-fill: black;
 }
+
+

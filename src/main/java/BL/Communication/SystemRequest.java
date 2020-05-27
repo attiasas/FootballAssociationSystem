@@ -16,7 +16,7 @@ import java.util.Map;
  * Update - update objects from the DB base on a query * Query - query the DB for info base on a
  * query
  **/
-public class SystemRequest
+public class SystemRequest implements Serializable
 {
     public enum Type
     {

@@ -31,6 +31,9 @@ public class TeamController extends AInitComboBoxObjects{
         });
     }
 
+    private void initTeamChoices(JFXComboBox<Team> teams) {
+    }
+
     public void setTeamInLeagueSeason(){
 
         LeagueSeason leagueSeason;
@@ -46,7 +49,7 @@ public class TeamController extends AInitComboBoxObjects{
             leagueSeason = leagueSeasons.getValue();
             team = teams.getValue();
 
-            App.clientSystem.leagueSeasonUnit.addTeamToLeagueSeason(leagueSeason,team);
+           // App.clientSystem.leagueSeasonUnit.addTeamToLeagueSeason(leagueSeason,team);
             showSimpleAlert("Success", "Team added successfully!");
 
         } catch (Exception e) {

@@ -24,11 +24,17 @@ public class TeamPage extends Page implements Serializable
 
     public TeamPage(String content, Team team) {
 
-        if (team == null || content == null)
-            throw new IllegalArgumentException();
+        String err = "";
+        if (team == null) {
+            err += "Team: Team doesn't exist. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
         this.team = team;
-        super.content = content;
+        if (content != null)
+            super.content = content;
+        else
+            super.content = "";
     }
 
     public Team getTeam()

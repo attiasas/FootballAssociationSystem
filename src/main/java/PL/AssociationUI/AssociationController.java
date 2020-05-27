@@ -23,40 +23,13 @@ public class AssociationController {
         policiesUnit = new PoliciesUnit(new ClientServerCommunication());
     }
 
-    public void createNewLeague() {
-        loadScreen("LeagueFXML");
-    }
+    public void createTeam() { loadScreen("CreateTeam"); }
 
-    public void createNewGamePolicy() {
-        loadScreen("GamePolicyFXML");
-    }
+    public void addOrRemoveReferee() {
+        RefereeController rController = (RefereeController) loadScreen("AddOrRemoveReferee");
+        if (rController != null) {
+            rController.initCreateRefereeComboBoxOptions();
 
-    public void createNewScorePolicy() {
-        loadScreen("ScorePolicyFXML");
-    }
-
-    public void addNewLeagueSeason() {
-        LeagueSeasonController lsController = (LeagueSeasonController) loadScreen("LeagueSeasonFXML");
-        if (lsController != null) {
-            lsController.initCreateLeagueComboBoxOptions();
-        }
-    }
-
-    public void changeScorePolicy() {
-        ScorePolicyController lsController = (ScorePolicyController) loadScreen("ChangeScorePolicyFXML");
-        if (lsController != null) {
-            lsController.initComboBoxOptions();
-        }
-    }
-
-    public void setRefereesInLeagueSeason(){
-
-    }
-
-    public void scheduleMatches(){
-        LeagueSeasonController lsController = (LeagueSeasonController) loadScreen("ScheduleMatchesFXML");
-        if (lsController != null) {
-            lsController.initScheduleComboBoxOptions();
         }
     }
 
