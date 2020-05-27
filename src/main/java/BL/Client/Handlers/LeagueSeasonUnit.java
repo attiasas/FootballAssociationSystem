@@ -22,12 +22,6 @@ public class LeagueSeasonUnit {
 
     private ClientServerCommunication clientServerCommunication;
 
-    public static void main(String[] args) {
-        LeagueSeasonUnit l = new LeagueSeasonUnit(new ClientServerCommunication());
-        l.addNewLeague("Champions League");
-        l.addNewSeason(2016);
-    }
-
     /**
      * Ctor with parameters
      *

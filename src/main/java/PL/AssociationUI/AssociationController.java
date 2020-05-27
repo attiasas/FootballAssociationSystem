@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 
 import static PL.AlertUtil.showSimpleAlert;
-
+import static PL.main.App.loadScreen;
 
 public class AssociationController {
 
@@ -75,10 +75,13 @@ public class AssociationController {
 
     }
 
-    public void addTeamToLeagueSeason(){
+    public void addTeamToLeagueSeason() {
         TeamController lsController = (TeamController) loadScreen("SetTeamInLeagueSeasonFXML");
         if (lsController != null) {
             lsController.initTeamInLeagueSeasonsComboBoxOptions();
+        }
+    }
+
     public void createTeam() { loadScreen("CreateTeam"); }
 
     public void addOrRemoveReferee() {

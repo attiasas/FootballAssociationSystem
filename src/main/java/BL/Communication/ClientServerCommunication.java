@@ -50,8 +50,7 @@ public class ClientServerCommunication {
     }
 
     private Thread listenerThread;
-    private volatile boolean listen;
-
+    private volatile boolean listen = true;
 
     public static void main(String[] args) {
         loginTestServer();
@@ -112,37 +111,8 @@ public class ClientServerCommunication {
         startNotificationListener();
     }
 
-
     public boolean startNotificationListener()
     {
-        ClientServerCommunication client = new ClientServerCommunication();
-
-        User userAdmin = new Fan("admin", "admin", "admin");
-        ClientSystem.logIn(userAdmin);
-        client.login("admin", "admin");
-
-//        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
-
-        Notifiable notifiable = new Notifiable() {
-            @Override
-            public Notification getNotification() {
-                return new Notification("notifcation!!!");
-//                return null;
-            }
-
-            @Override
-            public Set getNotifyUsersList() {
-                Set<User> set = new HashSet<>();
-                Fan fan = new Fan("admin", "admin", "admin");
-                set.add(fan);
-                return set;
-//                return null;
-            }
-        };
-
-        client.notify(notifiable);
-        System.out.println();
-
         listen = true;
         listenerThread = new Thread(() -> notificationDemon());
         listenerThread.start();
@@ -150,11 +120,13 @@ public class ClientServerCommunication {
         return true;
     }
 
-    public ClientServerCommunication()
+    public void notificationDemon()
     {
-
+        int listenPort = Integer.parseInt(Configuration.getPropertyValue("clientNotification.port"));
         try(ServerSocket listenSocket = new ServerSocket(listenPort))
         {
+            System.out.println("start");
+            //listenSocket.setSoTimeout(1000);
             // init
             while (listen)
             {
@@ -181,29 +153,9 @@ public class ClientServerCommunication {
         {
             e.printStackTrace();
         }
+
+        System.out.println("BYE");
     }
-
-    //    public ClientServerCommunication()
-//    {
-//        startNotificationListener();
-//    }
-//
-//
-//    private Thread listenerThread;
-//    private volatile boolean listen;
-//
-//    public boolean startNotificationListener()
-//    {
-//        if(listenerThread != null && listenerThread.isAlive()) return false;
-//
-//        listen = true;
-//        listenerThread = new Thread(() -> notificationDemon());
-//        listenerThread.start();
-//        return true;
-//    }
-
-
-
 
     public void stopListener()
     {

@@ -20,13 +20,11 @@ import DL.Users.User;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import PL.CommunicationMatchEventUnitStub;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -51,7 +49,7 @@ public class ClientSystem
 
     public ClientSystem()
     {
-        initLocalData();
+        //initLocalData();
 
         matchEventUnit = new MatchEventUnit(communication);
         nomineePermissionUnit = new NomineePermissionUnit(communication);
@@ -129,7 +127,7 @@ public class ClientSystem
         matches.add(m3);
         matches.add(m4);
 
-        communication = new CommunicationMatchEventUnitStub(matches,referees,users);
+        //communication = new CommunicationMatchEventUnitStub(matches,referees,users);
     }
 
     public static User getLoggedUser()
@@ -222,6 +220,7 @@ public class ClientSystem
 
     public void close()
     {
+        System.out.println("Out");
         communication.stopListener();
     }
 }

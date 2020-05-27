@@ -58,7 +58,7 @@ public class LoginController implements Initializable {
         possibleSuggestions = new HashSet<>();
         String[] pw = {"admin", "amir", "asaf", "avihai", "dvir", "amit"};
         Collections.addAll(possibleSuggestions, pw);
-        clientServerCommunication = new ClientServerCommunication();
+        //clientServerCommunication = new ClientServerCommunication();
         fa_lock.setVisible(true);
         loggingProgress.setVisible(false);
         TextFields.bindAutoCompletion(txt_username, possibleSuggestions);

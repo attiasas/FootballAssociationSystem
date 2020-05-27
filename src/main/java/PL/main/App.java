@@ -14,10 +14,13 @@ import lombok.extern.log4j.Log4j;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
+import static PL.AlertUtil.showSimpleAlert;
 
 @Log4j(topic = "event")
 public class App extends Application {
@@ -25,6 +28,7 @@ public class App extends Application {
     public final static Logger elog = LogManager.getLogger("error");
     public static Stage mainStage;
     public static Stack<Scene> scenes;
+    public static ClientSystem clientSystem = new ClientSystem();
 
 /**
      * The main function that runs the entire program
@@ -72,6 +76,10 @@ public class App extends Application {
         primaryStage.show();
         new Thread(() -> {
         }).start();
+
+        primaryStage.setOnCloseRequest(event -> {
+            clientSystem.close();
+        });
     }
 
     public static void loadStage(String fxmlFileName) {

@@ -59,7 +59,7 @@ public class HandleUserUnit
 
         List<User> usersWithSameUserName = communication.query("UserByUserName", userNameQueryMap);
 
-        if(usersWithSameUserName.size() > 0)
+        if(usersWithSameUserName == null || usersWithSameUserName.size() > 0)
         {//user with the same username exists
             return null;
         }

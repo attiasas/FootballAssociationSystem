@@ -1,5 +1,6 @@
 package PL.AssociationUI;
 
+import BL.Client.ClientSystem;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.LeagueSeason.Season;
 import DL.Game.Referee;
@@ -102,18 +103,13 @@ public class RefereeController extends AInitComboBoxObjects {
 
     public void closeWindow() {
         AssociationController.loadScreen("AssociationManageRefereesFXML");
-    private ClientServerCommunication clientServerCommunication;
-
-    private AssociationManagementUnit associationManagementUnit;
+    }
 
     public void initCreateRefereeComboBoxOptions() {
 
-        clientServerCommunication = new ClientServerCommunication();
-        associationManagementUnit = new AssociationManagementUnit(clientServerCommunication);
-
         referees_username_FX = FXCollections.observableArrayList();
         comboboxReferee.setItems(referees_username_FX);
-        List<Referee> referees = clientServerCommunication.query("AllReferees", new HashMap<>());
+        List<Referee> referees = ClientSystem.communication.query("AllReferees", new HashMap<>());
         List<String> referees_username = new ArrayList<>();
         for (Referee referee : referees)
             referees_username.add(referee.getFan().getUsername());
@@ -127,7 +123,7 @@ public class RefereeController extends AInitComboBoxObjects {
         Fan fan = getFanByUsername(refereeUsername.getText());
         try
         {
-            associationManagementUnit.addNewReferee(fan, refereeName.getText(), refereeQualification.getText());
+            App.clientSystem.associationManagementUnit.addNewReferee(fan, refereeName.getText(), refereeQualification.getText());
             referees_username_FX.add(refereeUsername.getText());
             //showMessage(true);
             showSimpleAlert("Success","Referee was added successfully");
@@ -153,12 +149,12 @@ public class RefereeController extends AInitComboBoxObjects {
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("fan", fan);
-        List<Referee> referees = clientServerCommunication.query("refereeByFan", args);
+        List<Referee> referees = ClientSystem.communication.query("refereeByFan", args);
         Referee referee = null;
         if (!referees.isEmpty())
             referee = referees.get(0);
 
-        if (!associationManagementUnit.removeReferee(referee)) //TODO: remove "!"
+        if (!App.clientSystem.associationManagementUnit.removeReferee(referee)) //TODO: remove "!"
         {
             referees_username_FX.remove(comboboxReferee.getValue());
             //showMessage(true);
@@ -221,7 +217,7 @@ public class RefereeController extends AInitComboBoxObjects {
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("username", username);
-        List<User> user = clientServerCommunication.query("UserByUsername", args);
+        List<User> user = ClientSystem.communication.query("UserByUsername", args);
 
         if (user == null || user.isEmpty() || !(user.get(0) instanceof Fan)) return null;
         return (Fan) user.get(0);
