@@ -163,8 +163,8 @@ public class RefereeController
      */
     public void editMatchEvents(Match match) throws IOException
     {
-        EventLogController controller = (EventLogController) App.loadScreen("matchEventsScreen");
-        controller.initialize(unit,match);
+      //  EventLogController controller = (EventLogController) App.loadScreen("matchEventsScreen");
+       // controller.initialize(unit,match);
     }
 
     /**

@@ -22,11 +22,12 @@ public class RefereeToolbarController implements Initializable {
     @FXML
     public Button b_refInfo;
 
+    /*
     @FXML
     private void loadMyMatches() {
         RefereeController controller = (RefereeController)App.loadScreen("refereeScreen");
         controller.init(App.clientSystem.matchEventUnit);
-    }
+    }*/
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

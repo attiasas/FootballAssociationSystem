@@ -13,10 +13,7 @@ import DL.Team.Page.TeamPage;
 import DL.Users.User;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -98,8 +95,7 @@ public class Team implements Serializable
     //Constructor
     public Team(String name, boolean active, boolean close) {
 
-        if (!isValidTeamName(name))
-            throw new IllegalArgumentException();
+        if (!isValidTeamName(name)) return;
 
         this.name = name;
         this.active = active;
@@ -179,11 +175,38 @@ public class Team implements Serializable
 
     }
 
+    public boolean addCoach(Coach coach) {
+
+        checkCoachInput(coach);
+
+        coaches.add(coach);
+
+        return true;
+    }
+
     public boolean removeCoach(Coach coach) {
 
-        if (coach == null) return false;
+        checkCoachInput(coach);
 
         return coaches.remove(coach);
+
+    }
+
+    private void checkCoachInput(Coach coach) {
+
+        String err = "";
+        if (coach == null) {
+            err += "Coach: Coach doesn't exist. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
+
+    }
+
+    public boolean removeStadium(Stadium stadium) {
+
+        if (stadium == null) return false;
+
+        return stadiums.remove(stadium);
 
     }
 
@@ -197,19 +220,6 @@ public class Team implements Serializable
         if (awayMatch != null) {
             awayMatches.add(awayMatch);
         }
-    }
-
-    @Override
-    public boolean equals(Object other)
-    {
-        if(!(other instanceof Team))
-        {
-            return false;
-        }
-
-        Team otherTeam = (Team)other;
-
-        return this.name.equals(otherTeam.name);
     }
 
     private boolean isValidTeamName(String name) {
@@ -249,12 +259,22 @@ public class Team implements Serializable
         return teamManagers;
     }
 
+    public boolean addTeamManagers(TeamManager teamManager) {
+
+        if (teamManager == null)
+            return false;
+
+        teamManagers.add(teamManager);
+
+        return true;
+
+    }
+
     public List<TeamOwner> getTeamOwners() {
         return teamOwners;
     }
 
-    public Set getTeamMembers()
-    {
+    public Set getTeamMembers() {
         Set<User> result = new HashSet<>();
 
         for(Coach coach : coaches) if(coach.isActive()) result.add(coach.getFan());
@@ -281,10 +301,45 @@ public class Team implements Serializable
         return stadiums;
     }
 
+    public boolean hasActiveObjectsConnected() {
+
+        for (Match m : homeMatches) {
+            if (m.getEndTime() == null) {
+                return false;
+            }
+        }
+
+        for (Match m : awayMatches) {
+            if (m.getEndTime() == null) {
+                return false;
+            }
+        }
+
+
+        boolean ans = (!players.isEmpty() || !coaches.isEmpty() || !teamManagers.isEmpty() ||
+                !teamOwners.isEmpty() || !stadiums.isEmpty());
+
+        return ans;
+
+    }
+
     @Override
     public String toString() {
         return "Team{" +
                 "name='" + name + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if(!(other instanceof Team))
+        {
+            return false;
+        }
+
+        Team otherTeam = (Team)other;
+
+        return this.name.equals(otherTeam.name);
+    }
+
 }

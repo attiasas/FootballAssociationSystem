@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.layout.VBox?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="menu" prefHeight="534.0" prefWidth="155.0" stylesheets="@../../dark-theme.css"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.main.AssociationToolbarController">
@@ -12,23 +12,23 @@
             <FontAwesomeIconView size="25" text="" />
         </graphic>
     </JFXButton>
-    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"  prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Policies" textAlignment="CENTER" onAction="#loadManagePolicies">
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Policies" textAlignment="CENTER">
         <graphic>
             <FontAwesomeIconView size="25" text="" />
         </graphic>
         a
     </JFXButton>
-    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Teams" textAlignment="CENTER" onAction="#loadManageTeams">
+    <JFXButton fx:id="manageTeams" contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadManageTeams" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Teams" textAlignment="CENTER">
         <graphic>
-            <FontAwesomeIconView size="26" text="" />
+            <FontAwesomeIconView fx:id="ManageTeamsBtn" size="26" text="" />
         </graphic>
     </JFXButton>
-    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false"  prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Referees" textAlignment="CENTER" onAction="#loadManageReferees">
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" onAction="#loadManageReferees" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Referees" textAlignment="CENTER">
         <graphic>
             <FontAwesomeIconView size="25" text="" />
         </graphic>
     </JFXButton>
-   <JFXButton contentDisplay="TOP" mnemonicParsing="false"  prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Financial" textAlignment="CENTER">
+   <JFXButton contentDisplay="TOP" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Financial" textAlignment="CENTER">
       <graphic>
          <FontAwesomeIconView size="25" text="" />
       </graphic>

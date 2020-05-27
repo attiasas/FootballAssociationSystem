@@ -58,8 +58,7 @@ public class TeamUser implements Serializable
 
     public TeamUser(String name, boolean active, Fan fan, Team team) 
     {
-        if (!onlyLettersString(name) || fan == null || team == null)
-            throw new IllegalArgumentException();
+        if (!onlyLettersString(name) || fan == null || team == null) return;
 
         this.name = name;
         this.active = active;
@@ -87,6 +86,8 @@ public class TeamUser implements Serializable
     public Team getTeam() {
         return team;
     }
+
+    public void setTeam(Team team) { this.team = team; }
 
     protected boolean onlyLettersString(String str)
     {

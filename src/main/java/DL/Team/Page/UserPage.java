@@ -5,6 +5,7 @@ import DL.Team.Team;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Description: Defines a Page object - a personal page of coach/player, a fan can follow    X
@@ -23,14 +24,29 @@ public class UserPage extends Page implements Serializable
 
     public UserPage(String content, PageUser pageUser) {
 
-        if (pageUser == null || content == null) throw new IllegalArgumentException();
+        String err = "";
+        if (pageUser == null) {
+            err += "User: User doesn't exist. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
         this.pageUser = pageUser;
-        super.content = content;
+        if (content != null)
+            super.content = content;
+        else
+            super.content = "";
     }
 
     public UserPage() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserPage)) return false;
+        UserPage userPage = (UserPage) o;
+        return pageUser.equals(userPage.pageUser);
     }
 
 }

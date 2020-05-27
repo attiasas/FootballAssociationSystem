@@ -35,6 +35,9 @@ public class TeamController extends AInitComboBoxObjects{
         });
     }
 
+    private void initTeamChoices(JFXComboBox<Team> teams) {
+    }
+
     public void setTeamInLeagueSeason(){
 
         LeagueSeason leagueSeason;

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Description: Defines Stadium object - name, capacity and related team    X
@@ -33,25 +34,22 @@ public class Stadium implements Serializable
     @Column
     private boolean active;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany/*(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})*/
     private List<Team> teams;
 
-    @Override
-    public String toString() {
-        return "Stadium: " + name + ", Capacity: " + capacity + ".";
-    }
 
     //Constructor
     public Stadium(String name, int capacity, Team team) {
 
-        if (name == null || capacity <= 0 || team == null)
-            throw new IllegalArgumentException();
+        if (!isValidStadiumName(name) || capacity <= 0) return;
 
         this.name = name;
         this.capacity = capacity;
         this.teams = new ArrayList<>();
         this.active = true;
-        teams.add(team);
+        teams = new ArrayList<>();
+        if (team != null)
+            teams.add(team);
     }
 
     public Stadium() {}
@@ -66,7 +64,7 @@ public class Stadium implements Serializable
 
     public boolean addTeam(Team team) {
 
-        if (team == null) return false;
+        if (team == null) throw new IllegalArgumentException("Illegal Arguments Insertion: \n Undefined team was inserted.");
 
         teams.add(team);
 
@@ -80,7 +78,7 @@ public class Stadium implements Serializable
 
         this.name = newName;
         this.capacity = capacity;
-        this.teams = teamsList;
+        teams = teamsList;
 
         return true;
     }
@@ -101,4 +99,20 @@ public class Stadium implements Serializable
 
         return name != null && name.matches("([a-zA-Z0-9]+(\\s[a-zA-Z0-9]*)*)+");
     }
+
+
+    @Override
+    public String toString() {
+        return "Stadium: " + name + ", Capacity: " + capacity + ".";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Stadium)) return false;
+        Stadium stadium = (Stadium) o;
+        return name.equals(stadium.getName());
+    }
+
+
 }

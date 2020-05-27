@@ -7,31 +7,29 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.extern.log4j.Log4j;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
-import static PL.AlertUtil.showSimpleAlert;
-
 @Log4j(topic = "event")
 public class App extends Application {
-
-    public static Stage mainStage;
-    public static Stack<Scene> scenes;
-    public static ClientSystem clientSystem = new ClientSystem();
 
     /**
      * The main function that runs the entire program
      *
      * @param args - ignored
      */
+
+    public static Stage mainStage;
+    public static Stack<Scene> scenes;
+
     public static void main(String[] args) {
+
         long startTime = System.currentTimeMillis();
         log.info("Sportify launched");
 
@@ -55,6 +53,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        scenes = new Stack<>();
+        mainStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/Window/Login.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

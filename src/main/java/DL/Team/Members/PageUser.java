@@ -8,6 +8,7 @@ import DL.Users.UserPermission;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Description:  Defines a user who owes a personal page in the system   X

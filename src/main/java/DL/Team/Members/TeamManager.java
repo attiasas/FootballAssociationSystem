@@ -29,8 +29,14 @@ public class TeamManager extends TeamUser implements Serializable
 
         super(name, active, fan, team);
 
-        if (fan == null || teamOwner == null)
-            throw new IllegalArgumentException();
+        String err = "";
+        if (fan == null) {
+            err += "Fan: Fan doesn't exist. \n";
+        }
+        if (teamOwner == null) {
+            err += "Team Owner: Team owner doesn't exist. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
         this.team = team;
         this.teamOwner = teamOwner;

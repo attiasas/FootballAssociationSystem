@@ -79,6 +79,13 @@ public class AssociationController {
         TeamController lsController = (TeamController) loadScreen("SetTeamInLeagueSeasonFXML");
         if (lsController != null) {
             lsController.initTeamInLeagueSeasonsComboBoxOptions();
+    public void createTeam() { loadScreen("CreateTeam"); }
+
+    public void addOrRemoveReferee() {
+        RefereeController rController = (RefereeController) loadScreen("AddOrRemoveReferee");
+        if (rController != null) {
+            rController.initCreateRefereeComboBoxOptions();
+
         }
     }
 

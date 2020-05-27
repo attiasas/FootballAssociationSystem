@@ -8,6 +8,7 @@ import DL.Users.UserPermission;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,8 +40,9 @@ public class Player extends PageUser implements Serializable
     public Player(String name, boolean active, Fan fan, Date birthDate, String role, Team team)
     {
         super(name, active, fan, new UserPage(), team);
-        if (birthDate == null || !onlyLettersString(role))
-            throw new IllegalArgumentException();
+
+        if (team == null || team.isClose() || fan == null || birthDate == null || !onlyLettersString(name) || !onlyLettersString(role))
+            return;
 
         this.birthDate = birthDate;
         this.role = role;
@@ -50,7 +52,7 @@ public class Player extends PageUser implements Serializable
 
     public boolean setDetails(String name, String role, Team team, boolean active, Date birthDate) {
 
-        if (!onlyLettersString(name) || !onlyLettersString(role) || team == null || birthDate == null)
+        if (team == null || team.isClose() || birthDate == null || !onlyLettersString(name) || !onlyLettersString(role))
             return false;
 
         this.name = name;
@@ -58,6 +60,7 @@ public class Player extends PageUser implements Serializable
         this.team = team;
         this.active = active;
         this.birthDate = birthDate;
+
         return true;
     }
 

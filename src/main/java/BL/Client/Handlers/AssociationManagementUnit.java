@@ -43,11 +43,34 @@ public class AssociationManagementUnit {
      */
     public boolean addTeam(String name, String teamUserName, Fan fan) {
 
-        if (name == null || !isValidTeamName(name) || fan == null) return false;
+        String err = "";
+        if (!isValidTeamName(name)) {
+            err += "Name: Team's name should contain only letters and\\or numbers. \n";
+        }
+        if (fan == null) {
+            err += "Fan: Fan doesn't exist. \n";
+        }
 
         Team team = new Team(name, true, false);
+
+        if(team.getName().isEmpty()) { // couldn't create team
+            err += "Team: Team doesn't exist. \n";
+        }
+
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
+
         TeamUser teamUser = new TeamUser(teamUserName, true, fan, team);
+
+        err = "";
+
+        if(teamUser.getName().isEmpty()) {
+            err += "User: User doesn't exist. \n";
+        }
+
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
+
         TeamOwner teamOwner = new TeamOwner(team, teamUser);
+
         boolean teamInsertion = clientServerCommunication.insert(team);
         boolean teamOwnerInsertion = clientServerCommunication.insert(teamOwner);
 
@@ -62,7 +85,8 @@ public class AssociationManagementUnit {
      */
     public boolean removeReferee(Referee referee) {
 
-        if (referee == null) return false;
+        if (referee == null)
+            throw new IllegalArgumentException("Illegal Arguments Insertion: \nReferee: Referee doesn't exist.\n");
 
         HashMap<String, Object> args = new HashMap<>();
 
@@ -70,14 +94,61 @@ public class AssociationManagementUnit {
         args.put("fan", referee.getFan());
         List<Match> nextMatches = clientServerCommunication.query("nextMatchesListByReferee", args);
 
-        if (nextMatches != null && !nextMatches.isEmpty()) return false;
+        if (nextMatches != null && !nextMatches.isEmpty())
+            throw new IllegalArgumentException("Cannot remove referee because it has unplayed matches left.\n");
 
         args.clear();
         args.put("active", false);
         args.put("fan", referee.getFan());
         boolean status = clientServerCommunication.update("setRefereeActivity", args);
 
+        if (status) {
+            referee.setActive(false);
+        }
+
         return status;
+
+    }
+
+    /**
+     * Signs up a user and injects it in a Referee object
+     * @param fan
+     * @param qualification
+     * @return A referee object. Returns null if the user can not be created or arguments were wrong
+     */
+    public boolean addNewReferee(Fan fan, String name, String qualification)
+    {
+        String err = "";
+        if (fan == null) {
+            err += "Fan: Fan doesn't exist.\n";
+        }
+        if (!isValidName(qualification)) {
+            err += "Qualification: Qualification can't be empty and must contain only letters.\n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
+
+        // Create a new Referee with the fan we received
+        Referee referee = new Referee(qualification, name, fan, true);
+
+        if(!clientServerCommunication.insert(referee))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public Team loadTeam(String teamName) {
+
+        if (!isValidTeamName(teamName)) return null;
+
+        HashMap<String, Object> args = new HashMap<>();
+        args.put("team", teamName);
+        List<Team> queryResult = clientServerCommunication.query("teamByName", args);
+
+        if (queryResult == null)
+            return null;
+
+        return queryResult.get(0);
 
     }
 
@@ -93,27 +164,15 @@ public class AssociationManagementUnit {
         return name != null && name.matches("([a-zA-Z0-9]+(\\s[a-zA-Z0-9]*)*)+");
     }
 
-
     /**
-     * Signs up a user and injects it in a Referee object
-     * @param fan
-     * @param qualification
-     * @return A referee object. Returns null if the user can not be created or arguments were wrong
+     * Check name validation (valid name contains only letters)
+     *
+     * @param name
+     * @return true if the name is valid
      */
-    public boolean addNewReferee(Fan fan, String name, String qualification)
-    {
-        if(fan == null || qualification == null || qualification.equals(""))
-        {
-            return false;
-        }
+    private boolean isValidName(String name) {
 
-        // Create a new Referee with the fan we received
-        Referee referee = new Referee(qualification, name, fan, true);
-
-        if(!clientServerCommunication.insert(referee))
-        {
-            return false;
-        }
-        return true;
+        return name != null && name.matches("([a-zA-Z]+(\\s[a-zA-Z]*)*)+");
     }
+
 }

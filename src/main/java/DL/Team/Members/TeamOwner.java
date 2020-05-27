@@ -8,6 +8,7 @@ import DL.Users.Fan;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 
 /**
@@ -37,7 +38,7 @@ public class TeamOwner implements FinancialUser, Serializable
     @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private TeamUser teamUser;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToOne
     private Team team;
 
     @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
@@ -51,8 +52,7 @@ public class TeamOwner implements FinancialUser, Serializable
 
     public TeamOwner(Team team, TeamUser user) 
     {
-        if (team == null || user == null)
-            throw new IllegalArgumentException();
+        if (team == null || user == null) return;
 
         this.teamUser = user;
         this.team = team;
@@ -90,7 +90,11 @@ public class TeamOwner implements FinancialUser, Serializable
 
     public TeamOwner addTeamOwnerNominee(TeamUser nominee)
     {
-        if(nominee == null) return null;
+        String err = "";
+        if(nominee == null) {
+            err += "Team Owner Nominee: Team owner nominee doesn't exist. \n";
+        }
+        if (!err.isEmpty()) throw new IllegalArgumentException("Illegal Arguments Insertion: \n" + err);
 
         TeamOwner owner = new TeamOwner(team,nominee);
         ownerNominees.add(owner);
@@ -100,11 +104,11 @@ public class TeamOwner implements FinancialUser, Serializable
 
     public TeamManager addTeamManagerNominee(Fan nominee, String name)
     {
-        if(nominee == null || name == null || name.isEmpty()) return null;
+        //if(nominee == null || name == null || name.isEmpty()) return null; already checked in team manager constructor
 
         TeamManager teamManager = new TeamManager(name,true,nominee,team,this);
         manageNominees.add(teamManager);
-        team.getTeamManagers().add(teamManager);
+        team.addTeamManagers(teamManager);
         return teamManager;
     }
 
@@ -125,4 +129,15 @@ public class TeamOwner implements FinancialUser, Serializable
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public void setTeam(Team team) { this.team = team; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TeamOwner)) return false;
+        TeamOwner teamOwner = (TeamOwner) o;
+        return teamUser.equals(teamOwner.teamUser);
+    }
+
 }
