@@ -353,7 +353,7 @@ public class HandleUserUnit
 
         List<Object> users = communication.login(userName, DigestUtils.sha1Hex(password));
 
-        if(users.size()<=0)
+        if(users == null || users.size()<=0)
         {
             return false;
         }

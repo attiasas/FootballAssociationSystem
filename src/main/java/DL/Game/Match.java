@@ -156,8 +156,12 @@ public class Match implements Serializable {
 
     public boolean isMatchEventPeriodOver()
     {
-        // TODO: ADD 5 Hours from the point that end time (needs to change from DATE)
-        return endTime != null;
+        //Convert -> Date.from(Instant.from(LocalDate.of(2019,1,1).atStartOfDay(ZoneId.systemDefault())))
+
+        if(startTime == null) return false;
+        Date current = new Date();
+        Date limit = new Date(startTime.getTime() + (5 * 60 * 1000));
+        return current.after(limit);
     }
 
     public Date getStartTime() {

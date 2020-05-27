@@ -64,7 +64,7 @@ public class LoginController implements Initializable {
         String username = StringUtils.trimToEmpty(this.txt_username.getText());
         String password = StringUtils.trimToEmpty(this.txt_password.getText());
 //        if (userUnit.logIn(username,password)) {
-        if (false) {
+        if (App.clientSystem.userUnit.logIn(username,password)) {
             closeStage();
             loadMain();
             log.info("User successfully logged in " + username);
