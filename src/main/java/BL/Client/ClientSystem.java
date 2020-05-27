@@ -1,30 +1,11 @@
 package BL.Client;
 
-import BL.Client.Handlers.AssociationManagementUnit;
+import BL.Client.Handlers.HandleUserUnit;
 import BL.Client.Handlers.MatchEventUnit;
-import BL.Client.Handlers.TeamAssetUnit;
 import BL.Communication.ClientServerCommunication;
-import DL.Administration.AssociationMember;
-import DL.Administration.SystemManager;
-import DL.Game.Match;
-import DL.Team.Assets.Stadium;
-import DL.Team.Members.Coach;
-import DL.Team.Members.Player;
-import DL.Team.Members.TeamManager;
-import DL.Team.Members.TeamOwner;
-import DL.Team.Members.TeamUser;
-import DL.Team.Team;
-import DL.Users.Fan;
 import DL.Users.User;
-import DL.Users.UserPermission;
-import java.net.InetAddress;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 //import PL.RefereeController;
-import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 
 /**
  * Description:     X ID:              X
@@ -35,6 +16,7 @@ public class ClientSystem
     private ClientServerCommunication communication;
 
     public MatchEventUnit matchEventUnit;
+    public HandleUserUnit userUnit;
 
     public ClientSystem()
     {

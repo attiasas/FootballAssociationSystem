@@ -18,7 +18,7 @@ public class App extends Application {
     public final static Logger elog = LogManager.getLogger("error");
     public static Stage mainStage;
     public static Stack<Scene> scenes;
-    public ClientSystem clientSystem;
+    public static ClientSystem clientSystem;
 
     /**
      * The main function that runs the entire program
