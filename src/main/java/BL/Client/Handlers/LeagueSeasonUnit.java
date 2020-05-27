@@ -22,6 +22,11 @@ public class LeagueSeasonUnit {
 
     private ClientServerCommunication clientServerCommunication;
 
+    public static void main(String[] args) {
+        LeagueSeasonUnit l = new LeagueSeasonUnit(new ClientServerCommunication());
+        l.addNewLeague("Champions League");
+    }
+
     /**
      * Ctor with parameters
      *
@@ -166,8 +171,10 @@ public class LeagueSeasonUnit {
     }
 
 
-    /**TODO: ADD TESTS FOR THOSE FUNCTION
     /**
+     * TODO: ADD TESTS FOR THOSE FUNCTION
+     * /**
+     *
      * @return the specific season
      */
     public Season getSeason(int year) throws Exception {

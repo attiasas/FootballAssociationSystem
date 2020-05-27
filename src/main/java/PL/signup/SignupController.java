@@ -1,6 +1,10 @@
 package PL.signup;
 
+import BL.Client.Handlers.AssociationManagementUnit;
 import BL.Client.Handlers.HandleUserUnit;
+import BL.Client.Handlers.NomineePermissionUnit;
+import BL.Client.Handlers.TeamAssetUnit;
+import BL.Communication.ClientServerCommunication;
 import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -72,6 +76,10 @@ public class SignupController implements Initializable {
         rb_male.setToggleGroup(toggleGroup);
         rb_female.setToggleGroup(toggleGroup);
         rb_nonbinary.setToggleGroup(toggleGroup);
+        userUnit = new HandleUserUnit(new ClientServerCommunication(),
+                new NomineePermissionUnit(new ClientServerCommunication()),
+                new TeamAssetUnit(new ClientServerCommunication()),
+                new AssociationManagementUnit(new ClientServerCommunication()));
     }
 
     @FXML
@@ -134,12 +142,12 @@ public class SignupController implements Initializable {
         Instant instant = Instant.from(dob.atStartOfDay(ZoneId.systemDefault()));
         Date dateOfBirth = Date.from(instant);
 
-//        if (userUnit.signUp(username, email, password) != null) {
-//            log.info("User successfully sign in " + username);
-//        } else {
-//            this.txt_username.getStyleClass().add("wrong-credentials");
-//            return false;
-//        }
+        if (userUnit.signUp(username, email, password) != null) {
+            log.info("User successfully sign in " + username);
+        } else {
+            this.txt_username.getStyleClass().add("wrong-credentials");
+            return false;
+        }
         return true;
     }
 

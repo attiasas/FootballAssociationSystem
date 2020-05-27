@@ -1,6 +1,5 @@
 package DL.Team.Page;
 
-import DL.Team.Members.TeamUser;
 import DL.Team.Team;
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ import java.io.Serializable;
 @DiscriminatorValue(value = "TeamPage")
 public class TeamPage extends Page implements Serializable
 {
-    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.ALL})
     private Team team;
 
     public TeamPage(String content, Team team) {

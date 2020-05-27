@@ -1,5 +1,10 @@
 package PL.login;
 
+import BL.Client.Handlers.AssociationManagementUnit;
+import BL.Client.Handlers.HandleUserUnit;
+import BL.Client.Handlers.NomineePermissionUnit;
+import BL.Client.Handlers.TeamAssetUnit;
+import BL.Communication.ClientServerCommunication;
 import PL.main.App;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
@@ -47,11 +52,20 @@ public class LoginController implements Initializable {
 
     private Set<String> possibleSuggestions;
 
+    private HandleUserUnit userUnit;
+
+    private ClientServerCommunication clientServerCommunication;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         possibleSuggestions = new HashSet<>();
         String[] pw = {"admin", "amir", "asaf", "avihai", "dvir", "amit"};
         Collections.addAll(possibleSuggestions, pw);
+        clientServerCommunication = new ClientServerCommunication();
+        userUnit = new HandleUserUnit(clientServerCommunication,
+                new NomineePermissionUnit(clientServerCommunication),
+                new TeamAssetUnit(clientServerCommunication),
+                new AssociationManagementUnit(clientServerCommunication));
         fa_lock.setVisible(true);
         loggingProgress.setVisible(false);
         TextFields.bindAutoCompletion(txt_username, possibleSuggestions);
@@ -63,8 +77,7 @@ public class LoginController implements Initializable {
         loggingProgress.setVisible(false);
         String username = StringUtils.trimToEmpty(this.txt_username.getText());
         String password = StringUtils.trimToEmpty(this.txt_password.getText());
-//        if (userUnit.logIn(username,password)) {
-        if (false) {
+        if (userUnit.logIn(username, password)) {
             closeStage();
             loadMain();
             log.info("User successfully logged in " + username);

@@ -1,17 +1,15 @@
 package BL.Server;
 
 import BL.Server.utils.Configuration;
+import BL.Server.utils.DB;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
 
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,10 +44,11 @@ public class NotificationUnit
         for(User user : usersToNotify)
         {
             //add to the server side and to the db on offline
+
             user.addNotification(notification);
 
+            DB.merge(user);
 
-            //TODO: add the notification to the DB
 
             //send the notifications to the users that are subscribed
             try
@@ -68,6 +67,7 @@ public class NotificationUnit
                     //after sending the notification to the user, mark it as read in the server
                     user.markNotificationAsRead(notification);
                     //TODO: mark the notification as read in the DB too
+                    DB.merge(user);
                 }
             }
             catch(Exception e)
@@ -115,11 +115,11 @@ public class NotificationUnit
         return true;
     }
 
-    public boolean markAllNotificationsOfUserAsRead(User user)
-    {
-        return user.markAllNotificationsAsRead();
-
+    public boolean markAllNotificationsOfUserAsRead(User user) {
         //TODO: mark the notifications as read in the DB
+        user.markAllNotificationsAsRead();
+        return DB.merge(user);
     }
+
 
 }

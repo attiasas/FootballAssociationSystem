@@ -1,7 +1,6 @@
 package BL.Server.utils;
 
 import BL.Server.ServerSystem;
-import DL.Team.Assets.Stadium;
 import DL.Team.Team;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
@@ -10,6 +9,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+
+import static PL.main.App.elog;
 
 /**
  * Description: This class contains the methods for connecting to the database, getting data,
@@ -35,7 +36,7 @@ public class DB implements Serializable {
             log.removeAllAppenders();
             emf = _emf;
             instance = new DB();
-            log.log(Level.INFO, "Database launched and alive on jdbc:mysql://localhost:3306/sportify");
+            log.info("Database launched and alive on: " + Configuration.getDEV_DBConnection());
         }
         return instance;
     }
@@ -62,7 +63,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            log.log(Level.WARN, "persist failed");
+            elog.warn("persist failed" + e.getMessage());
             return false;
         } finally {
             em.close();
@@ -84,6 +85,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
+            elog.warn("error - rolling back" + e.getMessage());
             return false;
         }
         return true;
@@ -102,7 +104,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            log.log(Level.WARN, "remove failed");
+            elog.log(Level.WARN, "remove failed");
             return false;
         } finally {
             em.close();
@@ -126,6 +128,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
+            elog.warn("error - rolling back" + e.getMessage());
             return false;
         } finally {
             em.close();
@@ -147,11 +150,11 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            log.log(Level.WARN, "merge failed");
+            log.info("merge failed");
             return false;
         } finally {
             em.close();
-            log.log(Level.INFO, "object merged");
+            log.info("object merged");
         }
         return true;
     }
@@ -174,11 +177,11 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            log.log(Level.WARN, "update failed");
+            log.warn("update failed");
             return false;
         } finally {
             em.close();
-            log.log(Level.INFO, "object updated");
+            log.info("object updated");
         }
         return true;
     }
@@ -200,11 +203,11 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            log.log(Level.WARN, "query failed");
+            elog.warn("query failed");
             return null;
         } finally {
             em.close();
-            log.log(Level.INFO, "query results returned");
+            log.info("query results returned");
         }
         return resultList;
     }
