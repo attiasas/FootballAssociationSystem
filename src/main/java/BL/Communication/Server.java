@@ -28,7 +28,6 @@ public class Server
         IServerStrategy serverSystem = new ServerSystem(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE, new NotificationUnit());
         Server server = new Server(Integer.parseInt(Configuration.getPropertyValue("server.port")), 3, 1000, serverSystem);
         server.start();
-
     }
 
 

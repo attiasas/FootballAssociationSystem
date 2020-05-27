@@ -108,7 +108,33 @@ public class ClientServerCommunication {
 
     public boolean startNotificationListener()
     {
-        if(listenerThread != null && listenerThread.isAlive()) return false;
+        ClientServerCommunication client = new ClientServerCommunication();
+
+        User userAdmin = new Fan("admin", "admin", "admin");
+        ClientSystem.logIn(userAdmin);
+        client.login("admin", "admin");
+
+//        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
+
+        Notifiable notifiable = new Notifiable() {
+            @Override
+            public Notification getNotification() {
+                return new Notification("notifcation!!!");
+//                return null;
+            }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set<User> set = new HashSet<>();
+                Fan fan = new Fan("admin", "admin", "admin");
+                set.add(fan);
+                return set;
+//                return null;
+            }
+        };
+
+        client.notify(notifiable);
+        System.out.println();
 
         listen = true;
         listenerThread = new Thread(() -> notificationDemon());
@@ -116,9 +142,8 @@ public class ClientServerCommunication {
         return true;
     }
 
-    public void notificationDemon()
+    public ClientServerCommunication()
     {
-        int listenPort = Integer.parseInt(Configuration.getPropertyValue("clientNotification.port"));
 
         try(ServerSocket listenSocket = new ServerSocket(listenPort))
         {
@@ -143,6 +168,28 @@ public class ClientServerCommunication {
             e.printStackTrace();
         }
     }
+
+    //    public ClientServerCommunication()
+//    {
+//        startNotificationListener();
+//    }
+//
+//
+//    private Thread listenerThread;
+//    private volatile boolean listen;
+//
+//    public boolean startNotificationListener()
+//    {
+//        if(listenerThread != null && listenerThread.isAlive()) return false;
+//
+//        listen = true;
+//        listenerThread = new Thread(() -> notificationDemon());
+//        listenerThread.start();
+//        return true;
+//    }
+
+
+
 
     public void stopListener()
     {

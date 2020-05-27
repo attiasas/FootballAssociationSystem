@@ -4,9 +4,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
-<VBox prefHeight="534.0" prefWidth="155.0" stylesheets="@../../dark-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.main.AssociationToolbarController">
+<VBox fx:id="menu" prefHeight="534.0" prefWidth="155.0" stylesheets="@../../dark-theme.css"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.main.AssociationToolbarController">
     <JFXButton alignment="CENTER" buttonType="RAISED" disable="true" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Association&#10;Member" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
-    <JFXButton contentDisplay="TOP" mnemonicParsing="false"  prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Leagues" textAlignment="CENTER" onAction="#loadManageLeagues">
+    <JFXButton fx:id="manageLeaguesButton" contentDisplay="TOP" mnemonicParsing="false"  prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Leagues" textAlignment="CENTER" onAction="#loadManageLeagues">
         <graphic>
             <FontAwesomeIconView size="25" text="" />
         </graphic>

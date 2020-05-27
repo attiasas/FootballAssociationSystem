@@ -1,3 +1,4 @@
+
 package BL.Server;
 
 import BL.Communication.IServerStrategy;
@@ -65,14 +66,14 @@ public class ServerSystem implements IServerStrategy {
      * @param strategy database persistence strategy
      */
     public ServerSystem(DbSelector dbType, Strategy strategy, NotificationUnit notificationUnit) {
-        final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
-        dataBase = DB.getDataBaseInstance(entityManagerFactory);
-        final String sysQueryName = "SystemManagers";
-        final boolean systemManagers =
-                createEM().createNamedQuery(sysQueryName).getFirstResult() == 0;
-        if (systemManagers) {
-            signUp("admin", "admin@admin.com", "admin");
-        }
+//        final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
+//        dataBase = DB.getDataBaseInstance(entityManagerFactory);
+//        final String sysQueryName = "SystemManagers";
+//        final boolean systemManagers =
+//                createEM().createNamedQuery(sysQueryName).getFirstResult() == 0;
+//        if (systemManagers) {
+//            signUp("admin", "admin@admin.com", "admin");
+//        }
 
         this.notificationUnit = notificationUnit;
     }
@@ -180,21 +181,15 @@ public class ServerSystem implements IServerStrategy {
         log.log(Level.INFO, "external systems integration started");
    /*
         FinanceSystem financeSys  = new ;
-
         void makeEntry(List<GroupedItem> itemList, Receipt reciept)
-
         void writeToSystem(Receipt reciept)
-
         void updateSystem(List<GroupedItem> itemList)
     */
 
     /*
         TaxSystem taxSys  = new ;
-
         void makeEntry(List<GroupedItem> itemList, Receipt reciept)
-
         void writeToSystem(Receipt reciept)
-
         void updateSystem(List<GroupedItem> itemList)
     */
         log.log(Level.INFO, "external systems integration completed");
@@ -218,12 +213,9 @@ public class ServerSystem implements IServerStrategy {
     }
 
 
-
-
     @Override
     //public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
-    public void serverStrategy(Socket clientSocket)
-    {
+    public void serverStrategy(Socket clientSocket) {
 
         try {
             InputStream inFromClient = clientSocket.getInputStream();
@@ -246,10 +238,9 @@ public class ServerSystem implements IServerStrategy {
 
             //TODO: if the request is unsubscription from notifications - close the socket
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
     }
-
-
 
 
     /**
@@ -303,9 +294,8 @@ public class ServerSystem implements IServerStrategy {
                         toClientObject.writeObject(DB.persist(systemRequest.data));
                     }
 
-                    if(systemRequest.data instanceof Notifiable)
-                    {
-                        notificationUnit.notify((Notifiable)systemRequest.data);
+                    if (systemRequest.data instanceof Notifiable) {
+                        notificationUnit.notify((Notifiable) systemRequest.data);
                     }
 
                     toClientObject.flush();
@@ -315,7 +305,6 @@ public class ServerSystem implements IServerStrategy {
                     toClientObject.flush();
 
                     //handle notifications for update queries
-
 
 
                     break;

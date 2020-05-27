@@ -33,10 +33,11 @@ public class AlertUtil {
         stage.toFront();
         stage.initStyle(StageStyle.UNDECORATED);
         alert.setTitle(title);
-        alert.setHeaderText(null);
+        alert.setHeaderText(title);
         alert.setContentText(content);
-        //styleAlert(alert);
+        styleAlert(alert);
         alert.showAndWait();
+
     }
 
     public static void showErrorMessage(String title, String content) {
@@ -139,8 +140,8 @@ public class AlertUtil {
     }
 
     private static void styleAlert(Alert alert) {
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.setIconified(true);
+        //Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        //stage.setIconified(true);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(AlertUtil.class.getResource("/dark-theme.css").toExternalForm());
         dialogPane.getStyleClass().add("custom-alert");

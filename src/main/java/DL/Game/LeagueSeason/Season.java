@@ -61,8 +61,6 @@ public class Season implements Serializable {
 
     @Override
     public String toString() {
-        return "Season{" +
-                "year=" + year +
-                '}';
+        return "SeasonYear{" + year + '}';
     }
 }

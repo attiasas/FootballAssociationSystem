@@ -61,6 +61,7 @@ public class GamePolicy implements Serializable{
         this(1, 1);
     }
 
+    //setters
     /**
      * Gets number of rounds
      *
@@ -75,6 +76,15 @@ public class GamePolicy implements Serializable{
      */
     public int getGamesPerDay() {
         return gamesPerDay;
+    }
+
+    //setters
+    public void setNumberOfRounds(int numberOfRounds) {
+        this.numberOfRounds = numberOfRounds;
+    }
+
+    public void setGamesPerDay(int gamesPerDay) {
+        this.gamesPerDay = gamesPerDay;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -14,61 +13,73 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="PL.AssociationUI.AssociationController">
-    <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true" />
+<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="691.0"
+           prefWidth="1000.0" styleClass="custom-pane" stylesheets="@../dark-theme.css"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.AssociationUI.AssociationController">
+    <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true"/>
     <AnchorPane fx:id="rootAnchorPane" prefHeight="797.0" prefWidth="1076.0">
         <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Menu mnemonicParsing="false" text="File">
-                <MenuItem mnemonicParsing="false" text="Open" />
-                <MenuItem mnemonicParsing="false" text="Save" />
-                <MenuItem mnemonicParsing="false" text="Update" />
-                <MenuItem mnemonicParsing="false" text="Settings" />
-                <MenuItem mnemonicParsing="false" text="Logout" />
+                <MenuItem mnemonicParsing="false" text="Open"/>
+                <MenuItem mnemonicParsing="false" text="Save"/>
+                <MenuItem mnemonicParsing="false" text="Update"/>
+                <MenuItem mnemonicParsing="false" text="Settings"/>
+                <MenuItem mnemonicParsing="false" text="Logout"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Add">
-                <MenuItem mnemonicParsing="false" text="Add User" />
-                <MenuItem mnemonicParsing="false" text="Add Asset" />
-                <MenuItem mnemonicParsing="false" text="Add Event" />
+                <MenuItem mnemonicParsing="false" text="Add User"/>
+                <MenuItem mnemonicParsing="false" text="Add Asset"/>
+                <MenuItem mnemonicParsing="false" text="Add Event"/>
             </Menu>
             <Menu mnemonicParsing="false" text="View">
-                <MenuItem mnemonicParsing="false" text="Teams List" />
-                <MenuItem mnemonicParsing="false" text="Players List" />
-                <MenuItem mnemonicParsing="false" text="Managers List" />
-                <MenuItem mnemonicParsing="false" text="Refferes List" />
-                <MenuItem mnemonicParsing="false" text="Full Screen" />
+                <MenuItem mnemonicParsing="false" text="Teams List"/>
+                <MenuItem mnemonicParsing="false" text="Players List"/>
+                <MenuItem mnemonicParsing="false" text="Managers List"/>
+                <MenuItem mnemonicParsing="false" text="Refferes List"/>
+                <MenuItem mnemonicParsing="false" text="Full Screen"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Notify">
-                <MenuItem mnemonicParsing="false" text="Notify followers" />
+                <MenuItem mnemonicParsing="false" text="Notify followers"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
-                <MenuItem mnemonicParsing="false" text="Donate" />
-                <MenuItem mnemonicParsing="false" text="About" />
+                <MenuItem mnemonicParsing="false" text="Donate"/>
+                <MenuItem mnemonicParsing="false" text="About"/>
             </Menu>
         </MenuBar>
-         <JFXHamburger fx:id="hamburger" layoutX="949.0" layoutY="38.0" styleClass="jfx-hamburger-icon" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="38.0" />
-      <ImageView blendMode="ADD" cache="true" fitHeight="665.0" fitWidth="442.0" layoutX="556.0" layoutY="30.0" preserveRatio="true" styleClass="title">
-         <image>
-            <Image url="@../img/signup-cover.jpeg" />
-         </image>
-      </ImageView>
-      <VBox layoutY="284.0" prefHeight="415.0" prefWidth="556.0">
-         <children>
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#createNewLeague" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Create League" textFill="WHITE" />
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#addNewLeagueSeason" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Create Season" textFill="WHITE" />
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#scheduleMatches" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Schedule Matches" textFill="WHITE" />
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#setRefereesInLeagueSeason" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Set Referees In Matches" textFill="WHITE" />
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#closeWindow" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Back" textFill="WHITE" />
-         </children>
-      </VBox>
-      <Text fill="WHITE" layoutX="855.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-logo" text="Sportify" wrappingWidth="130.99999091029167">
-         <font>
-            <Font size="28.0" />
-         </font>
-      </Text>
-      <Text layoutX="81.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Leagues" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="50.0" />
-         </font>
-      </Text>
+        <ImageView blendMode="ADD" cache="true" fitHeight="665.0" fitWidth="442.0" layoutX="556.0" layoutY="30.0"
+                   preserveRatio="true" styleClass="title">
+            <image>
+                <Image url="@../img/signup-cover.jpeg"/>
+            </image>
+        </ImageView>
+        <VBox layoutY="284.0" prefHeight="415.0" prefWidth="556.0">
+            <children>
+                <JFXButton fx:id="createLeagueButton" alignment="CENTER" contentDisplay="TOP"
+                           onAction="#createNewLeague" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button"
+                           text="Create League" textFill="WHITE"/>
+                <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#addNewLeagueSeason" prefHeight="83.0"
+                           prefWidth="556.0" styleClass="toolbar-button" text="Create Season" textFill="WHITE"/>
+                <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#scheduleMatches" prefHeight="83.0"
+                           prefWidth="556.0" styleClass="toolbar-button" text="Schedule Matches" textFill="WHITE"/>
+                <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#setRefereesInMatches"
+                           prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button"
+                           text="Set Referees In Matches" textFill="WHITE"/>
+                <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#closeWindow" prefHeight="83.0"
+                           prefWidth="556.0" styleClass="toolbar-button" text="Back" textFill="WHITE"/>
+            </children>
+        </VBox>
+        <Text fill="WHITE" layoutX="855.0" layoutY="668.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-logo"
+              text="Sportify" wrappingWidth="130.99999091029167">
+            <font>
+                <Font size="28.0"/>
+            </font>
+        </Text>
+        <Text layoutX="81.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Leagues"
+              textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="50.0"/>
+            </font>
+        </Text>
     </AnchorPane>
 </StackPane>

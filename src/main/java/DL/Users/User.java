@@ -37,7 +37,7 @@ public abstract class User implements Serializable
     private boolean active;
 
 
-//    @ElementCollection
+    //    @ElementCollection
     @Column
     @Convert(converter = StringListConverter.class)
     private List<String> searches;
@@ -50,7 +50,7 @@ public abstract class User implements Serializable
     //@JoinTable(name="UserToUserPermission", joinColumns = {@JoinColumn(name = "username")}, inverseJoinColumns = {@JoinColumn(name="id")})
     private UserPermission userPermission;
 
-//    @OneToMany(cascade = CascadeType.ALL)
+    //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinTable(name="UserToNotification", joinColumns = {@JoinColumn(name = "username")}, inverseJoinColumns = {@JoinColumn(name="id")})
     @ElementCollection
     private Map<Notification, Boolean> notificationsOwner; //maps from notification to a boolean of read or not read

@@ -4,6 +4,7 @@ import DL.Game.LeagueSeason.League;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.LeagueSeason.Season;
 import DL.Game.Policy.ScorePolicy;
+import PL.main.App;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
@@ -29,10 +30,10 @@ public class ScorePolicyController extends AInitComboBoxObjects {
     @FXML
     JFXComboBox<ScorePolicy> scorePolicies;
 
-    public void initComboBoxOptions(){
-        initLeagueChoices(leagues);
-        initScorePolicyChoices(scorePolicies);
-        initSeasonChoices(seasons);
+    public void initComboBoxOptions() {
+        if (!initLeagueChoices(leagues) || !initScorePolicyChoices(scorePolicies) || !initSeasonChoices(seasons)) {
+            closeWindow();
+        }
     }
 
     public void createScorePolicy() {
@@ -40,22 +41,32 @@ public class ScorePolicyController extends AInitComboBoxObjects {
         win = draw = lose = 0;
 
         try {
+
             if (winPoints.getText() != null && !winPoints.getText().equals("")
                     && drawPoints.getText() != null && !drawPoints.getText().equals("")
                     && losePoints.getText() != null && !losePoints.getText().equals("")) {
+
                 win = Integer.parseInt(winPoints.getText());
                 draw = Integer.parseInt(drawPoints.getText());
                 lose = Integer.parseInt(losePoints.getText());
-                AssociationController.policiesUnit.addNewScorePolicy(win, draw, lose);
-                showSimpleAlert("Success", "Score Policy added successfully!");
+
+                if (App.clientSystem.policiesUnit.addNewScorePolicy(win, draw, lose)) {
+                    showSimpleAlert("Success", "Score Policy added successfully!");
+                } else {
+                    showSimpleAlert("Error", "There was a problem with the server. Please try again later");
+                }
+
             } else {
                 showSimpleAlert("Error", "Please fill the required (*) fields.");
             }
-        } catch (NumberFormatException e){
-            showSimpleAlert("Error","Please insert only numbers.");
-        } catch (Exception e){
+            closeWindow();
+        } catch (NumberFormatException e) {
+            showSimpleAlert("Error", "Please insert only numbers.");
+        } catch (Exception e) {
             showSimpleAlert("Error", e.getMessage());
         }
+
+
     }
 
     public void changeScorePolicy() {
@@ -72,15 +83,22 @@ public class ScorePolicyController extends AInitComboBoxObjects {
             season = seasons.getValue();
             newScorePolicy = scorePolicies.getValue();
 
-            leagueSeason = AssociationController.leagueSeasonUnit.getLeagueSeason(season,league);
-            AssociationController.leagueSeasonUnit.changeScorePolicy(leagueSeason,newScorePolicy);
-            showSimpleAlert("Success","Score Policy changed successfully!");
+            leagueSeason = App.clientSystem.leagueSeasonUnit.getLeagueSeason(season, league);
 
-        } catch (Exception e){
+            if (App.clientSystem.leagueSeasonUnit.changeScorePolicy(leagueSeason, newScorePolicy)) {
+                showSimpleAlert("Success", "Score Policy changed successfully!");
+            } else {
+                showSimpleAlert("Error", "There was a problem with the server. Please try again later");
+            }
+
+            closeWindow();
+        } catch (Exception e) {
             showSimpleAlert("Error", e.getMessage());
         }
+
     }
 
-
-
+    public void closeWindow() {
+        AssociationController.loadScreen("AssociationManagePoliciesFXML");
+    }
 }

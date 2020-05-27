@@ -68,6 +68,34 @@ public class CommunicationLeagueSeasonAndPoliciesStub extends ClientServerCommun
                     }
                 }
                 return leagueSeasonsList;
+            case "GetLeague":
+                List<League> leagueList = new ArrayList<>();
+                for (League l : leagues) {
+                    if (l.getName().equals(parameters.get("name"))) {
+                        leagueList.add(l);
+                        return leagueList;
+                    }
+                }
+                return leagueList;
+            case "GetSeason":
+                List<Season> seasonList = new ArrayList<>();
+                for (Season s : seasons) {
+                    if (s.getYear()== (Integer) parameters.get("year")) {
+                        seasonList.add(s);
+                        return seasonList;
+                    }
+                }
+                return seasonList;
+            case "GetLeagueSeason":
+                List<LeagueSeason> leagueSeasonsL = new ArrayList<>();
+                for (LeagueSeason ls : leagueSeasons) {
+                    if (ls.getSeason().getYear() == ((Season) parameters.get("season")).getYear()
+                            && ls.getLeague().getName().equals(((League) parameters.get("league")).getName())) {
+                        leagueSeasonsL.add(ls);
+                        return leagueSeasonsL;
+                    }
+                }
+                return leagueSeasonsL;
             default:
                 return null;
         }

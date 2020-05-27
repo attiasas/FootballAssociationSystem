@@ -67,6 +67,7 @@ public class App extends Application {
 
         mainStage = primaryStage;
         scenes = new Stack<>();
+        clientSystem = new ClientSystem();
 
         primaryStage.show();
         new Thread(() -> {
