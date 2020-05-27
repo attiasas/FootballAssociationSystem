@@ -7,15 +7,17 @@ import BL.Server.utils.Configuration;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static java.net.InetAddress.getLocalHost;
+
 /**
  * Description:     This class represent a server that can communicate with multiple clients and execute a given strategy
  **/
-public class Server
-{
+public class Server {
     private int port;
     private int listeningInterval;
     private IServerStrategy serverStrategy;
@@ -50,8 +52,12 @@ public class Server
     /**
      * Boot server in a different thread and start to listen for clients
      */
-    public void start()
-    {
+    public void start() {
+        try {
+            System.out.println(getLocalHost());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
             runServer();
         }).start();

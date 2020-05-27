@@ -34,7 +34,7 @@ public class Stadium implements Serializable
     @Column
     private boolean active;
 
-    @ManyToMany/*(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})*/
+    @ManyToMany(mappedBy = "stadiums", cascade = {CascadeType.ALL})
     private List<Team> teams;
 
 

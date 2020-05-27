@@ -10,7 +10,6 @@ import BL.Server.utils.DB;
 import DL.Administration.SystemManager;
 import DL.Users.Fan;
 import DL.Users.Notifiable;
-import DL.Users.Notification;
 import DL.Users.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,12 +21,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
-import java.io.*;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+
+import static PL.main.App.elog;
 
 
 /**
@@ -66,14 +70,15 @@ public class ServerSystem implements IServerStrategy {
      * @param strategy database persistence strategy
      */
     public ServerSystem(DbSelector dbType, Strategy strategy, NotificationUnit notificationUnit) {
-//        final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
-//        dataBase = DB.getDataBaseInstance(entityManagerFactory);
-//        final String sysQueryName = "SystemManagers";
-//        final boolean systemManagers =
-//                createEM().createNamedQuery(sysQueryName).getFirstResult() == 0;
-//        if (systemManagers) {
-//            signUp("admin", "admin@admin.com", "admin");
-//        }
+        final EntityManagerFactory entityManagerFactory = createEntityManagerFactory(dbType, strategy);
+        dataBase = DB.getDataBaseInstance(entityManagerFactory);
+        final String sysQueryName = "SystemManagers";
+        final boolean systemManagers =
+                createEM().createNamedQuery(sysQueryName).getFirstResult() == 0;
+        if (systemManagers) {
+            signUp("admin", "admin@admin.com", "admin");
+            log.info("admin user has been created");
+        }
 
         this.notificationUnit = notificationUnit;
     }
@@ -118,7 +123,7 @@ public class ServerSystem implements IServerStrategy {
         Properties props = new Properties();
         log.log(Level.INFO, "USER -------------> " + user);
         log.log(Level.INFO, "PW ------> " + pw + "  (should be empty)");
-        log.log(Level.INFO, "CONNECTION URL----> " + connectionStr);
+        log.log(Level.INFO, "CONNECTION URL ----> " + connectionStr);
         log.log(Level.INFO, "PU-Strategy ------> " + strategy.toString());
         props.setProperty("javax.persistence.jdbc.user", user);
         props.setProperty("javax.persistence.jdbc.password", pw);
@@ -141,6 +146,15 @@ public class ServerSystem implements IServerStrategy {
         return emf.createEntityManager();
     }
 
+    public static void main(String[] args) {
+        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.DROP_AND_CREATE, null);
+        try {
+            serverSystem.initializeServer();
+        } catch (Exception e) {
+            elog.error("Error when connection to the server" + e.getMessage());
+        }
+    }
+
     /**
      * inserts a new user to db sends email to user generate token for user
      *
@@ -153,12 +167,12 @@ public class ServerSystem implements IServerStrategy {
 
         if (password == null || email == null || userName == null || userName.equals("") || email
                 .equals("") || password.equals("")) {
-            log.log(Level.WARN, "invalid username or password");
+            elog.warn("invalid username or password");
             return null;
         }
         final boolean userExist = createEM().find(User.class, userName) != null;
         if (userExist) {
-            log.log(Level.WARN, "username is already exist");
+            elog.warn("username is already exist");
             return null;
         }
         //create the systemManager User
@@ -167,7 +181,7 @@ public class ServerSystem implements IServerStrategy {
 
         //insert the systemManager user to the DB
         DB.persist(systemManager);
-        log.log(Level.INFO, "system manager created: " + userName);
+        log.info("system manager created: " + userName);
         return systemManager;
     }
 
@@ -178,7 +192,7 @@ public class ServerSystem implements IServerStrategy {
      */
     @SuppressWarnings("unused")
     private void initializeExternalSystems() {
-        log.log(Level.INFO, "external systems integration started");
+        log.info("external systems integration started");
    /*
         FinanceSystem financeSys  = new ;
         void makeEntry(List<GroupedItem> itemList, Receipt reciept)
@@ -192,7 +206,7 @@ public class ServerSystem implements IServerStrategy {
         void writeToSystem(Receipt reciept)
         void updateSystem(List<GroupedItem> itemList)
     */
-        log.log(Level.INFO, "external systems integration completed");
+        log.info("external systems integration completed");
     }
 
     /**
@@ -208,10 +222,9 @@ public class ServerSystem implements IServerStrategy {
         int listeningInterval = Integer.parseInt(Configuration.getPropertyValue("server.listeningInterval"));
         server = new Server(serverPort, poolSize, listeningInterval, this);
         server.start();
-        log.log(Level.INFO, "server is up and listen on port: " + serverPort);
+        log.info("server is up and listen on port: " + serverPort);
         initializeExternalSystems();
     }
-
 
     @Override
     //public void serverStrategy(InputStream inFromClient, OutputStream outToClient) {
@@ -233,92 +246,13 @@ public class ServerSystem implements IServerStrategy {
                 systemRequestList
                         .forEach(requestIterator -> handleRequest(toClientObject, requestIterator, clientSocket));
             } else {
+                log.info("handling a request from client");
                 handleRequest(toClientObject, systemRequest, clientSocket);
             }
 
             //TODO: if the request is unsubscription from notifications - close the socket
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
-        }
-    }
-
-
-    /**
-     * Strategy to execute when communicating with a client
-     *
-     * @param systemRequest  - request to handle
-     * @param toClientObject - ObjectOutputStream of a socket to the client
-     */
-    public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest, Socket clientSocket) {
-        try {
-            switch (systemRequest.type) {
-                case Login:
-                    List userToClient = DB.query("UserByUsernameAndPassword", systemRequest.data); //get list that contains only the user by username and password
-//                    List userToClient = new ArrayList();
-//                    userToClient.add(new Fan("admin", "admin", "admin"));
-//                    toClientObject.writeObject((Serializable)userToClient);
-
-                    toClientObject.flush();
-
-                    if(userToClient.size() > 0)
-                    {//there is a user with these credentials
-                        User loggingInUser = (User)userToClient.get(0);
-                        notificationUnit.subscribeUser(loggingInUser.getUsername(), clientSocket.getInetAddress());
-
-                        //after sending the user object with the notifications to the client, make all notifications changed to read
-                        notificationUnit.markAllNotificationsOfUserAsRead(loggingInUser);
-                    }
-                    break;
-                case Logout:
-                    User loggingOutUser = (User)systemRequest.data;
-                    notificationUnit.unsubscribeUser(loggingOutUser.getUsername());
-                    toClientObject.writeObject(true);
-                    break;
-                case Notify:
-                    Notifiable notifiable = (Notifiable)systemRequest.data;
-                    notificationUnit.notify(notifiable);
-                    toClientObject.writeObject(true);
-                    break;
-                case Delete:
-                    if (systemRequest.data instanceof List) {
-                        toClientObject.writeObject(DB.removeAll((List) systemRequest.data));
-                    } else {
-                        toClientObject.writeObject(DB.remove(systemRequest.data));
-                    }
-                    toClientObject.flush();
-                    break;
-                case Insert:
-                    if (systemRequest.data instanceof List) {
-                        toClientObject.writeObject(DB.persistAll((List) systemRequest.data));
-                    } else {
-                        toClientObject.writeObject(DB.persist(systemRequest.data));
-                    }
-
-                    if (systemRequest.data instanceof Notifiable) {
-                        notificationUnit.notify((Notifiable) systemRequest.data);
-                    }
-
-                    toClientObject.flush();
-                    break;
-                case Update:
-                    toClientObject.writeObject(DB.update(systemRequest.queryName, systemRequest.data));
-                    toClientObject.flush();
-
-                    //handle notifications for update queries
-
-
-                    break;
-                case Query:
-                    List toClient = DB.query(systemRequest.queryName, systemRequest.data);
-                    toClientObject.writeObject(toClient);
-                    toClientObject.flush();
-                    break;
-                default:
-                    break;
-            }
-        } catch (EOFException ignored) {
         } catch (Exception e) {
-            log.log(Level.ERROR, e.getMessage());
+            elog.error(e.getMessage());
         }
     }
 
@@ -366,12 +300,87 @@ public class ServerSystem implements IServerStrategy {
         }
     }
 
-    public static void main(String[] args) {
-        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST,Strategy.DROP_AND_CREATE,null);
+    /**
+     * Strategy to execute when communicating with a client
+     *
+     * @param systemRequest  - request to handle
+     * @param toClientObject - ObjectOutputStream of a socket to the client
+     */
+    public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest, Socket clientSocket) {
         try {
-            serverSystem.initializeServer();
-        }catch (Exception e){
-            System.out.println("Error when connection to the server"+ e.getMessage());
+            switch (systemRequest.type) {
+                case Login:
+                    log.info(systemRequest.type + " request has been recived!");
+                    List userToClient = DB.query("UserByUsernameAndPassword", systemRequest.data); //get list that contains only the user by username and password
+//                    List userToClient = new ArrayList();
+//                    userToClient.add(new Fan("admin", "admin", "admin"));
+//                    toClientObject.writeObject((Serializable)userToClient);
+
+                    toClientObject.flush();
+
+                    if(userToClient.size() > 0)
+                    {//there is a user with these credentials
+                        User loggingInUser = (User)userToClient.get(0);
+                        notificationUnit.subscribeUser(loggingInUser.getUsername(), clientSocket.getInetAddress());
+
+                        //after sending the user object with the notifications to the client, make all notifications changed to read
+                        notificationUnit.markAllNotificationsOfUserAsRead(loggingInUser);
+                    }
+                    break;
+                case Logout:
+                    log.info(systemRequest.type + " request has been recived!");
+                    User loggingOutUser = (User)systemRequest.data;
+                    notificationUnit.unsubscribeUser(loggingOutUser.getUsername());
+                    toClientObject.writeObject(true);
+                    break;
+                case Notify:
+                    Notifiable notifiable = (Notifiable)systemRequest.data;
+                    notificationUnit.notify(notifiable);
+                    toClientObject.writeObject(true);
+                    break;
+                case Delete:
+                    log.info(systemRequest.type + " request has been recived!");
+                    if (systemRequest.data instanceof List) {
+                        toClientObject.writeObject(DB.removeAll((List) systemRequest.data));
+                    } else {
+                        toClientObject.writeObject(DB.remove(systemRequest.data));
+                    }
+                    toClientObject.flush();
+                    break;
+                case Insert:
+                    log.info(systemRequest.type + " request has been recived!");
+                    if (systemRequest.data instanceof List) {
+                        toClientObject.writeObject(DB.persistAll((List) systemRequest.data));
+                    } else {
+                        toClientObject.writeObject(DB.persist(systemRequest.data));
+                    }
+
+                    if (systemRequest.data instanceof Notifiable) {
+                        notificationUnit.notify((Notifiable) systemRequest.data);
+                    }
+
+                    toClientObject.flush();
+                    break;
+                case Update:
+                    log.info(systemRequest.type + " request has been recived!");
+                    toClientObject.writeObject(DB.update(systemRequest.queryName, systemRequest.data));
+                    toClientObject.flush();
+
+                    //handle notifications for update queries
+
+
+                    break;
+                case Query:
+                    log.info(systemRequest.type + " request has been recived!");
+                    List toClient = DB.query(systemRequest.queryName, systemRequest.data);
+                    toClientObject.writeObject(toClient);
+                    toClientObject.flush();
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception ex) {
+            elog.error("error accourse in request handle" + ex.getMessage());
         }
     }
 

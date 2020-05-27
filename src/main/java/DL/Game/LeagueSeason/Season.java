@@ -19,9 +19,14 @@ public class Season implements Serializable {
     @Id
     @Column
     private int year;
+    @Column
+    private String seasonStart;
+    @Column
+    private String seasonEnd;
 
     /**
      * Ctor
+     *
      * @param year of the season
      */
     public Season(int year) {

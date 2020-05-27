@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.extern.log4j.Log4j;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,15 +21,15 @@ import java.util.concurrent.TimeUnit;
 @Log4j(topic = "event")
 public class App extends Application {
 
-    /**
+    public final static Logger elog = LogManager.getLogger("error");
+    public static Stage mainStage;
+    public static Stack<Scene> scenes;
+
+/**
      * The main function that runs the entire program
      *
      * @param args - ignored
      */
-
-    public static Stage mainStage;
-    public static Stack<Scene> scenes;
-
     public static void main(String[] args) {
 
         long startTime = System.currentTimeMillis();
@@ -59,10 +61,6 @@ public class App extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Sportify");
-//        AlertUtil.showSimpleAlert("Sportify Alert","some alert content");
-//        AlertUtil.showErrorMessage("IOException","some exception contenet");
-//        AlertUtil.showErrorMessage(new IOException(),"IOException","some exception contenet");
-//        AlertUtil.showErrorMessage(new IOException());
         primaryStage.setResizable(false);
 
         mainStage = primaryStage;

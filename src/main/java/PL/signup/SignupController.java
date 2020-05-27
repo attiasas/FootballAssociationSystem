@@ -1,6 +1,5 @@
 package PL.signup;
 
-import BL.Client.Handlers.HandleUserUnit;
 import PL.main.App;
 import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
@@ -66,7 +65,6 @@ public class SignupController implements Initializable {
     @FXML
     private JFXCheckBox cb_terms;
 
-    private HandleUserUnit userUnit;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

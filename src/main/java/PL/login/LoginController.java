@@ -1,5 +1,7 @@
 package PL.login;
 
+import BL.Client.Handlers.HandleUserUnit;
+import BL.Communication.ClientServerCommunication;
 import PL.main.App;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
@@ -47,11 +49,16 @@ public class LoginController implements Initializable {
 
     private Set<String> possibleSuggestions;
 
+    private HandleUserUnit userUnit;
+
+    private ClientServerCommunication clientServerCommunication;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         possibleSuggestions = new HashSet<>();
         String[] pw = {"admin", "amir", "asaf", "avihai", "dvir", "amit"};
         Collections.addAll(possibleSuggestions, pw);
+        clientServerCommunication = new ClientServerCommunication();
         fa_lock.setVisible(true);
         loggingProgress.setVisible(false);
         TextFields.bindAutoCompletion(txt_username, possibleSuggestions);
@@ -63,8 +70,7 @@ public class LoginController implements Initializable {
         loggingProgress.setVisible(false);
         String username = StringUtils.trimToEmpty(this.txt_username.getText());
         String password = StringUtils.trimToEmpty(this.txt_password.getText());
-//        if (userUnit.logIn(username,password)) {
-        if (App.clientSystem.userUnit.logIn(username,password)) {
+        if (App.clientSystem.userUnit.logIn(username, password)) {
             closeStage();
             loadMain();
             log.info("User successfully logged in " + username);
