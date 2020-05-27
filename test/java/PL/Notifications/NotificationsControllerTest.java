@@ -48,7 +48,6 @@ public class NotificationsControllerTest
 
         client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
 
-
     }
 
 }
