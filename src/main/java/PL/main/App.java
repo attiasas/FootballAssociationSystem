@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lombok.extern.log4j.Log4j;
 
 import java.io.File;
@@ -61,6 +62,18 @@ public class App extends Application {
         }).start();
     }
 
+    public static void loadStage(String fxmlFileName) {
+        try {
+            Parent parent = FXMLLoader.load(App.class.getResource(String.format("/Window/%s.fxml", fxmlFileName)));
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("Sportify");
+            stage.setScene(new Scene(parent));
+            mainStage = stage;
+            stage.show();
+        } catch (IOException ignored) {
+        }
+    }
+
     public static Object loadScreen(String fxmlFileName) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -78,5 +91,14 @@ public class App extends Application {
             showSimpleAlert("Error", "Can't load screen. Please try again");
             return null;
         }
+    }
+
+    public static void back()
+    {
+        if(scenes.size() > 1)
+        {
+            App.mainStage.setScene(App.scenes.pop());
+        }
+        else mainStage.close();
     }
 }

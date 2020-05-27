@@ -1,9 +1,12 @@
 package PL.main;
 
+import BL.Client.ClientSystem;
+import DL.Users.User;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import io.airlift.command.Cli;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -51,8 +54,26 @@ public class MainController implements Initializable {
     private AnchorPane rootAnchorPane;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        initDrawer("RefereeToolbar");
+    public void initialize(URL url, ResourceBundle rb)
+    {
+        String hamburgerFXL = null;
+
+        switch (ClientSystem.getLoggedUserType())
+        {
+            case Association: hamburgerFXL = "AssociationToolbar"; break;
+            case Referee: hamburgerFXL = "RefereeToolbar"; break;
+            case Fan: hamburgerFXL = "FanToolbar"; break;
+            case Owner: hamburgerFXL = "TeamOwnerToolbar"; break;
+            case Manager: hamburgerFXL = "TeamManagerToolbar"; break;
+            case Player: hamburgerFXL = "PlayerToolbar"; break;
+            case Admin: hamburgerFXL = "ManagerToolbar"; break;
+            //case None: hamburgerFXL = "NoUserToolbar"; break;
+        }
+
+        if(hamburgerFXL != null)
+        {
+            initDrawer(hamburgerFXL);
+        }
     }
 
     private Stage getStage() {
