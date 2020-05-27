@@ -12,8 +12,8 @@ import java.util.*;
  * ID:              X
  **/
 @NamedQueries( value = {
-        @NamedQuery(name = "UserByUsername", query = "SELECT u From User u WHERE u.username = :username"),
-        @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :hashedPassword"),
+        @NamedQuery(name = "UserByUserName", query = "SELECT u From User u WHERE u.username = :username"),
+        @NamedQuery(name = "UserByUsernameAndPassword", query = "SELECT u FROM User u WHERE u.username = :username AND u.hashedPassword = :password"),
         @NamedQuery(name = "UpdateUserPermission", query = "update User u set u.userPermission = :permission where u = :user"),
         @NamedQuery(name = "DeactivateUser", query = "UPDATE User u SET u.active = false where u= :user"),
         @NamedQuery(name = "ActivateUser", query = "UPDATE User u SET u.active = true where u=:user"),

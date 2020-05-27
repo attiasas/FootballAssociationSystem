@@ -147,7 +147,7 @@ public class ServerSystem implements IServerStrategy {
     }
 
     public static void main(String[] args) {
-        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.DROP_AND_CREATE, null);
+        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.NONE, null);
         try {
             serverSystem.initializeServer();
         } catch (Exception e) {
@@ -326,7 +326,7 @@ public class ServerSystem implements IServerStrategy {
                         //after sending the user object with the notifications to the client, make all notifications changed to read
                         notificationUnit.markAllNotificationsOfUserAsRead(loggingInUser);
                     }
-                    toClientObject.writeObject(true);
+                    toClientObject.writeObject(userToClient);
                     break;
                 case Logout:
                     log.info(systemRequest.type + " request has been recived!");

@@ -226,7 +226,8 @@ public class DB implements Serializable {
             filterMap.keySet().forEach(column -> {
                 if (filterMap.get(column) instanceof String) {
                     String value = (String) filterMap.get(column);
-                    q.setParameter(column, value.toUpperCase() + "%");
+//                    q.setParameter(column, value.toUpperCase() + "%");
+                    q.setParameter(column, value);
                 } else {
                     q.setParameter(column, filterMap.get(column));
                 }
