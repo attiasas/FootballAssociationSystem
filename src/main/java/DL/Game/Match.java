@@ -4,6 +4,7 @@ import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.MatchEvents.EventLog;
 import DL.Team.Assets.Stadium;
 import DL.Team.Team;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +14,6 @@ import java.util.Objects;
 /**
  * Description:     This class represents a match between two teams
  **/
-
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "UpdateMatchEventLog", query = "update Match m set m.myEventLog = :eventLog where m = : match"),

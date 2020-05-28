@@ -41,7 +41,7 @@ public class LeagueSeason implements Serializable {
     private GamePolicy gamePolicy;
     @OneToOne(cascade = CascadeType.MERGE)
     private ScorePolicy scorePolicy;
-    @OneToMany(targetEntity = Match.class,cascade = CascadeType.ALL,mappedBy = "leagueSeason")
+    @OneToMany(mappedBy = "leagueSeason",cascade = CascadeType.ALL)
     private List<Match> matches;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Team> teamsParticipate;
@@ -106,6 +106,12 @@ public class LeagueSeason implements Serializable {
         }
         return false;
     }
+
+    public void setMatches(){ matches = new ArrayList<>(); }
+
+    public void setTeams(){ teamsParticipate = new ArrayList<>(); }
+
+    public void setReferees(){ referees = new ArrayList<>(); }
 
     /**
      * checks if the league is already running  - if not changes the score policy.

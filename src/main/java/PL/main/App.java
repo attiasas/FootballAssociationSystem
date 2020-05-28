@@ -55,7 +55,7 @@ public class App extends Application {
         long exitTime = System.currentTimeMillis();
         long milliseconds = exitTime - startTime;
         long min = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
-        long sec = TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+        long sec = TimeUnit.MILLISECONDS.toSeconds(milliseconds)%60;
         log.info("Sportify is closing. Used for " + min + " min and " + sec + " sec.");
     }
 

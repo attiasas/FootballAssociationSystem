@@ -11,6 +11,7 @@ import DL.Team.Members.TeamOwner;
 import DL.Team.Page.Page;
 import DL.Team.Page.TeamPage;
 import DL.Users.User;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.*;
@@ -29,7 +30,6 @@ import javax.persistence.*;
  * Description:  Defines a Team object - consists of players, manager, coaches, etc.   X
  * ID:              X
  **/
-
 @Entity
 @NamedQueries(value = {
     @NamedQuery(name = "Team", query = "SELECT t FROM Team t"),
@@ -77,7 +77,7 @@ public class Team implements Serializable
     @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamOwner> teamOwners;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(mappedBy = "teams", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<Stadium> stadiums;
 
     @OneToMany(mappedBy = "homeTeam", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
@@ -89,7 +89,7 @@ public class Team implements Serializable
     @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<TeamFinancialEntry> teamFinancialEntries;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(mappedBy = "teamsParticipate", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private List<LeagueSeason> leagueSeasons;
 
     //Constructor

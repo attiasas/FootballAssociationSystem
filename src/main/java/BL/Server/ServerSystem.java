@@ -8,6 +8,9 @@ import BL.Communication.SystemRequest.Type;
 import BL.Server.utils.Configuration;
 import BL.Server.utils.DB;
 import DL.Administration.SystemManager;
+import DL.Team.Members.TeamManager;
+import DL.Team.Members.TeamOwner;
+import DL.Team.Team;
 import DL.Users.Fan;
 import DL.Users.Notifiable;
 import DL.Users.User;
@@ -16,6 +19,8 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -30,8 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-
-import static PL.main.App.elog;
 
 
 /**
@@ -54,6 +57,7 @@ import static PL.main.App.elog;
 @Getter
 public class ServerSystem implements IServerStrategy {
 
+//    public final static Logger elog = LogManager.getLogger("error");
     static final String PERSISTENCE_UNIT_NAME = "sportify";  /* The name of the persistence unit*/
     @PersistenceUnit
     static EntityManagerFactory emf;  /* The central, shared entity manager factory instance. */
@@ -62,6 +66,15 @@ public class ServerSystem implements IServerStrategy {
 
     //notification handling objects
     private NotificationUnit notificationUnit;
+
+    public static void main(String[] args) {
+        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.DROP_AND_CREATE, null);
+        try {
+            serverSystem.initializeServer();
+        } catch (Exception e) {
+            log.error("Error when connection to the server" + e.getMessage());
+        }
+    }
 
     /**
      * c`tor
@@ -146,15 +159,6 @@ public class ServerSystem implements IServerStrategy {
         return emf.createEntityManager();
     }
 
-    public static void main(String[] args) {
-        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.NONE, null);
-        try {
-            serverSystem.initializeServer();
-        } catch (Exception e) {
-            elog.error("Error when connection to the server" + e.getMessage());
-        }
-    }
-
     /**
      * inserts a new user to db sends email to user generate token for user
      *
@@ -167,12 +171,12 @@ public class ServerSystem implements IServerStrategy {
 
         if (password == null || email == null || userName == null || userName.equals("") || email
                 .equals("") || password.equals("")) {
-            elog.warn("invalid username or password");
+            log.warn("invalid username or password");
             return null;
         }
         final boolean userExist = createEM().find(User.class, userName) != null;
         if (userExist) {
-            elog.warn("username is already exist");
+            log.warn("username is already exist");
             return null;
         }
         //create the systemManager User
@@ -252,7 +256,7 @@ public class ServerSystem implements IServerStrategy {
 
             //TODO: if the request is unsubscription from notifications - close the socket
         } catch (Exception e) {
-            elog.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -381,7 +385,7 @@ public class ServerSystem implements IServerStrategy {
                     break;
             }
         } catch (Exception ex) {
-            elog.error("error accourse in request handle" + ex.getMessage());
+            log.error("error accourse in request handle" + ex.getMessage());
         }
     }
 

@@ -351,7 +351,7 @@ public class HandleUserUnit
 //        logInParameters.put("username", userName);
 //        logInParameters.put("hashedPassword", DigestUtils.sha1Hex(password));
 
-        List<Object> users = communication.login(userName, DigestUtils.sha1Hex(password));
+        List users = communication.login(userName, DigestUtils.sha1Hex(password));
 
         if(users == null || users.size()<=0)
         {

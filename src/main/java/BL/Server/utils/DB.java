@@ -1,16 +1,15 @@
 package BL.Server.utils;
 
 import BL.Server.ServerSystem;
-import DL.Team.Team;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
-
-import static PL.main.App.elog;
 
 /**
  * Description: This class contains the methods for connecting to the database, getting data,
@@ -26,6 +25,7 @@ public class DB implements Serializable {
     @PersistenceUnit
     private static EntityManagerFactory emf;
     private static DB instance;
+//    public final static Logger log = LogManager.getLogger("error");
 
     /**
      * @param _emf- Entity Manager Factory object
@@ -63,7 +63,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            elog.warn("persist failed" + e.getMessage());
+            log.warn("persist failed" + e.getMessage());
             return false;
         } finally {
             em.close();
@@ -85,7 +85,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            elog.warn("error - rolling back" + e.getMessage());
+            log.warn("error - rolling back" + e.getMessage());
             return false;
         }
         return true;
@@ -104,7 +104,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            elog.log(Level.WARN, "remove failed");
+            log.log(Level.WARN, "remove failed");
             return false;
         } finally {
             em.close();
@@ -128,7 +128,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            elog.warn("error - rolling back" + e.getMessage());
+            log.warn("error - rolling back" + e.getMessage());
             return false;
         } finally {
             em.close();
@@ -203,7 +203,7 @@ public class DB implements Serializable {
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
-            elog.warn("query failed");
+            log.warn("query failed");
             return null;
         } finally {
             em.close();
@@ -238,31 +238,37 @@ public class DB implements Serializable {
 
     public static void main(String[] args) {
         emf = ServerSystem
-                .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.DROP_AND_CREATE);
+                .createEntityManagerFactory(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE);
         EntityTransaction txn;
         EntityManager em = emf.createEntityManager();
         txn = em.getTransaction();
         txn.begin();
+
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("username", "dvir");
+//        System.out.println(em.createNamedQuery("UserByUserName").setParameter("username", "dvir").getResultList().size());
+
+//        Coach c = new Coach("dvir",true,new Fan("dvir",))
 //        Team t = new Team("team test",true,false);
 //        em.persist(t);
-        HashMap<String,Object> para = new HashMap<>();
-        para.put("name","team test");
-        List l = em.createNamedQuery("Team").getResultList();
-        System.out.println(l.size() + " | " + (!l.isEmpty() ? l.get(0) : "Empty"));
-        em.createNativeQuery(
-                "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
-                .executeUpdate();
-        em.createNativeQuery("TRUNCATE TABLE Standings")
-                .executeUpdate(); // clears the table content
-        em.createNativeQuery(
-                "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
-                .executeUpdate(); // insert values
-        em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
-                .executeUpdate();
-        Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
-        List<Object[]> ids = q.getResultList();
-        for (Object[] a : ids)
-            log.log(Level.INFO, "Standings ~ " + a[0] + ":" + a[1]);// Show Result
+//        HashMap<String,Object> para = new HashMap<>();
+//        para.put("name","team test");
+//        List l = em.createNamedQuery("Team").getResultList();
+//        System.out.println(l.size() + " | " + (!l.isEmpty() ? l.get(0) : "Empty"));
+//        em.createNativeQuery(
+//                "CREATE TABLE IF NOT EXISTS Standings (id INTEGER PRIMARY KEY, name VARCHAR(50) NOT NULL)")
+//                .executeUpdate();
+//        em.createNativeQuery("TRUNCATE TABLE Standings")
+//                .executeUpdate(); // clears the table content
+//        em.createNativeQuery(
+//                "INSERT INTO Standings VALUES (1,'one'),(2,'two'),(3,'three'),(4,'four')")
+//                .executeUpdate(); // insert values
+//        em.createNativeQuery("UPDATE Standings SET name='one updated' WHERE id = 1")
+//                .executeUpdate();
+//        Query q = em.createNativeQuery("SELECT a.id, a.name FROM Standings a");
+//        List<Object[]> ids = q.getResultList();
+//        for (Object[] a : ids)
+//            log.log(Level.INFO, "Standings ~ " + a[0] + ":" + a[1]);// Show Result
         //em.createNativeQuery("DROP TABLE IF EXISTS Standings").executeUpdate(); // drops the table
         txn.commit();
         em.close();

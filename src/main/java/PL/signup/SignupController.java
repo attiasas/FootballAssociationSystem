@@ -124,7 +124,6 @@ public class SignupController implements Initializable {
             this.txt_confirmMail.getStyleClass().add("correct-credentials");
         }
 
-
         if (dob == null) {
             this.txt_dob.getStyleClass().add("wrong-credentials");
             return false;
@@ -134,7 +133,7 @@ public class SignupController implements Initializable {
         Date dateOfBirth = Date.from(instant);
 
         if (App.clientSystem.userUnit.signUp(username, email, password) != null) {
-            log.info("User successfully sign in " + username);
+            log.info("User successfully signed up " + username);
         } else {
             this.txt_username.getStyleClass().add("wrong-credentials");
             return false;

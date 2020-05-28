@@ -30,27 +30,24 @@ import java.io.Serializable;
         @NamedQuery(name = "ActivateTeamUserByFan", query = "UPDATE TeamUser tu SET tu.active = true WHERE tu.fan = :fan"),
 })
 
-@IdClass(TeamUser.EntryPK.class)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class TeamUser implements Serializable
 {
 
+    @Id
+    @GeneratedValue()
+    int id;
     /**
      * For Composite Primary Key
      */
-    public static class EntryPK implements Serializable {
-        public String name;
-        public Fan fan;
-    }
 
-    @Id
     @Column
     String name;
 
-    @Id
-    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToOne()
     Fan fan;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToOne()
     protected Team team;
 
     @Column

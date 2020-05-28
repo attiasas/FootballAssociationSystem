@@ -16,10 +16,9 @@ import java.util.Objects;
  **/
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class PageUser extends TeamUser implements Serializable
 {
-    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.ALL})
     public UserPage page;
 
     public PageUser(String name, boolean active, Fan fan, UserPage page, Team team) {

@@ -27,7 +27,7 @@ public class Server {
 
     public static void main(String[] args)
     {
-        IServerStrategy serverSystem = new ServerSystem(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.NONE, new NotificationUnit());
+        IServerStrategy serverSystem = new ServerSystem(ServerSystem.DbSelector.TEST, ServerSystem.Strategy.DROP_AND_CREATE, new NotificationUnit());
         Server server = new Server(Integer.parseInt(Configuration.getPropertyValue("server.port")), 3, 1000, serverSystem);
         server.start();
     }
