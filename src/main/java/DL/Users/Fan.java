@@ -1,6 +1,8 @@
 package DL.Users;
 
 import DL.Team.Page.Page;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +21,7 @@ public class Fan extends User implements Serializable
 {
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Page> follow;
 
     public Fan (String userName, String email, String hashedPassword)

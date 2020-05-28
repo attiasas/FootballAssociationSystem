@@ -285,3 +285,47 @@
 2020-05-28 16:18:06 INFO  event - PW ------> sql  (should be empty)
 2020-05-28 16:18:06 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
 2020-05-28 16:18:06 INFO  event - PU-Strategy ------> create
+2020-05-28 16:24:28 INFO  event - USER -------------> postgres
+2020-05-28 16:24:28 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:24:28 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:24:28 INFO  event - PU-Strategy ------> create
+2020-05-28 16:31:29 INFO  event - USER -------------> postgres
+2020-05-28 16:31:29 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:31:29 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:31:29 INFO  event - PU-Strategy ------> create
+2020-05-28 16:32:26 INFO  event - USER -------------> postgres
+2020-05-28 16:32:26 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:32:26 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:32:26 INFO  event - PU-Strategy ------> create
+2020-05-28 16:36:08 INFO  event - USER -------------> postgres
+2020-05-28 16:36:08 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:36:08 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:36:08 INFO  event - PU-Strategy ------> create
+2020-05-28 16:37:27 INFO  event - USER -------------> postgres
+2020-05-28 16:37:27 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:37:27 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:37:27 INFO  event - PU-Strategy ------> create
+2020-05-28 16:39:11 INFO  event - USER -------------> postgres
+2020-05-28 16:39:11 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:39:11 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:39:11 INFO  event - PU-Strategy ------> create
+2020-05-28 16:42:43 INFO  event - USER -------------> postgres
+2020-05-28 16:42:43 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:42:43 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:42:43 INFO  event - PU-Strategy ------> create
+2020-05-28 16:44:58 INFO  event - USER -------------> postgres
+2020-05-28 16:44:58 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:44:58 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:44:58 INFO  event - PU-Strategy ------> create
+2020-05-28 16:46:11 INFO  event - USER -------------> postgres
+2020-05-28 16:46:11 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:46:11 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:46:11 INFO  event - PU-Strategy ------> create
+2020-05-28 16:48:07 INFO  event - USER -------------> postgres
+2020-05-28 16:48:07 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:48:07 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:48:07 INFO  event - PU-Strategy ------> create
+2020-05-28 16:51:56 INFO  event - USER -------------> postgres
+2020-05-28 16:51:56 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 16:51:56 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 16:51:56 INFO  event - PU-Strategy ------> create

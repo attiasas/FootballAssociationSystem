@@ -1,5 +1,8 @@
 package DL.Users;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class UserPermission implements Serializable
     private Long id;
 
     @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Permission> teamPermissions;
 
 

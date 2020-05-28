@@ -5,6 +5,8 @@ import DL.Game.Policy.GamePolicy;
 import DL.Game.Policy.ScorePolicy;
 import DL.Game.Referee;
 import DL.Team.Team;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.swing.table.TableColumn;
@@ -42,10 +44,13 @@ public class LeagueSeason implements Serializable {
     @OneToOne(cascade = CascadeType.MERGE)
     private ScorePolicy scorePolicy;
     @OneToMany(targetEntity = Match.class,cascade = CascadeType.ALL,mappedBy = "leagueSeason")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Match> matches;
     @ManyToMany(cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Team> teamsParticipate;
     @ManyToMany(cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Referee> referees;
     @Column
     private Date startDate;

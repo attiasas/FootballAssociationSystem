@@ -1,6 +1,8 @@
 package DL.Users;
 import BL.Server.utils.StringListConverter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -57,6 +59,7 @@ public abstract class User implements Serializable
     private Map<Notification, Boolean> notificationsOwner; //maps from notification to a boolean of read or not read
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<UserComplaint> userComplaintsOwner;
 
     /**
