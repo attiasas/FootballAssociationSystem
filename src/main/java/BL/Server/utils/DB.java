@@ -1,15 +1,19 @@
 package BL.Server.utils;
 
 import BL.Server.ServerSystem;
+import DL.Game.LeagueSeason.LeagueSeason;
+import DL.Team.Team;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Description: This class contains the methods for connecting to the database, getting data,
@@ -62,6 +66,7 @@ public class DB implements Serializable {
             em.flush();
             em.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             em.getTransaction().rollback();
             log.warn("persist failed" + e.getMessage());
             return false;
@@ -191,6 +196,7 @@ public class DB implements Serializable {
      * @param data      the query parameters
      * @return a results list
      */
+
     public static List query(String queryName, Object data) {
         List resultList;
         EntityManager em = emf.createEntityManager();
@@ -245,9 +251,18 @@ public class DB implements Serializable {
         txn.begin();
 
         HashMap<String, Object> param = new HashMap<>();
-        param.put("username", "dvir");
-//        System.out.println(em.createNamedQuery("UserByUserName").setParameter("username", "dvir").getResultList().size());
+        param.put("name", "amit");
 
+        Team a = em.find(Team.class, "hapoell");
+
+        LeagueSeason ls = em.find(LeagueSeason.class, 7);
+
+        ls.addTeam(a);
+
+        DB.persist(ls);
+
+//        System.out.println(em.createNamedQuery("").setParameter("username", "dvir").getResultList().size());
+        System.out.println(DB.query("teamByName",param).size());
 //        Coach c = new Coach("dvir",true,new Fan("dvir",))
 //        Team t = new Team("team test",true,false);
 //        em.persist(t);

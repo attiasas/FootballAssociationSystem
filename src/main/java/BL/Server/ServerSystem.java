@@ -26,6 +26,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
+import javax.transaction.Transactional;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -330,7 +331,9 @@ public class ServerSystem implements IServerStrategy {
                         //after sending the user object with the notifications to the client, make all notifications changed to read
                         notificationUnit.markAllNotificationsOfUserAsRead(loggingInUser);
                     }
+
                     toClientObject.writeObject(userToClient);
+
                     break;
                 case Logout:
                     log.info(systemRequest.type + " request has been recived!");

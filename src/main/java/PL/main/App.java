@@ -25,7 +25,7 @@ import static PL.AlertUtil.showSimpleAlert;
 @Log4j(topic = "event")
 public class App extends Application {
 
-    public final static Logger elog = LogManager.getLogger("error");
+//    public final static Logger elog = LogManager.getLogger("error");
     public static Stage mainStage;
     public static Stack<Scene> scenes;
     public static ClientSystem clientSystem = new ClientSystem();

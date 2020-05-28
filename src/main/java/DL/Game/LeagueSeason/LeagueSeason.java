@@ -21,7 +21,7 @@ import java.util.*;
         @NamedQuery(name = "GetLeagueSeason", query = "SELECT ls From LeagueSeason ls WHERE ls.season =: season AND ls.league =: league"),
         @NamedQuery(name = "UpdateScorePolicy", query = "UPDATE LeagueSeason ls SET ls.scorePolicy = :newScorePolicy WHERE  ls.league = : league AND ls.season =: season"),
         @NamedQuery(name = "UpdateLeagueSeasonRefereesList", query = "UPDATE LeagueSeason ls SET ls.referees = :newReferees WHERE  ls.league = : league AND ls.season =: season"),
-        @NamedQuery(name = "UpdateLeagueSeasonTeamList", query = "UPDATE LeagueSeason ls SET ls.teamsParticipate = :newTeamList WHERE  ls.league = : league AND ls.season =: season"),
+        @NamedQuery(name = "UpdateLeagueSeasonTeamList", query = "UPDATE LeagueSeason ls SET ls.teamsParticipate = :teamsParticipate WHERE  ls.leagueSeasonID=:leagueSeasonID"),
         @NamedQuery(name = "UpdateLeagueSeasonMatchList", query = "UPDATE LeagueSeason ls SET ls.matches = :matchList WHERE  ls.league = : league AND ls.season =: season"),
         @NamedQuery(name = "UpdateLeagueSeasonRefereeList", query = "UPDATE LeagueSeason ls SET ls.referees = :refereesList WHERE  ls.league = : league AND ls.season =: season")
 
@@ -41,11 +41,11 @@ public class LeagueSeason implements Serializable {
     private GamePolicy gamePolicy;
     @OneToOne(cascade = CascadeType.MERGE)
     private ScorePolicy scorePolicy;
-    @OneToMany(mappedBy = "leagueSeason",cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Match.class,cascade = CascadeType.ALL,mappedBy = "leagueSeason")
     private List<Match> matches;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<Team> teamsParticipate;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<Referee> referees;
     @Column
     private Date startDate;
@@ -87,7 +87,7 @@ public class LeagueSeason implements Serializable {
     public boolean addTeam(Team team) {
         if (team != null && team.isActive() && !checkIfObjectExists(team, teamsParticipate)) {
             teamsParticipate.add(team);
-            team.addLeagueSeason(this);
+            //team.addLeagueSeason(this);
             return true;
         }
         return false;
@@ -106,12 +106,6 @@ public class LeagueSeason implements Serializable {
         }
         return false;
     }
-
-    public void setMatches(){ matches = new ArrayList<>(); }
-
-    public void setTeams(){ teamsParticipate = new ArrayList<>(); }
-
-    public void setReferees(){ referees = new ArrayList<>(); }
 
     /**
      * checks if the league is already running  - if not changes the score policy.
@@ -353,5 +347,15 @@ public class LeagueSeason implements Serializable {
         return "LeagueSeason{" + league + ", " + season + '}';
     }
 
+    public void setMatches(){
+        matches = new ArrayList<>();
+    }
 
+    public void setTeams(){
+        teamsParticipate = new ArrayList<>();
+    }
+
+    public void setReferees(){
+        referees = new ArrayList<>();
+    }
 }

@@ -27,6 +27,7 @@ public class Fan extends User implements Serializable
         follow = new HashSet<>();
     }
 
+
     public Fan()
     {
         this("", "", "");
