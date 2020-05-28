@@ -18,7 +18,7 @@ import java.io.Serializable;
 @DiscriminatorValue(value = "TeamPage")
 public class TeamPage extends Page implements Serializable
 {
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private Team team;
 
     public TeamPage(String content, Team team) {

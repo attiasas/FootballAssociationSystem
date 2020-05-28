@@ -11,7 +11,6 @@ import DL.Team.Members.TeamOwner;
 import DL.Team.Page.Page;
 import DL.Team.Page.TeamPage;
 import DL.Users.User;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.*;
@@ -30,10 +29,11 @@ import javax.persistence.*;
  * Description:  Defines a Team object - consists of players, manager, coaches, etc.   X
  * ID:              X
  **/
+
 @Entity
 @NamedQueries(value = {
     @NamedQuery(name = "Team", query = "SELECT t FROM Team t"),
-    @NamedQuery(name = "teamByName", query = "SELECT t FROM Team t WHERE t.name = :name "),
+    @NamedQuery(name = "teamByName", query = "SELECT t FROM Team t WHERE t.name = :name"),
     @NamedQuery(name = "activeTeam", query = "SELECT t FROM Team t WHERE t.active = true AND t.close = false"),
     @NamedQuery(name = "inActiveTeam", query = "SELECT t FROM Team t WHERE t.active = false "),
     @NamedQuery(name = "setActivity", query = "UPDATE Team t SET t.active = :active WHERE t.name = :name "),
@@ -62,34 +62,34 @@ public class Team implements Serializable
     @Column
     private boolean close;
 
-    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private TeamPage page;
 
-    @OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.MERGE})
     private List<Coach> coaches;
 
-    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team",cascade = {CascadeType.MERGE})
     private List<Player> players;
 
-    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team",cascade = {CascadeType.MERGE})
     private List<TeamManager> teamManagers;
 
-    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team",cascade = {CascadeType.MERGE})
     private List<TeamOwner> teamOwners;
 
-    @ManyToMany(mappedBy = "teams", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(mappedBy = "teams", cascade = {CascadeType.MERGE})
     private List<Stadium> stadiums;
 
-    @OneToMany(mappedBy = "homeTeam", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "homeTeam", cascade = {CascadeType.MERGE})
     private List<Match> homeMatches;
 
-    @OneToMany(mappedBy = "awayTeam", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "awayTeam", cascade = {CascadeType.MERGE})
     private List<Match> awayMatches;
 
-    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team",cascade = {CascadeType.MERGE})
     private List<TeamFinancialEntry> teamFinancialEntries;
 
-    @ManyToMany(mappedBy = "teamsParticipate", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(mappedBy = "teamsParticipate", cascade = {CascadeType.MERGE})
     private List<LeagueSeason> leagueSeasons;
 
     //Constructor

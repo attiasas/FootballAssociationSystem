@@ -141,7 +141,16 @@ public class HandleUserUnit
         return true;
     }
 
+    public Fan loadFanByUsername(String username) {
 
+        HashMap<String, Object> args = new HashMap<>();
+        args.put("username", username);
+        List<User> user = communication.query("UserByUserName", args);
+
+        if (user == null || user.isEmpty() || !(user.get(0) instanceof Fan)) return null;
+        return (Fan) user.get(0);
+
+    }
 
     private boolean removeFanTeamUsers(Fan fan)
     {
