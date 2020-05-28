@@ -53,7 +53,7 @@ public class ClientServerCommunication {
     private volatile boolean listen = true;
 
     public static void main(String[] args) {
-        loginTestServer();
+//        loginTestServer();
         notifyTestServer();
     }
 
@@ -84,26 +84,26 @@ public class ClientServerCommunication {
 //
 //        }
 
-        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
+//        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
 
-//        Notifiable notifiable = new Notifiable() {
-//            @Override
-//            public Notification getNotification() {
-//                return new Notification("notifcation!!!");
-////                return null;
-//            }
-//
-//            @Override
-//            public Set getNotifyUsersList() {
-//                Set<User> set = new HashSet<>();
-//                Fan fan = new Fan("admin", "admin", "admin");
-//                set.add(fan);
-//                return set;
-////                return null;
-//            }
-//        };
-//
-//        client.notify(notifiable);
+        Notifiable notifiable = new Notifiable() {
+            @Override
+            public Notification getNotification() {
+                return new Notification("notifcation!!!");
+//                return null;
+            }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set<User> set = new HashSet<>();
+                Fan fan = new Fan("admin", "admin", "admin");
+                set.add(fan);
+                return set;
+//                return null;
+            }
+        };
+
+        client.notify(notifiable);
     }
 
     public ClientServerCommunication()
