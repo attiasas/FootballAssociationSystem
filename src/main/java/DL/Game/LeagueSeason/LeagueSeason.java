@@ -33,13 +33,13 @@ public class LeagueSeason implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int leagueSeasonID;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     private League league;
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     private Season season;
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     private GamePolicy gamePolicy;
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     private ScorePolicy scorePolicy;
     @OneToMany(targetEntity = Match.class,cascade = CascadeType.ALL,mappedBy = "leagueSeason")
     private List<Match> matches;

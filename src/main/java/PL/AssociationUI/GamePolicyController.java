@@ -47,6 +47,6 @@ public class GamePolicyController {
     }
 
     public void closeWindow() {
-        AssociationController.loadScreen("AssociationManagePoliciesFXML");
+        App.loadScreen("AssociationManagePoliciesFXML");
     }
 }

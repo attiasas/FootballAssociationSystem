@@ -209,6 +209,6 @@ public class LeagueSeasonController extends AInitComboBoxObjects {
     }
 
     public void closeWindow() {
-        AssociationController.loadScreen("AssociationManageLeaguesFXML");
+        App.loadScreen("AssociationManageLeaguesFXML");
     }
 }

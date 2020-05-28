@@ -1,4 +1,4 @@
-package java.PL;
+package java.PL.AssociationUITest;
 
 public class RefereeControllerTest {
 }

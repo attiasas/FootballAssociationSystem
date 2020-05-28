@@ -1,86 +1,55 @@
-2020-05-25 19:49:35 INFO  event - Sportify launched
-2020-05-25 19:49:44 INFO  event - Sportify is closing. Used for 0 min and 9 sec.
-2020-05-25 19:52:08 INFO  event - Sportify launched
-2020-05-25 19:52:15 INFO  event - Sportify is closing. Used for 0 min and 7 sec.
-2020-05-25 19:58:53 INFO  event - Sportify launched
-2020-05-25 19:58:57 INFO  event - Sportify is closing. Used for 0 min and 3 sec.
-2020-05-25 19:59:19 INFO  event - Sportify launched
-2020-05-25 19:59:25 INFO  event - Sportify is closing. Used for 0 min and 5 sec.
-2020-05-25 20:00:49 INFO  event - Sportify launched
-2020-05-25 20:01:58 INFO  event - Sportify is closing. Used for 1 min and 69 sec.
-2020-05-25 20:02:20 INFO  event - Sportify launched
-2020-05-25 20:02:45 INFO  event - Sportify is closing. Used for 0 min and 25 sec.
-2020-05-25 20:03:03 INFO  event - Sportify launched
-2020-05-25 20:03:23 INFO  event - Sportify is closing. Used for 0 min and 19 sec.
-2020-05-25 20:03:33 INFO  event - Sportify launched
-2020-05-25 20:03:36 INFO  event - Sportify is closing. Used for 0 min and 3 sec.
-2020-05-25 20:05:35 INFO  event - Sportify launched
-2020-05-25 20:05:45 INFO  event - Sportify is closing. Used for 0 min and 9 sec.
-2020-05-25 20:12:08 INFO  event - Sportify launched
-2020-05-25 20:13:59 INFO  event - Sportify is closing. Used for 1 min and 110 sec.
-2020-05-25 20:21:28 INFO  event - Sportify launched
-2020-05-25 20:21:32 INFO  event - Sportify is closing. Used for 0 min and 4 sec.
-2020-05-25 20:25:11 INFO  event - Sportify launched
-2020-05-25 20:25:45 INFO  event - Sportify is closing. Used for 0 min and 34 sec.
-2020-05-25 20:46:20 INFO  event - Sportify launched
-2020-05-25 20:46:35 INFO  event - Sportify is closing. Used for 0 min and 14 sec.
-2020-05-25 20:48:04 INFO  event - Sportify launched
-2020-05-25 20:48:24 INFO  event - Sportify is closing. Used for 0 min and 19 sec.
-2020-05-25 20:49:37 INFO  event - Sportify launched
-2020-05-25 20:49:56 INFO  event - Sportify is closing. Used for 0 min and 19 sec.
-2020-05-25 20:51:31 INFO  event - Sportify launched
-2020-05-25 20:51:56 INFO  event - Sportify is closing. Used for 0 min and 25 sec.
-2020-05-27 18:09:35 INFO  event - Sportify launched
-2020-05-27 18:10:12 INFO  event - Sportify is closing. Used for 0 min and 37 sec.
-2020-05-27 18:10:26 INFO  event - Sportify launched
-2020-05-27 18:16:45 INFO  event - Sportify launched
-2020-05-27 18:20:18 INFO  event - Sportify is closing. Used for 3 min and 213 sec.
-2020-05-27 18:20:32 INFO  event - Sportify launched
-2020-05-27 18:24:04 INFO  event - Sportify launched
-2020-05-27 18:29:07 INFO  event - Sportify is closing. Used for 5 min and 303 sec.
-2020-05-27 18:29:53 INFO  event - Sportify launched
-2020-05-27 18:29:57 INFO  event - Sportify is closing. Used for 0 min and 4 sec.
-2020-05-27 18:30:12 INFO  event - Sportify launched
-2020-05-27 18:32:21 INFO  event - Sportify launched
-2020-05-27 18:32:54 INFO  event - Sportify is closing. Used for 0 min and 32 sec.
-2020-05-27 18:33:22 INFO  event - Sportify launched
-2020-05-27 18:34:02 INFO  event - Sportify launched
-2020-05-27 18:46:18 INFO  event - Sportify launched
-2020-05-27 18:47:57 INFO  event - Sportify launched
-2020-05-27 18:51:32 INFO  event - Sportify launched
-2020-05-27 18:53:44 INFO  event - Sportify launched
-2020-05-27 18:56:08 INFO  event - Sportify is closing. Used for 2 min and 144 sec.
-2020-05-27 18:56:15 INFO  event - Sportify launched
-2020-05-27 18:59:34 INFO  event - Sportify launched
-2020-05-27 19:01:12 INFO  event - Sportify launched
-2020-05-27 19:01:32 INFO  event - Sportify is closing. Used for 0 min and 20 sec.
-2020-05-27 22:03:15 INFO  event - Sportify launched
-2020-05-27 22:04:48 INFO  event - Sportify is closing. Used for 1 min and 92 sec.
-2020-05-27 22:05:04 INFO  event - Sportify launched
-2020-05-27 22:05:09 INFO  event - Sportify is closing. Used for 0 min and 4 sec.
-2020-05-27 22:06:03 INFO  event - Sportify launched
-2020-05-27 22:06:30 INFO  event - Sportify launched
-2020-05-27 22:06:51 INFO  event - Sportify is closing. Used for 0 min and 20 sec.
-2020-05-27 22:07:03 INFO  event - Sportify launched
-2020-05-27 22:07:06 INFO  event - Sportify is closing. Used for 0 min and 3 sec.
-2020-05-27 22:07:20 INFO  event - Sportify launched
-2020-05-27 22:07:30 INFO  event - Sportify is closing. Used for 0 min and 10 sec.
-2020-05-27 22:10:00 INFO  event - Sportify launched
-2020-05-27 22:10:03 INFO  event - Sportify is closing. Used for 0 min and 3 sec.
-2020-05-27 22:10:50 INFO  event - Sportify launched
-2020-05-27 22:11:02 INFO  event - Sportify launched
-2020-05-27 22:11:05 INFO  event - Sportify is closing. Used for 0 min and 3 sec.
-2020-05-27 22:12:43 INFO  event - Sportify launched
-2020-05-27 22:12:47 INFO  event - Sportify is closing. Used for 0 min and 4 sec.
-2020-05-27 22:14:48 INFO  event - Sportify launched
-2020-05-27 22:15:07 INFO  event - Sportify launched
-2020-05-27 22:15:13 INFO  event - Sportify is closing. Used for 0 min and 5 sec.
-2020-05-27 22:15:25 INFO  event - Sportify launched
-2020-05-27 22:15:38 INFO  event - Sportify is closing. Used for 0 min and 13 sec.
-2020-05-27 22:16:08 INFO  event - Sportify launched
-2020-05-27 22:18:41 INFO  event - Sportify launched
-2020-05-27 22:18:45 INFO  event - Sportify is closing. Used for 0 min and 4 sec.
-2020-05-27 22:18:54 INFO  event - Sportify launched
-2020-05-27 22:19:10 INFO  event - Sportify launched
-2020-05-27 22:20:58 INFO  event - Sportify launched
-2020-05-27 22:22:13 INFO  event - Sportify launched
+2020-05-28 11:48:55 INFO  event - USER -------------> postgres
+2020-05-28 11:48:55 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 11:48:55 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 11:48:55 INFO  event - PU-Strategy ------> drop-and-create
+2020-05-28 11:53:20 INFO  event - Sportify launched
+2020-05-28 11:54:17 INFO  event - Sportify is closing. Used for 0 min and 57 sec.
+2020-05-28 11:54:59 INFO  event - USER -------------> postgres
+2020-05-28 11:54:59 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 11:54:59 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 11:54:59 INFO  event - PU-Strategy ------> none
+2020-05-28 11:55:37 INFO  event - USER -------------> postgres
+2020-05-28 11:55:37 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 11:55:37 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 11:55:37 INFO  event - PU-Strategy ------> none
+2020-05-28 11:56:49 INFO  event - USER -------------> postgres
+2020-05-28 11:56:49 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 11:56:49 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 11:56:49 INFO  event - PU-Strategy ------> drop-and-create
+2020-05-28 11:58:17 INFO  event - Sportify launched
+2020-05-28 11:59:22 INFO  event - USER -------------> postgres
+2020-05-28 11:59:22 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 11:59:22 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 11:59:22 INFO  event - PU-Strategy ------> none
+2020-05-28 12:02:29 INFO  event - USER -------------> postgres
+2020-05-28 12:02:29 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 12:02:29 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 12:02:29 INFO  event - PU-Strategy ------> none
+2020-05-28 12:21:08 INFO  event - USER -------------> postgres
+2020-05-28 12:21:08 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 12:21:08 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 12:21:08 INFO  event - PU-Strategy ------> none
+2020-05-28 12:30:57 INFO  event - USER -------------> postgres
+2020-05-28 12:30:57 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 12:30:57 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 12:30:57 INFO  event - PU-Strategy ------> none
+2020-05-28 12:31:38 INFO  event - USER -------------> postgres
+2020-05-28 12:31:38 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 12:31:38 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 12:31:38 INFO  event - PU-Strategy ------> drop-and-create
+2020-05-28 12:34:05 INFO  event - USER -------------> postgres
+2020-05-28 12:34:05 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 12:34:05 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 12:34:05 INFO  event - PU-Strategy ------> drop-and-create
+2020-05-28 12:34:39 INFO  event - USER -------------> postgres
+2020-05-28 12:34:39 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 12:34:39 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 12:34:39 INFO  event - PU-Strategy ------> drop-and-create
+2020-05-28 12:34:55 INFO  event - USER -------------> postgres
+2020-05-28 12:34:55 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 12:34:55 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 12:34:55 INFO  event - PU-Strategy ------> drop-and-create
+2020-05-28 12:41:58 INFO  event - USER -------------> postgres
+2020-05-28 12:41:58 INFO  event - PW ------> sql  (should be empty)
+2020-05-28 12:41:58 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
+2020-05-28 12:41:58 INFO  event - PU-Strategy ------> drop-and-create

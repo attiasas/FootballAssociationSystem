@@ -99,6 +99,6 @@ public class ScorePolicyController extends AInitComboBoxObjects {
     }
 
     public void closeWindow() {
-        AssociationController.loadScreen("AssociationManagePoliciesFXML");
+        App.loadScreen("AssociationManagePoliciesFXML");
     }
 }

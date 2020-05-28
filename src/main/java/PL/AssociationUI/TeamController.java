@@ -64,6 +64,6 @@ public class TeamController extends AInitComboBoxObjects{
     }
 
     public void closeWindow() {
-        AssociationController.loadScreen("AssociationManageTeamsFXML");
+        App.loadScreen("AssociationManageTeamsFXML");
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 })
 public class TeamManager extends TeamUser implements Serializable
 {
-    @ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToOne
     private TeamOwner teamOwner;
 
     //Constructor

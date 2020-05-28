@@ -101,7 +101,7 @@ public class AssociationController {
 
     }
 
-    public static Object loadScreen(String fxmlFileName) {
+   /* public static Object loadScreen(String fxmlFileName) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(AssociationController.class.getResource(String.format("/Window/%s.fxml", fxmlFileName)));
             StackPane stackPane = fxmlLoader.load();
@@ -114,10 +114,11 @@ public class AssociationController {
             showSimpleAlert("Error", "Can't load screen. Please try again");
             return null;
         }
-    }
+    }*/
 
     public void closeWindow() {
-        loadScreen("MainApp");
+        //loadScreen("MainApp");
+        App.loadScreen("MainApp");
     }
 
 }

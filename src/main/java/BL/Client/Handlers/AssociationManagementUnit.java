@@ -1,5 +1,6 @@
 package BL.Client.Handlers;
 
+import BL.Client.ClientSystem;
 import BL.Communication.ClientServerCommunication;
 import DL.Game.Match;
 import DL.Game.Referee;
@@ -142,14 +143,31 @@ public class AssociationManagementUnit {
         if (!isValidTeamName(teamName)) return null;
 
         HashMap<String, Object> args = new HashMap<>();
-        args.put("team", teamName);
+        args.put("name", teamName);
         List<Team> queryResult = clientServerCommunication.query("teamByName", args);
 
-        if (queryResult == null)
+        if (queryResult == null || queryResult.isEmpty())
             return null;
 
         return queryResult.get(0);
 
+    }
+
+    public Referee loadReferee(Fan fan) {
+
+        HashMap<String, Object> args = new HashMap<>();
+        args.put("fan", fan);
+        List<Referee> referees = clientServerCommunication.query("refereeByFan", args);
+        Referee referee = null;
+        if (!referees.isEmpty())
+            referee = referees.get(0);
+
+        return referee;
+
+    }
+
+    public List<Referee> loadAllReferees() {
+        return ClientSystem.communication.query("AllReferees", new HashMap<>());
     }
 
 

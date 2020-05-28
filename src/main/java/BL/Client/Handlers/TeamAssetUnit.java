@@ -7,16 +7,11 @@ import DL.Team.Members.*;
 import DL.Team.Page.Page;
 import DL.Team.Page.UserPage;
 import DL.Team.Team;
-import DL.Users.Fan;
-import DL.Users.User;
-import DL.Users.UserPermission;
+import DL.Users.*;
 
 import javax.management.OperationsException;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description:  TeamAssetUnit responsible for  team management operations by a logged-in user X
@@ -291,6 +286,20 @@ public class TeamAssetUnit {
 
         if (status) {
             team.setActive(active);
+            Notifiable closeTeamNot = new Notifiable() {
+
+                public Notification getNotification() {
+                    if (active)
+                        return new Notification(String.format("Team: %s is open. \n You will get notifications relative it from now on.", team.getName()));
+
+                    return new Notification(String.format("Team: %s was closed temporarily. \n You will no longer get notifications about it.", team.getName()));
+                }
+
+                public Set getNotifyUsersList() {
+                    return team.getPage().getFollowers();
+                }
+            };
+            clientServerCommunication.notify(closeTeamNot);
         }
 
         return status;
@@ -324,6 +333,17 @@ public class TeamAssetUnit {
 
         if (status) {
             team.setClose(true);
+            Notifiable closeTeamPermanentlyNot = new Notifiable() {
+
+                public Notification getNotification() {
+                    return new Notification(String.format("Team: %s was closed permanently. \n You will no longer get notifications about it.", team.getName()));
+                }
+
+                public Set getNotifyUsersList() {
+                    return team.getPage().getFollowers();
+                }
+            };
+            clientServerCommunication.notify(closeTeamPermanentlyNot);
         }
         return status;
 
@@ -354,7 +374,7 @@ public class TeamAssetUnit {
         if (birthDate == null) {
             err += "Birth Date: Birth date cannot be empty. \n";
         }
-        if (birthDate != null && (birthDate.getYear()- Year.now().getValue()) < 13) {
+        if (birthDate != null && (Year.now().getValue() - birthDate.getYear()) < 13) {
             err += "Birth Date: Player's age cannot be younger than 13. \n";
         }
         if (team == null) {
@@ -405,7 +425,7 @@ public class TeamAssetUnit {
         if (birthDate == null) {
             err += "Birth Date: Birth date cannot be empty. \n";
         }
-        if (birthDate != null && (birthDate.getYear()- Year.now().getValue()) < 13) {
+        if (birthDate != null && (Year.now().getValue() - birthDate.getYear()) < 13) {
             err += "Birth Date: Player's age cannot be younger than 13. \n";
         }
         if (team == null) {
@@ -599,7 +619,7 @@ public class TeamAssetUnit {
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("fan", fan);
-        List<TeamUser> queryResults = clientServerCommunication.query("teamUserByFan", args);
+        List<TeamUser> queryResults = clientServerCommunication.query("TeamUserByFan", args);
 
         if (queryResults.isEmpty())
             return null;

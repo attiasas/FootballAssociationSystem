@@ -1,0 +1,94 @@
+2020-05-27 23:38:37 WARN  error:206 - query failed
+2020-05-27 23:38:52 ERROR error:384 - error accourse in request handlenull
+2020-05-27 23:43:08 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-27 23:43:26 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-27 23:46:02 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-27 23:47:21 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-27 23:57:54 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 00:02:01 WARN  error:206 - query failed
+2020-05-28 00:02:01 ERROR error:384 - error accourse in request handlenull
+2020-05-28 00:28:49 ERROR error:384 - error accourse in request handleConnection reset by peer: socket write error
+2020-05-28 00:29:58 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 00:30:08 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 00:30:14 WARN  error:206 - query failed
+2020-05-28 00:34:36 WARN  error:206 - query failed
+2020-05-28 00:35:54 WARN  error:206 - query failed
+2020-05-28 00:36:29 WARN  error:206 - query failed
+2020-05-28 00:37:27 WARN  error:206 - query failed
+2020-05-28 00:38:18 WARN  error:206 - query failed
+2020-05-28 00:45:11 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 00:47:18 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 00:47:50 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 00:58:51 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 00:59:29 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 00:59:55 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 01:00:17 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 01:03:17 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 01:03:53 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 01:04:12 WARN  error:206 - query failed
+2020-05-28 01:07:45 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 01:07:50 WARN  error:206 - query failed
+2020-05-28 01:10:05 WARN  error:206 - query failed
+2020-05-28 01:15:52 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 01:23:41 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:24:22 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:25:04 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:30:51 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:32:32 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:32:43 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:32:50 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:35:25 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 01:35:26 WARN  error:66 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Team.Page.TeamPage
+2020-05-28 01:35:34 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 01:37:32 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 01:38:54 WARN  error:66 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Team.Page.TeamPage
+2020-05-28 01:39:01 ERROR error:384 - error accourse in request handleConnection reset by peer: socket write error
+2020-05-28 01:40:34 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 01:40:53 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 01:41:45 WARN  error:66 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Team.Page.TeamPage
+2020-05-28 01:43:02 WARN  error:66 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 01:43:02 ERROR error:384 - error accourse in request handleConnection reset by peer: socket write error
+2020-05-28 01:45:29 WARN  error:66 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Team.Page.TeamPage
+2020-05-28 01:48:36 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:54:59 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:55:31 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:55:44 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:56:01 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 01:57:07 ERROR error:384 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 02:01:45 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 02:01:55 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 02:02:14 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 02:02:24 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 02:03:25 ERROR error:384 - error accourse in request handlefailed to lazily initialize a collection of role: DL.Users.User.notificationsOwner, could not initialize proxy - no Session
+2020-05-28 02:08:11 ERROR error:255 - BL.Communication.ClientServerCommunication$1
+2020-05-28 02:08:43 ERROR error:255 - BL.Communication.ClientServerCommunication$1
+2020-05-28 09:08:44 WARN  error:175 - username is already exist
+2020-05-28 09:10:49 WARN  error:176 - username is already exist
+2020-05-28 09:15:46 WARN  error:176 - username is already exist
+2020-05-28 09:16:46 WARN  error:176 - username is already exist
+2020-05-28 09:18:30 WARN  error:176 - username is already exist
+2020-05-28 09:19:55 WARN  error:178 - username is already exist
+2020-05-28 09:20:36 WARN  error:178 - username is already exist
+2020-05-28 09:23:19 WARN  error:178 - username is already exist
+2020-05-28 09:32:29 WARN  error:178 - username is already exist
+2020-05-28 09:40:48 WARN  error:176 - username is already exist
+2020-05-28 09:45:47 ERROR error:385 - error accourse in request handlenull
+2020-05-28 09:47:24 WARN  error:176 - username is already exist
+2020-05-28 09:48:21 ERROR error:385 - error accourse in request handlenull
+2020-05-28 09:54:50 ERROR error:385 - error accourse in request handlenull
+2020-05-28 10:04:07 WARN  error:67 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 10:04:08 WARN  error:67 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Team.Page.TeamPage
+2020-05-28 10:21:44 WARN  error:67 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 10:21:46 WARN  error:67 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Team.Page.TeamPage
+2020-05-28 10:22:50 WARN  error:176 - username is already exist
+2020-05-28 10:22:55 WARN  error:69 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 10:22:56 WARN  error:69 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Team.Page.TeamPage
+2020-05-28 10:27:16 ERROR error:385 - error accourse in request handleNo query defined for that name [UserByUsername]
+2020-05-28 10:37:47 ERROR error:256 - Connection reset
+2020-05-28 10:38:33 ERROR error:385 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 10:38:56 ERROR error:385 - error accourse in request handleNo query defined for that name [UserByUserName]
+2020-05-28 10:56:38 WARN  error:70 - persist failedorg.hibernate.exception.ConstraintViolationException: could not execute statement
+2020-05-28 10:56:38 WARN  error:70 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Users.UserPermission
+2020-05-28 10:56:39 WARN  error:70 - persist failedorg.hibernate.PersistentObjectException: detached entity passed to persist: DL.Users.UserPermission
+2020-05-28 11:01:35 ERROR error:256 - Connection reset
+2020-05-28 11:06:03 ERROR error:256 - Connection reset

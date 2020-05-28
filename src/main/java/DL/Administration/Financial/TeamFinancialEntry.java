@@ -17,7 +17,7 @@ import javax.persistence.*;
 @DiscriminatorValue(value = "TeamFinancialEntry")
 public class TeamFinancialEntry extends FinancialEntry
 {
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Team team;
 
     /**

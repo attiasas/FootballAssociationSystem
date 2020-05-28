@@ -1,9 +1,8 @@
 package PL.AssociationUITest;
 
-import PL.TestFXBase;
 import com.jfoenix.controls.JFXTextField;
 import org.junit.jupiter.api.Test;
-
+import java.PL.TestFXBase;
 import static org.testfx.api.FxAssert.verifyThat;
 
 public class LeagueSeasonControllerTest extends TestFXBase {

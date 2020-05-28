@@ -37,7 +37,7 @@ public class RefereeController extends AInitComboBoxObjects {
     @FXML
     private JFXComboBox<Referee> referees;
 
-        @FXML
+    @FXML
     public ComboBox<String> comboboxReferee;
 
     @FXML
@@ -48,8 +48,6 @@ public class RefereeController extends AInitComboBoxObjects {
 
     @FXML
     private JFXTextField refereeQualification;
-
-    private static Stage subStage;
 
     private ObservableList<String> referees_username_FX;
 
@@ -93,23 +91,18 @@ public class RefereeController extends AInitComboBoxObjects {
         }
     }
 
-    public void addNewReferee() {
-
-    }
-
-    public void removeReferee() {
-
-    }
-
     public void closeWindow() {
-        AssociationController.loadScreen("AssociationManageRefereesFXML");
+        App.loadScreen("AssociationManageRefereesFXML");
     }
 
     public void initCreateRefereeComboBoxOptions() {
 
         referees_username_FX = FXCollections.observableArrayList();
         comboboxReferee.setItems(referees_username_FX);
-        List<Referee> referees = ClientSystem.communication.query("AllReferees", new HashMap<>());
+        List<Referee> referees = App.clientSystem.associationManagementUnit.loadAllReferees();
+
+        if (referees == null) return;
+
         List<String> referees_username = new ArrayList<>();
         for (Referee referee : referees)
             referees_username.add(referee.getFan().getUsername());
@@ -120,18 +113,16 @@ public class RefereeController extends AInitComboBoxObjects {
 
     public void addReferee(ActionEvent actionEvent)
     {
-        Fan fan = getFanByUsername(refereeUsername.getText());
+        Fan fan = App.clientSystem.userUnit.loadFanByUsername(refereeUsername.getText());
         try
         {
             App.clientSystem.associationManagementUnit.addNewReferee(fan, refereeName.getText(), refereeQualification.getText());
             referees_username_FX.add(refereeUsername.getText());
-            //showMessage(true);
             showSimpleAlert("Success","Referee was added successfully");
         }
 
         catch (IllegalArgumentException e)
         {
-            //showMessage(false);
             showSimpleAlert("Error",e.getMessage());
         }
 
@@ -141,40 +132,26 @@ public class RefereeController extends AInitComboBoxObjects {
 
     public void removeReferee(ActionEvent actionEvent)
     {
-        Fan fan = getFanByUsername(comboboxReferee.getValue());
+        Fan fan = App.clientSystem.userUnit.loadFanByUsername(comboboxReferee.getValue());
         if (fan == null) {
-            //showMessage(false);
             showSimpleAlert("Error","Please fill the required (*) fields.");
         }
 
-        HashMap<String, Object> args = new HashMap<>();
-        args.put("fan", fan);
-        List<Referee> referees = ClientSystem.communication.query("refereeByFan", args);
-        Referee referee = null;
-        if (!referees.isEmpty())
-            referee = referees.get(0);
+        Referee referee = App.clientSystem.associationManagementUnit.loadReferee(fan);
 
-        if (!App.clientSystem.associationManagementUnit.removeReferee(referee)) //TODO: remove "!"
+        if (App.clientSystem.associationManagementUnit.removeReferee(referee))
         {
             referees_username_FX.remove(comboboxReferee.getValue());
-            //showMessage(true);
             showSimpleAlert("Success","Referee was removed successfully");
 
         }
 
         else
         {
-            //showMessage(false);
             showSimpleAlert("Error","Please fill the required (*) fields.");
         }
 
     }
-
-    public void closeMessage(ActionEvent mouseEvent)
-    {
-        subStage.close();
-    }
-
 
     public void clearFieldsCreateReferee(ActionEvent mouseEvent)
     {
@@ -183,44 +160,4 @@ public class RefereeController extends AInitComboBoxObjects {
         if (refereeQualification != null) refereeQualification.clear();
     }
 
-
-  /*  private void showMessage(boolean success)
-    {
-        try {
-            subStage = new Stage();
-            Parent root;
-            if (success)
-            {
-                subStage.setTitle("Insertion Succeeded");
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                root = fxmlLoader.load(getClass().getResource("/Window/SuccessMsg.fxml").openStream());
-            }
-            else
-            {
-                subStage.setTitle("Insertion Failed");
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                root = fxmlLoader.load(getClass().getResource("/Window/FailureMsg.fxml").openStream());
-            }
-
-            Scene scene = new Scene(root, 400, 350);
-            subStage.setScene(scene);
-            subStage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            subStage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    private Fan getFanByUsername(String username)
-    {
-
-        HashMap<String, Object> args = new HashMap<>();
-        args.put("username", username);
-        List<User> user = ClientSystem.communication.query("UserByUsername", args);
-
-        if (user == null || user.isEmpty() || !(user.get(0) instanceof Fan)) return null;
-        return (Fan) user.get(0);
-
-    }
 }

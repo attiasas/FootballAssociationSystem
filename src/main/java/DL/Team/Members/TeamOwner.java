@@ -33,7 +33,7 @@ public class TeamOwner implements FinancialUser, Serializable
 {
     @Id
     @GeneratedValue
-    private int id;
+    int id;
 
     @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     private TeamUser teamUser;
@@ -41,10 +41,10 @@ public class TeamOwner implements FinancialUser, Serializable
     @ManyToOne
     private Team team;
 
-    @OneToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany
     private List<TeamOwner> ownerNominees;
 
-    @OneToMany(mappedBy = "teamOwner" ,cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "teamOwner" ,cascade = {CascadeType.ALL})
     private List<TeamManager> manageNominees;
 
     @Column

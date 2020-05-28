@@ -5,6 +5,7 @@ import BL.Communication.ClientServerCommunication;
 import BL.Communication.CommunicationAssociationManagementStub;
 import DL.Users.Fan;
 import DL.Users.User;
+import PL.main.App;
 import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,10 +23,6 @@ import java.util.List;
 
 public class ManageTeamsController extends AInitComboBoxObjects {
 
-    private ClientServerCommunication clientServerCommunication = new ClientServerCommunication();
-
-    private AssociationManagementUnit associationManagementUnit = new AssociationManagementUnit(clientServerCommunication);
-
     @FXML
     private JFXTextField teamName;
 
@@ -35,10 +32,10 @@ public class ManageTeamsController extends AInitComboBoxObjects {
     private Stage subStage;
 
     public void addTeam(ActionEvent actionEvent) {
-        Fan fan = getFanByUsername(teamOwnerUsername.getText());
+        Fan fan = App.clientSystem.userUnit.loadFanByUsername(teamOwnerUsername.getText());
 
         try {
-            associationManagementUnit.addTeam(teamName.getText(), teamOwnerUsername.getText(), fan);
+            App.clientSystem.associationManagementUnit.addTeam(teamName.getText(), teamOwnerUsername.getText(), fan);
             //showMessage(true);
             showSimpleAlert("Success", "Team was added successfully");
         } catch (IllegalArgumentException e){
@@ -87,14 +84,5 @@ public class ManageTeamsController extends AInitComboBoxObjects {
             }
         }*/
 
-    private Fan getFanByUsername(String username) {
-        HashMap<String, Object> args = new HashMap<>();
-        args.put("username", username);
-        List<User> user = clientServerCommunication.query("UserByUsername", args);
-
-        if (user == null || user.isEmpty() || !(user.get(0) instanceof Fan)) return null;
-        return (Fan) user.get(0);
-
-    }
 
 }

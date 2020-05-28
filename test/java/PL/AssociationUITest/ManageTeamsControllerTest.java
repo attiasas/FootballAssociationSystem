@@ -1,11 +1,13 @@
-package java.PL;
+package java.PL.AssociationUITest;
 
 import com.jfoenix.controls.JFXTextField;
 import org.junit.jupiter.api.Test;
 
+import java.PL.TestFXBase;
+
 import static org.testfx.api.FxAssert.verifyThat;
 
-public class ManageTeamsControllerTest extends TestFXBase{
+public class ManageTeamsControllerTest extends TestFXBase {
 
     final String CONNECT_AS_GUEST = "#guestButton";
     final String MENU = "#hamburger";
