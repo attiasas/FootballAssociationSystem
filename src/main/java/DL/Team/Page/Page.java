@@ -4,6 +4,8 @@ import DL.Users.Fan;
 import DL.Users.User;
 import com.sun.javafx.beans.IDProperty;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,6 +31,7 @@ public abstract class Page implements Serializable
     protected String content;
 
     @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @LazyCollection(LazyCollectionOption.FALSE)
     Set<Fan> followers;
 
     public Page()

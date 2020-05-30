@@ -16,6 +16,7 @@ import PL.main.App;
 import io.airlift.command.Cli;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Description:     This Class Defines a CRUD Interface for communication with DB
@@ -52,60 +54,6 @@ public class ClientServerCommunication {
     private Thread listenerThread;
     private volatile boolean listen = true;
 
-    public static void main(String[] args) {
-        loginTestServer();
-        notifyTestServer();
-    }
-
-    public static void loginTestServer()
-    {
-        // ClientServerCommunication client = new ClientServerCommunication();
-        ClientServerCommunication client = App.clientSystem.communication;
-
-        User userAdmin = new Fan("admin", "admin", DigestUtils.sha1Hex("admin"));
-        ClientSystem.logIn(userAdmin);
-
-        List userFromServer = client.login("admin", DigestUtils.sha1Hex("admin"));
-    }
-
-
-    public static void notifyTestServer()
-    {
-        // ClientServerCommunication client = new ClientServerCommunication();
-        ClientServerCommunication client = App.clientSystem.communication;
-
-//        try
-//        {
-//            String myIPAddress = Inet4Address.getLocalHost().getHostAddress();
-//            client.login(myIPAddress, DigestUtils.sha1Hex("admin"));
-//        }
-//        catch (Exception e)
-//        {
-//
-//        }
-
-        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
-
-//        Notifiable notifiable = new Notifiable() {
-//            @Override
-//            public Notification getNotification() {
-//                return new Notification("notifcation!!!");
-////                return null;
-//            }
-//
-//            @Override
-//            public Set getNotifyUsersList() {
-//                Set<User> set = new HashSet<>();
-//                Fan fan = new Fan("admin", "admin", "admin");
-//                set.add(fan);
-//                return set;
-////                return null;
-//            }
-//        };
-//
-//        client.notify(notifiable);
-    }
-
     public ClientServerCommunication()
     {
         startNotificationListener();
@@ -125,36 +73,34 @@ public class ClientServerCommunication {
         int listenPort = Integer.parseInt(Configuration.getPropertyValue("clientNotification.port"));
         try(ServerSocket listenSocket = new ServerSocket(listenPort))
         {
-            System.out.println("start");
-            //listenSocket.setSoTimeout(1000);
             // init
+            listenSocket.setSoTimeout(1000);
             while (listen)
             {
-                Socket serverSocket = listenSocket.accept(); // blocking call
-                User loggedUser = ClientSystem.getLoggedUser();
-                if(loggedUser != null)
+                try
                 {
-                    try(ObjectInputStream fromServer = new ObjectInputStream(serverSocket.getInputStream()))
+                    Socket serverSocket = listenSocket.accept(); // blocking call
+                    User loggedUser = ClientSystem.getLoggedUser();
+                    if(loggedUser != null)
                     {
-                        Object objFromServer = fromServer.readObject();
-                        System.out.println("Received from server: " + objFromServer.toString());
-                        if(objFromServer instanceof Notification)
+                        try(ObjectInputStream fromServer = new ObjectInputStream(serverSocket.getInputStream()))
                         {
-//                            System.out.println("Received object is a Notification object");
-//                            System.out.println("The size of the user's Notifications before adding: "+loggedUser.getNotifications().size());
-                            loggedUser.addNotification((Notification)objFromServer);
-//                            System.out.println("The size of the user's Notifications after adding: "+loggedUser.getNotifications().size());
-                        }
-                    } catch (SocketTimeoutException e) { }
+                            Object objFromServer = fromServer.readObject();
+                            if(objFromServer instanceof Notification)
+                            {
+                                loggedUser.addNotification((Notification)objFromServer);
+                            }
+                        } catch (IOException e) { }
+                    }
                 }
+                catch (SocketTimeoutException e) {}
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
-        System.out.println("BYE");
+        System.out.println("Notification Listener thread done");
     }
 
     public void stopListener()
@@ -299,6 +245,30 @@ public class ClientServerCommunication {
         }
 
         return null;
+    }
+
+    /**
+     * Merge an Object in the data base in the server base on a named query
+     * @param toMerge - object to merge into the data base
+     * @return true if the merge completed in success, false other wise
+     */
+    public boolean merge(Object toMerge)
+    {
+        try(Socket serverSocket = new Socket(serverIP,serverPort))
+        {
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
+            out.writeObject(SystemRequest.merge(toMerge));
+            out.flush();
+
+            boolean answer = (boolean) in.readObject();
+            return answer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     /**

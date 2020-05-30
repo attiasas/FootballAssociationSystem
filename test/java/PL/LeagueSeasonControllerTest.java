@@ -1,11 +1,12 @@
 package java.PL;
 
+import PL.TestFXBase;
 import com.jfoenix.controls.JFXTextField;
 import org.junit.jupiter.api.Test;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
-public class LeagueSeasonControllerTest extends TestFXBase{
+public class LeagueSeasonControllerTest extends TestFXBase {
 
     final String CONNECT_AS_GUEST = "#guestButton";
     final String MENU = "#hamburger";

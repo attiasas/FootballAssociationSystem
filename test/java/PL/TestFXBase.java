@@ -1,5 +1,9 @@
 package PL;
 
+import BL.Client.ClientSystem;
+import BL.Communication.CommunicationLeagueSeasonAndPoliciesStub;
+import DL.Administration.AssociationMember;
+import DL.Users.User;
 import PL.main.App;
 import com.jfoenix.controls.JFXTextField;
 import javafx.scene.Node;
@@ -9,6 +13,7 @@ import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.After;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +35,6 @@ public class TestFXBase extends ApplicationTest {
 
     @BeforeEach
     public void setUpClass() throws Exception {
-        ApplicationTest.launch(App.class);
         robot = new FxRobot();
     }
 

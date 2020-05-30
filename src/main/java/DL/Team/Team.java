@@ -11,6 +11,8 @@ import DL.Team.Members.TeamOwner;
 import DL.Team.Page.Page;
 import DL.Team.Page.TeamPage;
 import DL.Users.User;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.io.Serializable;
 import java.util.*;
@@ -32,27 +34,26 @@ import javax.persistence.*;
 
 @Entity
 @NamedQueries(value = {
-    @NamedQuery(name = "Team", query = "SELECT t FROM Team t"),
-    @NamedQuery(name = "teamByName", query = "SELECT t FROM Team t WHERE t.name = :name "),
-    @NamedQuery(name = "activeTeam", query = "SELECT t FROM Team t WHERE t.active = true AND t.close = false"),
-    @NamedQuery(name = "inActiveTeam", query = "SELECT t FROM Team t WHERE t.active = false "),
-    @NamedQuery(name = "setActivity", query = "UPDATE Team t SET t.active = :active WHERE t.name = :name "),
-    @NamedQuery(name = "closedTeam", query = "SELECT t FROM Team t  WHERE t.close = true"),
-    @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
-    @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
-    @NamedQuery(name = "updateTeamOwnersOfTeam", query = "update Team t set t.teamOwners = :teamOwners where t = :team"),
-    @NamedQuery(name = "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team"),
-    @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name "),
-    @NamedQuery(name = "activateTeam", query = "UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false "),
-    @NamedQuery(name = "deactivateTeam", query = "UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false"),
-    @NamedQuery(name = "closedTeamsList", query = "SELECT t FROM Team t  WHERE t.close = true"),
-    @NamedQuery(name = "openTeamsList", query = "SELECT t FROM Team t  WHERE t.close = false"),
-    @NamedQuery(name = "teamsByStadium", query = "SELECT t FROM Team t  WHERE :stadium IN (t.stadiums)"),
-    @NamedQuery(name = "closeTeam", query = "UPDATE Team t SET t.close = true, t.active = false WHERE t.name = :name AND t.close = false "),
-    @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false "),
+        @NamedQuery(name = "Team", query = "SELECT t FROM Team t"),
+        @NamedQuery(name = "teamByName", query = "SELECT t FROM Team t WHERE t.name = :name"),
+        @NamedQuery(name = "activeTeam", query = "SELECT t FROM Team t WHERE t.active = true AND t.close = false"),
+        @NamedQuery(name = "inActiveTeam", query = "SELECT t FROM Team t WHERE t.active = false "),
+        @NamedQuery(name = "setActivity", query = "UPDATE Team t SET t.active = :active WHERE t.name = :name "),
+        @NamedQuery(name = "closedTeam", query = "SELECT t FROM Team t  WHERE t.close = true"),
+        @NamedQuery(name = "openTeam", query = "SELECT t FROM Team t  WHERE t.close = false"),
+        @NamedQuery(name = "setStatus", query = "UPDATE Team t SET t.close = :close WHERE t.name = :name "),
+        @NamedQuery(name = "updateTeamOwnersOfTeam", query = "update Team t set t.teamOwners = :teamOwners where t = :team"),
+        @NamedQuery(name = "updateTeamManagersOfTeam", query = "update Team t set t.teamManagers = :teamManagers where t = :team"),
+        @NamedQuery(name = "UpdateTeamLeagueSeasonList", query = "UPDATE Team t SET t.leagueSeasons = :newLeagueSeason WHERE t.name = :name "),
+        @NamedQuery(name = "activateTeam", query = "UPDATE Team t SET t.active = true WHERE t.name = :name AND t.close = false "),
+        @NamedQuery(name = "deactivateTeam", query = "UPDATE Team t SET t.active = false WHERE t.name = :name AND t.close = false"),
+        @NamedQuery(name = "closedTeamsList", query = "SELECT t FROM Team t  WHERE t.close = true"),
+        @NamedQuery(name = "openTeamsList", query = "SELECT t FROM Team t  WHERE t.close = false"),
+        @NamedQuery(name = "teamsByStadium", query = "SELECT t FROM Team t  WHERE :stadium IN (t.stadiums)"),
+        @NamedQuery(name = "closeTeam", query = "UPDATE Team t SET t.close = true, t.active = false WHERE t.name = :name AND t.close = false "),
+        @NamedQuery(name = "updateStadiumsToTeam", query = "UPDATE Team t SET t.stadiums = :newStadiumsList WHERE t.name = :name AND t.close = false "),
 })
-public class Team implements Serializable
-{
+public class Team implements Serializable {
     @Id
     private String name;
 
@@ -62,34 +63,43 @@ public class Team implements Serializable
     @Column
     private boolean close;
 
-    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.ALL})
     private TeamPage page;
 
-    @OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Coach> coaches;
 
-    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Player> players;
 
-    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TeamManager> teamManagers;
 
-    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TeamOwner> teamOwners;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(mappedBy = "teams", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Stadium> stadiums;
 
-    @OneToMany(mappedBy = "homeTeam", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "homeTeam", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Match> homeMatches;
 
-    @OneToMany(mappedBy = "awayTeam", cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "awayTeam", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Match> awayMatches;
 
-    @OneToMany(mappedBy = "team",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TeamFinancialEntry> teamFinancialEntries;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<LeagueSeason> leagueSeasons;
 
     //Constructor
@@ -113,12 +123,11 @@ public class Team implements Serializable
     }
 
     public Team() {
-        this("Default",false,false);
+        this("Default", false, false);
     }
 
-    public boolean setPage (TeamPage page) {
-        if(page == null)
-        {
+    public boolean setPage(TeamPage page) {
+        if (page == null) {
             return false;
         }
         this.page = page;
@@ -127,7 +136,7 @@ public class Team implements Serializable
 
     public boolean addLeagueSeason(LeagueSeason leagueSeason) {
 
-        if (leagueSeason == null) return false;
+        if (leagueSeason == null || checkIfObjectExists(leagueSeason,leagueSeasons)) return false;
 
         leagueSeasons.add(leagueSeason);
         return true;
@@ -136,7 +145,7 @@ public class Team implements Serializable
     public String getName() {
         return name;
     }
-    
+
     public List<LeagueSeason> getLeagueSeasons() {
         return leagueSeasons;
     }
@@ -239,7 +248,7 @@ public class Team implements Serializable
         return true;
     }
 
-    public boolean isActive(){
+    public boolean isActive() {
         return active;
     }
 
@@ -277,12 +286,16 @@ public class Team implements Serializable
     public Set getTeamMembers() {
         Set<User> result = new HashSet<>();
 
-        for(Coach coach : coaches) if(coach.isActive()) result.add(coach.getFan());
-        for(Player player : players) if(player.isActive()) result.add(player.getFan());
-        for(TeamManager manager : teamManagers) if(manager.isActive()) result.add(manager.getFan());
-        for(TeamOwner owner : teamOwners) if(owner.isActive()) result.add(owner.getTeamUser().getFan());
+        for (Coach coach : coaches) if (coach.isActive()) result.add(coach.getFan());
+        for (Player player : players) if (player.isActive()) result.add(player.getFan());
+        for (TeamManager manager : teamManagers) if (manager.isActive()) result.add(manager.getFan());
+        for (TeamOwner owner : teamOwners) if (owner.isActive()) result.add(owner.getTeamUser().getFan());
 
         return result;
+    }
+
+    public void setLeagueSeasons() {
+        leagueSeasons = new ArrayList<>();
     }
 
     public List<TeamFinancialEntry> getTeamFinancialEntries() {
@@ -295,6 +308,19 @@ public class Team implements Serializable
 
     public void setClose(boolean close) {
         this.close = close;
+    }
+
+
+    public void setStadiums() {
+        stadiums = new ArrayList<>();
+    }
+
+    public void setPlayers() {
+        players = new ArrayList<>();
+    }
+
+    public void setCoaches() {
+        coaches = new ArrayList<>();
     }
 
     public List<Stadium> getStadiums() {
@@ -332,14 +358,27 @@ public class Team implements Serializable
 
     @Override
     public boolean equals(Object other) {
-        if(!(other instanceof Team))
-        {
+        if (!(other instanceof Team)) {
             return false;
         }
 
-        Team otherTeam = (Team)other;
+        Team otherTeam = (Team) other;
 
         return this.name.equals(otherTeam.name);
     }
 
+    /**
+     * checks if the object already exists
+     *
+     * @param toCheck    object to find in the list
+     * @param objectList list of objects
+     * @return true if the object exists
+     */
+    private boolean checkIfObjectExists(Object toCheck, List objectList) {
+        for (Object listObject : objectList) {
+            if (listObject.equals(toCheck))
+                return true;
+        }
+        return false;
+    }
 }

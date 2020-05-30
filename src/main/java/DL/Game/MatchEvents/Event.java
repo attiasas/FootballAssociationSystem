@@ -30,10 +30,10 @@ public abstract class Event implements Serializable, Notifiable {
     @GeneratedValue
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Referee createdByUser;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private EventLog eventLog;
 
     //@ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
@@ -68,28 +68,22 @@ public abstract class Event implements Serializable, Notifiable {
 
     @Override
     public Notification getNotification() {
-
-        //return new Notification(toString());
-        return new Notification("Goal!!!");
+        return new Notification(toString());
     }
 
     @Override
     public Set getNotifyUsersList()
     {
-//        Set<User> result = new HashSet<>();
-//
-//        Team homeTeam = eventLog.getMyMatch().getHomeTeam();
-//        Team awayTeam = eventLog.getMyMatch().getAwayTeam();
-//
-//        result.addAll(homeTeam.getTeamMembers());
-//        result.addAll(homeTeam.getPage().getFollowers());
-//        result.addAll(awayTeam.getTeamMembers());
-//        result.addAll(awayTeam.getPage().getFollowers());
-//
-//        return result;
+        Set<User> result = new HashSet<>();
 
-        Set<User> res = new HashSet<>();
-        res.add(new Fan("admin", "admin", "admin"));
-        return res;
+        Team homeTeam = eventLog.getMyMatch().getHomeTeam();
+        Team awayTeam = eventLog.getMyMatch().getAwayTeam();
+
+        result.addAll(homeTeam.getTeamMembers());
+        result.addAll(homeTeam.getPage().getFollowers());
+        result.addAll(awayTeam.getTeamMembers());
+        result.addAll(awayTeam.getPage().getFollowers());
+
+        return result;
     }
 }

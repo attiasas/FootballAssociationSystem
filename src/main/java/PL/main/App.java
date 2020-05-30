@@ -71,7 +71,6 @@ public class App extends Application {
 
         mainStage = primaryStage;
         scenes = new Stack<>();
-        clientSystem = new ClientSystem();
 
         primaryStage.show();
         new Thread(() -> {
@@ -88,6 +87,11 @@ public class App extends Application {
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle("Sportify");
             stage.setScene(new Scene(parent));
+
+            stage.setOnCloseRequest(event -> {
+                clientSystem.close();
+            });
+
             mainStage = stage;
             stage.show();
         } catch (IOException ignored) {

@@ -18,18 +18,20 @@ public class CommunicationMatchEventUnitStub extends ClientServerCommunication
 {
     private List<Match> matches;
     private List<Referee> referees;
-
+    private List<User> users;
     private List<String> queryToList;
 
-    public CommunicationMatchEventUnitStub(List<Match> matches, List<Referee> referees) {
+    public CommunicationMatchEventUnitStub(List<Match> matches, List<Referee> referees,List<User> users) {
         this.matches = matches;
         this.referees = referees;
+        this.users = users;
     }
 
     public CommunicationMatchEventUnitStub()
     {
         matches = new ArrayList<>();
         referees = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
     private void QueriesInUse()
@@ -39,6 +41,18 @@ public class CommunicationMatchEventUnitStub extends ClientServerCommunication
         queryToList.add("UpdateMatchEventLog"); // update Match m set m.myEventLog = :eventLog where m = : match
         queryToList.add("updatePlayerEvents"); // update Player p set p.playerEvents = :playerEvents where p =: player
         queryToList.add("UpdateMatchEndTime"); // update Match m set m.endTime =: endTime where m =: match
+    }
+
+    public List login(String username,String password)
+    {
+        List<User> result = new ArrayList<>();
+
+        for(User user : users)
+        {
+            if(user.getUsername().equals(username) && user.getHashedPassword().equals(password)) result.add(user);
+        }
+
+        return result;
     }
 
     @Override
@@ -55,6 +69,10 @@ public class CommunicationMatchEventUnitStub extends ClientServerCommunication
             }
 
             return result;
+        }
+        else if(queryName.equals("UserByUserNameAndPassword"))
+        {
+            return login((String)parameters.get("username"),(String)parameters.get("hashedPassword"));
         }
 
         return null;

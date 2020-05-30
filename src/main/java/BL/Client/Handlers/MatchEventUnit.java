@@ -72,18 +72,7 @@ public class MatchEventUnit
     public List<Match> getActiveMatches(User user)
     {
         if(!getRefereeFromServer(user)) return null;
-
-        List<Match> result = new ArrayList<>();
-
-        // filter only active matches
-        for(Match match : cachedReferee.getMainMatches())
-        {
-            if(match.isMatchEventPeriodOver()) continue;
-
-            result.add(match);
-        }
-
-        return result;
+        return cachedReferee.getMatches();
     }
 
     /**
@@ -402,7 +391,7 @@ public class MatchEventUnit
     public boolean removeEvent(User user, Match match,Event event)
     {
         if(!getRefereeFromServer(user)) return false;
-        if(!cachedReferee.getMainMatches().contains(match)) return false;
+        if(!cachedReferee.getMatches().contains(match)) return false;
         if(!match.getMyEventLog().getEvents().contains(event)) return false;
 
         List<SystemRequest> requests = new ArrayList<>();

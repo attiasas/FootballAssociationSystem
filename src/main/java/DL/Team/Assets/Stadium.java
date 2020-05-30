@@ -1,6 +1,8 @@
 package DL.Team.Assets;
 
 import DL.Team.Team;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,7 +36,8 @@ public class Stadium implements Serializable
     @Column
     private boolean active;
 
-    @ManyToMany(mappedBy = "stadiums", cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Team> teams;
 
 

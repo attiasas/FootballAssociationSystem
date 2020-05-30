@@ -402,4 +402,5 @@
 .list-cell
 {
     -fx-text-fill: white;
+    -fx-background-color: -fx-primary;
 }

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="PL.main.MainController">
+<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="691.0" prefWidth="1000.0" styleClass="custom-pane" stylesheets="@../dark-theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.main.MainController">
     <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" resizableOnDrag="true" resizeContent="true" />
     <AnchorPane fx:id="rootAnchorPane" prefHeight="797.0" prefWidth="1076.0" />
    <VBox>
@@ -79,11 +82,6 @@
          </Pane>
          <AnchorPane>
             <children>
-               <Button fx:id="btnManager" contentDisplay="TOP" mnemonicParsing="false" prefHeight="89.0" prefWidth="114.0" styleClass="bigaction-button" text="Search">
-                  <graphic>
-                     <FontAwesomeIconView fill="#3f495a" fontSmoothingType="LCD" glyphName="SEARCH" size="50" />
-                  </graphic>
-               </Button>
                <HBox>
                   <children>
                      <ImageView blendMode="ADD" cache="true" fitHeight="518.0" fitWidth="400.0" preserveRatio="true" styleClass="title">
@@ -91,6 +89,51 @@
                            <Image url="@../img/signup-cover.jpeg" />
                         </image>
                      </ImageView>
+                     <AnchorPane prefHeight="500.0" prefWidth="651.0">
+                        <children>
+                           <Button contentDisplay="TOP" layoutX="87.0" layoutY="365.0" mnemonicParsing="false" onAction="#exploreLeagues" prefHeight="120.0" prefWidth="200.0" styleClass="bigaction-button" text="Leagues">
+                              <graphic>
+                                 <FontAwesomeIconView fill="#3f495a" glyphName="FUTBOL_ALT" size="50" />
+                              </graphic>
+                           </Button>
+                           <Button contentDisplay="TOP" layoutX="364.0" layoutY="365.0" mnemonicParsing="false" onAction="#exploreTeams" prefHeight="120.0" prefWidth="200.0" styleClass="bigaction-button" text="Teams">
+                              <graphic>
+                                 <FontAwesomeIconView fill="#3f495a" glyphName="USERS" size="50" />
+                              </graphic>
+                           </Button>
+                           <FontAwesomeIconView fill="#3f495a" glyphName="SEARCH" layoutX="569.0" layoutY="260.0" size="30" />
+                           <Label layoutX="34.0" layoutY="126.0" text="Search For Information">
+                              <font>
+                                 <Font size="33.0" />
+                              </font>
+                           </Label>
+                           <Label layoutX="270.0" layoutY="303.0" text="Explore">
+                              <font>
+                                 <Font size="34.0" />
+                              </font>
+                           </Label>
+                           <Button layoutX="562.0" layoutY="226.0" mnemonicParsing="false" onAction="#search" prefHeight="48.0" prefWidth="42.0" style="-fx-background-color: transparent;" />
+                           <Label layoutX="39.0" layoutY="189.0" text="Search Type:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <JFXComboBox fx:id="cb_searchType" layoutX="150.0" layoutY="184.0" prefHeight="31.0" prefWidth="214.0" promptText="Chose Type" style="-jfx-unfocus-color: #ffffff;" />
+                           <Label fx:id="l_welcome" layoutX="34.0" layoutY="14.0" text="Welcome!">
+                              <font>
+                                 <Font name="System Bold" size="57.0" />
+                              </font>
+                           </Label>
+                           <Separator layoutX="39.0" layoutY="107.0" prefHeight="0.0" prefWidth="578.0" />
+                           <Separator layoutX="37.0" layoutY="289.0" prefHeight="0.0" prefWidth="578.0" />
+                           <Label layoutX="37.0" layoutY="241.0" text="Query:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <JFXTextField fx:id="t_query" layoutX="107.0" layoutY="236.0" prefHeight="37.0" prefWidth="445.0" promptText="Query To Search" />
+                        </children>
+                     </AnchorPane>
                   </children>
                </HBox>
             </children>

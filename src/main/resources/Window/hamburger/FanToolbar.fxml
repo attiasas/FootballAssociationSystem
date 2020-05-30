@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="534.0" prefWidth="155.0" stylesheets="@../../dark-theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.main.FanToolbarController">
+    <JFXButton fx:id="b_fanInfo" alignment="CENTER" buttonType="RAISED" disable="true" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Hello, Fan" textOverrun="CENTER_ELLIPSIS" />
+   <JFXButton contentDisplay="TOP" mnemonicParsing="false" onAction="#loadNotifyScreen" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Notifications" textAlignment="CENTER">
+      <graphic>
+         <FontAwesomeIconView size="25" text="" textAlignment="CENTER" />
+      </graphic>
+   </JFXButton>
+   <VBox prefHeight="500.0" prefWidth="100.0" styleClass="custom-pane" stylesheets="@../../dark-theme.css" />
+</VBox>
