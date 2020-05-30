@@ -122,6 +122,7 @@ public class EventLogController
     public void refreshTable()
     {
         // Get Info
+        tv_events.setVisible(false);
         List<EventView> viewList = new ArrayList<>();
         for(Event event : match.getMyEventLog().getEvents())
         {
@@ -147,12 +148,13 @@ public class EventLogController
         tv_events.getColumns().add(tc_removeButton);
 
         tv_events.setItems(FXCollections.observableList(viewList));
+        tv_events.setVisible(true);
     }
 
     public void addEvent() throws IOException
     {
-       // AddEventController controller = (AddEventController)App.loadScreen("addEventScreen");
-      //  controller.initialize(unit,match,this);
+        AddEventController controller = (AddEventController)App.loadScreen("addEventScreen");
+        controller.initialize(unit,match,this);
     }
 
     public void closeWindow()

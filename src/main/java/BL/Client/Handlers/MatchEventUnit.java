@@ -72,18 +72,7 @@ public class MatchEventUnit
     public List<Match> getActiveMatches(User user)
     {
         if(!getRefereeFromServer(user)) return null;
-
-        List<Match> result = new ArrayList<>();
-
-        // filter only active matches
-        for(Match match : cachedReferee.getMatches())
-        {
-            if(match.isMatchEventPeriodOver()) continue;
-
-            result.add(match);
-        }
-
-        return result;
+        return cachedReferee.getMatches();
     }
 
     /**

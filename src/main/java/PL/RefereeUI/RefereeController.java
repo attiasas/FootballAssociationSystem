@@ -43,6 +43,8 @@ public class RefereeController
      */
     public class MatchView
     {
+        private final SimpleStringProperty leagueName;
+        private final SimpleStringProperty seasonName;
         private final SimpleStringProperty homeTeamName;
         private final SimpleStringProperty awayTeamName;
         private final SimpleStringProperty matchDate;
@@ -50,18 +52,27 @@ public class RefereeController
 
         public MatchView(Match match)
         {
+            leagueName = new SimpleStringProperty(match.getLeagueSeason().getLeague().getName());
+            seasonName = new SimpleStringProperty("" + match.getLeagueSeason().getSeason().getYear());
             homeTeamName = new SimpleStringProperty(match.getHomeTeam().getName());
             awayTeamName = new SimpleStringProperty(match.getAwayTeam().getName());
             matchDate = new SimpleStringProperty(match.getStartTime().toString());
 
-            editButton = new Button("Edit");
-            editButton.onActionProperty().set(event -> {
-                try {
-                    editMatchEvents(match);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+            if(match.isMatchEventPeriodOver())
+            {
+                editButton = new Button("Event Period Is Over");
+            }
+            else
+            {
+                editButton = new Button("Edit");
+                editButton.onActionProperty().set(event -> {
+                    try {
+                        editMatchEvents(match);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
         }
 
         public Button getEditButton() {
@@ -103,6 +114,30 @@ public class RefereeController
         public void setMatchDate(String matchDate) {
             this.matchDate.set(matchDate);
         }
+
+        public String getLeagueName() {
+            return leagueName.get();
+        }
+
+        public SimpleStringProperty leagueNameProperty() {
+            return leagueName;
+        }
+
+        public void setLeagueName(String leagueName) {
+            this.leagueName.set(leagueName);
+        }
+
+        public String getSeasonName() {
+            return seasonName.get();
+        }
+
+        public SimpleStringProperty seasonNameProperty() {
+            return seasonName;
+        }
+
+        public void setSeasonName(String seasonName) {
+            this.seasonName.set(seasonName);
+        }
     }
 
     /**
@@ -112,6 +147,7 @@ public class RefereeController
     public void init(MatchEventUnit unit)
     {
         // check if logged user is referee and load matches
+        tv_matches.setVisible(false);
         this.unit = unit;
         List<Match> matches = unit.getActiveMatches(ClientSystem.getLoggedUser());
         if(matches == null)
@@ -134,6 +170,14 @@ public class RefereeController
             tv_matches.prefWidthProperty().bind(App.mainStage.widthProperty());
 
             // set table and add content
+            TableColumn tc_league = new TableColumn("League");
+            tc_league.setCellValueFactory(new PropertyValueFactory<MatchView,String>("leagueName"));
+            tv_matches.getColumns().add(tc_league);
+
+            TableColumn tc_season = new TableColumn("Season");
+            tc_season.setCellValueFactory(new PropertyValueFactory<MatchView,String>("seasonName"));
+            tv_matches.getColumns().add(tc_season);
+
             TableColumn tc_homeTeam = new TableColumn("Home Team");
             tc_homeTeam.setCellValueFactory(new PropertyValueFactory<MatchView,String>("homeTeamName"));
             //tc_homeTeam.prefWidthProperty().setValue(250);
@@ -153,6 +197,7 @@ public class RefereeController
             tv_matches.getColumns().add(tc_action);
 
             tv_matches.setItems(FXCollections.observableList(viewList));
+            tv_matches.setVisible(true);
         }
     }
 
@@ -163,8 +208,8 @@ public class RefereeController
      */
     public void editMatchEvents(Match match) throws IOException
     {
-      //  EventLogController controller = (EventLogController) App.loadScreen("matchEventsScreen");
-       // controller.initialize(unit,match);
+        EventLogController controller = (EventLogController) App.loadScreen("matchEventsScreen");
+        controller.initialize(unit,match);
     }
 
     /**

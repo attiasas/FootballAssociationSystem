@@ -5,6 +5,8 @@ import BL.Communication.IServerStrategy;
 import BL.Communication.Server;
 import BL.Communication.SystemRequest;
 import BL.Communication.SystemRequest.Type;
+import BL.Server.ExternalSystems.FinancialSystem;
+import BL.Server.ExternalSystems.TaxSystem;
 import BL.Server.utils.Configuration;
 import BL.Server.utils.DB;
 import DL.Administration.SystemManager;
@@ -67,6 +69,8 @@ public class ServerSystem implements IServerStrategy {
 
     //notification handling objects
     private NotificationUnit notificationUnit;
+    private FinancialSystem financialSystem;
+    private TaxSystem taxSystem;
 
     public static void main(String[] args) {
         ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.DROP_AND_CREATE, null);
@@ -198,19 +202,10 @@ public class ServerSystem implements IServerStrategy {
     @SuppressWarnings("unused")
     private void initializeExternalSystems() {
         log.info("external systems integration started");
-   /*
-        FinanceSystem financeSys  = new ;
-        void makeEntry(List<GroupedItem> itemList, Receipt reciept)
-        void writeToSystem(Receipt reciept)
-        void updateSystem(List<GroupedItem> itemList)
-    */
 
-    /*
-        TaxSystem taxSys  = new ;
-        void makeEntry(List<GroupedItem> itemList, Receipt reciept)
-        void writeToSystem(Receipt reciept)
-        void updateSystem(List<GroupedItem> itemList)
-    */
+        financialSystem = new FinancialSystem();
+        taxSystem = new TaxSystem();
+
         log.info("external systems integration completed");
     }
 

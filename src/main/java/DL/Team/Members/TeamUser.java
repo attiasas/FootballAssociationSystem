@@ -54,7 +54,7 @@ public class TeamUser implements Serializable
     @Column
     boolean active;
 
-    public TeamUser(String name, boolean active, Fan fan, Team team) 
+    public TeamUser(String name, boolean active, Fan fan, Team team)
     {
         if (!onlyLettersString(name) || fan == null || team == null) return;
 
@@ -76,7 +76,7 @@ public class TeamUser implements Serializable
         return active;
     }
 
-    public String getName() 
+    public String getName()
     {
         return name;
     }

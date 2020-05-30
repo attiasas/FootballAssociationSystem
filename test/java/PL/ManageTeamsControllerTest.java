@@ -1,4 +1,4 @@
-package java.PL;
+package PL;
 
 import PL.TestFXBase;
 import com.jfoenix.controls.JFXTextField;
