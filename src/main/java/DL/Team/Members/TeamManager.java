@@ -19,6 +19,7 @@ import java.util.List;
         @NamedQuery(name = "teamManagerByTeam", query = "SELECT tm from TeamManager tm WHERE tm.team = :team AND tm.active = true AND tm.team.close = false"),
         @NamedQuery(name = "teamManagerTeamOwner", query = "SELECT tm from TeamManager tm WHERE tm.teamOwner = :teamOwner AND tm.active = true"),
 })
+@DiscriminatorValue(value = "TeamManager")
 public class TeamManager extends TeamUser implements Serializable
 {
     @ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})

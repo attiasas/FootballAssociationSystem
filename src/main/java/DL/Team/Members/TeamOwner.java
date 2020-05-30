@@ -38,10 +38,10 @@ public class TeamOwner implements FinancialUser, Serializable
     @OneToOne(cascade = {CascadeType.ALL})
     private TeamUser teamUser;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Team team;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<TeamOwner> ownerNominees;
 
     @OneToMany(mappedBy = "teamOwner" ,cascade = {CascadeType.MERGE})

@@ -30,7 +30,7 @@ public abstract class Page implements Serializable
     @Column
     protected String content;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToMany(mappedBy = "follow",cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     @LazyCollection(LazyCollectionOption.FALSE)
     Set<Fan> followers;
 

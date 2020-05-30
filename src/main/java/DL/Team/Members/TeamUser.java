@@ -30,7 +30,8 @@ import java.io.Serializable;
         @NamedQuery(name = "ActivateTeamUserByFan", query = "UPDATE TeamUser tu SET tu.active = true WHERE tu.fan = :fan"),
 })
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
 public class TeamUser implements Serializable
 {
 
@@ -44,7 +45,7 @@ public class TeamUser implements Serializable
     @Column
     String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     Fan fan;
 
     @ManyToOne
