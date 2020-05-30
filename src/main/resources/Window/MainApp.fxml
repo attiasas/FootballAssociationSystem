@@ -86,7 +86,7 @@
                   <children>
                      <ImageView blendMode="ADD" cache="true" fitHeight="518.0" fitWidth="400.0" preserveRatio="true" styleClass="title">
                         <image>
-                            <Image url="@../img/sportift-logo.png" />
+                           <Image url="@../img/signup-cover.jpeg" />
                         </image>
                      </ImageView>
                      <AnchorPane prefHeight="500.0" prefWidth="651.0">

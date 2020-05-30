@@ -73,7 +73,7 @@ public class ServerSystem implements IServerStrategy {
     private TaxSystem taxSystem;
 
     public static void main(String[] args) {
-        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.DROP_AND_CREATE, null);
+        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.NONE, new NotificationUnit());
         try {
             serverSystem.initializeServer();
         } catch (Exception e) {

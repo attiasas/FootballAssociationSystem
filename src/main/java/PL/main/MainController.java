@@ -125,6 +125,7 @@ public class MainController implements Initializable {
 
     public void handleMenuFileLogout() {
         closeStage();
+        App.clientSystem.userUnit.logOut();
         loadStage("Login");
     }
 

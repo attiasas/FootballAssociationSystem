@@ -154,7 +154,7 @@ public class NotificationsController implements Initializable, Serializable
                     setText(String.format(item.getContent() + "\n" + dateParser.format(item.getCreationDate())));
 
                     //import the image
-                    File file = new File("src/main/resources/img/notification2.png");
+                    File file = new File("src/main/resources/img/notification.png");
                     Image image = new Image(file.toURI().toString());
                     imageView.setImage(image);
                     setGraphic(imageView);
