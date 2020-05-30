@@ -11,6 +11,8 @@ import DL.Team.Members.TeamOwner;
 import DL.Team.Page.Page;
 import DL.Team.Page.TeamPage;
 import DL.Users.User;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.io.Serializable;
 import java.util.*;
@@ -65,30 +67,39 @@ public class Team implements Serializable {
     private TeamPage page;
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Coach> coaches;
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Player> players;
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TeamManager> teamManagers;
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TeamOwner> teamOwners;
 
     @ManyToMany(mappedBy = "teams", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Stadium> stadiums;
 
     @OneToMany(mappedBy = "homeTeam", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Match> homeMatches;
 
     @OneToMany(mappedBy = "awayTeam", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Match> awayMatches;
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TeamFinancialEntry> teamFinancialEntries;
 
-    @ManyToMany(mappedBy = "teamsParticipate", cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<LeagueSeason> leagueSeasons;
 
     //Constructor
@@ -125,7 +136,7 @@ public class Team implements Serializable {
 
     public boolean addLeagueSeason(LeagueSeason leagueSeason) {
 
-        if (leagueSeason == null) return false;
+        if (leagueSeason == null || checkIfObjectExists(leagueSeason,leagueSeasons)) return false;
 
         leagueSeasons.add(leagueSeason);
         return true;
@@ -356,4 +367,18 @@ public class Team implements Serializable {
         return this.name.equals(otherTeam.name);
     }
 
+    /**
+     * checks if the object already exists
+     *
+     * @param toCheck    object to find in the list
+     * @param objectList list of objects
+     * @return true if the object exists
+     */
+    private boolean checkIfObjectExists(Object toCheck, List objectList) {
+        for (Object listObject : objectList) {
+            if (listObject.equals(toCheck))
+                return true;
+        }
+        return false;
+    }
 }

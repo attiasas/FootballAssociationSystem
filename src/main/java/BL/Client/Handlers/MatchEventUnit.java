@@ -76,7 +76,7 @@ public class MatchEventUnit
         List<Match> result = new ArrayList<>();
 
         // filter only active matches
-        for(Match match : cachedReferee.getMainMatches())
+        for(Match match : cachedReferee.getMatches())
         {
             if(match.isMatchEventPeriodOver()) continue;
 
@@ -402,7 +402,7 @@ public class MatchEventUnit
     public boolean removeEvent(User user, Match match,Event event)
     {
         if(!getRefereeFromServer(user)) return false;
-        if(!cachedReferee.getMainMatches().contains(match)) return false;
+        if(!cachedReferee.getMatches().contains(match)) return false;
         if(!match.getMyEventLog().getEvents().contains(event)) return false;
 
         List<SystemRequest> requests = new ArrayList<>();

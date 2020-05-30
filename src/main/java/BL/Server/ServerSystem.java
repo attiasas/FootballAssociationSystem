@@ -257,6 +257,7 @@ public class ServerSystem implements IServerStrategy {
 
             //TODO: if the request is unsubscription from notifications - close the socket
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
         }
     }
@@ -313,6 +314,7 @@ public class ServerSystem implements IServerStrategy {
      */
     public void handleRequest(ObjectOutputStream toClientObject, SystemRequest systemRequest, Socket clientSocket) {
         try {
+            System.out.println("welcome");
             switch (systemRequest.type) {
                 case Login:
                     log.info(systemRequest.type + " request has been recived!");
@@ -378,6 +380,12 @@ public class ServerSystem implements IServerStrategy {
 
 
                     break;
+                case Merge:
+                    log.info(systemRequest.type + " request has been recived!");
+                    toClientObject.writeObject(DB.merge(systemRequest.data));
+                    toClientObject.flush();
+                    break;
+
                 case Query:
                     log.info(systemRequest.type + " request has been recived!");
                     List toClient = DB.query(systemRequest.queryName, systemRequest.data);

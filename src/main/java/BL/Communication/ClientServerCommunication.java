@@ -53,7 +53,7 @@ public class ClientServerCommunication {
     private volatile boolean listen = true;
 
     public static void main(String[] args) {
-        loginTestServer();
+//        loginTestServer();
         notifyTestServer();
     }
 
@@ -84,26 +84,26 @@ public class ClientServerCommunication {
 //
 //        }
 
-        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
+//        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
 
-//        Notifiable notifiable = new Notifiable() {
-//            @Override
-//            public Notification getNotification() {
-//                return new Notification("notifcation!!!");
-////                return null;
-//            }
-//
-//            @Override
-//            public Set getNotifyUsersList() {
-//                Set<User> set = new HashSet<>();
-//                Fan fan = new Fan("admin", "admin", "admin");
-//                set.add(fan);
-//                return set;
-////                return null;
-//            }
-//        };
-//
-//        client.notify(notifiable);
+        Notifiable notifiable = new Notifiable() {
+            @Override
+            public Notification getNotification() {
+                return new Notification("notifcation!!!");
+//                return null;
+            }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set<User> set = new HashSet<>();
+                Fan fan = new Fan("admin", "admin", "admin");
+                set.add(fan);
+                return set;
+//                return null;
+            }
+        };
+
+        client.notify(notifiable);
     }
 
     public ClientServerCommunication()
@@ -324,6 +324,30 @@ public class ClientServerCommunication {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Merge an Object in the data base in the server base on a named query
+     * @param toMerge - object to merge into the data base
+     * @return true if the merge completed in success, false other wise
+     */
+    public boolean merge(Object toMerge)
+    {
+        try(Socket serverSocket = new Socket(serverIP,serverPort))
+        {
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
+            out.writeObject(SystemRequest.merge(toMerge));
+            out.flush();
+
+            boolean answer = (boolean) in.readObject();
+            return answer;
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

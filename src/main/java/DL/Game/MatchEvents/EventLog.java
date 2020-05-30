@@ -1,6 +1,8 @@
 package DL.Game.MatchEvents;
 
 import DL.Game.Match;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +14,8 @@ import java.util.List;
  **/
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "EventLogs", query = "Select e From EventLog e")
+        @NamedQuery(name = "EventLogs", query = "Select e From EventLog e"),
+        @NamedQuery(name = "eventLogByMatch", query = "select e from EventLog e where e.myMatch = :match")
 })
 public class EventLog implements Serializable {
 
@@ -21,6 +24,7 @@ public class EventLog implements Serializable {
     private int id;
 
     @OneToMany(mappedBy = "eventLog" ,cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Event> eventList;
 
     @OneToOne

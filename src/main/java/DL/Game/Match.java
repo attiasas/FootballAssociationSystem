@@ -4,55 +4,67 @@ import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.MatchEvents.EventLog;
 import DL.Team.Assets.Stadium;
 import DL.Team.Team;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Description:     This class represents a match between two teams
  **/
+
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = "UpdateMatchEventLog", query = "update Match m set m.myEventLog = :eventLog where m = : match"),
-        @NamedQuery(name =  "UpdateMatchEndTime", query = "update Match m set m.endTime =: endTime where m =: match"),
+        @NamedQuery(name = "UpdateMatchEndTime", query = "update Match m set m.endTime =: endTime where m =: match"),
         @NamedQuery(name = "nextMatchesListByTeam", query = "SELECT m FROM Match m WHERE m.endTime = null AND (m.homeTeam = :team OR m.awayTeam = :team)"),
-        @NamedQuery(name = "nextMatchesListByReferee", query = "SELECT m FROM Match m WHERE m.endTime = null AND (m.mainReferee = :referee OR m.firstLineManReferee = :referee OR m.secondLineManReferee = :referee)")
+//        @NamedQuery(name = "nextMatchesListByReferee", query = "SELECT m FROM Match m WHERE m.endTime = null AND (m.mainReferee = :referee OR m.firstLineManReferee = :referee OR m.secondLineManReferee = :referee)")
 })
 public class Match implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int matchID;
+
     @Column
     private Date startTime;
+
     @Column
     private Date endTime;
+
     @Column
     private int homeScore;
+
     @Column
     private int awayScore;
+
     @ManyToOne
     private Team homeTeam;
+
     @ManyToOne
     private Team awayTeam;
-    @ManyToOne
-    private Referee firstLineManReferee;
-    @ManyToOne
-    private Referee secondLineManReferee; // 2 linesmen in a match
-    @ManyToOne
-    private Referee mainReferee;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Referee> referees; // maximum 3 referees
+
     @ManyToOne
     private LeagueSeason leagueSeason;
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.ALL)
     private EventLog myEventLog;
+
     @ManyToOne
     private Stadium stadium;
 
     /**
      * Ctor
+     *
      * @param startTime
      * @param homeTeam
      * @param awayTeam
@@ -72,7 +84,7 @@ public class Match implements Serializable {
         this.stadium = stadium;
         this.myEventLog = new EventLog(this);
         this.homeScore = this.awayScore = 0;
-
+        this.referees = new ArrayList<>();
     }
 
     /**
@@ -84,34 +96,23 @@ public class Match implements Serializable {
 
     /**
      * Sets mainReferee of the match. checks that not equals to the linesMan.
+     *
      * @param referee not null
      */
-    public void setMainReferee(Referee referee) {
-        if (referee != null) {
-            if (firstLineManReferee == null || secondLineManReferee == null || !referee.equals(firstLineManReferee) && !referee.equals(secondLineManReferee)) {
-                this.mainReferee = referee;
+    public void setReferee(Referee referee) {
+        boolean exists = false;
+        if (referee != null && referees.size() < 3) {
+            for (Referee r : referees) {
+                if (r.equals(referee))
+                    exists = true;
             }
+            if (!exists) referees.add(referee);
         }
-    }
-
-    /**
-     * Sets linesMan of the match. checks that not equals to the mainReferee and that not equals to each other.
-     * @param firstReferee not null
-     * @param secondReferee not null
-     */
-    public boolean setLinesManReferees(Referee firstReferee, Referee secondReferee) {
-        if (firstReferee != null && secondReferee != null && !firstReferee.equals(secondReferee)) {
-            if (!firstReferee.equals(mainReferee) && !secondReferee.equals(mainReferee)) {
-                this.firstLineManReferee = firstReferee;
-                this.secondLineManReferee = secondReferee;
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
      * Sets the match score
+     *
      * @param homeScore
      * @param awayScore
      */
@@ -124,6 +125,7 @@ public class Match implements Serializable {
 
     /**
      * sets the start time of the match
+     *
      * @param startTime
      */
     public void setStartTime(Date startTime) {
@@ -133,6 +135,7 @@ public class Match implements Serializable {
 
     /**
      * sets the end time of the match
+     *
      * @param endTime
      */
     public void setEndTime(Date endTime) {
@@ -141,8 +144,13 @@ public class Match implements Serializable {
         else this.endTime = null;
     }
 
+    public void setMyEventLog(EventLog myEventLog) {
+        this.myEventLog = myEventLog;
+    }
+
     /**
      * sets the stadium time of the match
+     *
      * @param stadium
      */
     public void setStadium(Stadium stadium) {
@@ -154,11 +162,10 @@ public class Match implements Serializable {
      ******************Getters*********************
      *********************************************/
 
-    public boolean isMatchEventPeriodOver()
-    {
+    public boolean isMatchEventPeriodOver() {
         //Convert -> Date.from(Instant.from(LocalDate.of(2019,1,1).atStartOfDay(ZoneId.systemDefault())))
 
-        if(startTime == null) return false;
+        if (startTime == null) return false;
         Date current = new Date();
         Date limit = new Date(startTime.getTime() + (5 * 60 * 1000));
         return current.after(limit);
@@ -196,16 +203,12 @@ public class Match implements Serializable {
         return myEventLog;
     }
 
-    public Referee getFirstLineManReferee() {
-        return firstLineManReferee;
+    public List<Referee> getReferees() {
+        return referees;
     }
 
-    public Referee getSecondLineManReferee() {
-        return secondLineManReferee;
-    }
-
-    public Referee getMainReferee() {
-        return mainReferee;
+    public LeagueSeason getLeagueSeason() {
+        return leagueSeason;
     }
 
     @Override

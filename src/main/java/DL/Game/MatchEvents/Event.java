@@ -30,10 +30,10 @@ public abstract class Event implements Serializable, Notifiable {
     @GeneratedValue
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Referee createdByUser;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private EventLog eventLog;
 
     //@ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})

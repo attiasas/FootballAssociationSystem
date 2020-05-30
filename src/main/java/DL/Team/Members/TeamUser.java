@@ -35,7 +35,7 @@ public class TeamUser implements Serializable
 {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     /**
      * For Composite Primary Key
@@ -44,10 +44,10 @@ public class TeamUser implements Serializable
     @Column
     String name;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     Fan fan;
 
-    @ManyToOne()
+    @ManyToOne
     protected Team team;
 
     @Column

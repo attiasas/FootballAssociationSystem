@@ -21,9 +21,9 @@ import java.util.*;
 @NamedQueries(value = {
         @NamedQuery(name = "GetAllLeagueSeasons", query = "SELECT ls From LeagueSeason ls WHERE ls.season =: season"),
         @NamedQuery(name = "GetLeagueSeason", query = "SELECT ls From LeagueSeason ls WHERE ls.season =: season AND ls.league =: league"),
-        @NamedQuery(name = "UpdateScorePolicy", query = "UPDATE LeagueSeason ls SET ls.scorePolicy = :newScorePolicy WHERE  ls.league = : league AND ls.season =: season"),
+        @NamedQuery(name = "UpdateScorePolicy", query = "UPDATE LeagueSeason ls SET ls.scorePolicy.winPoints = :winPoints, ls.scorePolicy.drawPoints = :drawPoints, ls.scorePolicy.losePoints = :losePoints WHERE ls.leagueSeasonID =:leagueSeasonID"),
         @NamedQuery(name = "UpdateLeagueSeasonRefereesList", query = "UPDATE LeagueSeason ls SET ls.referees = :newReferees WHERE  ls.league = : league AND ls.season =: season"),
-        @NamedQuery(name = "UpdateLeagueSeasonTeamList", query = "UPDATE LeagueSeason ls SET ls.teamsParticipate = :teamsParticipate WHERE  ls.leagueSeasonID=:leagueSeasonID"),
+        @NamedQuery(name = "UpdateLeagueSeasonTeamList", query = "UPDATE LeagueSeason ls SET ls.teamsParticipate = :newTeamList WHERE  ls.league = : league AND ls.season =: season"),
         @NamedQuery(name = "UpdateLeagueSeasonMatchList", query = "UPDATE LeagueSeason ls SET ls.matches = :matchList WHERE  ls.league = : league AND ls.season =: season"),
         @NamedQuery(name = "UpdateLeagueSeasonRefereeList", query = "UPDATE LeagueSeason ls SET ls.referees = :refereesList WHERE  ls.league = : league AND ls.season =: season")
 
@@ -35,23 +35,30 @@ public class LeagueSeason implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int leagueSeasonID;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne
     private League league;
-    @OneToOne(cascade = CascadeType.MERGE)
+
+    @OneToOne
     private Season season;
-    @OneToOne(cascade = CascadeType.MERGE)
+
+    @OneToOne
     private GamePolicy gamePolicy;
-    @OneToOne(cascade = CascadeType.MERGE)
+
+    @OneToOne
     private ScorePolicy scorePolicy;
-    @OneToMany(targetEntity = Match.class,cascade = CascadeType.ALL,mappedBy = "leagueSeason")
+
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "leagueSeason")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Match> matches;
-    @ManyToMany(cascade = CascadeType.MERGE)
+
+    @ManyToMany(mappedBy = "leagueSeasons")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Team> teamsParticipate;
-    @ManyToMany(cascade = CascadeType.MERGE)
+
+    @ManyToMany(mappedBy = "leagueSeasons")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Referee> referees;
+
     @Column
     private Date startDate;
 
@@ -145,27 +152,11 @@ public class LeagueSeason implements Serializable {
         int indexOfReferee = 0;
         if (matches != null && matches.size() > 0 && referees.size() > 2) {
             for (Match match : matches) {
-
-                if (indexOfReferee >= referees.size())
-                    indexOfReferee = 0;
-                match.setMainReferee(referees.get(indexOfReferee));
-                referees.get(indexOfReferee++).addMainMatch(match);
-
-                if (indexOfReferee >= referees.size()) {
-                    indexOfReferee = 0;
-                    match.setLinesManReferees(referees.get(indexOfReferee++), referees.get(indexOfReferee));
-                    referees.get(indexOfReferee).addLinesManMatch(match);
-                    referees.get(indexOfReferee - 1).addLinesManMatch(match);
-                } else if (indexOfReferee + 1 >= referees.size()) {
-                    match.setLinesManReferees(referees.get(indexOfReferee), referees.get(0));
-                    referees.get(indexOfReferee).addLinesManMatch(match);
-                    referees.get(0).addLinesManMatch(match);
-                    indexOfReferee = 1;
-                } else {
-                    match.setLinesManReferees(referees.get(indexOfReferee++), referees.get(indexOfReferee++));
-                    referees.get(indexOfReferee - 1).addLinesManMatch(match);
-                    referees.get(indexOfReferee - 2).addLinesManMatch(match);
-
+                for (int i=0;i<3;i++) {
+                    if (indexOfReferee >= referees.size())
+                        indexOfReferee = 0;
+                    match.setReferee(referees.get(indexOfReferee));
+                    referees.get(indexOfReferee++).addMatch(match);
                 }
             }
             return true;
@@ -352,15 +343,5 @@ public class LeagueSeason implements Serializable {
         return "LeagueSeason{" + league + ", " + season + '}';
     }
 
-    public void setMatches(){
-        matches = new ArrayList<>();
-    }
 
-    public void setTeams(){
-        teamsParticipate = new ArrayList<>();
-    }
-
-    public void setReferees(){
-        referees = new ArrayList<>();
-    }
 }

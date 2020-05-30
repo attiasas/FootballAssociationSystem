@@ -56,6 +56,7 @@ public abstract class User implements Serializable
     //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinTable(name="UserToNotification", joinColumns = {@JoinColumn(name = "username")}, inverseJoinColumns = {@JoinColumn(name="id")})
     @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Map<Notification, Boolean> notificationsOwner; //maps from notification to a boolean of read or not read
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)

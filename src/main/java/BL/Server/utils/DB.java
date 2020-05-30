@@ -2,6 +2,7 @@ package BL.Server.utils;
 
 import BL.Server.ServerSystem;
 import DL.Game.LeagueSeason.LeagueSeason;
+import DL.Game.Policy.ScorePolicy;
 import DL.Team.Team;
 import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Level;
@@ -154,6 +155,7 @@ public class DB implements Serializable {
             entity = em.merge(entity);
             em.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             em.getTransaction().rollback();
             log.info("merge failed");
             return false;
@@ -208,6 +210,7 @@ public class DB implements Serializable {
             resultList = fixed.getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             em.getTransaction().rollback();
             log.warn("query failed");
             return null;
@@ -251,18 +254,17 @@ public class DB implements Serializable {
         txn.begin();
 
         HashMap<String, Object> param = new HashMap<>();
-        param.put("name", "amit");
 
-        Team a = em.find(Team.class, "hapoell");
 
-        LeagueSeason ls = em.find(LeagueSeason.class, 7);
+        Team a = em.find(Team.class,"cc");
+        LeagueSeason ls = em.find(LeagueSeason.class, 359);
 
         ls.addTeam(a);
 
-        DB.persist(ls);
+        DB.merge(ls);
 
 //        System.out.println(em.createNamedQuery("").setParameter("username", "dvir").getResultList().size());
-        System.out.println(DB.query("teamByName",param).size());
+        //System.out.println(DB.query("teamByName",param).size());
 //        Coach c = new Coach("dvir",true,new Fan("dvir",))
 //        Team t = new Team("team test",true,false);
 //        em.persist(t);

@@ -8,6 +8,8 @@ import DL.Game.Policy.GamePolicy;
 import DL.Game.Policy.ScorePolicy;
 import DL.Game.Referee;
 import DL.Team.Team;
+import DL.Users.Fan;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -21,7 +23,41 @@ import java.util.List;
 public class LeagueSeasonUnit {
 
     private ClientServerCommunication clientServerCommunication;
+    public static void main(String[] args) throws Exception {
+        try {
+            ClientServerCommunication c = new ClientServerCommunication();
+            LeagueSeasonUnit l = new LeagueSeasonUnit(c);
+            AssociationManagementUnit am = new AssociationManagementUnit(c);
+            PoliciesUnit p = new PoliciesUnit(c);
+            Fan f1 = new Fan("Assaf", "test@mail.com", DigestUtils.sha1Hex("abcd"));
+            Fan f2 = new Fan("Amit", "test1@mail.com", DigestUtils.sha1Hex("abcd"));
+            am.addTeam("h", "aa", f1);
+            am.addTeam("d", "a", f2);
+            l.addNewLeague("a");
+            l.addNewSeason(3028);
+            p.addNewGamePolicy(7, 3);
+            p.addNewScorePolicy(7, 3, 5);
+            League league = l.getLeagues().get(0);
+            Season season = l.getSeasons().get(0);
+            GamePolicy gp = p.getGamePolicies().get(0);
+            ScorePolicy sp = p.getScorePolicies().get(0);
+            Date d = new Date();
+            l.addLeagueSeason(league, season, gp, sp, d);
+            Team t = am.loadTeam("h");
+            Team t1 = am.loadTeam("d");
+            List<LeagueSeason> ls = l.getLeagueSeasons(new Season(3028));
+            LeagueSeason ld = ls.get(0);
+//            t.setLeagueSeasons();
+//            t1.setLeagueSeasons();
+            l.addTeamToLeagueSeason(ld, t);
+            //l.addTeamToLeagueSeason(ld, t1);
+            p.scheduleMatches(ld);
 
+            //System.out.println(ld.getMatches());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Ctor with parameters
      *
@@ -189,10 +225,10 @@ public class LeagueSeasonUnit {
 
             if (leagueSeason.addTeam(team)) {
                 HashMap<String, Object> parameters = new HashMap<>();
-                parameters.put("newTeamList", leagueSeason.getTeamsParticipate());
-                parameters.put("league", leagueSeason.getLeague());
-                parameters.put("season", leagueSeason.getSeason());
-                return clientServerCommunication.update("UpdateLeagueSeasonTeamList", parameters);
+//                parameters.put("newTeamList", leagueSeason.getTeamsParticipate());
+//                parameters.put("league", leagueSeason.getLeague());
+//                parameters.put("season", leagueSeason.getSeason());
+                return clientServerCommunication.insert(leagueSeason);
 
             } else {
                 throw new Exception("Sorry, the team is not active.");
