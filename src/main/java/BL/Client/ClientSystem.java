@@ -45,7 +45,6 @@ public class ClientSystem
         complaintUnit = new ComplaintUnit(communication);
         policiesUnit = new PoliciesUnit(communication);
     }
-
     
     public static User getLoggedUser()
     {

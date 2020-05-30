@@ -69,6 +69,18 @@ public class RefereeController extends AInitComboBoxObjects {
 
     }
 
+    public void initCreateRefereeComboBoxOptions() {
+
+        referees_username_FX = FXCollections.observableArrayList();
+        comboboxReferee.setItems(referees_username_FX);
+        List<Referee> referees = ClientSystem.communication.query("AllReferees", new HashMap<>());
+        List<String> referees_username = new ArrayList<>();
+        for (Referee referee : referees)
+            referees_username.add(referee.getFan().getUsername());
+        referees_username_FX.addAll(referees_username);
+
+    }
+
     public void setRefereesInLeagueSeason() {
         LeagueSeason leagueSeason;
         Referee referee;
@@ -93,30 +105,9 @@ public class RefereeController extends AInitComboBoxObjects {
         }
     }
 
-    public void addNewReferee() {
-
-    }
-
-    public void removeReferee() {
-
-    }
-
     public void closeWindow() {
         AssociationController.loadScreen("AssociationManageRefereesFXML");
     }
-
-    public void initCreateRefereeComboBoxOptions() {
-
-        referees_username_FX = FXCollections.observableArrayList();
-        comboboxReferee.setItems(referees_username_FX);
-        List<Referee> referees = ClientSystem.communication.query("AllReferees", new HashMap<>());
-        List<String> referees_username = new ArrayList<>();
-        for (Referee referee : referees)
-            referees_username.add(referee.getFan().getUsername());
-        referees_username_FX.addAll(referees_username);
-
-    }
-
 
     public void addReferee(ActionEvent actionEvent)
     {

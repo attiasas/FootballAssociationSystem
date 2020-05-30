@@ -8,7 +8,6 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 
 import static PL.AlertUtil.showSimpleAlert;
-import static PL.main.App.loadScreen;
 
 public class AssociationController {
 
@@ -70,11 +69,14 @@ public class AssociationController {
 
     }
 
-    //Teams functions
-    public void addNewTeam(){
-
+    public void addOrRemoveReferee() {
+        RefereeController rController = (RefereeController) loadScreen("AddOrRemoveReferee");
+        if (rController != null) {
+            rController.initCreateRefereeComboBoxOptions();
+        }
     }
 
+    //Teams functions
     public void addTeamToLeagueSeason() {
         TeamController lsController = (TeamController) loadScreen("SetTeamInLeagueSeasonFXML");
         if (lsController != null) {
@@ -83,14 +85,6 @@ public class AssociationController {
     }
 
     public void createTeam() { loadScreen("CreateTeam"); }
-
-    public void addOrRemoveReferee() {
-        RefereeController rController = (RefereeController) loadScreen("AddOrRemoveReferee");
-        if (rController != null) {
-            rController.initCreateRefereeComboBoxOptions();
-
-        }
-    }
 
     //Financial functions
     public void setFinancialRules(){

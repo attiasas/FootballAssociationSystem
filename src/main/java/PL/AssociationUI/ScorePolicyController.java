@@ -24,16 +24,25 @@ public class ScorePolicyController extends AInitComboBoxObjects {
 
     //change score policy screen
     @FXML
-    JFXComboBox<League> leagues;
+    JFXComboBox<LeagueSeason> leagues;
     @FXML
     JFXComboBox<Season> seasons;
     @FXML
     JFXComboBox<ScorePolicy> scorePolicies;
 
     public void initComboBoxOptions() {
-        if (!initLeagueChoices(leagues) || !initScorePolicyChoices(scorePolicies) || !initSeasonChoices(seasons)) {
+        if (!initSeasonChoices(seasons) || !initScorePolicyChoices(scorePolicies)) {
             closeWindow();
+            return;
         }
+        //inits leagueSeason combo box after choosing season
+        seasons.setOnAction((e) -> {
+            if (seasons.getValue() != null) {
+                leagues.setItems(null);
+                if (!initLeagueSeasonsChoices(leagues, seasons.getValue()))
+                    closeWindow();
+            }
+        });
     }
 
     public void createScorePolicy() {
@@ -55,11 +64,11 @@ public class ScorePolicyController extends AInitComboBoxObjects {
                 } else {
                     showSimpleAlert("Error", "There was a problem with the server. Please try again later");
                 }
-
+                closeWindow();
             } else {
                 showSimpleAlert("Error", "Please fill the required (*) fields.");
             }
-            closeWindow();
+
         } catch (NumberFormatException e) {
             showSimpleAlert("Error", "Please insert only numbers.");
         } catch (Exception e) {
@@ -75,15 +84,15 @@ public class ScorePolicyController extends AInitComboBoxObjects {
         ScorePolicy newScorePolicy;
         LeagueSeason leagueSeason;
         try {
-            if (leagues.getValue() == null || seasons.getValue() == null || scorePolicies.getValue() == null) {
+            if (seasons.getValue() == null || leagues.getValue() == null || scorePolicies.getValue() == null) {
                 throw new Exception("Please fill all the fields.");
             }
 
-            league = leagues.getValue();
-            season = seasons.getValue();
+            //season = seasons.getValue();
+            leagueSeason = leagues.getValue();
             newScorePolicy = scorePolicies.getValue();
 
-            leagueSeason = App.clientSystem.leagueSeasonUnit.getLeagueSeason(season, league);
+            //leagueSeason = App.clientSystem.leagueSeasonUnit.getLeagueSeason(season, league);
 
             if (App.clientSystem.leagueSeasonUnit.changeScorePolicy(leagueSeason, newScorePolicy)) {
                 showSimpleAlert("Success", "Score Policy changed successfully!");

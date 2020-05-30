@@ -81,6 +81,15 @@ public class ServerSystem implements IServerStrategy {
         }
     }
 
+    public static void main(String[] args) {
+        ServerSystem serverSystem = new ServerSystem(DbSelector.TEST, Strategy.DROP_AND_CREATE, null);
+        try {
+            serverSystem.initializeServer();
+        } catch (Exception e) {
+            log.error("Error when connection to the server" + e.getMessage());
+        }
+    }
+
     /**
      * c`tor
      *

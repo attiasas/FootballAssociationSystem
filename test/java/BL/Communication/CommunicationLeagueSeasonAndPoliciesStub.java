@@ -8,6 +8,8 @@ import DL.Game.Policy.GamePolicy;
 import DL.Game.Policy.ScorePolicy;
 import DL.Game.Referee;
 import DL.Team.Team;
+import DL.Users.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +22,48 @@ public class CommunicationLeagueSeasonAndPoliciesStub extends ClientServerCommun
     private List<LeagueSeason> leagueSeasons;
     private List<League> leagues;
     private List<Season> seasons;
+    private List<User> users;
+
 
     public CommunicationLeagueSeasonAndPoliciesStub() {
+        this.users = new ArrayList<>();
         this.scorePolicies = new ArrayList<>();
         this.gamePolicies = new ArrayList<>();
         this.leagueSeasons = new ArrayList<>();
         this.leagues = new ArrayList<>();
         this.seasons = new ArrayList<>();
+    }
+
+    public CommunicationLeagueSeasonAndPoliciesStub(List<User> users) {
+        this();
+        this.users = users;
+    }
+
+    public void addLeague(League l){
+        leagues.add(l);
+    }
+    public void addSeason(Season s){
+        seasons.add(s);
+    }
+    public void addLeagueSeason(LeagueSeason ls){
+        leagueSeasons.add(ls);
+    }
+    public void addGamePolicy(GamePolicy gp){
+        gamePolicies.add(gp);
+    }
+    public void addScorePolicy(ScorePolicy sp){
+        scorePolicies.add(sp);
+    }
+
+    @Override
+    public List login(String username, String password) {
+        List<User> user = new ArrayList<>();
+        for (User u : users){
+            if (u.getUsername().equals(username) && u.getHashedPassword().equals(password)){
+                user.add(u);
+            }
+        }
+        return user;
     }
 
     @Override
@@ -143,11 +180,13 @@ public class CommunicationLeagueSeasonAndPoliciesStub extends ClientServerCommun
                 }
                 return false;
             case "UpdateScorePolicy":
-                ScorePolicy scorePolicy = (ScorePolicy) parameters.get("newScorePolicy");
-                league = (League) parameters.get("league");
-                season = (Season) parameters.get("season");
+                int winPoints =  (Integer) parameters.get("winPoints");
+                int drawPoints =  (Integer) parameters.get("drawPoints");
+                int losePoints =  (Integer) parameters.get("losePoints");
+                int leagueSeasonID =  (Integer) parameters.get("leagueSeasonID");
                 for (LeagueSeason ls : leagueSeasons) {
-                    if (ls.getSeason().equals(season) && ls.getLeague().equals(league)) {
+                    if (ls.getLeagueSeasonID() == leagueSeasonID) {
+                        ScorePolicy scorePolicy = new ScorePolicy(winPoints,drawPoints,losePoints);
                         return ls.setScorePolicy(scorePolicy);
                     }
                 }
@@ -209,6 +248,40 @@ public class CommunicationLeagueSeasonAndPoliciesStub extends ClientServerCommun
         return false;
     }
 
+    @Override
+    public boolean merge(Object toMerge){
+        if (toMerge instanceof Team){
+            Team t = (Team) toMerge;
+            for (LeagueSeason s : t.getLeagueSeasons()){
+                if (!s.getTeamsParticipate().contains(t))
+                    s.addTeam(t);
+            }
+        } else if (toMerge instanceof Referee){
+            Referee r = (Referee) toMerge;
+            for (LeagueSeason s : r.getLeagueSeasons()){
+                if (!s.getReferees().contains(r))
+                    s.addReferee(r);
+            }
+        } else if (toMerge instanceof LeagueSeason){
+            LeagueSeason ls = (LeagueSeason) toMerge;
+            for (LeagueSeason s : leagueSeasons){
+                if (s.equals(ls))
+                    s.setGames(ls.getMatches());
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean transaction(List<SystemRequest> systemRequests){
+        return true;
+    }
+
+    @Override
+    public boolean startNotificationListener() {
+        return true;
+    }
+
     /**
      * checks if two objects are the same and returns their index
      *
@@ -223,4 +296,6 @@ public class CommunicationLeagueSeasonAndPoliciesStub extends ClientServerCommun
         }
         return -1;
     }
+
+
 }

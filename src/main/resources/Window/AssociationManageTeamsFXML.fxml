@@ -57,7 +57,7 @@
         </ImageView>
         <VBox layoutY="284.0" prefHeight="415.0" prefWidth="556.0">
             <children>
-                <JFXButton alignment="CENTER" contentDisplay="TOP" prefHeight="83.0" prefWidth="556.0"
+                <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#createTeam" prefHeight="83.0" prefWidth="556.0"
                            styleClass="toolbar-button" text="Add New Team" textFill="WHITE"/>
                 <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#addTeamToLeagueSeason" prefHeight="83.0"
                            prefWidth="556.0" styleClass="toolbar-button" text="Add Team To League" textFill="WHITE"/>

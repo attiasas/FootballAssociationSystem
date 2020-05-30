@@ -23,13 +23,13 @@ public class AssociationToolbarController {
 
     @FXML
     private void loadManageTeams(ActionEvent actionEvent){
-        loadStage("ManageTeams");
+        loadStage("AssociationManageTeamsFXML");
     }
 
     @FXML
     public void loadManageReferees(ActionEvent actionEvent)
     {
-        loadStage("ManageReferees");
+        loadStage("AssociationManageRefereesFXML");
     }
 
     @FXML
@@ -38,7 +38,7 @@ public class AssociationToolbarController {
     }
 
     @FXML
-    private void loadManagePolicies(){
+    private void loadManagePolicies(ActionEvent event){
         loadStage("AssociationManagePoliciesFXML");
     }
 

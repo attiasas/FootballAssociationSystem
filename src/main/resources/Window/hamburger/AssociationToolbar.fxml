@@ -12,7 +12,7 @@
             <FontAwesomeIconView size="25" text="" />
         </graphic>
     </JFXButton>
-    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Policies" textAlignment="CENTER">
+    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadManagePolicies" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Policies" textAlignment="CENTER">
         <graphic>
             <FontAwesomeIconView size="25" text="" />
         </graphic>

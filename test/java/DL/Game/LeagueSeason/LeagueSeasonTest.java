@@ -279,20 +279,23 @@ public class LeagueSeasonTest {
         ls.addTeam(t1);
         ls.addTeam(t2);
         ls.addTeam(t3);
+        r1.setId(1);
+        r2.setId(2);
+        r3.setId(3);
         ls.addReferee(r1);
         ls.addReferee(r2);
         ls.addReferee(r3);
         ls.scheduleLeagueMatches();
         assertTrue(ls.setRefereesInMatches());
-//        assertEquals(ls.getMatches().get(0),r1.getMainMatches().get(0));
-//        assertEquals(ls.getMatches().get(0),r2.getLinesManMatches().get(0));
-//        assertEquals(ls.getMatches().get(0),r3.getLinesManMatches().get(0));
-//        assertEquals(ls.getMatches().get(1),r1.getMainMatches().get(1));
-//        assertEquals(ls.getMatches().get(1),r2.getLinesManMatches().get(1));
-//        assertEquals(ls.getMatches().get(1),r3.getLinesManMatches().get(1));
-//        assertEquals(ls.getMatches().get(2),r1.getMainMatches().get(2));
-//        assertEquals(ls.getMatches().get(2),r2.getLinesManMatches().get(2));
-//        assertEquals(ls.getMatches().get(2),r3.getLinesManMatches().get(2));
+        assertEquals(ls.getMatches().get(0),r1.getMatches().get(0));
+        assertEquals(ls.getMatches().get(0),r2.getMatches().get(0));
+        assertEquals(ls.getMatches().get(0),r3.getMatches().get(0));
+        assertEquals(ls.getMatches().get(1),r1.getMatches().get(1));
+        assertEquals(ls.getMatches().get(1),r2.getMatches().get(1));
+        assertEquals(ls.getMatches().get(1),r3.getMatches().get(1));
+        assertEquals(ls.getMatches().get(2),r1.getMatches().get(2));
+        assertEquals(ls.getMatches().get(2),r2.getMatches().get(2));
+        assertEquals(ls.getMatches().get(2),r3.getMatches().get(2));
     }
 
 
