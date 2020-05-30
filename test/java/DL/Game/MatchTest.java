@@ -15,48 +15,48 @@ import static org.junit.Assert.*;
  **/
 public class MatchTest {
 
-    /**
-     * Tests the default ctor.
-     */
-    @Test
-    public void defaultCtorTest() {
-        Match match = new Match();
-        assertEquals(0, match.getHomeScore());
-        assertEquals(0, match.getAwayScore());
-        assertNull(match.getHomeTeam());
-        assertNull(match.getAwayTeam());
-        assertNull(match.getStadium());
-        assertNull(match.getStartTime());
-        assertNull(match.getEndTime());
-    }
+//  /**
+//   * Tests the default ctor.
+//   */
+//  @Test
+//  public void defaultCtorTest() {
+//      Match match = new Match();
+//      assertEquals(0, match.getHomeScore());
+//      assertEquals(0, match.getAwayScore());
+//      assertNull(match.getHomeTeam());
+//      assertNull(match.getAwayTeam());
+//      assertNull(match.getStadium());
+//      assertNull(match.getStartTime());
+//      assertNull(match.getEndTime());
+//  }
 
-    /**
-     * Tests ctor with parameters - should be okay
-     */
-    @Test
-    public void ctorWithParamTest() {
-        Date d1 = new Date(120);
-        Team t1 = new Team("Test1",false,false);
-        Team t2 = new Team("Test2",false,false);
-        LeagueSeason ls = new LeagueSeason();
-        Stadium st = new Stadium();
-        Match match = new Match(d1, t1, t2, ls, st);
-        assertEquals(d1, match.getStartTime());
-        assertEquals(t1, match.getHomeTeam());
-        assertEquals(t2, match.getAwayTeam());
-        assertEquals(st, match.getStadium());
-    }
+//  /**
+//   * Tests ctor with parameters - should be okay
+//   */
+//  @Test
+//  public void ctorWithParamTest() {
+//      Date d1 = new Date(120);
+//      Team t1 = new Team("Test1",false,false);
+//      Team t2 = new Team("Test2",false,false);
+//      LeagueSeason ls = new LeagueSeason();
+//      Stadium st = new Stadium();
+//      Match match = new Match(d1, t1, t2, ls, st);
+//      assertEquals(d1, match.getStartTime());
+//      assertEquals(t1, match.getHomeTeam());
+//      assertEquals(t2, match.getAwayTeam());
+//      assertEquals(st, match.getStadium());
+//  }
 
-    /**
-     * Tests ctor with parameters - should be Null
-     */
-    @Test
-    public void ctorWithSameTeamTest() {
-        Team t1 = new Team();
-        Match match = new Match(null, t1, t1, null, null);
-        assertNull(match.getHomeTeam());
-        assertNull(match.getAwayTeam());
-    }
+//  /**
+//   * Tests ctor with parameters - should be Null
+//   */
+//  @Test
+//  public void ctorWithSameTeamTest() {
+//      Team t1 = new Team();
+//      Match match = new Match(null, t1, t1, null, null);
+//      assertNull(match.getHomeTeam());
+//      assertNull(match.getAwayTeam());
+//  }
 
     /**
      * Tests the setter of main referee in a match
@@ -142,142 +142,142 @@ public class MatchTest {
 //        assertNull(match.getSecondLineManReferee());
     }
 
-    /**
-     * Test the setter of the score
-     */
-    @Test
-    public void setScoreTest() {
-        Match match = new Match();
-        match.setScore(2, 0);
-        assertEquals(2, match.getHomeScore());
-        assertEquals(0, match.getAwayScore());
-    }
+//  /**
+//   * Test the setter of the score
+//   */
+//  @Test
+//  public void setScoreTest() {
+//      Match match = new Match();
+//      match.setScore(2, 0);
+//      assertEquals(2, match.getHomeScore());
+//      assertEquals(0, match.getAwayScore());
+//  }
 
-    /**
-     * Test the setter of the score with negative values
-     */
-    @Test
-    public void setScoreNegativeValuesTest() {
-        Match match = new Match();
-        match.setScore(-1, 2);
-        assertEquals(0, match.getHomeScore());
-        assertEquals(0, match.getAwayScore());
-    }
+//  /**
+//   * Test the setter of the score with negative values
+//   */
+//  @Test
+//  public void setScoreNegativeValuesTest() {
+//      Match match = new Match();
+//      match.setScore(-1, 2);
+//      assertEquals(0, match.getHomeScore());
+//      assertEquals(0, match.getAwayScore());
+//  }
 
-    /**
-     * Tests the setter ot the start time
-     */
-    @Test
-    public void setStartTimeTest() {
-        Match match = new Match();
-        Date d = new Date(120);
-        match.setStartTime(d);
-        assertEquals(d, match.getStartTime());
-    }
+//  /**
+//   * Tests the setter ot the start time
+//   */
+//  @Test
+//  public void setStartTimeTest() {
+//      Match match = new Match();
+//      Date d = new Date(120);
+//      match.setStartTime(d);
+//      assertEquals(d, match.getStartTime());
+//  }
 
-    /**
-     * test the setter of the start time with null parameters - should be null
-     */
-    @Test
-    public void setStartTimeNullTest() {
-        Match match = new Match();
-        match.setStartTime(null);
-        assertNull(match.getStartTime());
-    }
+//  /**
+//   * test the setter of the start time with null parameters - should be null
+//   */
+//  @Test
+//  public void setStartTimeNullTest() {
+//      Match match = new Match();
+//      match.setStartTime(null);
+//      assertNull(match.getStartTime());
+//  }
 
-    /**
-     * test the setter of the end time with null parameters - should be null
-     */
-    @Test
-    public void setEndTimeNullTest() {
-        Match match = new Match();
-        match.setEndTime(null);
-        assertNull(match.getEndTime());
-    }
+//  /**
+//   * test the setter of the end time with null parameters - should be null
+//   */
+//  @Test
+//  public void setEndTimeNullTest() {
+//      Match match = new Match();
+//      match.setEndTime(null);
+//      assertNull(match.getEndTime());
+//  }
 
-    /**
-     * Tests the setter ot the end time
-     */
-    @Test
-    public void setEndTimeTest() {
-        Match match = new Match();
-        Date d = new Date(120);
-        match.setEndTime(d);
-        assertEquals(d, match.getEndTime());
-    }
+//  /**
+//   * Tests the setter ot the end time
+//   */
+//  @Test
+//  public void setEndTimeTest() {
+//      Match match = new Match();
+//      Date d = new Date(120);
+//      match.setEndTime(d);
+//      assertEquals(d, match.getEndTime());
+//  }
 
-    /**
-     * test the setter of the stadium with null parameters - should be null
-     */
-    @Test
-    public void setStadiumNullTest() {
-        Match match = new Match();
-        match.setStadium(null);
-        assertNull(match.getStadium());
-    }
+//  /**
+//   * test the setter of the stadium with null parameters - should be null
+//   */
+//  @Test
+//  public void setStadiumNullTest() {
+//      Match match = new Match();
+//      match.setStadium(null);
+//      assertNull(match.getStadium());
+//  }
 
-    /**
-     * test the setter of the stadium
-     */
-    @Test
-    public void setStadiumTest() {
-        Match match = new Match();
-        Stadium st = new Stadium();
-        match.setStadium(st);
-        assertEquals(st, match.getStadium());
-    }
+//  /**
+//   * test the setter of the stadium
+//   */
+//  @Test
+//  public void setStadiumTest() {
+//      Match match = new Match();
+//      Stadium st = new Stadium();
+//      match.setStadium(st);
+//      assertEquals(st, match.getStadium());
+//  }
 
-    /**
-     * Tests the equals function - two equals matches
-     */
-    @Test
-    public void equalsMatchesTest() {
-        Team t1 = new Team();
-        Team t2 = new Team();
-        Date d = new Date(120);
-        Match m1 = new Match(d, t1, t2, null, null);
-        Match m2 = new Match(d, t2, t1, null, null);
-        assertEquals(true,m1.equals(m2));
-    }
+//  /**
+//   * Tests the equals function - two equals matches
+//   */
+//  @Test
+//  public void equalsMatchesTest() {
+//      Team t1 = new Team();
+//      Team t2 = new Team();
+//      Date d = new Date(120);
+//      Match m1 = new Match(d, t1, t2, null, null);
+//      Match m2 = new Match(d, t2, t1, null, null);
+//      assertEquals(true,m1.equals(m2));
+//  }
 
-    /**
-     * Tests the equals function - not equals matches
-     */
-    @Test
-    public void notEqualsMatchesTest() {
-        Team t1 = new Team();
-        Team t2 = new Team();
-        Date d = new Date(120);
-        Date d1 = new Date(121);
-        Match m1 = new Match(d, t1, t2, null, null);
-        Match m2 = new Match(d1, t1, t2, null, null);
-        assertEquals(false,m1.equals(m2));
-    }
+//  /**
+//   * Tests the equals function - not equals matches
+//   */
+//  @Test
+//  public void notEqualsMatchesTest() {
+//      Team t1 = new Team();
+//      Team t2 = new Team();
+//      Date d = new Date(120);
+//      Date d1 = new Date(121);
+//      Match m1 = new Match(d, t1, t2, null, null);
+//      Match m2 = new Match(d1, t1, t2, null, null);
+//      assertEquals(false,m1.equals(m2));
+//  }
 
-    /**
-     * Tests the hashCode function - two equals matches
-     */
-    @Test
-    public void hashCodeEqualsTest(){
-        Team t1 = new Team();
-        Team t2 = new Team();
-        Date d = new Date(120);
-        Match m1 = new Match(d, t1, t2, null, null);
-        Match m2 = new Match(d, t2, t1, null, null);
-        assertEquals(true,m1.hashCode() == m2.hashCode());
-    }
+//  /**
+//   * Tests the hashCode function - two equals matches
+//   */
+//  @Test
+//  public void hashCodeEqualsTest(){
+//      Team t1 = new Team();
+//      Team t2 = new Team();
+//      Date d = new Date(120);
+//      Match m1 = new Match(d, t1, t2, null, null);
+//      Match m2 = new Match(d, t2, t1, null, null);
+//      assertEquals(true,m1.hashCode() == m2.hashCode());
+//  }
 
-    /**
-     * Tests the hashCode function - not equals matches
-     */
-    @Test
-    public void hashCodeNotEqualsTest(){
-        Team t1 = new Team();
-        Team t2 = new Team();
-        Date d = new Date(120);
-        Date d1 = new Date(121);
-        Match m1 = new Match(d, t1, t2, null, null);
-        Match m2 = new Match(d1, t1, t2, null, null);
-        assertEquals(false,m1.hashCode() == m2.hashCode());
-    }
+//  /**
+//   * Tests the hashCode function - not equals matches
+//   */
+//  @Test
+//  public void hashCodeNotEqualsTest(){
+//      Team t1 = new Team();
+//      Team t2 = new Team();
+//      Date d = new Date(120);
+//      Date d1 = new Date(121);
+//      Match m1 = new Match(d, t1, t2, null, null);
+//      Match m2 = new Match(d1, t1, t2, null, null);
+//      assertEquals(false,m1.hashCode() == m2.hashCode());
+//  }
 }

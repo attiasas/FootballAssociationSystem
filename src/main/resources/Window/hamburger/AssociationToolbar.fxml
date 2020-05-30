@@ -23,7 +23,7 @@
             <FontAwesomeIconView fx:id="ManageTeamsBtn" size="26" text="" />
         </graphic>
     </JFXButton>
-    <JFXButton contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" onAction="#loadManageReferees" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Referees" textAlignment="CENTER">
+    <JFXButton fx:id="ManageRefereesBtn" contentDisplay="TOP" layoutX="10.0" layoutY="81.0" mnemonicParsing="false" onAction="#loadManageReferees" prefHeight="400.0" prefWidth="160.0" styleClass="toolbar-button" text="Manage Referees" textAlignment="CENTER">
         <graphic>
             <FontAwesomeIconView size="25" text="" />
         </graphic>

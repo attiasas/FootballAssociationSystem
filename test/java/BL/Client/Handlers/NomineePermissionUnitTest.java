@@ -193,7 +193,7 @@ public class NomineePermissionUnitTest
     private int getNumActiveManagersOfTeam()
     {
         int res = 0;
-        for(TeamManager manager : teams.get(0).getTeamManagers())
+        for(TeamUser manager : teams.get(0).getTeamManagers())
         {
             if(manager.isActive()) res++;
         }

@@ -7,7 +7,9 @@ import DL.Team.Members.TeamOwner;
 import DL.Team.Members.TeamUser;
 import DL.Team.Team;
 import DL.Users.Fan;
+import it.unimi.dsi.fastutil.Hash;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,10 +73,18 @@ public class AssociationManagementUnit {
 
         TeamOwner teamOwner = new TeamOwner(team, teamUser);
 
-        boolean teamInsertion = clientServerCommunication.insert(team);
-        boolean teamOwnerInsertion = clientServerCommunication.insert(teamOwner);
+        //boolean teamOwnerInsertion = clientServerCommunication.insert(teamOwner);
 
-        return teamInsertion && teamOwnerInsertion;
+        boolean teamInsertion = clientServerCommunication.insert(team);
+
+        List<TeamOwner> teamOwners = new ArrayList<>();
+        teamOwners.add(teamOwner);
+        team.addAllOwners(teamOwners);
+
+        boolean last = clientServerCommunication.merge(team);
+
+
+        return last /*&& teamOwnerInsertion*/;
     }
 
     /**
@@ -142,7 +152,7 @@ public class AssociationManagementUnit {
         if (!isValidTeamName(teamName)) return null;
 
         HashMap<String, Object> args = new HashMap<>();
-        args.put("team", teamName);
+        args.put("name", teamName);
         List<Team> queryResult = clientServerCommunication.query("teamByName", args);
 
         if (queryResult == null)

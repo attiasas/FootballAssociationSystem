@@ -190,9 +190,20 @@ public class Team implements Serializable {
         return true;
     }
 
-    public boolean addOwner(TeamOwner teamOwner) { if (teamOwner == null) return false; return teamOwners.add(teamOwner); }
+    public boolean addOwner(TeamOwner teamOwner) {
 
-    public boolean addAllOwners(List<TeamOwner> teamOwners) { if (teamOwners == null) return false; this.teamOwners = teamOwners; return true; }
+        if (teamOwner == null) return false;
+
+        return teamOwners.add(teamOwner);
+    }
+
+    public boolean addAllOwners(List<TeamOwner> teamOwners) {
+
+        if (teamOwners == null) return false;
+
+        this.teamOwners = teamOwners;
+        return true;
+    }
 
     public boolean removeCoach(Coach coach) {
 
