@@ -18,7 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Tab;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -30,6 +30,8 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static PL.AlertUtil.showSimpleAlert;
 
 
 public class MainController implements Initializable {
@@ -52,27 +54,56 @@ public class MainController implements Initializable {
     @FXML
     private JFXTabPane mainTabPane;
 
+    @FXML
+    public Label l_welcome;
+    @FXML
+    public TextField t_query;
+    @FXML
+    public ComboBox cb_searchType;
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        String hamburgerFXL = null;
 
-        switch (ClientSystem.getLoggedUserType())
+        if(ClientSystem.getLoggedUser() != null)
         {
-            case Association: hamburgerFXL = "AssociationToolbar"; break;
-            case Referee: hamburgerFXL = "RefereeToolbar"; break;
-            case Fan: hamburgerFXL = "FanToolbar"; break;
-            case Owner: hamburgerFXL = "TeamOwnerToolbar"; break;
-            case Manager: hamburgerFXL = "TeamManagerToolbar"; break;
-            case Player: hamburgerFXL = "PlayerToolbar"; break;
-            case Admin: hamburgerFXL = "ManagerToolbar"; break;
-            //case None: hamburgerFXL = "NoUserToolbar"; break;
-        }
+            l_welcome.setText("Welcome " + ClientSystem.getLoggedUser().getUsername() + "!");
 
-        if(hamburgerFXL != null)
-        {
-            initDrawer(hamburgerFXL);
+            String hamburgerFXL = null;
+
+            switch (ClientSystem.getLoggedUserType())
+            {
+                case Association: hamburgerFXL = "AssociationToolbar"; break;
+                case Referee: hamburgerFXL = "RefereeToolbar"; break;
+                case Fan: hamburgerFXL = "FanToolbar"; break;
+                case Owner: hamburgerFXL = "TeamOwnerToolbar"; break;
+                case Manager: hamburgerFXL = "TeamManagerToolbar"; break;
+                case Player: hamburgerFXL = "PlayerToolbar"; break;
+                case Admin: hamburgerFXL = "ManagerToolbar"; break;
+                //case None: hamburgerFXL = "NoUserToolbar"; break;
+            }
+
+            if(hamburgerFXL != null)
+            {
+                initDrawer(hamburgerFXL);
+            }
         }
+        else hamburger.setVisible(false);
+    }
+
+    public void exploreLeagues()
+    {
+        showSimpleAlert("Error", "Not Supported, will be implemented in the future.");
+    }
+
+    public void exploreTeams()
+    {
+        showSimpleAlert("Error", "Not Supported, will be implemented in the future.");
+    }
+
+    public void search()
+    {
+        showSimpleAlert("Error", "Not Supported, will be implemented in the future.");
     }
 
     private Stage getStage() {
@@ -255,21 +286,5 @@ public class MainController implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("/Window/NotificationsFXML.fxml"));
 
         App.mainStage.setScene(root.getScene());
-
-//
-//        Scene scene = rootAnchorPane.getScene();
-//
-//
-//
-//        root.translateXProperty().set(scene.getWidth());
-//
-//        rootAnchorPane.getChildren().add(root);
-//
-//        Timeline timeline = new Timeline();
-//        KeyValue kv = new KeyValue(root.translateXProperty(), 0, Interpolator.LINEAR);
-//        KeyFrame kf = new KeyFrame(Duration.seconds(0.5), kv);
-//        timeline.getKeyFrames().add(kf);
-//        timeline.setOnFinished(t -> rootAnchorPane.getChildren().remove(parentAnchorPane));
-//        timeline.play();
     }
 }

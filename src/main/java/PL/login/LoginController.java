@@ -104,6 +104,9 @@ public class LoginController implements Initializable {
 
     void loadMain() {
         loadStage("MainApp");
+        App.mainStage.setOnCloseRequest(event -> {
+            App.clientSystem.close();
+        });
     }
 
     public void handleGuestButton(ActionEvent actionEvent) {

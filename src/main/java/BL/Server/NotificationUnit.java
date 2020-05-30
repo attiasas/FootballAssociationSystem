@@ -70,6 +70,7 @@ public class NotificationUnit
     {
         Set<User> usersToNotify = notifiable.getNotifyUsersList();
         Notification notification = notifiable.getNotification();
+        DB.persist(notification);
 
 
         for(User user : usersToNotify)
@@ -77,7 +78,6 @@ public class NotificationUnit
             //add to the server side and to the db on offline
 
             user.addNotification(notification);
-
             DB.merge(user);
 
 

@@ -102,7 +102,7 @@ public class SystemRequest implements Serializable
      */
     public static SystemRequest merge(Object data)
     {
-        return new SystemRequest(Type.Merge,"INSERT",data);
+        return new SystemRequest(Type.Merge,"MERGE",data);
     }
 }
 

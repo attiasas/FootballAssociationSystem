@@ -2,7 +2,9 @@ package DL.Users;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Description:     Represents a notification in the system
@@ -21,7 +23,8 @@ public class Notification implements Serializable
     private String msg;
     @Column
     private Date creationDate;
-
+//    @ManyToMany(mappedBy = "notificationsOwner")
+//    List<User> owners;
 
     public Notification(String msg)
     {

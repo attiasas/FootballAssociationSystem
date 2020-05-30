@@ -144,10 +144,6 @@ public class Match implements Serializable {
         else this.endTime = null;
     }
 
-    public void setMyEventLog(EventLog myEventLog) {
-        this.myEventLog = myEventLog;
-    }
-
     /**
      * sets the stadium time of the match
      *

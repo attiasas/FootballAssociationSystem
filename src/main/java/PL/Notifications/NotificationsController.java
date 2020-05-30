@@ -120,6 +120,7 @@ public class NotificationsController implements Initializable, Serializable
 
 
 
+       // Map<Notification, Boolean> map = ClientSystem.getLoggedUser().getNotifications();
         Map<Notification, Boolean> map = ClientSystem.getLoggedUser().getNotifications();
 
         List<NotificationCell> cellList = getNotificationCellList(map);

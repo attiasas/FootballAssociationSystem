@@ -4,7 +4,11 @@ import BL.Server.ServerSystem;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Policy.ScorePolicy;
 import DL.Team.Team;
+import DL.Users.Fan;
+import DL.Users.Notification;
+import DL.Users.User;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -254,14 +258,19 @@ public class DB implements Serializable {
         txn.begin();
 
         HashMap<String, Object> param = new HashMap<>();
+        Notification n = new Notification("notifi");
+        DB.persist(n);
+        User u = new Fan("la","l@g.com", DigestUtils.sha1Hex("123456"));
+        u.addNotification(n);
+        DB.merge(u);
 
 
-        Team a = em.find(Team.class,"cc");
-        LeagueSeason ls = em.find(LeagueSeason.class, 359);
+//        Team a = em.find(Team.class,"cc");
+//        LeagueSeason ls = em.find(LeagueSeason.class, 359);
 
-        ls.addTeam(a);
+        //ls.addTeam(a);
 
-        DB.merge(ls);
+        //DB.merge(ls);
 
 //        System.out.println(em.createNamedQuery("").setParameter("username", "dvir").getResultList().size());
         //System.out.println(DB.query("teamByName",param).size());

@@ -4,6 +4,7 @@ import static java.net.InetAddress.getLocalHost;
 
 import BL.Client.ClientSystem;
 import BL.Server.utils.Configuration;
+import DL.Administration.AssociationMember;
 import DL.Game.MatchEvents.EventLog;
 import DL.Game.MatchEvents.Goal;
 import DL.Game.Referee;
@@ -16,6 +17,7 @@ import PL.main.App;
 import io.airlift.command.Cli;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
@@ -41,6 +43,7 @@ public class ClientServerCommunication {
 
     private static InetAddress serverIP;
     private static final int serverPort = Integer.parseInt(Configuration.getPropertyValue("server.port"));
+    private ServerSocket listenSocket;
 
     static {
         try {
@@ -86,6 +89,8 @@ public class ClientServerCommunication {
 
 //        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
 
+        List userList = client.login("ass", DigestUtils.sha1Hex("123456"));
+
         Notifiable notifiable = new Notifiable() {
             @Override
             public Notification getNotification() {
@@ -96,8 +101,12 @@ public class ClientServerCommunication {
             @Override
             public Set getNotifyUsersList() {
                 Set<User> set = new HashSet<>();
-                Fan fan = new Fan("admin", "admin", "admin");
-                set.add(fan);
+//                Fan fan = new Fan("admin", "admin", "admin");
+//                User ass = (User)client.login("ass", DigestUtils.sha1Hex("123456")).get(0);
+//                User ass = new AssociationMember("ass", "ass@gmail.com", DigestUtils.sha1Hex("123456"));
+                User ass = (User)userList.get(0);
+//                set.add(fan);
+                set.add(ass);
                 return set;
 //                return null;
             }
@@ -125,6 +134,7 @@ public class ClientServerCommunication {
         int listenPort = Integer.parseInt(Configuration.getPropertyValue("clientNotification.port"));
         try(ServerSocket listenSocket = new ServerSocket(listenPort))
         {
+            this.listenSocket = listenSocket;
             System.out.println("start");
             //listenSocket.setSoTimeout(1000);
             // init
@@ -160,6 +170,11 @@ public class ClientServerCommunication {
     public void stopListener()
     {
         listen = false;
+        try {
+            listenSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

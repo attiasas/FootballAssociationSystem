@@ -396,6 +396,7 @@ public class ServerSystem implements IServerStrategy {
                     break;
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log.error("error accourse in request handle" + ex.getMessage());
         }
     }

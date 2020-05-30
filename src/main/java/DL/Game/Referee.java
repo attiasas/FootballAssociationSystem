@@ -34,7 +34,7 @@ public class Referee implements Serializable {
     @Column
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Fan fan;
 
     @Column

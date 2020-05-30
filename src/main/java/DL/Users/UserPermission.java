@@ -44,8 +44,6 @@ public class UserPermission implements Serializable
         this.teamPermissions = new ArrayList<Permission>(permissionList);
     }
 
-
-
     public boolean hasPermission(Permission permission)
     {
         if(teamPermissions.contains(permission))
