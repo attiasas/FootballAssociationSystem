@@ -160,7 +160,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match = matches.get(0);
-        Player player = match.getHomeTeam().getPlayers().get(0);
+        Player player = (Player)match.getHomeTeam().getPlayers().get(0);
 
         assertTrue(unit.addYellowCard(users.get(0),match,player,15));
         assertEquals(1,match.getMyEventLog().getEvents().size());
@@ -171,7 +171,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match1 = matches.get(0);
-        Player player1 = match1.getHomeTeam().getPlayers().get(0);
+        Player player1 = (Player)match1.getHomeTeam().getPlayers().get(0);
         matches = unit.getActiveMatches(users.get(1));
         Match match2 = matches.get(0);
 
@@ -199,7 +199,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match = matches.get(0);
-        Player player = match.getHomeTeam().getPlayers().get(0);
+        Player player = (Player)match.getHomeTeam().getPlayers().get(0);
 
         assertTrue(unit.addRedCard(users.get(0),match,player,15));
         assertEquals(1,match.getMyEventLog().getEvents().size());
@@ -210,7 +210,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match1 = matches.get(0);
-        Player player1 = match1.getHomeTeam().getPlayers().get(0);
+        Player player1 = (Player)match1.getHomeTeam().getPlayers().get(0);
         matches = unit.getActiveMatches(users.get(1));
         Match match2 = matches.get(0);
 
@@ -238,7 +238,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match = matches.get(0);
-        Player player = match.getHomeTeam().getPlayers().get(0);
+        Player player = (Player)match.getHomeTeam().getPlayers().get(0);
 
         assertTrue(unit.addGoal(users.get(0),match,player,15));
         assertEquals(1,match.getMyEventLog().getEvents().size());
@@ -249,7 +249,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match1 = matches.get(0);
-        Player player1 = match1.getHomeTeam().getPlayers().get(0);
+        Player player1 = (Player)match1.getHomeTeam().getPlayers().get(0);
         matches = unit.getActiveMatches(users.get(1));
         Match match2 = matches.get(0);
 
@@ -277,7 +277,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match = matches.get(0);
-        Player player = match.getHomeTeam().getPlayers().get(0);
+        Player player = (Player)match.getHomeTeam().getPlayers().get(0);
 
         assertTrue(unit.addInjury(users.get(0),match,player,15));
         assertEquals(1,match.getMyEventLog().getEvents().size());
@@ -288,7 +288,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match1 = matches.get(0);
-        Player player1 = match1.getHomeTeam().getPlayers().get(0);
+        Player player1 = (Player)match1.getHomeTeam().getPlayers().get(0);
         matches = unit.getActiveMatches(users.get(1));
         Match match2 = matches.get(0);
 
@@ -316,7 +316,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match = matches.get(0);
-        Player player = match.getHomeTeam().getPlayers().get(0);
+        Player player = (Player)match.getHomeTeam().getPlayers().get(0);
 
         assertTrue(unit.addOffside(users.get(0),match,player,15));
         assertEquals(1,match.getMyEventLog().getEvents().size());
@@ -327,7 +327,7 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match1 = matches.get(0);
-        Player player1 = match1.getHomeTeam().getPlayers().get(0);
+        Player player1 = (Player)match1.getHomeTeam().getPlayers().get(0);
         matches = unit.getActiveMatches(users.get(1));
         Match match2 = matches.get(0);
 
@@ -355,8 +355,8 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match = matches.get(0);
-        Player player1 = match.getHomeTeam().getPlayers().get(0);
-        Player player2 = match.getAwayTeam().getPlayers().get(0);
+        Player player1 = (Player)match.getHomeTeam().getPlayers().get(0);
+        Player player2 = (Player)match.getAwayTeam().getPlayers().get(0);
 
         assertTrue(unit.addFoul(users.get(0),match,player1,player2,15));
         assertEquals(1,match.getMyEventLog().getEvents().size());
@@ -367,8 +367,8 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match1 = matches.get(0);
-        Player player1 = match1.getHomeTeam().getPlayers().get(0);
-        Player player2 = match1.getAwayTeam().getPlayers().get(0);
+        Player player1 = (Player)match1.getHomeTeam().getPlayers().get(0);
+        Player player2 = (Player)match1.getAwayTeam().getPlayers().get(0);
         matches = unit.getActiveMatches(users.get(1));
         Match match2 = matches.get(0);
 
@@ -400,8 +400,8 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match = matches.get(0);
-        Player player1 = match.getHomeTeam().getPlayers().get(0);
-        Player player2 = match.getAwayTeam().getPlayers().get(0);
+        Player player1 = (Player)match.getHomeTeam().getPlayers().get(0);
+        Player player2 = (Player)match.getAwayTeam().getPlayers().get(0);
 
         assertTrue(unit.addPlayerChange(users.get(0),match,player1,player2,15));
         assertEquals(1,match.getMyEventLog().getEvents().size());
@@ -412,8 +412,8 @@ public class MatchEventUnitTest
     {
         List<Match> matches = unit.getActiveMatches(users.get(0));
         Match match1 = matches.get(0);
-        Player player1 = match1.getHomeTeam().getPlayers().get(0);
-        Player player2 = match1.getAwayTeam().getPlayers().get(0);
+        Player player1 = (Player)match1.getHomeTeam().getPlayers().get(0);
+        Player player2 = (Player)match1.getAwayTeam().getPlayers().get(0);
         matches = unit.getActiveMatches(users.get(1));
         Match match2 = matches.get(0);
 

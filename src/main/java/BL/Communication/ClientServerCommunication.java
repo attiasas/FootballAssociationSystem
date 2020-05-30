@@ -108,11 +108,6 @@ public class ClientServerCommunication {
     public void stopListener()
     {
         listen = false;
-        try {
-            listenSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -306,29 +301,4 @@ public class ClientServerCommunication {
 
         return false;
     }
-
-    /**
-     * Merge an Object in the data base in the server base on a named query
-     * @param toMerge - object to merge into the data base
-     * @return true if the merge completed in success, false other wise
-     */
-    public boolean merge(Object toMerge)
-    {
-        try(Socket serverSocket = new Socket(serverIP,serverPort))
-        {
-            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
-
-            out.writeObject(SystemRequest.merge(toMerge));
-            out.flush();
-
-            boolean answer = (boolean) in.readObject();
-            return answer;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
 }

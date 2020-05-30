@@ -9,10 +9,8 @@ import DL.Users.User;
 import PL.TestFXBase;
 import PL.main.App;
 import com.jfoenix.controls.JFXTextField;
-import javafx.scene.control.TextInputControl;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.*;
-import org.loadui.testfx.controls.TextInputControls;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
