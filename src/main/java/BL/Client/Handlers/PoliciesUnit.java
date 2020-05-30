@@ -1,13 +1,16 @@
 package BL.Client.Handlers;
 
 import BL.Communication.ClientServerCommunication;
+import BL.Communication.SystemRequest;
 import DL.Game.LeagueSeason.LeagueSeason;
+import DL.Game.Match;
 import DL.Game.Policy.GamePolicy;
 import DL.Game.Policy.ScorePolicy;
 import DL.Team.Team;
 import org.hibernate.Hibernate;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,21 +108,19 @@ public class PoliciesUnit {
      * @param leagueSeason
      * @return
      */
-    //TODO: update the teams in the database if needed
-    @Transactional
     public boolean scheduleMatches(LeagueSeason leagueSeason) throws Exception {
         if (leagueSeason != null) {
             if (leagueSeason.getMatches().size() == 0) {
                 //League has one team
                 if (!leagueSeason.scheduleLeagueMatches())
                     throw new Exception("There is less than two teams in the leagueSeason. " +
-                            "Please add at least one more team.");
-                //league has matches
-                HashMap<String, Object> parameters = new HashMap<>();
-                parameters.put("matchList", leagueSeason.getMatches());
-                parameters.put("league", leagueSeason.getLeague());
-                parameters.put("season", leagueSeason.getSeason());
-                return clientServerCommunication.update("UpdateLeagueSeasonMatchList", parameters);
+                            "Please add teams first and than try again.");
+                //league has matches - send transaction of insert matches
+                List<SystemRequest> systemRequests = new ArrayList<>();
+                for (Match m : leagueSeason.getMatches()) {
+                    systemRequests.add(new SystemRequest(SystemRequest.Type.Insert, null, m));
+                }
+                return clientServerCommunication.transaction(systemRequests);
             }
             //LeagueSeason already have matches
             else {
@@ -163,18 +164,20 @@ public class PoliciesUnit {
         if (!leagueSeason.setRefereesInMatches())
             throw new Exception("LeagueSeason doesn't have enough referees. Please add more referees to the leagueSeason.");
 
-        HashMap<String, Object> firstParameters = new HashMap<>();
-        firstParameters.put("matchList", leagueSeason.getMatches());
-        firstParameters.put("league", leagueSeason.getLeague());
-        firstParameters.put("season", leagueSeason.getSeason());
+//        HashMap<String, Object> firstParameters = new HashMap<>();
+//        firstParameters.put("matchList", leagueSeason.getMatches());
+//        firstParameters.put("league", leagueSeason.getLeague());
+//        firstParameters.put("season", leagueSeason.getSeason());
+//
+//        HashMap<String, Object> secondParameters = new HashMap<>();
+//        secondParameters.put("newReferees", leagueSeason.getReferees());
+//        secondParameters.put("league", leagueSeason.getLeague());
+//        secondParameters.put("season", leagueSeason.getSeason());
+//
+//        return clientServerCommunication.update("UpdateLeagueSeasonRefereeList", secondParameters)
+//                && clientServerCommunication.update("UpdateLeagueSeasonMatchList", firstParameters);
 
-        HashMap<String, Object> secondParameters = new HashMap<>();
-        secondParameters.put("newReferees", leagueSeason.getReferees());
-        secondParameters.put("league", leagueSeason.getLeague());
-        secondParameters.put("season", leagueSeason.getSeason());
-
-        return clientServerCommunication.update("UpdateLeagueSeasonRefereeList", secondParameters)
-                && clientServerCommunication.update("UpdateLeagueSeasonMatchList", firstParameters);
+        return clientServerCommunication.merge(leagueSeason);
     }
 
     /**************Getters*******************/

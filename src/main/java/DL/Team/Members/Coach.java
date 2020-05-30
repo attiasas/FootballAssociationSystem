@@ -21,7 +21,6 @@ import java.io.Serializable;
         @NamedQuery(name = "coachesByTeam", query = "SELECT c FROM Coach c WHERE c.team = :team AND c.active = true AND c.team.close = false"),
         @NamedQuery(name = "updateCoachDetails", query = "UPDATE Coach c SET c.name = :name, c.role = :role, c.team = :team, c.active = :active, c.qualification = :qualification WHERE c.fan = :fan"),
 })
-
 public class Coach extends PageUser implements Serializable
 {
     @Column

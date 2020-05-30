@@ -20,7 +20,7 @@ public class SystemRequest implements Serializable
 {
     public enum Type
     {
-        Delete,Insert,Update,Query,Transaction,Login,Logout,Notify
+        Delete,Insert,Update,Query,Transaction,Login,Logout,Notify,Merge
     }
 
     public final Type type;
@@ -93,6 +93,16 @@ public class SystemRequest implements Serializable
             }
         }
         catch (Exception e){}
+    }
+
+    /**
+     * Generate A merge Request
+     * @param data - data to merge into the DB
+     * @return SystemRequest to insert the given data
+     */
+    public static SystemRequest merge(Object data)
+    {
+        return new SystemRequest(Type.Merge,"MERGE",data);
     }
 }
 

@@ -4,6 +4,8 @@ import DL.Administration.Financial.AssociationFinancialEntry;
 import DL.Administration.Financial.FinancialEntry;
 import DL.Administration.Financial.FinancialUser;
 import DL.Users.User;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,12 +21,13 @@ import java.util.List;
 @Entity
 @DiscriminatorValue(value = "AssociationMember")
 @NamedQueries(value = {
-    @NamedQuery(name = "AssociationMembers", query = "Select m From AssociationMember m"),
+        @NamedQuery(name = "AssociationMembers", query = "Select m From AssociationMember m"),
         @NamedQuery(name = "UpdateAssociationEntries", query = "Update AssociationMember m set m.myEntries=:entries where m=:member")
 })
 public class AssociationMember extends User implements FinancialUser
 {
     @OneToMany(mappedBy = "source",cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<AssociationFinancialEntry> myEntries;
 
     /**

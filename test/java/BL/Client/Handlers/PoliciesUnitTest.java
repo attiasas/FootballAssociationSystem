@@ -134,6 +134,9 @@ public class PoliciesUnitTest {
         Referee r1 = new Referee(null, "Test", null, true);
         Referee r2 = new Referee(null, "Test1", null, true);
         Referee r3 = new Referee(null, "Test2", null, true);
+        r1.setId(1);
+        r2.setId(2);
+        r3.setId(3);
         leagueSeasonUnit.setRefereeInLeagueSeason(ls, r1);
         leagueSeasonUnit.setRefereeInLeagueSeason(ls, r2);
         leagueSeasonUnit.setRefereeInLeagueSeason(ls, r3);
@@ -141,12 +144,12 @@ public class PoliciesUnitTest {
         List<Match> matches = ls.getMatches();
         int i = 0;
         for (Match match : matches) {
-            assertEquals(r1, match.getMainReferee());
-            assertEquals(match, r1.getMainMatches().get(i));
-            assertEquals(r2, match.getFirstLineManReferee());
-            assertEquals(match, r2.getLinesManMatches().get(i));
-            assertEquals(r3, match.getSecondLineManReferee());
-            assertEquals(match, r3.getLinesManMatches().get(i++));
+            assertEquals(r1, match.getReferees().get(0));
+            assertEquals(match, r1.getMatches().get(i));
+            assertEquals(r2, match.getReferees().get(1));
+            assertEquals(match, r2.getMatches().get(i));
+            assertEquals(r3, match.getReferees().get(2));
+            assertEquals(match, r3.getMatches().get(i++));
         }
     }
 

@@ -33,11 +33,11 @@ public class GamePolicyController {
                 } else {
                     showSimpleAlert("Error", "There was a problem with the server. Please try again later");
                 }
+                closeWindow();
 
             } else {
                 showSimpleAlert("Error", "Please fill the required (*) fields.");
             }
-            closeWindow();
         } catch (NumberFormatException n) {
             showSimpleAlert("Error", "Please insert only numbers.");
         } catch (Exception e) {

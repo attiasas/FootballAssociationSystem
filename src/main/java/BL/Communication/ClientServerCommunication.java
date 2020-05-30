@@ -4,6 +4,7 @@ import static java.net.InetAddress.getLocalHost;
 
 import BL.Client.ClientSystem;
 import BL.Server.utils.Configuration;
+import DL.Administration.AssociationMember;
 import DL.Game.MatchEvents.EventLog;
 import DL.Game.MatchEvents.Goal;
 import DL.Game.Referee;
@@ -16,6 +17,7 @@ import PL.main.App;
 import io.airlift.command.Cli;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
@@ -41,6 +43,7 @@ public class ClientServerCommunication {
 
     private static InetAddress serverIP;
     private static final int serverPort = Integer.parseInt(Configuration.getPropertyValue("server.port"));
+    private ServerSocket listenSocket;
 
     static {
         try {
@@ -53,7 +56,7 @@ public class ClientServerCommunication {
     private volatile boolean listen = true;
 
     public static void main(String[] args) {
-        loginTestServer();
+//        loginTestServer();
         notifyTestServer();
     }
 
@@ -84,26 +87,31 @@ public class ClientServerCommunication {
 //
 //        }
 
-        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
+//        client.insert(new Goal(new Referee("a", "shalom", new Fan("a","a","a"), true), new EventLog(), 5, new Player()));
 
-//        Notifiable notifiable = new Notifiable() {
-//            @Override
-//            public Notification getNotification() {
-//                return new Notification("notifcation!!!");
-////                return null;
-//            }
-//
-//            @Override
-//            public Set getNotifyUsersList() {
-//                Set<User> set = new HashSet<>();
+//        List userList = client.login("ass", DigestUtils.sha1Hex("123456"));
+
+        Notifiable notifiable = new Notifiable() {
+            @Override
+            public Notification getNotification() {
+                return new Notification("notifcation!!!");
+//                return null;
+            }
+
+            @Override
+            public Set getNotifyUsersList() {
+                Set<User> set = new HashSet<>();
 //                Fan fan = new Fan("admin", "admin", "admin");
+//                User ass = (User)client.login("ass", DigestUtils.sha1Hex("123456")).get(0);
+                User ass = new AssociationMember("ass", "ass@gmail.com", DigestUtils.sha1Hex("123456"));
 //                set.add(fan);
-//                return set;
-////                return null;
-//            }
-//        };
-//
-//        client.notify(notifiable);
+                set.add(ass);
+                return set;
+//                return null;
+            }
+        };
+
+        client.notify(notifiable);
     }
 
     public ClientServerCommunication()
@@ -125,6 +133,7 @@ public class ClientServerCommunication {
         int listenPort = Integer.parseInt(Configuration.getPropertyValue("clientNotification.port"));
         try(ServerSocket listenSocket = new ServerSocket(listenPort))
         {
+            this.listenSocket = listenSocket;
             System.out.println("start");
             //listenSocket.setSoTimeout(1000);
             // init
@@ -160,6 +169,11 @@ public class ClientServerCommunication {
     public void stopListener()
     {
         listen = false;
+        try {
+            listenSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -324,6 +338,30 @@ public class ClientServerCommunication {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Merge an Object in the data base in the server base on a named query
+     * @param toMerge - object to merge into the data base
+     * @return true if the merge completed in success, false other wise
+     */
+    public boolean merge(Object toMerge)
+    {
+        try(Socket serverSocket = new Socket(serverIP,serverPort))
+        {
+            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
+
+            out.writeObject(SystemRequest.merge(toMerge));
+            out.flush();
+
+            boolean answer = (boolean) in.readObject();
+            return answer;
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

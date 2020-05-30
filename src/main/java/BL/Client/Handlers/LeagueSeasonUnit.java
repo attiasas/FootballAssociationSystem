@@ -8,7 +8,11 @@ import DL.Game.Policy.GamePolicy;
 import DL.Game.Policy.ScorePolicy;
 import DL.Game.Referee;
 import DL.Team.Team;
+import DL.Users.Fan;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.apache.commons.codec.digest.DigestUtils;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +25,109 @@ import java.util.List;
 public class LeagueSeasonUnit {
 
     private ClientServerCommunication clientServerCommunication;
+
+    @Transactional
+    public static void main(String[] args) throws Exception {
+        try {
+            ClientServerCommunication c = new ClientServerCommunication();
+            LeagueSeasonUnit l = new LeagueSeasonUnit(c);
+            AssociationManagementUnit am = new AssociationManagementUnit(c);
+            PoliciesUnit p = new PoliciesUnit(c);
+//            Fan f1 = new Fan("Dada1", "test@gmail.com", DigestUtils.sha1Hex("abcd"));
+//            Fan f2 = new Fan("Dada2", "test@gmail.com", DigestUtils.sha1Hex("abcd"));
+//            Fan f3 = new Fan("Dada3", "test@gmail.com", DigestUtils.sha1Hex("abcd"));
+//            Fan f4 = new Fan("Dadaa", "test@gmail.com", DigestUtils.sha1Hex("abcd"));
+//            Fan f5 = new Fan("Dada", "test@gmail.com", DigestUtils.sha1Hex("abcd"));
+//            am.addNewReferee(f1, "a", "a");
+//            am.addNewReferee(f2, "b", "b");
+//            am.addNewReferee(f3, "c", "c");
+//            am.addTeam("aa", "aa", f4);
+//            am.addTeam("bb", "bb", f5);
+//            l.addNewSeason(2020);
+//            l.addNewLeague("CheckuSH");
+//            p.addNewScorePolicy(3, 2, 1);
+//            p.addNewGamePolicy(7, 2);
+//
+//            League league = l.getLeagues().get(0);
+//            Season season = l.getSeasons().get(0);
+//            GamePolicy gp = p.getGamePolicies().get(0);
+//            ScorePolicy sp = p.getScorePolicies().get(0);
+//            Date d = new Date();
+//            l.addLeagueSeason(league, season, gp, sp, d);
+            Team t = am.loadTeam("aa");
+            Team t1 = am.loadTeam("bb");
+            List<Referee> refereeList = l.getReferees();
+            List<LeagueSeason> ls = l.getLeagueSeasons(new Season(2020));
+            LeagueSeason ld = ls.get(0);
+            l.addTeamToLeagueSeason(ld, t);
+//            ls = l.getLeagueSeasons(new Season(2020));
+//            ld = ls.get(0);
+//            l.addTeamToLeagueSeason(ld, t1);
+//            ls = l.getLeagueSeasons(new Season(2020));
+//            ld = ls.get(0);
+//            l.setRefereeInLeagueSeason(ld, refereeList.get(0));
+//            ls = l.getLeagueSeasons(new Season(2020));
+//            ld = ls.get(0);
+//            l.setRefereeInLeagueSeason(ld, refereeList.get(1));
+//            ls = l.getLeagueSeasons(new Season(2020));
+//            ld = ls.get(0);
+//            l.setRefereeInLeagueSeason(ld, refereeList.get(2));
+//            ls = l.getLeagueSeasons(new Season(2020));
+//            ld = ls.get(0);
+//            p.scheduleMatches(ld);
+//            System.out.println("****************");
+//            ls = l.getLeagueSeasons(new Season(2020));
+//            ld = ls.get(0);
+//            p.setRefereeInMatches(ld);
+//            System.out.println("****************");
+
+//            List<Referee> refereeList = l.getReferees();
+//            Referee r1 = refereeList.get(1);
+//            Referee r2 = refereeList.get(2);
+//            LeagueSeason leagueSeason = l.getLeagueSeason(new Season(3023),new League("abc"));
+//            l.setRefereeInLeagueSeason(leagueSeason,r1);
+//            l.setRefereeInLeagueSeason(leagueSeason,r2);
+//            Fan f3 = new Fan("Dada3","test@gmail.com",DigestUtils.sha1Hex("abcd"));
+//            am.addTeam("Check","amit",f3);
+//            List<Team> teams = l.getTeams();
+//            List<LeagueSeason> leagueSeasons = l.getLeagueSeasons(new Season(3023));
+//            Team t = teams.get(1);
+//            LeagueSeason ls = leagueSeasons.get(0);
+//            l.addTeamToLeagueSeason(ls,t);
+
+//            Fan f3 = new Fan("Dada2","test@gmail.com",DigestUtils.sha1Hex("abcd"));
+//            am.addNewReferee(f3,"amit","main");
+//            List<Referee> r = l.getReferees();
+//            System.out.println(r.size());
+//            Fan f1 = new Fan("Assaf", "test@mail.com", DigestUtils.sha1Hex("abcd"));
+//            Fan f2 = new Fan("Amit", "test1@mail.com", DigestUtils.sha1Hex("abcd"));
+//            am.addTeam("abc", "abc", f1);
+//            am.addTeam("acb", "acb", f2);
+//            l.addNewLeague("abc");
+//            l.addNewSeason(3023);
+//            p.addNewGamePolicy(7, 2);
+//            p.addNewScorePolicy(7, 3, 2);
+//           League league = l.getLeagues().get(0);
+//           Season season = l.getSeasons().get(1);
+//           GamePolicy gp = p.getGamePolicies().get(0);
+//           ScorePolicy sp = p.getScorePolicies().get(0);
+//           Date d = new Date();
+//           l.addLeagueSeason(league, season, gp, sp, d);
+//            Team t = am.loadTeam("abc");
+//            Team t1 = am.loadTeam("acb");
+//            List<LeagueSeason> ls = l.getLeagueSeasons(new Season(3023));
+//            LeagueSeason ld = ls.get(0);
+//            t.setLeagueSeasons();
+//            t1.setLeagueSeasons();
+//            l.addTeamToLeagueSeason(ld, t);
+//            l.addTeamToLeagueSeason(ld, t1);
+            //p.scheduleMatches(ld);
+
+            //System.out.println(ld.getMatches());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Ctor with parameters
@@ -57,7 +164,7 @@ public class LeagueSeasonUnit {
             }
 
         } else
-            throw new Exception("League name can not be empty. Please try again.");
+            throw new Exception("League name can not be empty.");
     }
 
     /**
@@ -110,7 +217,7 @@ public class LeagueSeasonUnit {
 
             //connection problem
             if (leagueSeason == null)
-                throw new Exception("There was a problem with the connection to the server. Please try again later");
+                throw new Exception("There was a problem with the server. Please try again later");
 
                 //league name already exists
             else if (leagueSeason.size() > 0)
@@ -138,9 +245,11 @@ public class LeagueSeasonUnit {
 
             if (leagueSeason.setScorePolicy(scorePolicy)) {
                 HashMap<String, Object> parameters = new HashMap<>();
-                parameters.put("newScorePolicy", scorePolicy);
-                parameters.put("league", leagueSeason.getLeague());
-                parameters.put("season", leagueSeason.getSeason());
+                parameters.put("winPoints", scorePolicy.getWinPoints());
+                parameters.put("drawPoints", scorePolicy.getDrawPoints());
+                parameters.put("losePoints", scorePolicy.getLosePoints());
+                parameters.put("leagueSeasonID", leagueSeason.getLeagueSeasonID());
+//                parameters.put("season", leagueSeason.getSeason());
                 return clientServerCommunication.update("UpdateScorePolicy", parameters);
 
             } else {
@@ -161,16 +270,17 @@ public class LeagueSeasonUnit {
     public boolean setRefereeInLeagueSeason(LeagueSeason leagueSeason, Referee referee) throws Exception {
         if (leagueSeason != null && referee != null) {
 
-            if (leagueSeason.addReferee(referee)) {
-                HashMap<String, Object> parameters = new HashMap<>();
-                parameters.put("newReferees", leagueSeason.getReferees());
-                parameters.put("league", leagueSeason.getLeague());
-                parameters.put("season", leagueSeason.getSeason());
-                return clientServerCommunication.update("UpdateLeagueSeasonRefereeList", parameters);
+            //if (leagueSeason.addReferee(referee)) {
+            if (referee.addLeagueSeason(leagueSeason)) {
+//                HashMap<String, Object> parameters = new HashMap<>();
+//                parameters.put("newReferees", leagueSeason.getReferees());
+//                parameters.put("league", leagueSeason.getLeague());
+//                parameters.put("season", leagueSeason.getSeason());
+                return clientServerCommunication.merge(referee);
 
                 //referee already exists
             } else {
-                return true;
+                throw new Exception("The referee already exists.");
             }
         }
         throw new Exception("Parameters should not be null. Please try again");
@@ -187,12 +297,17 @@ public class LeagueSeasonUnit {
     public boolean addTeamToLeagueSeason(LeagueSeason leagueSeason, Team team) throws Exception {
         if (leagueSeason != null && team != null) {
 
-            if (leagueSeason.addTeam(team)) {
-                HashMap<String, Object> parameters = new HashMap<>();
-                parameters.put("newTeamList", leagueSeason.getTeamsParticipate());
-                parameters.put("league", leagueSeason.getLeague());
-                parameters.put("season", leagueSeason.getSeason());
-                return clientServerCommunication.update("UpdateLeagueSeasonTeamList", parameters);
+            if (team.isActive()) {
+
+                //if (leagueSeason.addTeam(team)) {
+                if (team.addLeagueSeason(leagueSeason)) {
+//                    HashMap<String, Object> parameters = new HashMap<>();
+//                parameters.put("newTeamList", leagueSeason.getTeamsParticipate());
+//                parameters.put("league", leagueSeason.getLeague());
+//                parameters.put("season", leagueSeason.getSeason());
+                    return clientServerCommunication.merge(team);
+                } else
+                    throw new Exception("The team already exists.");
 
             } else {
                 throw new Exception("Sorry, the team is not active.");

@@ -116,6 +116,7 @@ public class LeagueSeasonUnitTest {
     public void changeScorePolicyTest() throws Exception {
         Season season = leagueSeasonUnit.getSeasons().get(0);
         LeagueSeason ls = leagueSeasonUnit.getLeagueSeasons(season).get(0);
+        ls.setLeagueSeasonID(1);
         policiesUnit.addNewScorePolicy(5, 4, 3);
         ScorePolicy sp = policiesUnit.getScorePolicies().get(1);
         assertTrue(leagueSeasonUnit.changeScorePolicy(ls, sp));
@@ -216,17 +217,14 @@ public class LeagueSeasonUnitTest {
     }
 
     /**
-     * Test the creation of a new Season that already exists - should throw Exception:
-     * "Season already exists. Please insert different year."
+     * Test the creation of a new Season that already exists - should return true
      */
     @Test
     public void addNewSeasonAlreadyExistsTest() throws Exception {
         List<Season> seasonListExpected = new ArrayList<>();
         seasonListExpected.add(new Season(2020));
         Assert.assertEquals(seasonListExpected, leagueSeasonUnit.getSeasons());
-        expectedException.expect(Exception.class);
-        expectedException.expectMessage("Season already exists. Please insert different year.");
-        leagueSeasonUnit.addNewSeason(2020);
+        assertTrue(leagueSeasonUnit.addNewSeason(2020));
     }
 
     /**

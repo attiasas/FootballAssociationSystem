@@ -402,4 +402,10 @@
 .list-cell
 {
     -fx-text-fill: white;
+    -fx-background-color: -fx-primary;
+}
+
+.list-cell:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
 }

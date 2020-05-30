@@ -25,38 +25,35 @@ import java.io.Serializable;
         @NamedQuery(name = "teamUserByName", query = "SELECT tu from TeamUser tu WHERE tu.name = :name"),
         @NamedQuery(name = "teamUserByTeam", query = "SELECT tu from TeamUser tu WHERE tu.team = :team"),
         @NamedQuery(name = "allActiveTeamUser", query = "SELECT tu from TeamUser tu WHERE tu.active = :active"),
-        @NamedQuery(name = "teamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan and active = :active"),
+        @NamedQuery(name = "teamUserByFan", query = "SELECT tu from TeamUser tu WHERE tu.fan = :fan and tu.active = true"),
         @NamedQuery(name = "deactivateTeamUser", query = "UPDATE TeamUser tu SET tu.active = false WHERE tu.fan = :fan"),
         @NamedQuery(name = "ActivateTeamUserByFan", query = "UPDATE TeamUser tu SET tu.active = true WHERE tu.fan = :fan"),
 })
 
-@IdClass(TeamUser.EntryPK.class)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class TeamUser implements Serializable
 {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
     /**
      * For Composite Primary Key
      */
-    public static class EntryPK implements Serializable {
-        public String name;
-        public Fan fan;
-    }
 
-    @Id
     @Column
     String name;
 
-    @Id
-    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @OneToOne(cascade = CascadeType.ALL)
     Fan fan;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
+    @ManyToOne
     protected Team team;
 
     @Column
     boolean active;
 
-    public TeamUser(String name, boolean active, Fan fan, Team team) 
+    public TeamUser(String name, boolean active, Fan fan, Team team)
     {
         if (!onlyLettersString(name) || fan == null || team == null) return;
 
@@ -78,7 +75,7 @@ public class TeamUser implements Serializable
         return active;
     }
 
-    public String getName() 
+    public String getName()
     {
         return name;
     }
