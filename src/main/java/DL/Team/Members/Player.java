@@ -27,6 +27,7 @@ import java.util.List;
         @NamedQuery(name = "playerByFan", query = "SELECT p FROM Player p WHERE p.fan = :fan "),
         @NamedQuery(name = "updatePlayerDetails", query = "UPDATE Player p SET p.name = :name, p.role = :role, p.team = :team, p.active = :active, p.birthDate = :birthDate WHERE p.fan = :fan"),
 })
+@DiscriminatorValue(value = "Player")
 public class Player extends PageUser implements Serializable
 {
     @Column

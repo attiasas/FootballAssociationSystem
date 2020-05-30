@@ -16,6 +16,7 @@ import java.util.Objects;
  **/
 
 @Entity
+@DiscriminatorValue(value = "PageUser")
 public abstract class PageUser extends TeamUser implements Serializable
 {
     @OneToOne(cascade = {CascadeType.ALL})

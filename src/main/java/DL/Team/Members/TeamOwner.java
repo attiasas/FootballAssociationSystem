@@ -4,6 +4,8 @@ import DL.Administration.Financial.FinancialEntry;
 import DL.Administration.Financial.FinancialUser;
 import DL.Team.Team;
 import DL.Users.Fan;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,16 +37,18 @@ public class TeamOwner implements FinancialUser, Serializable
     @GeneratedValue
     int id;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private TeamUser teamUser;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Team team;
 
-    @OneToMany
+    @OneToMany()
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TeamOwner> ownerNominees;
 
     @OneToMany(mappedBy = "teamOwner" ,cascade = {CascadeType.MERGE})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<TeamManager> manageNominees;
 
     @Column

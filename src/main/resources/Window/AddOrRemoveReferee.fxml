@@ -33,7 +33,7 @@
 <VBox.margin>
     <Insets top="10.0" />
 </VBox.margin>
-<JFXButton onAction="#addReferee" prefHeight="30.0" prefWidth="135.0" styleClass="smallaction-button" text="Create Referee" />
+<JFXButton fx:id="createButton" onAction="#addReferee" prefHeight="30.0" prefWidth="135.0" styleClass="smallaction-button" text="Create Referee" />
 <JFXButton onAction="#clearFieldsCreateReferee" prefHeight="30.0" prefWidth="135.0" styleClass="smallaction-button" text="Clear Fields" />
 </HBox>
 <VBox.margin>
@@ -72,7 +72,7 @@
 <children>
     <HBox alignment="CENTER" prefHeight="43.0" prefWidth="512.0" spacing="25.0">
         <children>
-            <JFXButton onAction="#closeWindow" prefHeight="30.0" prefWidth="135.0" styleClass="smallaction-button" text="Back To Menu">
+            <JFXButton fx:id="backToMenuBtn" onAction="#closeWindow" prefHeight="30.0" prefWidth="135.0" styleClass="smallaction-button" text="Back To Menu">
                 <HBox.margin>
                     <Insets top="80.0" />
                 </HBox.margin>
@@ -81,7 +81,7 @@
     </HBox>
 </children>
 </HBox>
-        <HBox layoutY="17.0" prefHeight="43.0" prefWidth="729.0">
+        <HBox fx:id="refereeUsername" layoutY="17.0" prefHeight="43.0" prefWidth="729.0">
          <padding>
             <Insets bottom="10.0" />
          </padding></HBox>

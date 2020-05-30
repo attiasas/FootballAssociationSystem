@@ -123,6 +123,8 @@ public class TeamAssetUnit {
             return false;
 
         Stadium stadium = new Stadium(name, capacity, team);
+      //  if (team.getStadiums() == null)
+            team.setStadiums();
         team.addStadium(stadium);
         return clientServerCommunication.insert(stadium);
     }
@@ -354,7 +356,7 @@ public class TeamAssetUnit {
         if (birthDate == null) {
             err += "Birth Date: Birth date cannot be empty. \n";
         }
-        if (birthDate != null && (birthDate.getYear()- Year.now().getValue()) < 13) {
+        if (birthDate != null && (Year.now().getValue() - birthDate.getYear()) < 13) {
             err += "Birth Date: Player's age cannot be younger than 13. \n";
         }
         if (team == null) {
@@ -375,6 +377,8 @@ public class TeamAssetUnit {
         boolean status = clientServerCommunication.insert(player);
 
         if (status) {
+            if (team.getPlayers() == null)
+                team.setPlayers();
             team.addPlayer(player);
         }
         return status;
@@ -405,7 +409,7 @@ public class TeamAssetUnit {
         if (birthDate == null) {
             err += "Birth Date: Birth date cannot be empty. \n";
         }
-        if (birthDate != null && (birthDate.getYear()- Year.now().getValue()) < 13) {
+        if (birthDate != null && (Year.now().getValue()) < 13 - birthDate.getYear()) {
             err += "Birth Date: Player's age cannot be younger than 13. \n";
         }
         if (team == null) {
@@ -490,6 +494,8 @@ public class TeamAssetUnit {
         boolean status = clientServerCommunication.insert(coach);
 
         if (status) {
+           // if (team.getCoaches() == null)
+                team.setCoaches();
             team.addCoach(coach);
         }
 
@@ -535,15 +541,17 @@ public class TeamAssetUnit {
 
         Team oldTeam = teamUser.getTeam();
 
-        HashMap<String, Object> args = new HashMap<>();
-        args.put("name", name);
-        args.put("role", role);
-        args.put("team", team);
-        args.put("active", true);
-        args.put("qualification", qualification);
-        args.put("fan", fan);
+        Coach coach = (Coach)teamUser;
+        coach.setDetails(name, role, team, true, qualification);
+       // HashMap<String, Object> args = new HashMap<>();
+        //args.put("name", name);
+        //args.put("role", role);
+        //args.put("team", team);
+        //args.put("active", true);
+        //args.put("qualification", qualification);
+        //args.put("fan", fan);
 
-        boolean status = clientServerCommunication.update("updateCoachDetails", args);
+        boolean status = clientServerCommunication.merge(coach);
 
         if (status && !oldTeam.equals(team)) {
             oldTeam.removeCoach((Coach) teamUser);
@@ -601,7 +609,7 @@ public class TeamAssetUnit {
         args.put("fan", fan);
         List<TeamUser> queryResults = clientServerCommunication.query("teamUserByFan", args);
 
-        if (queryResults.isEmpty())
+        if (queryResults == null || queryResults.isEmpty())
             return null;
 
         return queryResults.get(0); // only one TeamUser connected to fan-user

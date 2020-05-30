@@ -53,7 +53,7 @@
       </ImageView>
       <VBox layoutY="284.0" prefHeight="415.0" prefWidth="556.0">
          <children>
-            <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#addOrRemoveReferee" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Add or Remove Referee" textFill="WHITE" />
+            <JFXButton fx:id="addOrRemoveRefereeBtn" alignment="CENTER" contentDisplay="TOP" onAction="#addOrRemoveReferee" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Add or Remove Referee" textFill="WHITE" />
             <JFXButton alignment="CENTER" contentDisplay="TOP" onAction="#closeWindow" prefHeight="83.0" prefWidth="556.0" styleClass="toolbar-button" text="Back" textFill="WHITE" />
          </children>
       </VBox>

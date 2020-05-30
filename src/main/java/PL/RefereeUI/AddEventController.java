@@ -4,6 +4,7 @@ import BL.Client.ClientSystem;
 import BL.Client.Handlers.MatchEventUnit;
 import DL.Game.Match;
 import DL.Team.Members.Player;
+import DL.Team.Members.TeamUser;
 import DL.Team.Team;
 import PL.RefereeUI.EventLogController;
 import PL.main.App;
@@ -124,14 +125,14 @@ public class AddEventController
         cb_player.setPromptText("Choose Player");
 
         List<String> players = new ArrayList<>();
-        for(Player player : match.getHomeTeam().getPlayers())
+        for(TeamUser player : match.getHomeTeam().getPlayers())
         {
             if(player.isActive())
             {
                 players.add("" + match.getHomeTeam().getName() + "-" + player.getName());
             }
         }
-        for(Player player : match.getAwayTeam().getPlayers())
+        for(TeamUser player : match.getAwayTeam().getPlayers())
         {
             if(player.isActive())
             {
@@ -241,8 +242,8 @@ public class AddEventController
         Player result = null;
         for(int i = 0; i < team.getPlayers().size() && result == null; i++)
         {
-            Player p = team.getPlayers().get(i);
-            if(p.isActive() && p.getName().equals(val[1])) result = p;
+            TeamUser p = team.getPlayers().get(i);
+            if(p.isActive() && p.getName().equals(val[1])) result = (Player) p;
         }
 
         return result;

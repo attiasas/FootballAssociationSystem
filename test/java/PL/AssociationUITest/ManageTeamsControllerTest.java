@@ -1,9 +1,7 @@
-package java.PL;
 
 import PL.TestFXBase;
 import com.jfoenix.controls.JFXTextField;
 import org.junit.jupiter.api.Test;
-
 import static org.testfx.api.FxAssert.verifyThat;
 
 public class ManageTeamsControllerTest extends TestFXBase {

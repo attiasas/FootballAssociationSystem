@@ -91,7 +91,7 @@ public class AssociationManagementUnitTest {
         Fan fan = new Fan("dvir", "dvir@gmail.com", "123");
         Referee referee = new Referee("dvir", "dvir", fan, true);
         referees.add(referee);
-        referee.addMainMatch(match);
+       // referee.addMainMatch(match);
         associationManagementUnit.removeReferee(referee);
         assertTrue(referee.isActive());
     }

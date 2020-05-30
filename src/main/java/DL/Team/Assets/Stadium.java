@@ -103,7 +103,6 @@ public class Stadium implements Serializable
         return name != null && name.matches("([a-zA-Z0-9]+(\\s[a-zA-Z0-9]*)*)+");
     }
 
-
     @Override
     public String toString() {
         return "Stadium: " + name + ", Capacity: " + capacity + ".";

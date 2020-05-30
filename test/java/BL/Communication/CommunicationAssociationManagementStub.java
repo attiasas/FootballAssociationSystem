@@ -50,17 +50,17 @@ public class CommunicationAssociationManagementStub extends ClientServerCommunic
 
             List<Match> matches = new ArrayList<>();
 
-            for (Match match : referee.getLinesManMatches())
-            {
-                if (match.getEndTime() == null)
-                    matches.add(match);
-            }
+        //    for (Match match : referee.getLinesManMatches())
+         //   {
+          //      if (match.getEndTime() == null)
+           //         matches.add(match);
+           // }
 
-            for (Match match : referee.getMainMatches())
-            {
-                if (match.getEndTime() == null)
-                    matches.add(match);
-            }
+          //  for (Match match : referee.getMainMatches())
+           // {
+            //    if (match.getEndTime() == null)
+             //       matches.add(match);
+            //}
             return matches;
 
         }

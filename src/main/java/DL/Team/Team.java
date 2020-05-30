@@ -4,10 +4,7 @@ import DL.Administration.Financial.TeamFinancialEntry;
 import DL.Game.LeagueSeason.LeagueSeason;
 import DL.Game.Match;
 import DL.Team.Assets.Stadium;
-import DL.Team.Members.Coach;
-import DL.Team.Members.Player;
-import DL.Team.Members.TeamManager;
-import DL.Team.Members.TeamOwner;
+import DL.Team.Members.*;
 import DL.Team.Page.Page;
 import DL.Team.Page.TeamPage;
 import DL.Users.User;
@@ -68,15 +65,15 @@ public class Team implements Serializable {
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Coach> coaches;
+    private List<TeamUser> coaches;
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Player> players;
+    private List<TeamUser> players;
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<TeamManager> teamManagers;
+    private List<TeamUser> teamManagers;
 
     @OneToMany(mappedBy = "team", cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -193,6 +190,21 @@ public class Team implements Serializable {
         return true;
     }
 
+    public boolean addOwner(TeamOwner teamOwner) {
+
+        if (teamOwner == null) return false;
+
+        return teamOwners.add(teamOwner);
+    }
+
+    public boolean addAllOwners(List<TeamOwner> teamOwners) {
+
+        if (teamOwners == null) return false;
+
+        this.teamOwners = teamOwners;
+        return true;
+    }
+
     public boolean removeCoach(Coach coach) {
 
         checkCoachInput(coach);
@@ -256,15 +268,15 @@ public class Team implements Serializable {
         return page;
     }
 
-    public List<Coach> getCoaches() {
+    public List<TeamUser> getCoaches() {
         return coaches;
     }
 
-    public List<Player> getPlayers() {
+    public List<TeamUser> getPlayers() {
         return players;
     }
 
-    public List<TeamManager> getTeamManagers() {
+    public List<TeamUser> getTeamManagers() {
         return teamManagers;
     }
 
@@ -286,9 +298,9 @@ public class Team implements Serializable {
     public Set getTeamMembers() {
         Set<User> result = new HashSet<>();
 
-        for (Coach coach : coaches) if (coach.isActive()) result.add(coach.getFan());
-        for (Player player : players) if (player.isActive()) result.add(player.getFan());
-        for (TeamManager manager : teamManagers) if (manager.isActive()) result.add(manager.getFan());
+        for (TeamUser coach : coaches) if (coach.isActive()) result.add(coach.getFan());
+        for (TeamUser player : players) if (player.isActive()) result.add(player.getFan());
+        for (TeamUser manager : teamManagers) if (manager.isActive()) result.add(manager.getFan());
         for (TeamOwner owner : teamOwners) if (owner.isActive()) result.add(owner.getTeamUser().getFan());
 
         return result;
