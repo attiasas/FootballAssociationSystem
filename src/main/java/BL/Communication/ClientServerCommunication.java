@@ -1,33 +1,17 @@
 package BL.Communication;
 
-import static java.net.InetAddress.getLocalHost;
-
 import BL.Client.ClientSystem;
 import BL.Server.utils.Configuration;
-import DL.Administration.AssociationMember;
-import DL.Game.MatchEvents.EventLog;
-import DL.Game.MatchEvents.Goal;
-import DL.Game.Referee;
-import DL.Team.Members.Player;
-import DL.Users.Fan;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
-import PL.main.App;
-import io.airlift.command.Cli;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Description:     This Class Defines a CRUD Interface for communication with DB
@@ -301,30 +285,6 @@ public class ClientServerCommunication {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    /**
-     * Merge an Object in the data base in the server base on a named query
-     * @param toMerge - object to merge into the data base
-     * @return true if the merge completed in success, false other wise
-     */
-    public boolean merge(Object toMerge)
-    {
-        try(Socket serverSocket = new Socket(serverIP,serverPort))
-        {
-            ObjectOutputStream out = new ObjectOutputStream(serverSocket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(serverSocket.getInputStream());
-
-            out.writeObject(SystemRequest.merge(toMerge));
-            out.flush();
-
-            boolean answer = (boolean) in.readObject();
-            return answer;
-        } catch (Exception e) {
             e.printStackTrace();
         }
 
