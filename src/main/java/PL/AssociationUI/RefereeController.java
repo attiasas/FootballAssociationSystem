@@ -208,7 +208,7 @@ public class RefereeController extends AInitComboBoxObjects {
 
         HashMap<String, Object> args = new HashMap<>();
         args.put("username", username);
-        List<User> user = ClientSystem.communication.query("UserByUsername", args);
+        List<User> user = ClientSystem.communication.query("UserByUserName", args);
 
         if (user == null || user.isEmpty() || !(user.get(0) instanceof Fan)) return null;
         return (Fan) user.get(0);

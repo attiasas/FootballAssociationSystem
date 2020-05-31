@@ -80,7 +80,13 @@ public class SignupController implements Initializable {
 
     @FXML
     void handleSignupButton(ActionEvent event) {
-        if (validation()) loadMainApp();
+        if (validation())
+        {
+            String username = StringUtils.trimToEmpty(this.txt_username.getText());
+            String password = StringUtils.trimToEmpty(this.txt_password.getText());
+            App.clientSystem.userUnit.logIn(username,password);
+            loadMainApp();
+        }
         //FOR TESTING UNCOMMENT
         //  loadMainApp();
     }

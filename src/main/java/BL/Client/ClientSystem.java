@@ -77,13 +77,13 @@ public class ClientSystem
             queryResult = communication.query("ActiveTeamUserByFan",params);
             if(queryResult != null && !queryResult.isEmpty())
             {
+                TeamUser teamUser = (TeamUser)queryResult.get(0);
                 // check if team owner
                 params.clear();
                 params.put("user",loggedUser);
                 queryResult = communication.query("TeamOwnerByUser",params);
                 if(queryResult != null && !queryResult.isEmpty())
                 {
-                    TeamUser teamUser = (TeamUser)queryResult.get(0);
                     if(teamUser instanceof Player) return UserTypes.OwnerPlayer;
                     if(teamUser instanceof Coach) return UserTypes.OwnerCoach;
                     if(teamUser instanceof TeamManager) return UserTypes.OwnerManager;
@@ -92,7 +92,6 @@ public class ClientSystem
                 }
                 else
                 {
-                    TeamUser teamUser = (TeamUser)queryResult.get(0);
                     if(teamUser instanceof Player) return UserTypes.Player;
                     if(teamUser instanceof Coach) return UserTypes.Coach;
                     if(teamUser instanceof TeamManager) return UserTypes.Manager;
