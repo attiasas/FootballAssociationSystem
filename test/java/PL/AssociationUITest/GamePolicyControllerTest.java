@@ -32,12 +32,13 @@ public class GamePolicyControllerTest extends TestFXBase {
         associationUser = new ArrayList<>();
         AssociationMember u = new AssociationMember("association", "a@gmail.com", DigestUtils.sha1Hex("1234"));
         associationUser.add(u);
-        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
     }
 
     @Test
     @Order(1)
     public void createNewGamePolicySuccessTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -63,6 +64,7 @@ public class GamePolicyControllerTest extends TestFXBase {
         write("3");
         robot.clickOn("#gamesPerDay");
         write("3");
+
         robot.clickOn("Okay");
         sleep(500);
         alert_dialog_has_header_and_content(
@@ -83,42 +85,7 @@ public class GamePolicyControllerTest extends TestFXBase {
     @Order(2)
     public void createNewGamePolicyServerErrorTest() throws Exception {
         ClientSystem.communication = new CommunicationNullStub(associationUser);
-        ApplicationTest.launch(App.class);
-        robot.clickOn("#txt_username");
-        write("association");
-        robot.clickOn("#txt_password");
-        write("1234");
-        robot.clickOn("LOG IN");
-        WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                sleep(500);
-                return robot.lookup("#hamburger").tryQuery().isPresent();
-            }
-        });
-        //robot.clickOn(CONNECT_AS_GUEST);
-        //sleep(500);
-        robot.clickOn("#hamburger");
-        sleep(500);
-        robot.clickOn("Manage Policies");
-        sleep(500);
-        robot.clickOn("Create Game Policy");
-        sleep(500);
-        robot.clickOn("#numberOfRounds");
-        write("3");
-        robot.clickOn("#gamesPerDay");
-        write("3");
-        robot.clickOn("Okay");
-        sleep(500);
-        alert_dialog_has_header_and_content(
-                "Error", "There was a problem with the connection to the server. Please try again later");
-        robot.clickOn("OK");
-        robot.closeCurrentWindow();
-    }
-
-    @Test
-    @Order(3)
-    public void createNewGamePolicyErrorsTest() throws Exception {
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -132,6 +99,46 @@ public class GamePolicyControllerTest extends TestFXBase {
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        //robot.clickOn(CONNECT_AS_GUEST);
+        sleep(500);
+        robot.clickOn("#hamburger");
+        sleep(500);
+        robot.clickOn("Manage Policies");
+        sleep(500);
+        robot.clickOn("Create Game Policy");
+        sleep(500);
+        robot.clickOn("#numberOfRounds");
+        write("4");
+        robot.clickOn("#gamesPerDay");
+        write("3");
+        System.out.println(ClientSystem.communication.toString());
+        robot.clickOn("Okay");
+        sleep(500);
+        alert_dialog_has_header_and_content(
+                "Error", "There was a problem with the connection to the server. Please try again later");
+        robot.clickOn("OK");
+        robot.closeCurrentWindow();
+    }
+
+    @Test
+    @Order(3)
+    public void createNewGamePolicyErrorsTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
+        ApplicationTest.launch(App.class);
+        robot.clickOn("#txt_username");
+        write("association");
+        robot.clickOn("#txt_password");
+        write("1234");
+        robot.clickOn("LOG IN");
+        WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                sleep(1000);
+                return robot.lookup("#hamburger").tryQuery().isPresent();
+            }
+        });
+        sleep(500);
         robot.clickOn("#hamburger");
         sleep(500);
         robot.clickOn("Manage Policies");
@@ -175,6 +182,8 @@ public class GamePolicyControllerTest extends TestFXBase {
     @Test
     @Order(4)
     public void createNewGamePolicyAlreadyExistsTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         GamePolicy gp = new GamePolicy(3, 2);
         ((CommunicationLeagueSeasonAndPoliciesStub) ClientSystem.communication).addGamePolicy(gp);
         ApplicationTest.launch(App.class);
@@ -186,10 +195,11 @@ public class GamePolicyControllerTest extends TestFXBase {
         WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                sleep(500);
+                sleep(1000);
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn("#hamburger");
         sleep(500);
         robot.clickOn("Manage Policies");
@@ -212,6 +222,8 @@ public class GamePolicyControllerTest extends TestFXBase {
     @Test
     @Order(5)
     public void createNewGamePolicyMoreThan7GamesPerDayErrorTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -225,6 +237,7 @@ public class GamePolicyControllerTest extends TestFXBase {
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn("#hamburger");
         sleep(500);
         robot.clickOn("Manage Policies");

@@ -1,33 +1,17 @@
 package BL.Communication;
 
-import static java.net.InetAddress.getLocalHost;
-
 import BL.Client.ClientSystem;
 import BL.Server.utils.Configuration;
-import DL.Administration.AssociationMember;
-import DL.Game.MatchEvents.EventLog;
-import DL.Game.MatchEvents.Goal;
-import DL.Game.Referee;
-import DL.Team.Members.Player;
-import DL.Users.Fan;
 import DL.Users.Notifiable;
 import DL.Users.Notification;
 import DL.Users.User;
-import PL.main.App;
-import io.airlift.command.Cli;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Description:     This Class Defines a CRUD Interface for communication with DB
@@ -44,7 +28,6 @@ public class ClientServerCommunication {
 
     private static InetAddress serverIP;
     private static final int serverPort = Integer.parseInt(Configuration.getPropertyValue("server.port"));
-    private ServerSocket listenSocket;
 
     static {
         try {

@@ -41,13 +41,15 @@ public class ScorePolicyControllerTest extends TestFXBase {
         associationUser = new ArrayList<>();
         AssociationMember u = new AssociationMember("association", "a@gmail.com", DigestUtils.sha1Hex("1234"));
         associationUser.add(u);
-        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+
     }
 
     //create score policy
     @Test
     @Order(1)
     public void createNewScorePolicySuccessTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -98,6 +100,7 @@ public class ScorePolicyControllerTest extends TestFXBase {
     @Order(2)
     public void createNewScorePolicyServerErrorTest() throws Exception {
         ClientSystem.communication = new CommunicationNullStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -135,6 +138,8 @@ public class ScorePolicyControllerTest extends TestFXBase {
     @Test
     @Order(3)
     public void createNewScorePolicyErrorsTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -182,6 +187,8 @@ public class ScorePolicyControllerTest extends TestFXBase {
     @Test
     @Order(4)
     public void createNewGamePolicyAlreadyExistsTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ScorePolicy sp = new ScorePolicy(3, 1, 0);
         ((CommunicationLeagueSeasonAndPoliciesStub) ClientSystem.communication).addScorePolicy(sp);
         ApplicationTest.launch(App.class);
@@ -222,6 +229,8 @@ public class ScorePolicyControllerTest extends TestFXBase {
     @Test
     @Order(5)
     public void changeScorePolicySuccessTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         //init data
         League l = new League("check");
         Season s = new Season(2020);
@@ -287,6 +296,7 @@ public class ScorePolicyControllerTest extends TestFXBase {
     @Order(6)
     public void changeScorePolicyServerErrorTest() throws Exception {
         ClientSystem.communication = new CommunicationNullStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -316,6 +326,8 @@ public class ScorePolicyControllerTest extends TestFXBase {
     @Test
     @Order(7)
     public void changeScorePolicyParamErrorTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         //init data
         League l = new League("check");
         Season s = new Season(2020);
@@ -358,6 +370,8 @@ public class ScorePolicyControllerTest extends TestFXBase {
     @Test
     @Order(8)
     public void changeScorePolicyLeagueAlreadyRunningErrorTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         //init data
         League l = new League("check");
         Season s = new Season(2020);
