@@ -37,6 +37,7 @@ public class CommunicationLeagueSeasonAndPoliciesStub extends ClientServerCommun
     public CommunicationLeagueSeasonAndPoliciesStub(List<User> users) {
         this();
         this.users = users;
+        System.out.println("regular");
     }
 
     public void addLeague(League l){
@@ -297,5 +298,8 @@ public class CommunicationLeagueSeasonAndPoliciesStub extends ClientServerCommun
         return -1;
     }
 
-
+    @Override
+    public String toString() {
+        return "CommunicationLeagueSeasonAndPoliciesStub{}";
+    }
 }

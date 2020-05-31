@@ -44,7 +44,6 @@ public class ClientServerCommunication {
 
     private static InetAddress serverIP;
     private static final int serverPort = Integer.parseInt(Configuration.getPropertyValue("server.port"));
-    private ServerSocket listenSocket;
 
     static {
         try {

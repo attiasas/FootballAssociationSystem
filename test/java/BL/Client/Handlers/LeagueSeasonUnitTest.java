@@ -161,7 +161,7 @@ public class LeagueSeasonUnitTest {
         List<League> leagueListExpected = new ArrayList<>();
         Assert.assertEquals(leagueListExpected, leagueSeasonUnitEmpty.getLeagues());
         expectedException.expect(Exception.class);
-        expectedException.expectMessage("League name can not be empty. Please try again.");
+        expectedException.expectMessage("League name can not be empty.");
         leagueSeasonUnitEmpty.addNewLeague(null);
 
     }
@@ -174,7 +174,7 @@ public class LeagueSeasonUnitTest {
         List<League> leagueListExpected = new ArrayList<>();
         Assert.assertEquals(leagueListExpected, leagueSeasonUnitEmpty.getLeagues());
         expectedException.expect(Exception.class);
-        expectedException.expectMessage("League name can not be empty. Please try again.");
+        expectedException.expectMessage("League name can not be empty.");
         leagueSeasonUnitEmpty.addNewLeague("");
     }
 
@@ -259,7 +259,7 @@ public class LeagueSeasonUnitTest {
     public void addNewLeagueSeasonServerErrorTest() throws Exception {
         leagueSeasonUnit = new LeagueSeasonUnit(new CommunicationNullStub());
         expectedException.expect(Exception.class);
-        expectedException.expectMessage("There was a problem with the connection to the server. Please try again later");
+        expectedException.expectMessage("There was a problem with the server. Please try again later");
         League l = new League("check");
         Season s = new Season(2002);
         ScorePolicy sp = new ScorePolicy(3,2,1);
