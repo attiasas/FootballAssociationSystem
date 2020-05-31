@@ -77,6 +77,11 @@ public class CommunicationNullStub extends ClientServerCommunication {
     public boolean notify(Notifiable notifiable) {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "null";
+    }
 }
 
 

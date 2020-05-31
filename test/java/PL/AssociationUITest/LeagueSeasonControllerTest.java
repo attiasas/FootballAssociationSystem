@@ -45,13 +45,14 @@ public class LeagueSeasonControllerTest extends TestFXBase {
         associationUser = new ArrayList<>();
         AssociationMember u = new AssociationMember("association", "a@gmail.com", DigestUtils.sha1Hex("1234"));
         associationUser.add(u);
-        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
     }
 
     //Create League tests
     @Test
     @Order(1)
     public void createNewLeagueSuccessTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -61,10 +62,11 @@ public class LeagueSeasonControllerTest extends TestFXBase {
         WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                sleep(500);
+                sleep(1000);
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
@@ -89,6 +91,7 @@ public class LeagueSeasonControllerTest extends TestFXBase {
     @Order(2)
     public void createNewLeagueServerErrorTest() throws Exception {
         ClientSystem.communication = new CommunicationNullStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -98,10 +101,11 @@ public class LeagueSeasonControllerTest extends TestFXBase {
         WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                sleep(500);
+                sleep(1000);
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
@@ -121,6 +125,8 @@ public class LeagueSeasonControllerTest extends TestFXBase {
     @Test
     @Order(3)
     public void createNewLeagueAlreadyExistsErrorTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         League l = new League("check League");
         ((CommunicationLeagueSeasonAndPoliciesStub) ClientSystem.communication).addLeague(l);
         ApplicationTest.launch(App.class);
@@ -132,10 +138,11 @@ public class LeagueSeasonControllerTest extends TestFXBase {
         WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                sleep(500);
+                sleep(1000);
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
@@ -155,6 +162,8 @@ public class LeagueSeasonControllerTest extends TestFXBase {
     @Test
     @Order(4)
     public void createNewLeagueNullParamErrorTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -164,10 +173,11 @@ public class LeagueSeasonControllerTest extends TestFXBase {
         WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                sleep(500);
+                sleep(1000);
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
@@ -188,6 +198,8 @@ public class LeagueSeasonControllerTest extends TestFXBase {
     @Test
     @Order(5)
     public void createNewLeagueSeasonSuccessPlusParamErrorsTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -201,6 +213,7 @@ public class LeagueSeasonControllerTest extends TestFXBase {
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
@@ -261,6 +274,8 @@ public class LeagueSeasonControllerTest extends TestFXBase {
     @Test
     @Order(6)
     public void createNewLeagueSeasonLowYearErrorTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         //init data
         League l = new League("check");
         ((CommunicationLeagueSeasonAndPoliciesStub) ClientSystem.communication).addLeague(l);
@@ -282,6 +297,7 @@ public class LeagueSeasonControllerTest extends TestFXBase {
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
@@ -311,6 +327,8 @@ public class LeagueSeasonControllerTest extends TestFXBase {
     @Test
     @Order(7)
     public void createNewLeagueSeasonAlreadyExistsErrorTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         //init data
         League l = new League("check");
         ((CommunicationLeagueSeasonAndPoliciesStub) ClientSystem.communication).addLeague(l);
@@ -333,6 +351,7 @@ public class LeagueSeasonControllerTest extends TestFXBase {
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
@@ -363,6 +382,7 @@ public class LeagueSeasonControllerTest extends TestFXBase {
     @Order(8)
     public void createNewLeagueSeasonServerErrorTest() throws Exception {
         ClientSystem.communication = new CommunicationNullStub(associationUser);
+        App.clientSystem = new ClientSystem();
         ApplicationTest.launch(App.class);
         robot.clickOn("#txt_username");
         write("association");
@@ -372,10 +392,11 @@ public class LeagueSeasonControllerTest extends TestFXBase {
         WaitForAsyncUtils.waitFor(10, TimeUnit.SECONDS, new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                sleep(500);
+                sleep(1000);
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
@@ -390,6 +411,8 @@ public class LeagueSeasonControllerTest extends TestFXBase {
     @Test
     @Order(9)
     public void createNewLeagueSeasonYearWithLettersErrorTest() throws Exception {
+        ClientSystem.communication = new CommunicationLeagueSeasonAndPoliciesStub(associationUser);
+        App.clientSystem = new ClientSystem();
         //init data
         League l = new League("check");
         ((CommunicationLeagueSeasonAndPoliciesStub) ClientSystem.communication).addLeague(l);
@@ -412,6 +435,7 @@ public class LeagueSeasonControllerTest extends TestFXBase {
                 return robot.lookup("#hamburger").tryQuery().isPresent();
             }
         });
+        sleep(500);
         robot.clickOn(MENU);
         sleep(500);
         robot.clickOn(MANAGE_LEAGUES);
