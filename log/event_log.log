@@ -1316,3 +1316,7 @@
 2020-05-31 00:02:13 INFO  event - PW ------> sql  (should be empty)
 2020-05-31 00:02:13 INFO  event - CONNECTION URL ----> jdbc:postgresql://localhost:5432/sportify_dev?user=postgres&passwordsql
 2020-05-31 00:02:13 INFO  event - PU-Strategy ------> create
+2020-05-31 10:10:47 INFO  event - Sportify launched
+2020-05-31 10:11:37 INFO  event - Sportify launched
+2020-05-31 10:13:37 INFO  event - Sportify launched
+2020-05-31 10:42:41 INFO  event - Sportify is closing. Used for 29 min and 1743 sec.
