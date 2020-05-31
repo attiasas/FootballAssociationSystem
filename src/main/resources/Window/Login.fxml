@@ -28,7 +28,7 @@
                          size="55"/>
     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="USER" layoutX="60.0" layoutY="196.0" size="24"/>
     <FontAwesomeIconView fontSmoothingType="LCD" glyphName="KEY" layoutX="60.0" layoutY="271.0" size="22"/>
-    <JFXButton contentDisplay="TOP" graphicTextGap="3.0" layoutX="47.0" layoutY="417.0"
+    <JFXButton fx:id="signButton" contentDisplay="TOP" graphicTextGap="3.0" layoutX="47.0" layoutY="417.0"
                onAction="#handleOpenSignUpButton" prefHeight="34.0" prefWidth="164.0" ripplerFill="WHITE"
                styleClass="label-button" text="Create your Account"/>
     <FontAwesomeIconView glyphName="PENCIL" layoutX="206.0" layoutY="438.0" size="12"/>
