@@ -227,11 +227,11 @@ public class NotificationsController implements Initializable, Serializable
                 //both are either true or both are false
                 if(this.creationDate.compareTo(other.creationDate) > 0)
                 {
-                    return 1;
+                    return 0;
                 }
                 else
                 {
-                    return 0;
+                    return 1;
                 }
             }
         }
