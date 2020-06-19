@@ -37,7 +37,6 @@ public abstract class User implements Serializable {
     @Column
     private boolean active;
 
-
     //    @ElementCollection
     @Column
     @Convert(converter = StringListConverter.class)

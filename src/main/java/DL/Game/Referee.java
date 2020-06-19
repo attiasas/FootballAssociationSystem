@@ -112,6 +112,11 @@ public class Referee implements Serializable {
         return matches;
     }
 
+    public boolean isMainReferee()
+    {
+        return "main".equals(qualification.toLowerCase());
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null || !(other instanceof Referee)) {

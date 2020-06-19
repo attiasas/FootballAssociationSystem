@@ -13,7 +13,7 @@ import javax.persistence.*;
         @NamedQuery(name = "OnePlayersEvents", query = "Select op From OnePlayerEvent op")
 })
 @DiscriminatorValue(value = "OnePlayerEvent")
-abstract class OnePlayerEvent extends Event {
+public abstract class OnePlayerEvent extends Event {
 
     @ManyToOne
     private Player player;

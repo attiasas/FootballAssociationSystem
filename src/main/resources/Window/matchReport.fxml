@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="691.0" prefWidth="1000.0" stylesheets="@../dark-theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PL.RefereeUI.EventReportController">
+   <children>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="862.0" minWidth="450.0" prefWidth="781.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label contentDisplay="CENTER" style="-fx-font-size: 30;" text="Match Report:" />
+            <Label fx:id="lb_match" style="-fx-font-size: 30;" GridPane.columnIndex="1">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </GridPane>
+      <Separator prefWidth="200.0" />
+      <HBox>
+         <children>
+            <Separator orientation="VERTICAL" />
+            <VBox>
+               <children>
+                  <Label text="Match Information" />
+                  <Separator prefWidth="200.0" />
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Home Team:" />
+                        <Label text="Away Team:" GridPane.rowIndex="1" />
+                        <Label text="Match Date:" GridPane.rowIndex="2" />
+                        <Label text="Match Time (Min):" GridPane.rowIndex="3" />
+                        <Label fx:id="l_hTeam" GridPane.columnIndex="1" />
+                        <Label fx:id="l_aTeam" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="l_date" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="l_time" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding>
+                  </GridPane>
+                  <Separator prefWidth="200.0" />
+                  <Label text="Match Events Statistics" />
+                  <Separator prefWidth="200.0" />
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="home team" GridPane.columnIndex="1">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="away team" GridPane.columnIndex="2">
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Goals" GridPane.rowIndex="1" />
+                        <Label text="Fouls" GridPane.rowIndex="2" />
+                        <Label text="Red Cards" GridPane.rowIndex="3" />
+                        <Label text="Yellow Cards" GridPane.rowIndex="4" />
+                        <Label text="Offsides" GridPane.rowIndex="5" />
+                        <Label text="Injuries" GridPane.rowIndex="6" />
+                        <Label text="Player Changes" GridPane.rowIndex="7" />
+                        <Label fx:id="l_h_goals" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="l_a_goals" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="l_h_fouls" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="l_a_fouls" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label fx:id="l_h_red" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="l_a_red" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label fx:id="l_h_yellow" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label fx:id="l_a_yellow" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <Label fx:id="l_h_off" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="l_a_off" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                        <Label fx:id="l_h_injury" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label fx:id="l_a_injury" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <Label fx:id="l_h_pc" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Label fx:id="l_a_pc" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+            <Separator orientation="VERTICAL" />
+            <VBox prefHeight="427.0" prefWidth="667.0">
+               <children>
+                  <Label style="-fx-font-size: 16;" text="Match Event Log" />
+                  <ScrollPane>
+                     <content>
+                        <TableView fx:id="tv_events" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Separator prefWidth="200.0" />
+      <HBox alignment="CENTER_RIGHT">
+         <children>
+            <JFXButton onAction="#closeWindow" prefHeight="67.0" prefWidth="138.0" styleClass="smallaction-button" text="Back" textFill="WHITE" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

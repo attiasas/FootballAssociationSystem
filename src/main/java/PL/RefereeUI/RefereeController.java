@@ -60,7 +60,21 @@ public class RefereeController
 
             if(match.isMatchEventPeriodOver())
             {
-                editButton = new Button("Event Period Is Over");
+                if(unit.isUserMainReferee(ClientSystem.getLoggedUser(),match))
+                {
+                    editButton = new Button("Match Report");
+                    editButton.onActionProperty().set(event -> {
+                        try {
+                            matchReport(match);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+                else editButton = new Button("Event Period Is Over");
+
             }
             else
             {
@@ -210,6 +224,12 @@ public class RefereeController
     {
         EventLogController controller = (EventLogController) App.loadScreen("matchEventsScreen");
         controller.initialize(unit,match);
+    }
+
+    public void matchReport(Match match)
+    {
+        EventReportController controller = (EventReportController) App.loadScreen("matchReport");
+        controller.init(unit,match);
     }
 
     /**
