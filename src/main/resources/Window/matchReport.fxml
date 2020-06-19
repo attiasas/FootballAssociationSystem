@@ -42,7 +42,7 @@
                   <GridPane>
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" />
-                      <ColumnConstraints hgrow="SOMETIMES" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -70,8 +70,8 @@
                   <GridPane>
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" />
-                      <ColumnConstraints hgrow="SOMETIMES" />
-                        <ColumnConstraints hgrow="SOMETIMES" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -120,12 +120,12 @@
                </children>
             </VBox>
             <Separator orientation="VERTICAL" />
-            <VBox prefHeight="427.0" prefWidth="667.0">
+            <VBox>
                <children>
                   <Label style="-fx-font-size: 16;" text="Match Event Log" />
                   <ScrollPane>
                      <content>
-                        <TableView fx:id="tv_events" />
+                        <TableView fx:id="tv_events" prefHeight="400.0" prefWidth="696.0" />
                      </content>
                   </ScrollPane>
                </children>

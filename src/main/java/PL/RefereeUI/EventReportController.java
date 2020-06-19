@@ -4,6 +4,7 @@ import BL.Client.ClientSystem;
 import BL.Client.Handlers.MatchEventUnit;
 import DL.Game.Match;
 import DL.Game.MatchEvents.Event;
+import PL.main.App;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -147,5 +148,12 @@ public class EventReportController
 
         tv_events.setItems(FXCollections.observableList(viewList));
         tv_events.setVisible(true);
+    }
+
+    /**
+     * Return to the previous scene
+     */
+    public void closeWindow() {
+        App.mainStage.setScene(App.scenes.pop());
     }
 }
